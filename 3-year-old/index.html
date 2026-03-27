@@ -51,7 +51,6 @@
     66% { transform: translateY(10px) rotate(240deg); }
   }
 
-  /* Back button */
   .back-btn {
     position: relative;
     z-index: 1;
@@ -137,7 +136,6 @@
     font-weight: 600;
   }
 
-  /* Grid */
   .grid-section {
     position: relative;
     z-index: 1;
@@ -181,7 +179,6 @@
 
   .card:nth-child(1) { animation-delay: 0.05s; }
   .card:nth-child(2) { animation-delay: 0.1s; }
-  .card:nth-child(3) { animation-delay: 0.15s; }
 
   @keyframes card-in {
     to { opacity: 1; transform: translateY(0); }
@@ -195,18 +192,12 @@
     border-radius: 24px 24px 0 0;
   }
 
-  .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 14px 0 rgba(0,0,0,0.08);
-  }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 14px 0 rgba(0,0,0,0.08); }
 
   .card-1::before { background: var(--coral); }
   .card-2::before { background: var(--blue); }
-  .card-3::before { background: var(--green); }
-
   .card:hover.card-1 { border-color: var(--coral); }
   .card:hover.card-2 { border-color: var(--blue); }
-  .card:hover.card-3 { border-color: var(--green); }
 
   .card-emoji { font-size: 48px; display: block; margin-bottom: 14px; line-height: 1; }
   .card-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--dark); margin-bottom: 8px; }
@@ -225,7 +216,6 @@
 
   .card-1 .card-badge { background: #fff0ee; color: var(--coral); }
   .card-2 .card-badge { background: #eef4ff; color: var(--blue); }
-  .card-3 .card-badge { background: #eefbf0; color: #3a9e46; }
 
   .card-soon {
     opacity: 0.45 !important;
@@ -272,7 +262,7 @@
   <div class="star-row">🌟 ⭐ 🌟 ⭐ 🌟</div>
   <p class="age-label">Lessons for</p>
   <h1>
-    <span>5</span><span> </span><span>Y</span><span>e</span><span>a</span><span>r</span><span>s</span><span> </span><span>O</span><span>l</span><span>d</span>
+    <span>3</span><span> </span><span>Y</span><span>e</span><span>a</span><span>r</span><span>s</span><span> </span><span>O</span><span>l</span><span>d</span>
   </h1>
   <p class="subtitle">Pick a lesson to start! 🚀</p>
 </header>
@@ -281,7 +271,6 @@
   <p class="section-label">📖 Lessons</p>
   <div class="grid">
 
-    <!-- Lesson 1 — your current HTML file -->
     <a href="lesson-1/index.html" class="card card-1">
       <span class="card-emoji">🐣</span>
       <div class="card-title">Lesson 1</div>
@@ -289,7 +278,6 @@
       <span class="card-badge">Start here</span>
     </a>
 
-    <!-- Add more lessons below later -->
     <div class="card card-2 card-soon">
       <span class="card-emoji">📚</span>
       <div class="card-title">Lesson 2</div>
@@ -300,7 +288,7 @@
   </div>
 </section>
 
-<footer>Pang made with ❤️ for kids learning English</footer>
+<footer>Made with ❤️ for kids learning English</footer>
 
 </body>
 </html>
