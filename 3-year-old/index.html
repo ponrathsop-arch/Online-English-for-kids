@@ -165,13 +165,37 @@ body{font-family:'Nunito','Arial Rounded MT Bold','Helvetica Rounded',Arial,sans
 /* PROGRESS BAR TOP */
 #progress-bar-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,0.07);z-index:998;}
 #progress-bar{height:100%;background:linear-gradient(90deg,#FF6B6B,#FFD93D,#6BCB77);transition:width .4s ease;width:0%;}
+
+/* QUICK NAV BAR */
+#quick-nav{position:fixed;bottom:0;left:0;width:100%;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border-top:2px solid #F0EAE0;z-index:997;padding:8px 10px 10px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;}
+#quick-nav::-webkit-scrollbar{display:none;}
+.qn-btn{flex-shrink:0;border:none;border-radius:14px;padding:7px 13px;font-family:inherit;font-weight:800;font-size:clamp(0.65rem,1.5vw,0.9rem);cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 3px 0 rgba(0,0,0,0.13);color:white;text-shadow:0 1px 3px rgba(0,0,0,0.18);}
+.qn-btn:hover{transform:translateY(-3px);box-shadow:0 6px 0 rgba(0,0,0,0.13);}
+.qn-btn:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(0,0,0,0.13);}
+.qn-btn.active-nav{outline:3px solid rgba(0,0,0,0.25);transform:translateY(-2px);}
+.qn-divider{flex-shrink:0;width:2px;height:32px;background:#EDE8E0;border-radius:2px;}
+.slide{padding-bottom:66px;}
 </style>
 </head>
 <body>
 <div id="progress-bar-wrap"><div id="progress-bar"></div></div>
-<button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀</button>
-<button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">▶</button>
-<div id="dots"></div>
+<button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" style="bottom:80px;">◀</button>
+<button class="nav-btn" id="nextBtn" onclick="changeSlide(1)" style="bottom:80px;">▶</button>
+<div id="dots" style="bottom:100px;"></div>
+
+<!-- QUICK NAV BAR -->
+<div id="quick-nav">
+  <button class="qn-btn" style="background:#888" onclick="showSlide(0)">🏠 Home</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#E63946" onclick="goToColor(0)" id="qn-0">🔴 Red</button>
+  <button class="qn-btn" style="background:#1A78C2" onclick="goToColor(1)" id="qn-1">🔵 Blue</button>
+  <button class="qn-btn" style="background:#F5C800;color:#333;text-shadow:none" onclick="goToColor(2)" id="qn-2">🟡 Yellow</button>
+  <button class="qn-btn" style="background:#2BAE66" onclick="goToColor(3)" id="qn-3">🟢 Green</button>
+  <button class="qn-btn" style="background:#8338EC" onclick="goToColor(4)" id="qn-4">🟣 Purple</button>
+  <button class="qn-btn" style="background:#FB5607" onclick="goToColor(5)" id="qn-5">🟠 Orange</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#555" onclick="jumpToGame()" id="qn-game">🎮 Game</button>
+</div>
 
 <!-- ============================================================
      S0: INTRO
@@ -203,7 +227,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold','Helvetica Rounded',Arial,sans
   <div class="game-illust-wrap" id="gameIllust"></div>
   <div class="game-choices" id="gameChoices"></div>
   <div class="game-feedback" id="gameFeedback"></div>
-  <div class="game-score" id="gameScore">⭐ 0 / 0</div>
+  <div class="game-score" id="gameScore">Question 1 of 18</div>
 </div>
 
 <script>
@@ -387,6 +411,25 @@ function updateDots(){
   document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));
   const pct=(current/(slideOrder.length-1))*100;
   document.getElementById('progress-bar').style.width=pct+'%';
+  updateQuickNav();
+}
+function updateQuickNav(){
+  const sid=slideOrder[current];
+  // clear all active
+  document.querySelectorAll('.qn-btn').forEach(b=>b.classList.remove('active-nav'));
+  // highlight matching color
+  COLORS.forEach((_,ci)=>{
+    const colorSlides=slideOrder.filter(s=>s===`col-intro-${ci}`||s===`find-${ci}`||s===`trace-${ci}`||s.startsWith(`obj-${ci}-`));
+    if(colorSlides.includes(sid)){
+      const btn=document.getElementById(`qn-${ci}`);
+      if(btn) btn.classList.add('active-nav');
+    }
+  });
+  if(sid==='game-slide') document.getElementById('qn-game')?.classList.add('active-nav');
+}
+function jumpToGame(){
+  const idx=slideOrder.indexOf('game-slide');
+  if(idx>=0) showSlide(idx);
 }
 function showSlide(n){
   n=Math.max(0,Math.min(slideOrder.length-1,n));
@@ -418,7 +461,8 @@ document.body.addEventListener('click',e=>{
   if(e.target.closest('.nav-btn')||e.target.closest('.color-btn')||
      e.target.closest('.item-card')||e.target.closest('.game-choice-btn')||
      e.target.closest('.pretest-btn')||e.target.closest('.feel-btn')||
-     e.target.closest('.move-btn')||e.target.closest('canvas')) return;
+     e.target.closest('.move-btn')||e.target.closest('canvas')||
+     e.target.closest('.qn-btn')) return;
   const sid=slideOrder[current];
   if(sid==='game-slide'||sid==='s1') return;
   if(sid.startsWith('find-')||sid.startsWith('trace-')||sid.startsWith('pretest-')||
@@ -841,24 +885,42 @@ function replayWrite(ci){
 // ============================================================
 // FINAL GAME
 // ============================================================
-let gQueue=[],gScore=0,gTotal=0,gAnswered=false;
+let gQueue=[],gScore=0,gAnswered=false,gQuestionNum=0;
 const GAME_ITEMS=[];
 COLORS.forEach((col,ci)=>{
   COLOR_OBJECTS[ci].forEach(obj=>{
     GAME_ITEMS.push({svgKey:obj.k,label:obj.l,colorIdx:ci});
   });
 });
+const GAME_TOTAL=GAME_ITEMS.length; // 18
 
 function startGame(){
   gQueue=shuffle([...GAME_ITEMS]);
-  gScore=0;gTotal=0;nextQ();
+  gScore=0;gQuestionNum=0;nextQ();
+}
+function updateScoreDisplay(){
+  const el=document.getElementById('gameScore');
+  if(!el)return;
+  // build pip row: filled stars for correct, empty for remaining
+  const pips=GAME_ITEMS.map((_,i)=>{
+    if(i<gScore) return `<span style="color:#F5C800;font-size:clamp(1rem,2.5vw,1.6rem)">⭐</span>`;
+    if(i<gQuestionNum) return `<span style="color:#ddd;font-size:clamp(1rem,2.5vw,1.6rem)">☆</span>`;
+    return `<span style="color:#eee;font-size:clamp(0.8rem,1.8vw,1.2rem)">·</span>`;
+  }).join('');
+  el.innerHTML=`
+    <div style="font-size:clamp(1rem,2.5vw,1.8rem);color:#aaa;margin-bottom:6px">
+      Question <strong style="color:#555">${Math.min(gQuestionNum+1,GAME_TOTAL)}</strong> of <strong style="color:#555">${GAME_TOTAL}</strong>
+    </div>
+    <div style="display:flex;gap:3px;flex-wrap:wrap;justify-content:center;max-width:360px">${pips}</div>
+  `;
 }
 function nextQ(){
   gAnswered=false;
   if(!gQueue.length){
-    document.getElementById('gameFeedback').textContent=gScore===GAME_ITEMS.length?'🎉 PERFECT!':'🌟 Great job!';
+    document.getElementById('gameFeedback').textContent=gScore===GAME_TOTAL?'🎉 PERFECT!':'🌟 Great job!';
     document.getElementById('gameChoices').innerHTML='';
-    if(gScore===GAME_ITEMS.length)confetti();
+    document.getElementById('gameScore').innerHTML=`<div style="font-size:clamp(1.2rem,3vw,2rem);color:#555">⭐ ${gScore} / ${GAME_TOTAL}</div>`;
+    if(gScore===GAME_TOTAL)confetti();
     return;
   }
   const item=gQueue.pop();
@@ -867,7 +929,7 @@ function nextQ(){
   wrap.querySelector('svg').style.width='100%';
   wrap.querySelector('svg').style.height='100%';
   document.getElementById('gameFeedback').textContent='';
-  document.getElementById('gameScore').textContent=`⭐ ${gScore} / ${gTotal}`;
+  updateScoreDisplay();
   const wrongs=shuffle(COLORS.map((_,i)=>i).filter(i=>i!==item.colorIdx)).slice(0,3);
   const choices=shuffle([item.colorIdx,...wrongs]);
   const container=document.getElementById('gameChoices');
@@ -883,10 +945,10 @@ function nextQ(){
   });
 }
 function handleGameAnswer(btn,correct){
-  if(gAnswered)return;gAnswered=true;gTotal++;
+  if(gAnswered)return;gAnswered=true;gQuestionNum++;
   if(correct){gScore++;btn.classList.add('correct');document.getElementById('gameFeedback').textContent='✅ YES!';confetti();}
   else{btn.classList.add('wrong');document.getElementById('gameFeedback').textContent='❌ Try again!';}
-  document.getElementById('gameScore').textContent=`⭐ ${gScore} / ${gTotal}`;
+  updateScoreDisplay();
   setTimeout(nextQ,1300);
 }
 
