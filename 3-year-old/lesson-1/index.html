@@ -194,6 +194,8 @@ body{font-family:'Nunito','Arial Rounded MT Bold','Helvetica Rounded',Arial,sans
   <button class="qn-btn" style="background:#8338EC" onclick="goToColor(4)" id="qn-4">🟣 Purple</button>
   <button class="qn-btn" style="background:#FB5607" onclick="goToColor(5)" id="qn-5">🟠 Orange</button>
   <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#E91E8C" onclick="jumpToMove(1)" id="qn-move1">🏃 Move</button>
+  <div class="qn-divider"></div>
   <button class="qn-btn" style="background:#555" onclick="jumpToGame()" id="qn-game">🎮 Game</button>
 </div>
 
@@ -426,9 +428,15 @@ function updateQuickNav(){
     }
   });
   if(sid==='game-slide') document.getElementById('qn-game')?.classList.add('active-nav');
+  if(sid==='move1-slide') document.getElementById('qn-move1')?.classList.add('active-nav');
+  if(sid==='move2-slide') document.getElementById('qn-move2')?.classList.add('active-nav');
 }
 function jumpToGame(){
   const idx=slideOrder.indexOf('game-slide');
+  if(idx>=0) showSlide(idx);
+}
+function jumpToMove(n){
+  const idx=slideOrder.indexOf(`move${n}-slide`);
   if(idx>=0) showSlide(idx);
 }
 function showSlide(n){
