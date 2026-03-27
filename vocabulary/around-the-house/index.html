@@ -244,34 +244,92 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
 
 <script>
 // ═══════════════════════════════════════════════════════
-// IMAGE CROP SYSTEM
-// Pages 7-10: 1920×1080, 3 cols × 2 rows, each cell 640×540px
-// Object illustration area per cell: x=col*640, y=row*540, w=640, h=~400 (top ~74%)
-// We crop a square from the centre of the illustration area.
-// For a displayed square of size S:
-//   Crop source rect: x=col*640+20, y=row*540+10, w=600, h=400  (trim grid lines)
-//   bg-size-w = S * 1920/600    bg-size-h = S * 1080/400
-//   bg-pos-x  = -(col*640+20) * S/600    bg-pos-y = -(row*540+10) * S/400
+// IMAGE SYSTEM
+// Pages 7-10 from Canva, 960×540px (half-res export).
+// Each page: 3 cols × 2 rows → cell = 320×270px
+// We crop the illustration area of each cell (trim grid lines).
+// Images are fetched once and cached in localStorage as base64
+// so they work permanently on any static host (GitHub Pages etc.)
 // ═══════════════════════════════════════════════════════
-const PG={
-  7:'https://export-download.canva.com/V89Ww/DAHEyXV89Ww/-1/0/0007-2279319684179160966.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260327%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260327T123950Z&X-Amz-Expires=35789&X-Amz-Signature=aa37d816099d2c74cfd24d6abf6b17d460e4158d34480c0375c998ee2e501d88&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2027%20Mar%202026%2022%3A36%3A19%20GMT',
-  8:'https://export-download.canva.com/V89Ww/DAHEyXV89Ww/-1/0/0008-2279319684179160966.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260327%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260327T060549Z&X-Amz-Expires=57416&X-Amz-Signature=50a77668ee6288727d75032456a56fa2e22818462971c06c475f59ed86c225d2&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2027%20Mar%202026%2022%3A02%3A45%20GMT',
-  9:'https://export-download.canva.com/V89Ww/DAHEyXV89Ww/-1/0/0009-2279319684179160966.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260327%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260327T074104Z&X-Amz-Expires=53058&X-Amz-Signature=01cdcd02418a5ffab407b466c6b76b8cf1eab3386c77af0e5597b321d4bfb5f4&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2027%20Mar%202026%2022%3A25%3A22%20GMT',
- 10:'https://export-download.canva.com/V89Ww/DAHEyXV89Ww/-1/0/0010-2279319684179160966.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260327%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260327T180139Z&X-Amz-Expires=16964&X-Amz-Signature=b742ea3d7bc22282b4f8ef6e480f7d2292e168ab6569768326b4bbfa7dc212f5&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2027%20Mar%202026%2022%3A44%3A23%20GMT',
+
+// Fresh export URLs (regenerated — update these if they expire again)
+const PG_URLS = {
+  7:'https://export-download.canva.com/V89Ww/DAHEyXV89Ww/-1/0/0007-6655692623585600592.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260327%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260327T164624Z&X-Amz-Expires=24542&X-Amz-Signature=3d757b7d6955749ab23da46c7d8d865d0b5596f443cbd10e9f2564bf5a4d4ca5&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2027%20Mar%202026%2023%3A35%3A26%20GMT',
+  8:'https://export-download.canva.com/V89Ww/DAHEyXV89Ww/-1/0/0008-6655692623585600592.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260327%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260327T010059Z&X-Amz-Expires=78842&X-Amz-Signature=39c520f2b186551165f1631439518c46b1b486b8e7ae25dcf1cb505fa9ab9a52&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2027%20Mar%202026%2022%3A55%3A01%20GMT',
+  9:'https://export-download.canva.com/V89Ww/DAHEyXV89Ww/-1/0/0009-6655692623585600592.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260327%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260327T121825Z&X-Amz-Expires=38521&X-Amz-Signature=1aeae22678d9ef821a9a933a1a8fa712f6b43156321c7d8142437d2f72dc9b6a&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2027%20Mar%202026%2023%3A00%3A26%20GMT',
+ 10:'https://export-download.canva.com/V89Ww/DAHEyXV89Ww/-1/0/0010-6655692623585600592.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260326%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260326T215403Z&X-Amz-Expires=90099&X-Amz-Signature=2356a7cdbb7cbcf1b1c4689ee769761539163576f08759a06045f7fa8f97b1b2&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2027%20Mar%202026%2022%3A55%3A42%20GMT',
 };
 
-// Source crop rectangle per cell (col, row) within 1920×1080
-// We trim 18px from edges to eliminate grid lines
-// Illustration occupies top ~400px of each 540px cell row
-const TRIM=18, CELL_W=640, CELL_H=540, ILLUS_H=400;
+// PG will hold the actual usable URLs (cached b64 data URLs OR original URLs)
+const PG = {7:null, 8:null, 9:null, 10:null};
+const LS_KEY = 'hv_imgs_v4';
+
+async function loadImages(){
+  // 1. Try localStorage cache first
+  try {
+    const cached = localStorage.getItem(LS_KEY);
+    if(cached){
+      const data = JSON.parse(cached);
+      if(data[7]&&data[8]&&data[9]&&data[10]){
+        Object.assign(PG, data);
+        return true;
+      }
+    }
+  } catch(e){}
+
+  // 2. Fetch & cache each image as data URL via canvas
+  let allOk = true;
+  for(const pg of [7,8,9,10]){
+    try{
+      const dataUrl = await fetchAsDataUrl(PG_URLS[pg]);
+      PG[pg] = dataUrl;
+    } catch(e){
+      // Fallback: use original URL directly (works on first load when URL still valid)
+      PG[pg] = PG_URLS[pg];
+      allOk = false;
+    }
+  }
+
+  // 3. Save to localStorage if all succeeded (permanent cache)
+  if(allOk){
+    try{
+      localStorage.setItem(LS_KEY, JSON.stringify({7:PG[7],8:PG[8],9:PG[9],10:PG[10]}));
+    } catch(e){ /* localStorage full — skip */ }
+  }
+  return allOk;
+}
+
+function fetchAsDataUrl(url){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try{
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        c.getContext('2d').drawImage(img,0,0);
+        resolve(c.toDataURL('image/png'));
+      } catch(e){ reject(e); }
+    };
+    img.onerror = () => reject(new Error('load failed'));
+    img.src = url;
+  });
+}
+
+// Image dimensions: exported at 960×540 (half of 1920×1080)
+// Cell size: 320×270. Illustration area: top ~200px of each 270px cell (trim 9px edges)
+const TRIM=9, CELL_W=320, CELL_H=270, ILLUS_H=200;
+
+// Crop function: exported at 960×540 → cells are 320×270px
+// Illustration area = top 200px of each 270px cell, trimmed 9px each edge
 function cropStyle(pg, col, row, displaySize){
   const srcX = col * CELL_W + TRIM;
   const srcY = row * CELL_H + TRIM;
-  const srcW = CELL_W - TRIM*2;   // 604
-  const srcH = ILLUS_H - TRIM*2;  // 364
+  const srcW = CELL_W - TRIM*2;   // 302
+  const srcH = ILLUS_H - TRIM*2;  // 182
   const S = displaySize;
-  const bsW = S * (1920 / srcW);
-  const bsH = S * (1080 / srcH);
+  const bsW = S * (960  / srcW);
+  const bsH = S * (540  / srcH);
   const bpX = -(srcX * S / srcW);
   const bpY = -(srcY * S / srcH);
   return `background-image:url('${PG[pg]}');background-size:${bsW.toFixed(1)}px ${bsH.toFixed(1)}px;background-position:${bpX.toFixed(1)}px ${bpY.toFixed(1)}px;background-repeat:no-repeat;`;
@@ -689,7 +747,40 @@ function confetti(){
   }
 }
 
-buildGameQs(); initMatch(); buildNav(); render(); updateNav();
+// ── LOADING SCREEN ──
+function showLoading(){
+  document.getElementById('app').innerHTML=`
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+      min-height:100vh;gap:18px;text-align:center;padding:20px;">
+      <div style="font-size:4rem;animation:bob 1.5s ease-in-out infinite alternate;">🏠</div>
+      <div style="font-family:'Baloo 2',sans-serif;font-size:1.4rem;color:var(--golds);font-weight:800;">
+        Loading pictures…
+      </div>
+      <div style="width:200px;height:8px;background:#EEE;border-radius:10px;overflow:hidden;">
+        <div id="load-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#FB8C00,#EF5350);
+          border-radius:10px;transition:width .4s ease;"></div>
+      </div>
+      <div style="font-size:.88rem;color:#aaa;">Just a moment on first visit!</div>
+    </div>`;
+}
+
+async function init(){
+  showLoading();
+  // Animate load bar while fetching
+  let pct=10;
+  const timer=setInterval(()=>{
+    pct=Math.min(pct+8,90);
+    const b=document.getElementById('load-bar');
+    if(b) b.style.width=pct+'%';
+  },300);
+  await loadImages();
+  clearInterval(timer);
+  const b=document.getElementById('load-bar');
+  if(b) b.style.width='100%';
+  await new Promise(r=>setTimeout(r,300));
+  buildGameQs(); initMatch(); buildNav(); render(); updateNav();
+}
+init();
 </script>
 </body>
 </html>
