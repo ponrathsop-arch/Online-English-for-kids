@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English for Kids</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sky: #e0f4ff;
+    --yellow: #FFD93D;
+    --coral: #FF6B6B;
+    --green: #6BCB77;
+    --purple: #C77DFF;
+    --blue: #4D96FF;
+    --orange: #FF9A3C;
+    --pink: #FF84B7;
+    --dark: #2d2d2d;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--sky);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Floating shapes background */
+  .bg-shapes {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+    animation: float linear infinite;
+  }
+  .shape:nth-child(1) { width: 120px; height: 120px; background: var(--yellow); top: 10%; left: 5%; animation-duration: 14s; }
+  .shape:nth-child(2) { width: 80px; height: 80px; background: var(--coral); top: 30%; right: 8%; animation-duration: 10s; animation-delay: -3s; }
+  .shape:nth-child(3) { width: 60px; height: 60px; background: var(--green); bottom: 20%; left: 12%; animation-duration: 12s; animation-delay: -6s; }
+  .shape:nth-child(4) { width: 100px; height: 100px; background: var(--purple); bottom: 10%; right: 15%; animation-duration: 16s; animation-delay: -2s; }
+  .shape:nth-child(5) { width: 50px; height: 50px; background: var(--blue); top: 60%; left: 50%; animation-duration: 11s; animation-delay: -8s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-20px) rotate(120deg); }
+    66% { transform: translateY(10px) rotate(240deg); }
+  }
+
+  /* Header */
+  header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 60px 20px 40px;
+  }
+
+  .star-row {
+    font-size: 22px;
+    letter-spacing: 6px;
+    margin-bottom: 16px;
+    animation: twinkle 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    from { opacity: 0.6; transform: scale(1); }
+    to { opacity: 1; transform: scale(1.05); }
+  }
+
+  h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(52px, 10vw, 88px);
+    color: var(--dark);
+    line-height: 1;
+    letter-spacing: -1px;
+    position: relative;
+    display: inline-block;
+  }
+
+  h1 span {
+    display: inline-block;
+    animation: bounce-letter 1.5s ease-in-out infinite alternate;
+  }
+  h1 span:nth-child(1) { color: var(--coral); animation-delay: 0s; }
+  h1 span:nth-child(2) { color: var(--orange); animation-delay: 0.1s; }
+  h1 span:nth-child(3) { color: var(--yellow); animation-delay: 0.2s; }
+  h1 span:nth-child(4) { color: var(--green); animation-delay: 0.3s; }
+  h1 span:nth-child(5) { color: var(--blue); animation-delay: 0.4s; }
+  h1 span:nth-child(6) { color: var(--purple); animation-delay: 0.5s; }
+  h1 span:nth-child(7) { color: var(--pink); animation-delay: 0.6s; }
+
+  @keyframes bounce-letter {
+    from { transform: translateY(0); }
+    to { transform: translateY(-8px); }
+  }
+
+  .subtitle {
+    margin-top: 14px;
+    font-size: 18px;
+    color: #555;
+    font-weight: 600;
+  }
+
+  /* Grid */
+  .grid-section {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 24px 80px;
+  }
+
+  .section-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    color: #777;
+    text-align: center;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 24px;
+  }
+
+  /* Cards */
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 32px 24px 28px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid transparent;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.08);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 0 rgba(0,0,0,0.08);
+  }
+
+  .card-1::before { background: var(--coral); }
+  .card-2::before { background: var(--blue); }
+  .card-3::before { background: var(--green); }
+  .card-4::before { background: var(--yellow); }
+  .card-5::before { background: var(--purple); }
+  .card-6::before { background: var(--orange); }
+  .card-7::before { background: var(--pink); }
+  .card-8::before { background: var(--coral); }
+
+  .card:hover.card-1 { border-color: var(--coral); }
+  .card:hover.card-2 { border-color: var(--blue); }
+  .card:hover.card-3 { border-color: var(--green); }
+  .card:hover.card-4 { border-color: var(--yellow); }
+  .card:hover.card-5 { border-color: var(--purple); }
+  .card:hover.card-6 { border-color: var(--orange); }
+  .card:hover.card-7 { border-color: var(--pink); }
+  .card:hover.card-8 { border-color: var(--coral); }
+
+  .card-emoji {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 14px;
+    line-height: 1;
+  }
+
+  .card-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    color: var(--dark);
+    margin-bottom: 8px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: #888;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .card-badge {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .card-1 .card-badge { background: #fff0ee; color: var(--coral); }
+  .card-2 .card-badge { background: #eef4ff; color: var(--blue); }
+  .card-3 .card-badge { background: #eefbf0; color: #3a9e46; }
+  .card-4 .card-badge { background: #fffbe8; color: #c49b00; }
+  .card-5 .card-badge { background: #f7eeff; color: #9a3de0; }
+  .card-6 .card-badge { background: #fff4e8; color: #d47200; }
+  .card-7 .card-badge { background: #fff0f6; color: #d4408a; }
+  .card-8 .card-badge { background: #fff0ee; color: var(--coral); }
+
+  /* Coming soon card */
+  .card-soon {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+  }
+  .card-soon::after {
+    content: 'Coming Soon';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    color: #aaa;
+    border: 3px dashed #ccc;
+    padding: 6px 16px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  /* Footer */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+    color: #aaa;
+    font-weight: 600;
+  }
+
+  /* Entrance animation */
+  .card {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: card-in 0.5s ease forwards;
+  }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.2s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.3s; }
+  .card:nth-child(7) { animation-delay: 0.35s; }
+  .card:nth-child(8) { animation-delay: 0.4s; }
+
+  @keyframes card-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-shapes">
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+</div>
+
+<header>
+  <div class="star-row">⭐ 🌟 ⭐ 🌟 ⭐</div>
+  <p style="font-family:'Fredoka One',cursive; font-size:clamp(16px,3vw,24px); color:#888; margin-bottom:8px; letter-spacing:1px;">Welcome to English with</p>
+  <h1>
+    <span>P</span><span>a</span><span>n</span><span>g</span>
+  </h1>
+  <p class="subtitle">Fun English lessons for kids 🎉</p>
+</header>
+
+<section class="grid-section">
+  <p class="section-label">📚 Choose a lesson</p>
+  <div class="grid">
+
+    <a href="3-year-old/index.html" class="card card-2">
+      <span class="card-emoji">🐣</span>
+      <div class="card-title">3 Years Old</div>
+      <div class="card-desc">First words & sounds</div>
+      <span class="card-badge">Starter</span>
+    </a>
+
+    <a href="5-year-old/index.html" class="card card-1">
+      <span class="card-emoji">🌟</span>
+      <div class="card-title">5 Years Old</div>
+      <div class="card-desc">Words & colours</div>
+      <span class="card-badge">Beginner</span>
+    </a>
+
+  </div>
+</section>
+
+<footer>Made with ❤️ for kids learning English</footer>
+
+</body>
+</html>
