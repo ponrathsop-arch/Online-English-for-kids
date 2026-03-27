@@ -31,7 +31,7 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
 
 .screen {
   display: none; width: 100vw; height: 100vh;
-  padding-top: 60px; padding-bottom: 8px;
+  padding-top: 60px; padding-bottom: 62px;
   flex-direction: column; align-items: center; justify-content: center;
   overflow-y: auto; animation: popIn .4s cubic-bezier(.34,1.4,.64,1);
 }
@@ -71,6 +71,37 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
 .barr:active { transform:translateY(3px); }
 .barr:disabled { opacity:.25; cursor:default; transform:none; }
 .blbl { font-size:.8rem; color:#aaa; min-width:90px; text-align:center; }
+
+/* JUMP MENU — bottom of every screen */
+#jump-menu {
+  position: fixed; bottom: 0; left: 0; width: 100%; z-index: 150;
+  background: rgba(255,255,255,0.97);
+  box-shadow: 0 -2px 16px rgba(0,0,0,0.07);
+  padding: 8px 20px 10px;
+  display: flex; align-items: center; gap: 7px;
+  overflow-x: auto;
+}
+#jump-menu::-webkit-scrollbar { display: none; }
+.jbtn {
+  flex-shrink: 0;
+  border: none; border-radius: 50px;
+  padding: 7px 14px;
+  font-family: var(--ff); font-size: .78rem; font-weight: 900;
+  cursor: pointer; transition: transform .1s, opacity .1s;
+  white-space: nowrap;
+  opacity: .55;
+}
+.jbtn:hover { transform: translateY(-2px); opacity: 1; }
+.jbtn:active { transform: translateY(2px); }
+.jbtn.jactive { opacity: 1; box-shadow: 0 3px 0 rgba(0,0,0,.15); transform: scale(1.06); }
+/* colour-coded per section */
+.jbtn-emo    { background:#FFE0B2; color:#E65100; }
+.jbtn-color  { background:#FFF9C4; color:#F57F17; }
+.jbtn-find   { background:#E8F5E9; color:#2E7D32; }
+.jbtn-obj    { background:#E8EAF6; color:#3949AB; }
+.jbtn-sent   { background:#FCE4EC; color:#880E4F; }
+.jbtn-move   { background:#FFFDE7; color:#E65100; }
+.jbtn-review { background:#E8F5E9; color:#1B5E20; }
 
 .dots { display:flex; gap:7px; margin-bottom:10px; }
 .dot { width:11px; height:11px; border-radius:50%; background:#ddd; transition:background .3s,transform .3s; }
@@ -298,6 +329,17 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
 </div>
 <div class="cfwrap" id="cfwrap"></div>
 
+<!-- JUMP MENU -->
+<div id="jump-menu">
+  <button class="jbtn jbtn-emo"    onclick="jumpTo(0)" id="jb-0">&#128522; How Are You?</button>
+  <button class="jbtn jbtn-color"  onclick="jumpTo(1)" id="jb-1">&#127912; Color Game</button>
+  <button class="jbtn jbtn-find"   onclick="jumpTo(2)" id="jb-2">&#128269; Find Color</button>
+  <button class="jbtn jbtn-obj"    onclick="jumpTo(3)" id="jb-3">&#127968; Objects</button>
+  <button class="jbtn jbtn-sent"   onclick="jumpTo(4)" id="jb-4">&#128172; Sentences</button>
+  <button class="jbtn jbtn-move"   onclick="jumpTo(5)" id="jb-5">&#127939; Move &amp; Play</button>
+  <button class="jbtn jbtn-review" onclick="jumpTo(6)" id="jb-6">&#127918; Review</button>
+</div>
+
 <!-- S1 EMOTIONS -->
 <div class="screen active" id="s-emo">
   <div class="big-q">How are you today?</div>
@@ -321,7 +363,6 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   </div>
   <div class="emo-resp" id="emo-resp"></div>
   <button class="btn-primary" id="emo-go" onclick="nextSec()" style="display:none">Let's Start!</button>
-  <div class="bnav"><button class="barr" onclick="prevSec()" disabled>&#8592;</button><span class="blbl">1 / 7</span><button class="barr" onclick="nextSec()">&#8594;</button></div>
 </div>
 
 <!-- S2 COLOR -->
@@ -338,7 +379,6 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
       <button class="btn-next-q" id="cnext" onclick="nextColorPage()">Next Question</button>
     </div>
   </div>
-  <div class="bnav"><button class="barr" onclick="prevSec()">&#8592;</button><span class="blbl">2 / 7</span><button class="barr" onclick="nextSec()">&#8594;</button></div>
 </div>
 
 <!-- S3 FINDING -->
@@ -350,7 +390,6 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   <div class="f-color-label" id="fclabel"></div>
   <div class="fgrid" id="fgrid"></div>
   <div id="ffeedback"></div>
-  <div class="bnav"><button class="barr" onclick="prevSec()">&#8592;</button><span class="blbl">3 / 7</span><button class="barr" onclick="nextSec()">&#8594;</button></div>
 </div>
 
 <!-- S4 OBJECTS -->
@@ -359,7 +398,6 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   <div class="big-q" style="font-size:1.4rem">Tap the objects to see what they do!</div>
   <div class="ogrid" id="ogrid"></div>
   <button class="btn-primary" onclick="nextSec()" style="margin-top:14px">Next</button>
-  <div class="bnav"><button class="barr" onclick="prevSec()">&#8592;</button><span class="blbl">4 / 7</span><button class="barr" onclick="nextSec()">&#8594;</button></div>
 </div>
 
 <!-- S5 SENTENCES -->
@@ -371,7 +409,6 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
     <div class="srhs" id="slines"></div>
   </div>
   <button class="btn-primary" id="snext" onclick="nextSentStep()">Next</button>
-  <div class="bnav"><button class="barr" onclick="prevSec()">&#8592;</button><span class="blbl">5 / 7</span><button class="barr" onclick="nextSec()">&#8594;</button></div>
 </div>
 
 <!-- S5b OBJECT QUIZ (after each object's sentences) -->
@@ -383,11 +420,6 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   <div class="oq-grid" id="oq-grid"></div>
   <div class="oq-fb" id="oq-fb"></div>
   <button class="btn-next-q" id="oq-next" onclick="nextObjQuiz()">Next</button>
-  <div class="bnav">
-    <button class="barr" onclick="prevSec()">&#8592;</button>
-    <span class="blbl">5 / 7</span>
-    <button class="barr" onclick="nextSec()">&#8594;</button>
-  </div>
 </div>
 
 <!-- S6 MOVE -->
@@ -397,7 +429,6 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   <div class="mgrid" id="mgrid"></div>
   <div class="mcta" id="mcta"></div>
   <div class="mstat" id="mstat"></div>
-  <div class="bnav"><button class="barr" onclick="prevSec()">&#8592;</button><span class="blbl">6 / 7</span><button class="barr" onclick="nextSec()">&#8594;</button></div>
 </div>
 
 <!-- S7 REVIEW -->
@@ -413,7 +444,6 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
       <button class="btn-next-q" id="rnext" onclick="nextReviewPage()">Next Question</button>
     </div>
   </div>
-  <div class="bnav"><button class="barr" onclick="prevSec()">&#8592;</button><span class="blbl">7 / 7</span><button class="barr" onclick="nextSec()">&#8594;</button></div>
 </div>
 
 <!-- DONE -->
@@ -672,6 +702,8 @@ var ACTIONS=[
 // ─── APP STATE ───────────────────────────────────────────────────────────
 var SCREENS=['s-emo','s-color','s-find','s-obj','s-sent','s-move','s-review','s-done'];
 var SNAMES=['How Are You?','Color Game','Finding Game','Meet Objects','Sentences','Move & Play','Review Game','Done!'];
+// Map screen id → jump button index (s-obj-quiz maps to sentences button)
+var SCREEN_TO_JBTN={'s-emo':0,'s-color':1,'s-find':2,'s-obj':3,'s-sent':4,'s-obj-quiz':4,'s-move':5,'s-review':6,'s-done':-1};
 var cur=0;
 
 function updProg(){
@@ -679,11 +711,26 @@ function updProg(){
   document.getElementById('prog-fill').style.width=pct+'%';
   document.getElementById('prog-label').textContent='  '+SNAMES[cur];
   document.getElementById('prog-stars').textContent='★'.repeat(Math.min(cur,7));
+  // highlight active jump button
+  var activeScreenId=SCREENS[cur];
+  var activeJbtn=SCREEN_TO_JBTN[activeScreenId];
+  for(var i=0;i<7;i++){
+    var btn=document.getElementById('jb-'+i);
+    if(btn) btn.classList.toggle('jactive', i===activeJbtn);
+  }
+}
+function updJumpHighlight(screenId){
+  var activeJbtn=SCREEN_TO_JBTN[screenId]||0;
+  for(var i=0;i<7;i++){
+    var btn=document.getElementById('jb-'+i);
+    if(btn) btn.classList.toggle('jactive', i===activeJbtn);
+  }
 }
 function showScreen(id){
   var all=document.querySelectorAll('.screen');
   for(var i=0;i<all.length;i++) all[i].classList.remove('active');
   document.getElementById(id).classList.add('active');
+  updJumpHighlight(id);
 }
 function initScreen(id){
   if(id==='s-color')  initColor();
@@ -695,6 +742,11 @@ function initScreen(id){
 }
 function nextSec(){if(cur>=SCREENS.length-1)return;cur++;updProg();showScreen(SCREENS[cur]);initScreen(SCREENS[cur]);}
 function prevSec(){if(cur<=0)return;cur--;updProg();showScreen(SCREENS[cur]);initScreen(SCREENS[cur]);}
+function jumpTo(idx){
+  if(idx<0||idx>=SCREENS.length) return;
+  cur=idx; updProg();
+  showScreen(SCREENS[cur]); initScreen(SCREENS[cur]);
+}
 function restartApp(){
   cur=0;updProg();showScreen('s-emo');
   var cards=document.querySelectorAll('.emo-card');
@@ -997,49 +1049,92 @@ function nextObjQuiz(){
 }
 
 // ─── S6 MOVE & PLAY ──────────────────────────────────────────────────────
-var mList=[],mRound=0,mDone={},mLanded=-1,mTmr=null;
-function initMove(){mList=shuffle(ACTIONS).slice(0,5);mRound=0;mDone={};mLanded=-1;renderBoxes();startSweep();}
+var mList=[],mRound=0,mDone={},mLanded=-1,mTmr=null,mTotal=10,mCycle=0;
+function initMove(){
+  mList=shuffle(ACTIONS).slice(0,5);
+  mRound=0; mCycle=0; mDone={}; mLanded=-1;
+  renderBoxes(); startSweep();
+}
 function renderBoxes(){
-  var g=document.getElementById('mgrid');g.innerHTML='';
+  var g=document.getElementById('mgrid'); g.innerHTML='';
   for(var i=0;i<mList.length;i++){
-    var a=mList[i],b=document.createElement('div');
-    b.className='abox'+(mDone[i]?' done-a':'');b.id='ab-'+i;
+    var a=mList[i], b=document.createElement('div');
+    b.className='abox'+(mDone[i]?' done-a':''); b.id='ab-'+i;
     b.innerHTML='<div style="font-size:2.4rem">'+a.e+'</div><div class="aword">'+a.w+'</div><div class="atick">&#10003;</div>';
     g.appendChild(b);
   }
   document.getElementById('mcta').innerHTML='';
-  document.getElementById('mstat').textContent=mRound<5?'Round '+(mRound+1)+' of 5':'';
+  updMoveCounter();
 }
-function clearSweep(){for(var i=0;i<5;i++){var b=document.getElementById('ab-'+i);if(b){b.classList.remove('sweep','landed');}}}
+function updMoveCounter(){
+  var done=mCycle*5+mRound;
+  document.getElementById('mstat').innerHTML=done<mTotal
+    ? '<span style="font-size:1.5rem;font-weight:900;color:#E65100">'+done+' / '+mTotal+'</span>'
+    : '';
+}
+function clearSweep(){
+  for(var i=0;i<5;i++){var b=document.getElementById('ab-'+i);if(b){b.classList.remove('sweep','landed');}}
+}
 function startSweep(){
-  if(mTmr)clearTimeout(mTmr);clearSweep();
+  if(mTmr) clearTimeout(mTmr); clearSweep();
   document.getElementById('mcta').innerHTML='<div style="font-size:1rem;font-weight:900;color:#FB8C00">Watch the light!</div>';
-  var avail=[];for(var i=0;i<5;i++) if(!mDone[i]) avail.push(i);
-  if(avail.length===0){nextSec();return;}
+  var avail=[];
+  for(var i=0;i<5;i++) if(!mDone[i]) avail.push(i);
+  if(avail.length===0){ nextSec(); return; }
   mLanded=avail[Math.floor(Math.random()*avail.length)];
-  var step=0,total=18+Math.floor(Math.random()*10),sp=0;
+  var step=0, total=18+Math.floor(Math.random()*10), sp=0;
   function sweep(){
-    clearSweep();var b=document.getElementById('ab-'+sp);
+    clearSweep();
+    var b=document.getElementById('ab-'+sp);
     if(b&&!mDone[sp]) b.classList.add('sweep');
-    step++;sp=(sp+1)%5;
-    var sk=0;while(mDone[sp]&&sk<5){sp=(sp+1)%5;sk++;}
-    var prog=step/total,delay=prog<0.5?80:prog<0.75?140:prog<0.9?230:360;
-    if(step<total){mTmr=setTimeout(sweep,delay);}
+    step++; sp=(sp+1)%5;
+    var sk=0; while(mDone[sp]&&sk<5){sp=(sp+1)%5;sk++;}
+    var prog=step/total, delay=prog<0.5?80:prog<0.75?140:prog<0.9?230:360;
+    if(step<total){ mTmr=setTimeout(sweep,delay); }
     else{
-      clearSweep();var lb=document.getElementById('ab-'+mLanded);if(lb)lb.classList.add('landed');
-      document.getElementById('mcta').innerHTML='<div style="font-size:1.3rem;font-weight:900;color:#E65100;margin-bottom:6px">Do it! '+mList[mLanded].w+'!</div><button class="btn-done" onclick="confirmAction()">Done!</button>';
+      clearSweep();
+      var lb=document.getElementById('ab-'+mLanded); if(lb) lb.classList.add('landed');
+      document.getElementById('mcta').innerHTML=
+        '<div style="font-size:1.3rem;font-weight:900;color:#E65100;margin-bottom:6px">Do it! '+mList[mLanded].w+'!</div>'+
+        '<button class="btn-done" onclick="confirmAction()">Done!</button>';
     }
   }
   mTmr=setTimeout(sweep,80);
 }
 function confirmAction(){
-  mDone[mLanded]=true;clearSweep();
+  mDone[mLanded]=true; clearSweep();
   var lb=document.getElementById('ab-'+mLanded);
   if(lb){lb.classList.remove('landed');lb.classList.add('done-a');lb.querySelector('.atick').style.display='block';}
-  confetti();mRound++;
-  if(mRound>=5){document.getElementById('mcta').innerHTML='<div style="font-size:1.3rem;font-weight:900;color:#5CC8A8">Amazing! You did all 5!</div>';document.getElementById('mstat').textContent='';setTimeout(function(){nextSec();},1200);}
-  else{document.getElementById('mstat').textContent='Round '+(mRound+1)+' of 5';document.getElementById('mcta').innerHTML='<div style="font-size:.95rem;font-weight:900;color:#FB8C00;margin-bottom:7px">Great job! Ready for next?</div><button class="btn-done" style="background:linear-gradient(135deg,#FFB347,#FF8E53)" onclick="startSweep()">Try Again!</button>';}
+  confetti(); mRound++;
+  var totalDone=mCycle*5+mRound;
+  updMoveCounter();
+  if(totalDone>=mTotal){
+    // All 10 done
+    document.getElementById('mcta').innerHTML='<div style="font-size:1.3rem;font-weight:900;color:#5CC8A8">Amazing! All '+mTotal+' done! &#127942;</div>';
+    document.getElementById('mstat').innerHTML='<span style="font-size:1.5rem;font-weight:900;color:#5CC8A8">'+mTotal+' / '+mTotal+'</span>';
+    setTimeout(function(){ nextSec(); }, 1400);
+  } else if(mRound>=5){
+    // Cycle done — reset boxes, new shuffle, continue counter
+    mCycle++; mRound=0; mDone={};
+    mList=shuffle(ACTIONS).slice(0,5);
+    document.getElementById('mcta').innerHTML=
+      '<div style="font-size:.95rem;font-weight:900;color:#FB8C00;margin-bottom:7px">Halfway there! Keep going!</div>'+
+      '<button class="btn-done" style="background:linear-gradient(135deg,#FFB347,#FF8E53)" onclick="nextMoveRound()">Keep Going! &#127881;</button>';
+    // Re-render boxes but keep counter
+    var g=document.getElementById('mgrid'); g.innerHTML='';
+    for(var i=0;i<mList.length;i++){
+      var a=mList[i], b=document.createElement('div');
+      b.className='abox'; b.id='ab-'+i;
+      b.innerHTML='<div style="font-size:2.4rem">'+a.e+'</div><div class="aword">'+a.w+'</div><div class="atick">&#10003;</div>';
+      g.appendChild(b);
+    }
+  } else {
+    document.getElementById('mcta').innerHTML=
+      '<div style="font-size:.95rem;font-weight:900;color:#FB8C00;margin-bottom:7px">Great! Ready for next?</div>'+
+      '<button class="btn-done" style="background:linear-gradient(135deg,#FFB347,#FF8E53)" onclick="startSweep()">Try Again! &#127920;</button>';
+  }
 }
+function nextMoveRound(){ startSweep(); }
 
 // ─── S7 REVIEW ───────────────────────────────────────────────────────────
 var rQ=[],rIdx=0;
