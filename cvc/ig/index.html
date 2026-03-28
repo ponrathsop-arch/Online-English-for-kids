@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>CVC – IG Family</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--bg:#FEF9F0;--text:#2C2C54;--muted:#aaa;--green:#2BAE66;--red:#E63946;--blue:#1A78C2;--orange:#FB5607;--shadow:0 8px 0 rgba(0,0,0,0.12);}
+body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:800;background:var(--bg);height:100vh;overflow:hidden;touch-action:manipulation;}
+#prog-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,.07);z-index:999;}
+#prog-bar{height:100%;background:linear-gradient(90deg,#FF6B6B,#FFD93D,#6BCB77);transition:width .4s;width:0%;}
+.screen{display:none;position:fixed;inset:0;flex-direction:column;align-items:center;justify-content:center;padding:14px 14px 86px;overflow-y:auto;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
+.screen.active{display:flex;}
+@keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+/* ══ BOTTOM TAB BAR ══ */
+#tab-bar{position:fixed;bottom:0;left:0;width:100%;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-top:2px solid #EDE8E0;z-index:998;display:flex;align-items:stretch;justify-content:space-around;padding:6px 4px 10px;gap:2px;}
+.tab{border:none;background:none;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 2px 4px;border-radius:14px;cursor:pointer;transition:background .18s,transform .13s;font-family:'Nunito',sans-serif;font-weight:900;}
+.tab:hover{background:rgba(0,0,0,.05);}
+.tab:active{transform:scale(.92);}
+.tab-icon{font-size:clamp(1.2rem,3.5vw,1.6rem);line-height:1;}
+.tab-label{font-size:clamp(.5rem,1.4vw,.72rem);color:#999;letter-spacing:.3px;white-space:nowrap;}
+.tab.active-tab .tab-icon{filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
+.tab.active-tab .tab-label{color:var(--text);}
+.tab.active-tab{background:rgba(0,0,0,.06);}
+.tab-pip{width:5px;height:5px;border-radius:50%;background:transparent;margin-top:2px;transition:background .2s;}
+.tab.active-tab .tab-pip{background:var(--orange);}
+.big-title{font-size:clamp(1.7rem,5.5vw,3rem);color:var(--text);text-align:center;line-height:1.2;}
+.sub{font-size:clamp(.82rem,2vw,1.15rem);color:var(--muted);text-align:center;margin-top:5px;}
+/* ══ HOME ══ */
+#s-home{background:linear-gradient(145deg,#E91E8C,#8338EC,#1A78C2,#2BAE66);padding:14px 14px 86px;}
+.home-family{font-size:clamp(4rem,14vw,9rem);color:#fff;font-weight:900;text-shadow:0 8px 0 rgba(0,0,0,.12);animation:ibounce 1.8s ease-in-out infinite alternate;line-height:1;}
+@keyframes ibounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-20px) rotate(2deg)}}
+.home-words{font-size:clamp(.9rem,2.5vw,1.5rem);color:rgba(255,255,255,.92);letter-spacing:5px;text-align:center;margin:8px 0 20px;}
+.home-tap{font-size:clamp(1rem,2.8vw,1.6rem);color:rgba(255,255,255,.88);margin-top:18px;text-align:center;animation:ipulse 1.4s ease-in-out infinite alternate;}
+@keyframes ipulse{from{opacity:.5;transform:scale(.97)}to{opacity:1;transform:scale(1.03)}}
+.home-nav-hint{margin-top:14px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);border-radius:50px;padding:10px 20px;}
+.home-nav-hint span{font-size:.85rem;color:rgba(255,255,255,.88);font-weight:800;letter-spacing:.5px;}
+/* ══ PHONICS ══ */
+#s-phonics{background:var(--bg);}
+.ph-grid{display:flex;flex-wrap:wrap;gap:clamp(8px,1.8vw,14px);justify-content:center;max-width:560px;margin-top:16px;}
+.ph-tile{border:none;border-radius:18px;width:clamp(68px,12vw,104px);height:clamp(68px,12vw,104px);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;box-shadow:var(--shadow);transition:transform .13s,box-shadow .13s;font-family:'Nunito',sans-serif;font-weight:900;}
+.ph-tile:hover{transform:translateY(-5px);box-shadow:0 13px 0 rgba(0,0,0,.12);}.ph-tile:active{transform:translateY(2px);}
+.ph-ltr{font-size:clamp(1.8rem,4.2vw,2.8rem);text-shadow:0 3px 0 rgba(0,0,0,.15);}
+.ph-hint{font-size:clamp(.5rem,1vw,.75rem);letter-spacing:.4px;opacity:.82;}
+#zoom-ov{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:8000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;cursor:pointer;}
+#zoom-ov.show{display:flex;}
+#zoom-ltr{font-size:clamp(9rem,28vw,20rem);color:#fff;font-weight:900;font-family:'Nunito',sans-serif;text-shadow:0 12px 0 rgba(0,0,0,.22);animation:zoomPop .35s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes zoomPop{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+#zoom-ex{font-size:clamp(1.3rem,4vw,2.4rem);color:rgba(255,255,255,.78);font-family:'Nunito',sans-serif;font-weight:800;letter-spacing:3px;}
+#zoom-tap{font-size:clamp(.75rem,1.8vw,1.05rem);color:rgba(255,255,255,.45);font-family:'Nunito',sans-serif;margin-top:4px;}
+/* ══ BLEND ══ */
+#s-blend{background:var(--bg);}
+.b-dots{display:flex;gap:9px;align-items:center;margin-bottom:14px;}
+.b-dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
+.b-dot.cur{background:var(--orange);transform:scale(1.5);}.b-dot.done{background:var(--green);}
+.b-card{background:#fff;border-radius:26px;padding:20px 24px;box-shadow:0 12px 0 rgba(0,0,0,.1);display:flex;flex-direction:column;align-items:center;gap:12px;max-width:430px;width:100%;}
+.b-illo{width:clamp(100px,18vw,170px);height:clamp(100px,18vw,170px);display:flex;align-items:center;justify-content:center;animation:illustPop .5s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes illustPop{0%{transform:scale(0) rotate(-8deg)}80%{transform:scale(1.06) rotate(1deg)}100%{transform:scale(1)}}
+.b-illo svg{width:100%;height:100%;}
+.b-row{display:flex;align-items:center;gap:8px;font-size:clamp(2rem,6vw,3.8rem);font-weight:900;}
+.b-con{border-radius:12px;padding:3px 13px;transition:all .5s cubic-bezier(.175,.885,.32,1.275);}
+.b-fam{color:#E91E8C;background:#FCE4EC;border-radius:12px;padding:3px 13px;transition:all .5s;}
+.b-plus,.b-arrow{color:#ccc;font-size:clamp(1.1rem,2.8vw,2rem);}
+.b-res{font-size:clamp(2.4rem,7vw,4.5rem);color:var(--text);opacity:0;transform:scale(.5);transition:all .55s cubic-bezier(.175,.885,.32,1.275);}
+.b-res.show{opacity:1;transform:scale(1);}
+.b-lbl{font-size:clamp(.88rem,2vw,1.25rem);color:var(--muted);letter-spacing:2px;text-align:center;}
+.blend-btn{border:none;border-radius:50px;padding:11px 32px;background:linear-gradient(135deg,var(--blue),#5BA3E8);color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.9rem,2vw,1.3rem);cursor:pointer;box-shadow:0 6px 0 #1056a0;transition:transform .13s;}
+.blend-btn:hover{transform:translateY(-3px);}.blend-btn:active{transform:translateY(2px);}
+.blend-skip{border:none;background:none;color:var(--muted);font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;text-decoration:underline;}
+/* ══ MATCH ══ */
+#s-match{background:var(--bg);}
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:500px;margin-top:12px;}
+.match-pics,.match-words{display:flex;flex-direction:column;gap:8px;}
+.m-pic{background:#fff;border-radius:16px;height:clamp(66px,11vw,88px);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:4px;box-shadow:0 5px 0 rgba(0,0,0,.08);border:3px solid transparent;transition:all .15s;}
+.m-pic:hover{transform:translateY(-3px);}
+.m-pic.selected{border-color:var(--blue);box-shadow:0 0 0 5px rgba(26,120,194,.18),0 5px 0 var(--blue);}
+.m-pic.matched{border-color:var(--green);background:#EAFFF5;pointer-events:none;opacity:.6;}
+.m-pic svg{height:100%;width:auto;max-width:100%;}
+.m-word{background:#fff;border-radius:16px;height:clamp(66px,11vw,88px);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 0 rgba(0,0,0,.08);border:3px solid transparent;font-size:clamp(1.6rem,4.2vw,2.4rem);color:var(--text);transition:all .15s;}
+.m-word:hover{transform:translateY(-3px);}
+.m-word.matched{border-color:var(--green);background:#EAFFF5;pointer-events:none;opacity:.6;}
+.m-word.ws,.m-pic.ws{animation:shake .4s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.match-score{font-size:clamp(.88rem,2vw,1.25rem);color:var(--muted);margin-top:8px;}
+/* ══ SPELL ══ */
+#s-spell{background:var(--bg);}
+.sp-dots{display:flex;gap:7px;margin-bottom:8px;}
+.sp-dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
+.sp-dot.cur{background:var(--orange);transform:scale(1.4);}.sp-dot.done{background:var(--green);}
+.sp-illo{width:clamp(88px,16vw,145px);height:clamp(88px,16vw,145px);display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
+.sp-illo svg{width:100%;height:100%;}
+.sp-lbl{font-size:clamp(.95rem,2.2vw,1.3rem);color:var(--muted);letter-spacing:5px;margin-bottom:12px;}
+.sp-boxes{display:flex;gap:clamp(6px,1.5vw,11px);margin-bottom:14px;}
+.sp-box{width:clamp(54px,10.5vw,76px);height:clamp(58px,12vw,80px);background:#fff;border-radius:16px;border:3px solid #DDD;box-shadow:0 5px 0 rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;font-size:clamp(1.8rem,4.8vw,2.8rem);color:var(--text);font-weight:900;transition:all .2s;}
+.sp-box.ab{border-color:var(--blue);box-shadow:0 0 0 5px rgba(26,120,194,.18),0 5px 0 var(--blue);}
+.sp-box.fb{border-color:#ccc;background:#F8F8F8;}
+.sp-box.ob{border-color:var(--green);background:#EAFFF5;animation:okPop .45s ease;}
+.sp-box.eb{border-color:var(--red);animation:shake .4s ease;}
+@keyframes okPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.sp-tiles{display:flex;flex-wrap:wrap;gap:clamp(6px,1.5vw,11px);justify-content:center;max-width:360px;}
+.sp-tile{border:none;border-radius:14px;width:clamp(46px,9vw,64px);height:clamp(46px,9vw,64px);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.25rem,3vw,1.8rem);background:#6B7280;color:#fff;box-shadow:0 6px 0 #4B5563;transition:transform .13s,box-shadow .13s,opacity .13s;}
+.sp-tile:hover{transform:translateY(-4px);box-shadow:0 10px 0 #4B5563;}.sp-tile:active{transform:translateY(2px);}
+.sp-tile.used{opacity:.22;pointer-events:none;transform:none;box-shadow:none;}
+.sp-fb{font-size:clamp(1rem,2.5vw,1.7rem);min-height:36px;text-align:center;margin-top:4px;}
+.sp-clear{border:none;background:#EEE;border-radius:50px;padding:7px 20px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;color:#888;cursor:pointer;margin-top:4px;}
+.sp-clear:hover{background:#FFE4CC;}
+/* ══ FLASHCARD ══ */
+#s-flash{background:var(--bg);}
+/* Mode toggle */
+.fl-mode-toggle{display:flex;background:#EDE8E0;border-radius:50px;padding:4px;gap:4px;margin-bottom:14px;}
+.fl-mode-btn{border:none;border-radius:46px;padding:8px 18px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.75rem,1.8vw,1rem);cursor:pointer;color:#999;background:transparent;transition:all .22s;white-space:nowrap;}
+.fl-mode-btn.active-mode{background:#fff;color:var(--text);box-shadow:0 3px 8px rgba(0,0,0,.12);}
+/* Progress dots */
+.fl-dots{display:flex;gap:7px;margin-bottom:10px;}
+.fl-dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
+.fl-dot.cur{background:var(--blue);transform:scale(1.4);}.fl-dot.done{background:var(--green);}
+/* Card */
+.flashcard{width:clamp(220px,52vw,330px);height:clamp(230px,44vw,310px);cursor:pointer;perspective:900px;position:relative;}
+.fc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);}
+.fc-inner.flipped{transform:rotateY(180deg);}
+.fc-front,.fc-back{position:absolute;inset:0;border-radius:28px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;box-shadow:0 14px 0 rgba(0,0,0,.1);}
+.fc-front{background:#fff;}.fc-back{background:#fff;transform:rotateY(180deg);}
+.fc-pic{display:flex;align-items:center;justify-content:center;}
+.fc-pic svg{width:clamp(90px,18vw,155px);height:clamp(90px,18vw,155px);}
+.fc-tap{font-size:clamp(.7rem,1.5vw,.9rem);color:var(--muted);letter-spacing:.8px;}
+.fc-word{font-size:clamp(3.2rem,10vw,6rem);font-weight:900;letter-spacing:2px;}
+.fc-word-hint{font-size:clamp(.8rem,1.8vw,1.1rem);color:var(--muted);letter-spacing:3px;}
+/* Nav */
+.fl-nav{display:flex;gap:12px;margin-top:12px;align-items:center;}
+.fl-nav-btn{border:none;border-radius:50px;padding:10px 26px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.88rem,2vw,1.15rem);cursor:pointer;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.14);transition:transform .13s;}
+.fl-nav-btn:hover{transform:translateY(-3px);}
+.fl-prev{background:#bbb;box-shadow:0 5px 0 #999;}
+.fl-next{background:linear-gradient(135deg,var(--blue),#5BA3E8);box-shadow:0 5px 0 #1056a0;}
+.fl-count{font-size:clamp(.82rem,1.8vw,1rem);color:var(--muted);font-weight:800;}
+/* ══ LIGHTNING ══ */
+#s-lightning{background:var(--bg);}
+.lr-header{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:460px;margin-bottom:8px;}
+.lr-score-txt{font-size:clamp(1rem,2.5vw,1.4rem);color:var(--text);}
+.lr-timer-wrap{background:#EEE;border-radius:50px;width:120px;height:12px;overflow:hidden;}
+.lr-timer-bar{height:100%;background:linear-gradient(90deg,#6BCB77,#FFD93D,#E63946);border-radius:50px;transition:width .1s linear;width:100%;}
+.lr-card{background:#fff;border-radius:26px;padding:18px 22px;box-shadow:0 12px 0 rgba(0,0,0,.1);display:flex;flex-direction:column;align-items:center;gap:12px;max-width:420px;width:100%;margin-bottom:10px;}
+.lr-illo{width:clamp(85px,17vw,150px);height:clamp(85px,17vw,150px);display:flex;align-items:center;justify-content:center;}
+.lr-illo svg{width:100%;height:100%;}
+.lr-choices{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.lr-btn{border:none;border-radius:16px;padding:11px 20px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.2rem,3.2vw,1.9rem);cursor:pointer;background:#fff;border:3px solid #DDD;color:var(--text);box-shadow:0 5px 0 rgba(0,0,0,.08);transition:transform .13s;}
+.lr-btn:hover{transform:translateY(-4px);}
+.lr-btn.correct-lr{border-color:var(--green);background:#EAFFF5;animation:okPop .4s ease;}
+.lr-btn.wrong-lr{border-color:var(--red);background:#FFF0F0;animation:shake .4s ease;}
+@keyframes okPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.lr-feedback{font-size:clamp(1.1rem,3vw,1.8rem);min-height:36px;text-align:center;}
+.lr-qnum{font-size:clamp(.8rem,1.8vw,1rem);color:var(--muted);margin-bottom:4px;}
+.lr-result{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;width:100%;max-width:380px;}
+.lr-result-big{font-size:clamp(2.5rem,8vw,5rem);font-weight:900;color:var(--text);}
+.lr-result-msg{font-size:clamp(1rem,2.8vw,1.6rem);color:var(--muted);}
+.lr-play-again{border:none;border-radius:50px;padding:12px 34px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.95rem,2.3vw,1.35rem);color:#fff;background:linear-gradient(135deg,#FF6B6B,#FF8E53);box-shadow:0 6px 0 #c9472e;cursor:pointer;transition:transform .13s;}
+.lr-play-again:hover{transform:translateY(-3px);}
+/* ══ DONE ══ */
+#s-done{background:linear-gradient(145deg,#E91E8C,#8338EC,#2BAE66);}
+.cel-ico{font-size:clamp(4rem,13vw,8rem);animation:ibounce 1.6s ease-in-out infinite alternate;}
+.cel-title{font-size:clamp(2rem,6.5vw,4.5rem);color:#fff;text-shadow:0 6px 0 rgba(0,0,0,.12);text-align:center;margin-top:8px;}
+.cel-sub{font-size:clamp(1rem,2.6vw,1.6rem);color:rgba(255,255,255,.9);text-align:center;margin-top:6px;}
+.cel-stars{font-size:clamp(1.6rem,4.5vw,3rem);margin-top:8px;letter-spacing:4px;}
+.cel-home{margin-top:24px;border:none;border-radius:50px;padding:14px 44px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.05rem,2.6vw,1.6rem);color:var(--text);background:#fff;box-shadow:0 8px 0 rgba(0,0,0,.12);cursor:pointer;transition:transform .14s;}
+.cel-home:hover{transform:translateY(-4px);}
+/* ══ SHARED ══ */
+.toast{position:fixed;top:22px;left:50%;transform:translateX(-50%) translateY(-18px);background:#FF6B6B;color:#fff;padding:11px 30px;border-radius:50px;font-size:1.1rem;font-family:'Nunito',sans-serif;font-weight:900;z-index:9999;opacity:0;transition:all .28s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:1.8rem;animation:spFly .9s ease forwards;}
+@keyframes spFly{0%{opacity:1;transform:scale(.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-80px)}}
+.conf-p{position:fixed;width:11px;height:11px;border-radius:3px;opacity:0;pointer-events:none;z-index:9999;animation:confFall 1.4s ease forwards;}
+@keyframes confFall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+<div id="zoom-ov" onclick="closeZoom()"><div id="zoom-ltr"></div><div id="zoom-ex"></div><div id="zoom-tap">Tap anywhere to close</div></div>
+<div id="prog-wrap"><div id="prog-bar"></div></div>
+<div class="toast" id="toast"></div>
+
+<!-- HOME -->
+<div class="screen active" id="s-home">
+  <div class="home-family">IG</div>
+  <div class="home-words">big · dig · fig · jig · pig · wig</div>
+  <div class="home-tap">👆 Tap a section below to start!</div>
+  <div class="home-nav-hint">
+    <span>👂 Sounds</span><span>·</span>
+    <span>📖 Read</span><span>·</span>
+    <span>🎯 Match</span><span>·</span>
+    <span>✏️ Spell</span><span>·</span>
+    <span>🃏 Cards</span><span>·</span>
+    <span>⚡ Lightning</span>
+  </div>
+</div>
+
+<!-- PHONICS (accessed via sequential flow) -->
+<div class="screen" id="s-phonics">
+  <div class="big-title">Tap each sound!</div>
+  <div class="sub">Tap a letter to see it big — say it aloud!</div>
+  <div class="ph-grid" id="ph-grid"></div>
+</div>
+
+<!-- BLEND & READ -->
+<div class="screen" id="s-blend">
+  <div class="big-title">Blend &amp; Read!</div>
+  <div class="sub">Watch the sounds come together!</div>
+  <div class="b-dots" id="b-dots"></div>
+  <div class="b-card">
+    <div class="b-illo" id="b-illo"></div>
+    <div class="b-row">
+      <div class="b-con" id="b-con">p</div>
+      <div class="b-plus">+</div>
+      <div class="b-fam" id="b-fam">an</div>
+      <div class="b-arrow">→</div>
+      <div class="b-res" id="b-res">pan</div>
+    </div>
+    <div class="b-lbl" id="b-lbl">p + an = ?</div>
+    <button class="blend-btn" id="blend-btn" onclick="doBlend()">Blend it!</button>
+    <button class="blend-skip" id="blend-skip" onclick="nextBlend()">Next word ▶</button>
+  </div>
+</div>
+
+<!-- MATCH -->
+<div class="screen" id="s-match">
+  <div class="big-title">Match it!</div>
+  <div class="sub">Tap a picture · then tap its word</div>
+  <div class="match-wrap"><div class="match-pics" id="match-pics"></div><div class="match-words" id="match-words"></div></div>
+  <div class="match-score" id="match-score">0 / 6 matched</div>
+</div>
+
+<!-- SPELL -->
+<div class="screen" id="s-spell">
+  <div class="big-title">Spell it!</div>
+  <div class="sub">Tap the letters in order!</div>
+  <div class="sp-dots" id="sp-dots"></div>
+  <div class="sp-illo" id="sp-illo"></div>
+  <div class="sp-lbl" id="sp-lbl">_ _ _</div>
+  <div class="sp-boxes" id="sp-boxes"></div>
+  <div class="sp-tiles" id="sp-tiles"></div>
+  <div class="sp-fb" id="sp-fb"></div>
+  <button class="sp-clear" onclick="clearSpell()">Clear</button>
+</div>
+
+<!-- FLASHCARD -->
+<div class="screen" id="s-flash">
+  <div class="big-title">Flash Cards!</div>
+  <div class="sub">Tap the card to flip and reveal the answer!</div>
+  <!-- Mode toggle -->
+  <div class="fl-mode-toggle">
+    <button class="fl-mode-btn active-mode" id="fl-btn-pic" onclick="setFlashMode('pic')">🖼️ Picture → Word</button>
+    <button class="fl-mode-btn" id="fl-btn-word" onclick="setFlashMode('word')">🔤 Word → Picture</button>
+  </div>
+  <!-- Progress dots -->
+  <div class="fl-dots" id="fl-dots"></div>
+  <!-- Card -->
+  <div class="flashcard" id="flashcard" onclick="flipCard()">
+    <div class="fc-inner" id="fc-inner">
+      <div class="fc-front" id="fc-front">
+        <!-- filled by JS -->
+      </div>
+      <div class="fc-back" id="fc-back">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+  <!-- Nav -->
+  <div class="fl-nav">
+    <button class="fl-nav-btn fl-prev" onclick="flashPrev()">◀</button>
+    <div class="fl-count" id="fl-count">1 / 6</div>
+    <button class="fl-nav-btn fl-next" onclick="flashNext()">▶</button>
+  </div>
+</div>
+
+<!-- LIGHTNING ROUND -->
+<div class="screen" id="s-lightning">
+  <div class="big-title">⚡ Lightning Round!</div>
+  <div class="sub">Read the picture — tap the right word fast!</div>
+  <div class="lr-header">
+    <div class="lr-score-txt">Score: <strong id="lr-score">0</strong></div>
+    <div class="lr-timer-wrap"><div class="lr-timer-bar" id="lr-bar"></div></div>
+    <div class="lr-score-txt" id="lr-qnum">Q 1/6</div>
+  </div>
+  <div class="lr-card" id="lr-card">
+    <div class="lr-illo" id="lr-illo"></div>
+    <div class="lr-choices" id="lr-choices"></div>
+  </div>
+  <div class="lr-feedback" id="lr-feedback"></div>
+</div>
+
+<!-- DONE -->
+<div class="screen" id="s-done">
+  <div class="cel-ico">🏆</div>
+  <div class="cel-title">You're a star!</div>
+  <div class="cel-stars">⭐⭐⭐⭐⭐⭐</div>
+  <div class="cel-sub">Amazing — you know all the IG words!</div>
+  <button class="cel-home" onclick="goHome()">🏠 Home</button>
+</div>
+
+<!-- BOTTOM TAB BAR -->
+<div id="tab-bar">
+  <button class="tab" id="tab-home" onclick="jumpTo('s-home')">
+    <div class="tab-icon">🏠</div>
+    <div class="tab-label">Home</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-sounds" onclick="jumpTo('s-phonics')">
+    <div class="tab-icon">👂</div>
+    <div class="tab-label">Sounds</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-blend" onclick="jumpTo('s-blend')">
+    <div class="tab-icon">📖</div>
+    <div class="tab-label">Read</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-match" onclick="jumpTo('s-match')">
+    <div class="tab-icon">🎯</div>
+    <div class="tab-label">Match</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-spell" onclick="jumpTo('s-spell')">
+    <div class="tab-icon">✏️</div>
+    <div class="tab-label">Spell</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-flash" onclick="jumpTo('s-flash')">
+    <div class="tab-icon">🃏</div>
+    <div class="tab-label">Cards</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-lightning" onclick="jumpTo('s-lightning')">
+    <div class="tab-icon">⚡</div>
+    <div class="tab-label">Lightning</div>
+    <div class="tab-pip"></div>
+  </button>
+</div>
+
+<script>
+// ═══════════════════════════ DATA ═══════════════════════════
+const FAMILY = 'ig';
+const FAMILY_COLOR = '#E91E8C';
+const FAMILY_BG   = '#FCE4EC';
+
+const SVG = {
+  big:`<svg viewBox="0 0 240 220" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="120" cy="214" rx="100" ry="6" fill="rgba(0,0,0,.08)"/>
+<!-- ground -->
+<rect x="0" y="196" width="240" height="4" rx="2" fill="#E0E0E0"/>
+<!-- ELEPHANT (left, large) -->
+<!-- back legs -->
+<ellipse cx="58" cy="198" rx="20" ry="10" fill="#9E9E9E"/>
+<ellipse cx="104" cy="198" rx="20" ry="10" fill="#9E9E9E"/>
+<rect x="42" y="152" width="30" height="50" rx="12" fill="#BDBDBD"/>
+<rect x="88" y="152" width="30" height="50" rx="12" fill="#BDBDBD"/>
+<!-- body -->
+<ellipse cx="82" cy="130" rx="68" ry="58" fill="#BDBDBD"/>
+<!-- belly lighter -->
+<ellipse cx="82" cy="140" rx="48" ry="38" fill="#CFD8DC"/>
+<!-- head -->
+<circle cx="148" cy="96" r="52" fill="#BDBDBD"/>
+<!-- ear (big floppy) -->
+<ellipse cx="104" cy="96" rx="32" ry="44" fill="#9E9E9E"/>
+<ellipse cx="108" cy="96" rx="22" ry="32" fill="#BDBDBD"/>
+<!-- trunk hanging down -->
+<path d="M156 146 Q152 178 144 198 Q136 210 148 212 Q158 212 158 198 Q166 178 162 148Z" fill="#BDBDBD"/>
+<!-- trunk tip curl -->
+<path d="M148 212 Q138 216 140 206" fill="none" stroke="#BDBDBD" stroke-width="8" stroke-linecap="round"/>
+<!-- tusk -->
+<path d="M152 132 Q170 148 168 162 Q166 170 156 168" fill="none" stroke="#FFFDE7" stroke-width="6" stroke-linecap="round"/>
+<!-- eye -->
+<circle cx="158" cy="82" r="9" fill="#333"/>
+<circle cx="160" cy="80" r="3" fill="white"/>
+<!-- wrinkle lines on trunk -->
+<path d="M155 150 Q150 156 154 162" fill="none" stroke="#9E9E9E" stroke-width="2"/>
+<path d="M157 162 Q152 168 156 174" fill="none" stroke="#9E9E9E" stroke-width="2"/>
+<!-- tail -->
+<path d="M24 122 Q10 112 12 100 Q14 90 22 96" fill="none" stroke="#9E9E9E" stroke-width="5" stroke-linecap="round"/>
+
+<!-- TINY MOUSE (right, for size contrast) -->
+<ellipse cx="212" cy="192" rx="18" ry="12" fill="#BDBDBD"/>
+<!-- head -->
+<circle cx="224" cy="184" r="12" fill="#BDBDBD"/>
+<!-- ears -->
+<circle cx="218" cy="174" r="7" fill="#9E9E9E"/>
+<circle cx="218" cy="174" r="4" fill="#FF9090"/>
+<circle cx="230" cy="172" r="7" fill="#9E9E9E"/>
+<circle cx="230" cy="172" r="4" fill="#FF9090"/>
+<!-- eye -->
+<circle cx="228" cy="183" r="3" fill="#333"/>
+<circle cx="229" cy="182" r="1" fill="white"/>
+<!-- nose -->
+<circle cx="234" cy="187" r="2" fill="#FF9090"/>
+<!-- tail -->
+<path d="M194 194 Q184 188 188 180" fill="none" stroke="#9E9E9E" stroke-width="3" stroke-linecap="round"/>
+<!-- size arrow between them -->
+<line x1="160" y1="210" x2="194" y2="210" stroke="#555" stroke-width="2" stroke-linecap="round"/>
+<line x1="162" y1="205" x2="162" y2="215" stroke="#555" stroke-width="2"/>
+<line x1="192" y1="205" x2="192" y2="215" stroke="#555" stroke-width="2"/>
+</svg>`,
+  dig:`<svg viewBox="0 0 240 230" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="130" cy="224" rx="95" ry="6" fill="rgba(0,0,0,.08)"/>
+<!-- SKY strip at top -->
+<rect x="0" y="0" width="240" height="120" fill="#87CEEB" opacity=".3"/>
+<!-- GROUND surface -->
+<rect x="0" y="118" width="240" height="106" fill="#8B6914"/>
+<!-- grass on top of ground -->
+<rect x="0" y="112" width="240" height="14" rx="0" fill="#5D9E40"/>
+<!-- grass blades -->
+<path d="M18 112 Q14 96 22 94 Q26 96 18 112" fill="#4CAF50"/>
+<path d="M46 110 Q42 92 50 90 Q54 92 46 110" fill="#4CAF50"/>
+<!-- THE HOLE (dark pit in ground) -->
+<ellipse cx="88" cy="136" rx="56" ry="22" fill="#3E2008"/>
+<ellipse cx="88" cy="138" rx="48" ry="17" fill="#2a1505"/>
+<!-- hole rim dirt mound -->
+<path d="M32 130 Q60 110 88 118 Q116 110 144 130 Q116 136 88 136 Q60 136 32 130Z" fill="#6D4C1A"/>
+<path d="M32 130 Q60 114 88 122 Q116 114 144 130" fill="none" stroke="#795548" stroke-width="2"/>
+<!-- dirt clumps flying out (top right) -->
+<ellipse cx="168" cy="86" rx="12" ry="8" fill="#8B6914" transform="rotate(-20 168 86)"/>
+<ellipse cx="186" cy="70" rx="9" ry="6" fill="#6D4C1A" transform="rotate(15 186 70)"/>
+<ellipse cx="152" cy="66" rx="7" ry="5" fill="#8B6914" transform="rotate(-10 152 66)"/>
+<circle cx="176" cy="94" r="4" fill="#6D4C1A"/>
+<circle cx="162" cy="76" r="3" fill="#8B6914"/>
+<circle cx="192" cy="82" r="3" fill="#795548"/>
+<!-- PERSON digging (right side, leaning on spade) -->
+<!-- legs bent/stepping -->
+<rect x="164" y="162" width="18" height="52" rx="8" fill="#1565C0" transform="rotate(-8 164 162)"/>
+<rect x="186" y="158" width="18" height="54" rx="8" fill="#1565C0" transform="rotate(12 204 158)"/>
+<ellipse cx="160" cy="216" rx="16" ry="8" fill="#212121"/>
+<ellipse cx="196" cy="218" rx="16" ry="8" fill="#212121"/>
+<!-- body leaning forward -->
+<rect x="160" y="108" width="44" height="58" rx="12" fill="#E53935" transform="rotate(-5 160 108)"/>
+<!-- arms pushing down on spade handle -->
+<!-- upper arm -->
+<rect x="152" y="110" width="14" height="38" rx="7" fill="#E53935" transform="rotate(-30 152 110)"/>
+<rect x="188" y="108" width="14" height="36" rx="7" fill="#E53935" transform="rotate(15 202 108)"/>
+<!-- hands -->
+<ellipse cx="140" cy="140" rx="10" ry="8" fill="#FFCC80" transform="rotate(-30 140 140)"/>
+<ellipse cx="196" cy="140" rx="10" ry="8" fill="#FFCC80" transform="rotate(15 196 140)"/>
+<!-- SPADE (diagonal, blade in ground) -->
+<!-- handle -->
+<rect x="144" y="68" width="10" height="90" rx="5" fill="#5D4037" transform="rotate(-18 144 68)"/>
+<!-- shaft grip bumps -->
+<rect x="142" y="90" width="14" height="6" rx="3" fill="#4E342E" transform="rotate(-18 144 68)"/>
+<!-- spade head collar -->
+<rect x="132" y="148" width="22" height="10" rx="3" fill="#9E9E9E" transform="rotate(-18 144 148)"/>
+<!-- spade blade -->
+<path d="M118 154 L132 144 L150 150 L148 174 Q138 182 128 174 Z" fill="#9E9E9E" transform="rotate(-18 134 162)"/>
+<path d="M120 156 L132 148 L148 154 L146 172 Q138 178 128 172 Z" fill="#BDBDBD" transform="rotate(-18 134 162)"/>
+<!-- head -->
+<circle cx="186" cy="76" r="26" fill="#FFCC80"/>
+<path d="M162 68 Q164 44 186 40 Q208 44 210 68 Q202 52 186 52 Q170 52 162 68Z" fill="#333"/>
+<!-- face looking down at work -->
+<circle cx="178" cy="74" r="4" fill="#333"/>
+<circle cx="194" cy="74" r="4" fill="#333"/>
+<circle cx="179" cy="72" r="1.5" fill="white"/>
+<circle cx="195" cy="72" r="1.5" fill="white"/>
+<path d="M178 86 Q186 93 194 86" fill="none" stroke="#E65100" stroke-width="2.5" stroke-linecap="round"/>
+</svg>`,
+  fig:`<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="110" cy="214" rx="72" ry="6" fill="rgba(0,0,0,.08)"/>
+<!-- whole fig (left) -->
+<!-- stem and leaf -->
+<rect x="86" y="18" width="8" height="22" rx="4" fill="#5D4037"/>
+<ellipse cx="100" cy="26" rx="16" ry="9" fill="#4CAF50" transform="rotate(-30 100 26)"/>
+<!-- fig body (teardrop) -->
+<path d="M68 80 Q58 130 70 168 Q84 198 110 198 Q136 198 150 168 Q162 130 152 80 Q140 52 110 46 Q80 52 68 80Z" fill="#6A1B9A"/>
+<path d="M68 80 Q58 130 70 168 Q84 198 110 198 Q136 198 150 168 Q162 130 152 80 Q140 52 110 46 Q80 52 68 80Z" fill="none" stroke="#4A0072" stroke-width="2"/>
+<!-- fig colour gradient suggestion -->
+<path d="M78 80 Q68 128 80 164 Q92 192 110 195" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="8" stroke-linecap="round"/>
+<!-- top blossom end -->
+<circle cx="110" cy="196" r="6" fill="#4A0072"/>
+<!-- shine -->
+<ellipse cx="88" cy="100" rx="10" ry="28" fill="rgba(255,255,255,.18)" transform="rotate(-15 88 100)"/>
+<!-- CUT HALF (right side, slightly overlapping, showing inside) -->
+<path d="M148 80 Q162 120 154 160 Q144 192 164 188 Q188 176 196 140 Q204 104 192 76 Q178 52 162 56 Q148 62 148 80Z" fill="#AD1457"/>
+<!-- inside flesh pink -->
+<path d="M152 86 Q164 122 158 158 Q150 184 166 182 Q188 172 194 140 Q200 108 190 80 Q178 58 164 62 Q152 68 152 86Z" fill="#F48FB1"/>
+<!-- seed pattern inside -->
+<circle cx="168" cy="110" r="3" fill="#AD1457"/>
+<circle cx="180" cy="120" r="3" fill="#AD1457"/>
+<circle cx="172" cy="132" r="3" fill="#AD1457"/>
+<circle cx="184" cy="104" r="2.5" fill="#AD1457"/>
+<circle cx="176" cy="144" r="2.5" fill="#AD1457"/>
+<circle cx="164" cy="125" r="2.5" fill="#AD1457"/>
+<circle cx="188" cy="134" r="2.5" fill="#AD1457"/>
+<!-- inside centre line -->
+<path d="M156 88 Q166 130 162 168" fill="none" stroke="#E91E8C" stroke-width="2" opacity=".4"/>
+</svg>`,
+  jig:`<svg viewBox="0 0 220 230" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="110" cy="224" rx="80" ry="6" fill="rgba(0,0,0,.08)"/>
+<!-- floor -->
+<rect x="0" y="210" width="220" height="4" rx="2" fill="#E0E0E0"/>
+<!-- music notes floating -->
+<text x="20" y="44" font-size="24" fill="#FB5607" opacity=".7">♪</text>
+<text x="170" y="36" font-size="20" fill="#8338EC" opacity=".7">♫</text>
+<text x="148" y="62" font-size="16" fill="#E63946" opacity=".6">♩</text>
+<!-- DANCER -->
+<!-- head -->
+<circle cx="110" cy="52" r="30" fill="#FFCC80"/>
+<path d="M82 44 Q84 18 110 14 Q136 18 138 44 Q130 28 110 28 Q90 28 82 44Z" fill="#C8860A"/>
+<!-- face (big smile, happy dancing) -->
+<circle cx="100" cy="48" r="5" fill="#333"/>
+<circle cx="120" cy="48" r="5" fill="#333"/>
+<circle cx="101" cy="46" r="2" fill="white"/>
+<circle cx="121" cy="46" r="2" fill="white"/>
+<!-- big happy open smile -->
+<path d="M98 63 Q110 76 122 63" fill="#E65100"/>
+<path d="M98 63 Q110 74 122 63" fill="none" stroke="#C0607A" stroke-width="2.5" stroke-linecap="round"/>
+<!-- body (colourful Irish-style green) -->
+<rect x="86" y="80" width="48" height="60" rx="12" fill="#2BAE66"/>
+<!-- belt -->
+<rect x="86" y="132" width="48" height="10" rx="4" fill="#1B7A42"/>
+<rect x="104" y="132" width="12" height="10" rx="3" fill="#FFD600"/>
+<!-- left arm raised up -->
+<rect x="60" y="78" width="28" height="14" rx="7" fill="#2BAE66" transform="rotate(-50 88 78)"/>
+<ellipse cx="48" cy="58" rx="12" ry="10" fill="#FFCC80" transform="rotate(-50 48 58)"/>
+<!-- right arm out to side -->
+<rect x="132" y="82" width="38" height="14" rx="7" fill="#2BAE66" transform="rotate(20 132 82)"/>
+<ellipse cx="172" cy="100" rx="12" ry="10" fill="#FFCC80" transform="rotate(20 172 100)"/>
+<!-- left leg straight down -->
+<rect x="88" y="140" width="18" height="56" rx="8" fill="#1A237E"/>
+<ellipse cx="97" cy="198" rx="15" ry="9" fill="#212121"/>
+<!-- right leg KICKED OUT sideways (dancing!) -->
+<rect x="108" y="138" width="18" height="20" rx="8" fill="#1A237E" transform="rotate(-5 108 138)"/>
+<rect x="120" y="148" width="55" height="16" rx="8" fill="#1A237E" transform="rotate(20 120 148)"/>
+<ellipse cx="176" cy="168" rx="18" ry="9" fill="#212121" transform="rotate(20 176 168)"/>
+<!-- motion lines around dancer -->
+<path d="M62 110 Q50 104 52 94" fill="none" stroke="#FFD93D" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
+<path d="M56 124 Q44 120 46 110" fill="none" stroke="#FFD93D" stroke-width="2.5" stroke-linecap="round" opacity=".6"/>
+<path d="M160 116 Q172 110 170 100" fill="none" stroke="#FFD93D" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
+</svg>`,
+  pig:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="118" cy="194" rx="90" ry="6" fill="rgba(0,0,0,.08)"/>
+<!-- tail (curly) -->
+<path d="M48 108 Q24 96 20 78 Q16 62 28 60 Q38 60 38 72 Q38 82 28 82" fill="none" stroke="#F48FB1" stroke-width="7" stroke-linecap="round"/>
+<!-- body (big round oval) -->
+<ellipse cx="130" cy="128" rx="90" ry="66" fill="#F8BBD9"/>
+<!-- belly (lighter pink) -->
+<ellipse cx="130" cy="138" rx="62" ry="44" fill="#FCE4EC"/>
+<!-- back legs -->
+<ellipse cx="74" cy="186" rx="22" ry="12" fill="#F48FB1"/>
+<ellipse cx="168" cy="186" rx="22" ry="12" fill="#F48FB1"/>
+<rect x="56" y="156" width="32" height="36" rx="12" fill="#F8BBD9"/>
+<rect x="150" y="156" width="32" height="36" rx="12" fill="#F8BBD9"/>
+<!-- hoof lines -->
+<line x1="66" y1="188" x2="82" y2="188" stroke="#E91E8C" stroke-width="2"/>
+<line x1="160" y1="188" x2="176" y2="188" stroke="#E91E8C" stroke-width="2"/>
+<!-- front legs -->
+<rect x="96" y="172" width="26" height="28" rx="10" fill="#F8BBD9"/>
+<rect x="134" y="172" width="26" height="28" rx="10" fill="#F8BBD9"/>
+<line x1="98" y1="194" x2="118" y2="194" stroke="#E91E8C" stroke-width="2"/>
+<line x1="136" y1="194" x2="156" y2="194" stroke="#E91E8C" stroke-width="2"/>
+<!-- head -->
+<circle cx="196" cy="100" r="52" fill="#F8BBD9"/>
+<!-- snout -->
+<ellipse cx="218" cy="116" rx="24" ry="18" fill="#F48FB1"/>
+<!-- nostrils -->
+<ellipse cx="212" cy="116" rx="6" ry="5" fill="#E91E8C"/>
+<ellipse cx="226" cy="116" rx="6" ry="5" fill="#E91E8C"/>
+<!-- ear (floppy forward) -->
+<path d="M174 60 Q156 36 168 20 Q182 10 192 28 L186 62Z" fill="#F48FB1"/>
+<path d="M176 62 Q162 42 172 28 Q182 18 190 32 L186 62Z" fill="#FCE4EC"/>
+<!-- ear 2 -->
+<path d="M214 58 Q220 36 234 34 Q246 38 240 56 L218 64Z" fill="#F48FB1"/>
+<!-- eye -->
+<circle cx="192" cy="90" r="10" fill="white"/>
+<circle cx="192" cy="90" r="7" fill="#333"/>
+<circle cx="194" cy="88" r="2.5" fill="white"/>
+<!-- smile -->
+<path d="M186 112 Q196 120 206 112" fill="none" stroke="#E91E8C" stroke-width="3" stroke-linecap="round"/>
+<!-- shine on body -->
+<ellipse cx="96" cy="104" rx="14" ry="26" fill="rgba(255,255,255,.3)" transform="rotate(-20 96 104)"/>
+</svg>`,
+  wig:`<svg viewBox="0 0 220 230" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="110" cy="224" rx="60" ry="6" fill="rgba(0,0,0,.08)"/>
+<!-- stand base -->
+<rect x="70" y="200" width="80" height="16" rx="8" fill="#9E9E9E"/>
+<rect x="84" y="190" width="52" height="16" rx="6" fill="#BDBDBD"/>
+<!-- stand pole -->
+<rect x="102" y="130" width="16" height="64" rx="8" fill="#BDBDBD"/>
+<!-- WIG HEAD form (blank mannequin head) -->
+<ellipse cx="110" cy="108" rx="44" ry="50" fill="#F5F5F5"/>
+<ellipse cx="110" cy="92" rx="38" ry="32" fill="#FAFAFA"/>
+<!-- face features (minimal mannequin) -->
+<ellipse cx="98" cy="98" rx="7" ry="5" fill="#E0E0E0"/>
+<ellipse cx="122" cy="98" rx="7" ry="5" fill="#E0E0E0"/>
+<path d="M100 116 Q110 122 120 116" fill="none" stroke="#E0E0E0" stroke-width="2"/>
+<!-- THE WIG — long blonde curly hair covering head and flowing down -->
+<!-- top of wig -->
+<path d="M64 82 Q66 38 110 28 Q154 38 156 82 Q148 60 110 56 Q72 60 64 82Z" fill="#FFD600"/>
+<!-- left side flowing down -->
+<path d="M64 82 Q42 120 44 160 Q46 188 58 196 Q68 188 66 160 Q68 128 76 104Z" fill="#FFD600"/>
+<!-- left curl at bottom -->
+<path d="M44 180 Q32 196 44 206 Q54 212 58 198" fill="none" stroke="#FFD600" stroke-width="14" stroke-linecap="round"/>
+<!-- right side flowing down -->
+<path d="M156 82 Q178 120 176 160 Q174 188 162 196 Q152 188 154 160 Q152 128 144 104Z" fill="#FFD600"/>
+<!-- right curl at bottom -->
+<path d="M176 180 Q188 196 176 206 Q166 212 162 198" fill="none" stroke="#FFD600" stroke-width="14" stroke-linecap="round"/>
+<!-- middle top volume -->
+<path d="M76 78 Q88 48 110 44 Q132 48 144 78 Q132 62 110 60 Q88 62 76 78Z" fill="#FFE033"/>
+<!-- hair texture lines (wavy) -->
+<path d="M54 108 Q60 118 54 128" fill="none" stroke="#E6B800" stroke-width="3" stroke-linecap="round"/>
+<path d="M50 128 Q56 138 50 148" fill="none" stroke="#E6B800" stroke-width="3" stroke-linecap="round"/>
+<path d="M48 150 Q54 160 48 170" fill="none" stroke="#E6B800" stroke-width="3" stroke-linecap="round"/>
+<path d="M166 108 Q160 118 166 128" fill="none" stroke="#E6B800" stroke-width="3" stroke-linecap="round"/>
+<path d="M170 128 Q164 138 170 148" fill="none" stroke="#E6B800" stroke-width="3" stroke-linecap="round"/>
+<path d="M172 150 Q166 160 172 170" fill="none" stroke="#E6B800" stroke-width="3" stroke-linecap="round"/>
+<!-- shine on wig -->
+<ellipse cx="92" cy="56" rx="8" ry="16" fill="rgba(255,255,255,.3)" transform="rotate(-15 92 56)"/>
+</svg>`,
+};
+
+const WORDS = [
+  {word:'big',consonant:'b',color:'#E63946'},
+  {word:'dig',consonant:'d',color:'#8B6914'},
+  {word:'fig',consonant:'f',color:'#8338EC'},
+  {word:'jig',consonant:'j',color:'#FB5607'},
+  {word:'pig',consonant:'p',color:'#E91E8C'},
+  {word:'wig',consonant:'w',color:'#1A78C2'},
+];
+
+const PHONICS=[
+  {letter:'b',hint:'big',bg:'#E63946',dark:false,example:'b — big'},
+  {letter:'d',hint:'dig',bg:'#8B6914',dark:false,example:'d — dig'},
+  {letter:'f',hint:'fig',bg:'#8338EC',dark:false,example:'f — fig'},
+  {letter:'j',hint:'jig',bg:'#FB5607',dark:false,example:'j — jig'},
+  {letter:'p',hint:'pig',bg:'#E91E8C',dark:false,example:'p — pig'},
+  {letter:'w',hint:'wig',bg:'#1A78C2',dark:false,example:'w — wig'},
+  {letter:'i',hint:'vowel',bg:'#F5C800',dark:true,example:'i — short i sound'},
+  {letter:'g',hint:'ending',bg:'#555',dark:false,example:'g — end sound'},
+  {letter:'ig',hint:'family',bg:'linear-gradient(135deg,#F5C800,#E91E8C)',dark:false,example:'__ig — the family!'},
+];
+const DISTRACTORS=['a', 'c', 'e', 'h', 'k', 'l', 'm', 'n', 'o', 'r', 's', 't', 'u', 'v'];
+
+// ═══════════════════════════ SCREEN ENGINE ═══════════════════════════
+const SCREEN_ORDER=['s-home','s-phonics','s-blend','s-match','s-spell','s-flash','s-lightning','s-done'];
+let curIdx=0;
+
+function showScreen(id){
+  const idx=SCREEN_ORDER.indexOf(id);
+  if(idx>=0) curIdx=idx;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('prog-bar').style.width=(curIdx/(SCREEN_ORDER.length-1)*100)+'%';
+  // Update tab bar active state
+  const tabMap={
+    's-home':'tab-home','s-phonics':'tab-sounds','s-blend':'tab-blend',
+    's-match':'tab-match','s-spell':'tab-spell','s-flash':'tab-flash',
+    's-lightning':'tab-lightning','s-done':'tab-lightning'
+  };
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active-tab'));
+  const activeTab=tabMap[id];
+  if(activeTab) document.getElementById(activeTab)?.classList.add('active-tab');
+  if(id==='s-phonics') initPhonics();
+  if(id==='s-blend') initBlend();
+  if(id==='s-match') initMatch();
+  if(id==='s-spell') initSpell();
+  if(id==='s-flash') initFlash();
+  if(id==='s-lightning') initLightning();
+  if(id==='s-done') bigConfetti();
+}
+function goNext(){if(curIdx<SCREEN_ORDER.length-1) showScreen(SCREEN_ORDER[curIdx+1]);}
+function goPrev(){if(curIdx>0) showScreen(SCREEN_ORDER[curIdx-1]);}
+function goHome(){showScreen('s-home');}
+function jumpTo(id){showScreen(id);}
+
+// ═══════════════════════════ PHONICS ═══════════════════════════
+function initPhonics(){
+  const g=document.getElementById('ph-grid');g.innerHTML='';
+  PHONICS.forEach(ph=>{
+    const b=document.createElement('button');b.className='ph-tile';
+    b.style.background=ph.bg;b.style.color=ph.dark?'#333':'#fff';
+    b.innerHTML=`<div class="ph-ltr" style="color:${ph.dark?'#333':'#fff'}">${ph.letter}</div><div class="ph-hint" style="color:${ph.dark?'#555':'rgba(255,255,255,.82)'}">${ph.hint}</div>`;
+    b.addEventListener('click',()=>{
+      const isG=ph.bg.includes('gradient');
+      document.getElementById('zoom-ltr').style.color=isG?'#FFD93D':ph.bg;
+      document.getElementById('zoom-ltr').textContent=ph.letter;
+      document.getElementById('zoom-ex').textContent=ph.example;
+      document.getElementById('zoom-ov').classList.add('show');
+    });
+    g.appendChild(b);
+  });
+}
+function closeZoom(){document.getElementById('zoom-ov').classList.remove('show');}
+
+// ═══════════════════════════ BLEND ═══════════════════════════
+let blendIdx=0,blended=false;
+function initBlend(){blendIdx=0;blended=false;buildBDots();renderBlend();}
+function buildBDots(){document.getElementById('b-dots').innerHTML=WORDS.map((_,i)=>`<div class="b-dot${i===0?' cur':''}" id="bd-${i}"></div>`).join('');}
+function renderBlend(){
+  blended=false;const w=WORDS[blendIdx];
+  WORDS.forEach((_,i)=>{const d=document.getElementById(`bd-${i}`);if(d)d.className='b-dot'+(i<blendIdx?' done':i===blendIdx?' cur':'');});
+  document.getElementById('b-illo').innerHTML=SVG[w.word];
+  const bC=document.getElementById('b-con'),bR=document.getElementById('b-res'),bL=document.getElementById('b-lbl'),bFam=document.getElementById('b-fam');
+  bC.textContent=w.consonant;bC.style.color=w.color;bC.style.background=w.color+'22';bC.style.opacity='1';bC.style.transform='scale(1)';
+  bFam.textContent=FAMILY;bFam.style.color=FAMILY_COLOR;bFam.style.background=FAMILY_BG;bFam.style.opacity='1';bFam.style.transform='scale(1)';
+  bR.textContent=w.word;bR.style.color=w.color;bR.className='b-res';
+  bL.textContent=`${w.consonant} + ${FAMILY} = ?`;
+  document.getElementById('blend-btn').style.display='';
+  document.getElementById('blend-skip').textContent=blendIdx<WORDS.length-1?'Next word ▶':'Go to Match!';
+}
+function doBlend(){
+  if(blended)return;blended=true;const w=WORDS[blendIdx];
+  const bC=document.getElementById('b-con'),bFam=document.getElementById('b-fam'),bR=document.getElementById('b-res'),bL=document.getElementById('b-lbl');
+  bC.style.transition='all .5s cubic-bezier(.175,.885,.32,1.275)';bFam.style.transition='all .5s';
+  bC.style.transform='scale(1.22)';bFam.style.transform='scale(1.22)';
+  setTimeout(()=>{bR.classList.add('show');bC.style.opacity='.28';bFam.style.opacity='.28';bL.textContent=`${w.consonant} + ${FAMILY} = ${w.word} ✅`;spawnSparkle(window.innerWidth/2,window.innerHeight*.52);},420);
+  document.getElementById('blend-btn').style.display='none';
+}
+function nextBlend(){if(blendIdx<WORDS.length-1){blendIdx++;renderBlend();}else goNext();}
+
+// ═══════════════════════════ MATCH ═══════════════════════════
+let matchSel=null,matchDone=0;
+function initMatch(){
+  matchSel=null;matchDone=0;document.getElementById('match-score').textContent='0 / 6 matched';
+  const sP=shuffle([...WORDS]),sW=shuffle([...WORDS]);
+  const pE=document.getElementById('match-pics'),wE=document.getElementById('match-words');
+  pE.innerHTML='';wE.innerHTML='';
+  sP.forEach(w=>{const c=document.createElement('div');c.className='m-pic';c.dataset.word=w.word;c.innerHTML=SVG[w.word];c.addEventListener('click',()=>handleMatchPic(c,w.word));pE.appendChild(c);});
+  sW.forEach(w=>{const c=document.createElement('div');c.className='m-word';c.dataset.word=w.word;c.style.color=w.color;c.textContent=w.word;c.addEventListener('click',()=>handleMatchWord(c,w.word));wE.appendChild(c);});
+}
+function handleMatchPic(card,word){if(card.classList.contains('matched'))return;document.querySelectorAll('.m-pic.selected').forEach(c=>c.classList.remove('selected'));card.classList.add('selected');matchSel={word,el:card};}
+function handleMatchWord(card,word){
+  if(card.classList.contains('matched'))return;
+  if(!matchSel){showToast('Tap a picture first!');return;}
+  if(matchSel.word===word){matchSel.el.classList.remove('selected');matchSel.el.classList.add('matched');card.classList.add('matched');matchSel=null;matchDone++;spawnSparkle(card.getBoundingClientRect().left+card.offsetWidth/2,card.getBoundingClientRect().top+card.offsetHeight/2);document.getElementById('match-score').textContent=`${matchDone} / 6 matched`;if(matchDone===6)setTimeout(()=>{bigConfetti();setTimeout(goNext,900);},350);}
+  else{[matchSel.el,card].forEach(el=>{el.classList.add('ws');setTimeout(()=>el.classList.remove('ws'),450);});matchSel.el.classList.remove('selected');matchSel=null;showToast('Try again!');}
+}
+
+// ═══════════════════════════ SPELL ═══════════════════════════
+let spellIdx=0,spellInput=[];
+function initSpell(){spellIdx=0;spellInput=[];buildSpDots();renderSpell();}
+function buildSpDots(){document.getElementById('sp-dots').innerHTML=WORDS.map((_,i)=>`<div class="sp-dot${i===0?' cur':''}" id="snd-${i}"></div>`).join('');}
+function renderSpell(){
+  spellInput=[];const w=WORDS[spellIdx];
+  WORDS.forEach((_,i)=>{const d=document.getElementById(`snd-${i}`);if(d)d.className='sp-dot'+(i<spellIdx?' done':i===spellIdx?' cur':'');});
+  document.getElementById('sp-illo').innerHTML=SVG[w.word];
+  document.getElementById('sp-lbl').textContent=w.word.split('').map(()=>'_').join('  ');
+  document.getElementById('sp-fb').textContent='';
+  document.getElementById('sp-boxes').innerHTML=w.word.split('').map((_,i)=>`<div class="sp-box${i===0?' ab':''}" id="spb-${i}"></div>`).join('');
+  const all=shuffle([...w.word.split(''),...shuffle([...DISTRACTORS]).slice(0,3)]);
+  document.getElementById('sp-tiles').innerHTML=all.map((l,i)=>`<button class="sp-tile" id="stile-${i}" onclick="tapTile('${l}',${i})">${l.toUpperCase()}</button>`).join('');
+}
+function tapTile(letter,idx){
+  const w=WORDS[spellIdx],pos=spellInput.length;
+  if(pos>=w.word.length)return;
+  const box=document.getElementById(`spb-${pos}`);
+  if(letter===w.word[pos]){
+    spellInput.push(letter);box.textContent=letter.toUpperCase();box.classList.remove('ab');box.classList.add('fb','ob');
+    document.getElementById(`stile-${idx}`).classList.add('used');
+    document.getElementById('sp-lbl').textContent=w.word.split('').map((_,i)=>i<spellInput.length?w.word[i].toUpperCase():'_').join('  ');
+    if(spellInput.length<w.word.length)document.getElementById(`spb-${spellInput.length}`)?.classList.add('ab');
+    if(spellInput.length===w.word.length){document.getElementById('sp-fb').innerHTML=`<span style="color:var(--green)">✅ ${w.word.toUpperCase()}! Great job!</span>`;spawnSparkle(window.innerWidth/2,window.innerHeight*.44);setTimeout(()=>{if(spellIdx<WORDS.length-1){spellIdx++;buildSpDots();renderSpell();}else goNext();},1500);}
+  }else{box.classList.add('eb');showToast('Try again!');setTimeout(()=>box.classList.remove('eb'),480);}
+}
+function clearSpell(){
+  const w=WORDS[spellIdx];spellInput=[];
+  w.word.split('').forEach((_,i)=>{const b=document.getElementById(`spb-${i}`);if(b){b.textContent='';b.className='sp-box'+(i===0?' ab':'');}});
+  document.querySelectorAll('.sp-tile').forEach(t=>t.classList.remove('used'));
+  document.getElementById('sp-lbl').textContent=w.word.split('').map(()=>'_').join('  ');
+  document.getElementById('sp-fb').textContent='';
+}
+
+// ═══════════════════════════ FLASHCARD ═══════════════════════════
+let flashIdx=0,flashFlipped=false,flashMode='pic'; // 'pic' = picture first, 'word' = word first
+
+function initFlash(){
+  flashIdx=0;flashFlipped=false;
+  // reset toggle to pic mode visually
+  setFlashMode(flashMode,true);
+  buildFlDots();renderFlash();
+}
+
+function setFlashMode(mode, silent){
+  flashMode=mode;
+  document.getElementById('fl-btn-pic').classList.toggle('active-mode',mode==='pic');
+  document.getElementById('fl-btn-word').classList.toggle('active-mode',mode==='word');
+  if(!silent){flashIdx=0;flashFlipped=false;buildFlDots();renderFlash();}
+}
+
+function buildFlDots(){
+  document.getElementById('fl-dots').innerHTML=WORDS.map((_,i)=>
+    `<div class="fl-dot${i===0?' cur':''}" id="fld-${i}"></div>`
+  ).join('');
+}
+
+function renderFlash(){
+  flashFlipped=false;
+  const w=WORDS[flashIdx];
+  WORDS.forEach((_,i)=>{const d=document.getElementById(`fld-${i}`);if(d)d.className='fl-dot'+(i<flashIdx?' done':i===flashIdx?' cur':'');});
+  document.getElementById('fc-inner').classList.remove('flipped');
+  document.getElementById('fl-count').textContent=`${flashIdx+1} / ${WORDS.length}`;
+
+  const picHTML=`<div class="fc-pic"><div style="width:clamp(90px,18vw,155px);height:clamp(90px,18vw,155px);display:flex;align-items:center;justify-content:center">${SVG[w.word]}</div></div>
+    <div class="fc-tap">👆 Tap to flip</div>`;
+
+  const wordHTML=`<div class="fc-word" style="color:${w.color}">${w.word}</div>
+    <div class="fc-word-hint" style="color:${w.color}">${w.consonant.toUpperCase()} + ${FAMILY.toUpperCase()}</div>
+    <div class="fc-tap">👆 Tap to flip</div>`;
+
+  if(flashMode==='pic'){
+    // Front = picture, Back = word
+    document.getElementById('fc-front').innerHTML=picHTML;
+    document.getElementById('fc-back').innerHTML=wordHTML.replace('Tap to flip','Tap for next ▶');
+  } else {
+    // Front = word, Back = picture
+    document.getElementById('fc-front').innerHTML=wordHTML;
+    document.getElementById('fc-back').innerHTML=picHTML.replace('Tap to flip','Tap for next ▶');
+  }
+}
+
+function flipCard(){
+  flashFlipped=!flashFlipped;
+  document.getElementById('fc-inner').classList.toggle('flipped',flashFlipped);
+  if(flashFlipped) spawnSparkle(window.innerWidth/2, window.innerHeight*.42);
+}
+
+function flashNext(){
+  if(flashIdx<WORDS.length-1){flashIdx++;renderFlash();}
+  else{bigConfetti();setTimeout(goNext,800);}
+}
+function flashPrev(){if(flashIdx>0){flashIdx--;renderFlash();}}
+
+// ═══════════════════════════ LIGHTNING ROUND ═══════════════════════════
+let lrScore=0,lrQ=0,lrAnswered=false,lrQueue=[],lrTimerInterval=null,lrTimeLeft=0,lrTotalTime=7;
+function initLightning(){
+  lrScore=0;lrQ=0;lrAnswered=false;
+  lrQueue=shuffle([...WORDS]);
+  document.getElementById('lr-score').textContent='0';
+  document.getElementById('lr-feedback').textContent='';
+  nextLR();
+}
+function nextLR(){
+  if(lrQ>=WORDS.length){endLR();return;}
+  lrAnswered=false;
+  const w=lrQueue[lrQ];
+  document.getElementById('lr-qnum').textContent=`Q ${lrQ+1}/${WORDS.length}`;
+  document.getElementById('lr-illo').innerHTML=SVG[w.word];
+  document.getElementById('lr-feedback').textContent='';
+  // choices: correct + 2 wrong
+  const wrongs=shuffle(WORDS.filter(x=>x.word!==w.word)).slice(0,2);
+  const choices=shuffle([w,...wrongs]);
+  document.getElementById('lr-choices').innerHTML=choices.map(c=>`
+    <button class="lr-btn" onclick="answerLR('${c.word}','${w.word}')">${c.word}</button>
+  `).join('');
+  // timer
+  clearInterval(lrTimerInterval);
+  lrTimeLeft=lrTotalTime;
+  updateTimerBar();
+  lrTimerInterval=setInterval(()=>{
+    lrTimeLeft-=0.1;
+    if(lrTimeLeft<=0){clearInterval(lrTimerInterval);if(!lrAnswered)timeOutLR(w.word);}
+    else updateTimerBar();
+  },100);
+}
+function updateTimerBar(){
+  const pct=Math.max(0,lrTimeLeft/lrTotalTime*100);
+  document.getElementById('lr-bar').style.width=pct+'%';
+}
+function answerLR(chosen,correct){
+  if(lrAnswered)return;lrAnswered=true;clearInterval(lrTimerInterval);
+  const btns=document.querySelectorAll('.lr-btn');
+  btns.forEach(b=>{if(b.textContent===correct)b.classList.add('correct-lr');else if(b.textContent===chosen&&chosen!==correct)b.classList.add('wrong-lr');});
+  if(chosen===correct){lrScore++;document.getElementById('lr-score').textContent=lrScore;document.getElementById('lr-feedback').textContent='✅ Yes!';spawnSparkle(window.innerWidth/2,window.innerHeight*.6);}
+  else{document.getElementById('lr-feedback').textContent='❌ That was: '+correct;}
+  lrQ++;setTimeout(nextLR,1100);
+}
+function timeOutLR(correct){
+  lrAnswered=true;
+  document.getElementById('lr-feedback').textContent='⏰ Too slow! It was: '+correct;
+  document.querySelectorAll('.lr-btn').forEach(b=>{if(b.textContent===correct)b.classList.add('correct-lr');});
+  lrQ++;setTimeout(nextLR,1200);
+}
+function endLR(){
+  clearInterval(lrTimerInterval);
+  const pct=Math.round(lrScore/WORDS.length*100);
+  const msg=pct===100?'🏆 Perfect score!':pct>=67?'🌟 Great job!':'💪 Keep practising!';
+  document.getElementById('lr-card').innerHTML=`
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;width:100%">
+      <div style="font-size:clamp(2.5rem,8vw,5rem);font-weight:900;color:var(--text)">${lrScore} / ${WORDS.length}</div>
+      <div style="font-size:clamp(1rem,2.8vw,1.6rem);color:var(--muted)">${msg}</div>
+      <button class="lr-play-again" onclick="initLightning()" style="border:none;border-radius:50px;padding:12px 34px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.95rem,2.3vw,1.35rem);color:#fff;background:linear-gradient(135deg,#FF6B6B,#FF8E53);box-shadow:0 6px 0 #c9472e;cursor:pointer;">Play again ⚡</button>
+      <button onclick="goNext()" style="border:none;background:none;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;color:var(--muted);cursor:pointer;text-decoration:underline;margin-top:4px;">Finish →</button>
+    </div>`;
+  document.getElementById('lr-feedback').textContent='';
+  if(pct===100)bigConfetti();
+}
+
+// ═══════════════════════════ EFFECTS ═══════════════════════════
+const SPARKS=['✨','⭐','🌟','💫','🎉'];
+function spawnSparkle(x,y){for(let i=0;i<4;i++){const el=document.createElement('div');el.className='sparkle';el.textContent=SPARKS[Math.floor(Math.random()*SPARKS.length)];el.style.cssText=`left:${x-18+(Math.random()-.5)*65}px;top:${y-18+(Math.random()-.5)*48}px;animation-delay:${i*.1}s`;document.body.appendChild(el);setTimeout(()=>el.remove(),1000);}}
+function bigConfetti(){const cols=['#E63946','#F5C800','#2BAE66','#1A78C2','#FB5607','#8338EC','#fff','#E91E8C'];for(let i=0;i<38;i++){const el=document.createElement('div');el.className='conf-p';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*28}vh;background:${cols[i%cols.length]};animation-delay:${Math.random()*.55}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),2100);}}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1400);}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+
+showScreen('s-home');
+</script>
+</body>
+</html>
