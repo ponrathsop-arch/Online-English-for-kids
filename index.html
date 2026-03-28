@@ -47,6 +47,9 @@
     box-shadow: 0 6px 0 rgba(0,0,0,0.07);
     border-left: 6px solid var(--yellow);
     position: relative;
+    display: flex;
+    gap: 28px;
+    align-items: center;
   }
   .note-card::before {
     content: '💌';
@@ -54,10 +57,23 @@
     top: -18px; left: 28px;
     font-size: 32px;
   }
+  .note-photo {
+    flex-shrink: 0;
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 4px solid var(--yellow);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.08);
+  }
+  .note-body { flex: 1; }
   .note-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: var(--dark); margin-bottom: 10px; }
   .note-text { font-size: 15px; color: #555; font-weight: 600; line-height: 1.8; }
   .note-text strong { color: var(--dark); }
   .note-sign { margin-top: 14px; font-family: 'Fredoka One', cursive; font-size: 18px; color: var(--coral); }
+  @media (max-width: 500px) {
+    .note-card { flex-direction: column; align-items: center; text-align: center; }
+  }
 
   /* Grid */
   .grid-section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
@@ -108,6 +124,69 @@
     border: 3px dashed #ccc; padding: 6px 16px; border-radius: 8px; white-space: nowrap;
   }
   footer { position: relative; z-index: 1; text-align: center; padding: 20px; font-size: 13px; color: #aaa; font-weight: 600; }
+
+  /* Password modal */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-box {
+    background: white; border-radius: 28px; padding: 36px 32px;
+    text-align: center; max-width: 360px; width: 90%;
+    box-shadow: 0 12px 0 rgba(0,0,0,0.12);
+    animation: modal-in 0.25s ease;
+  }
+  @keyframes modal-in { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-emoji { font-size: 48px; display: block; margin-bottom: 12px; }
+  .modal-title { font-family: 'Fredoka One', cursive; font-size: 24px; color: var(--dark); margin-bottom: 6px; }
+  .modal-subtitle { font-size: 14px; color: #888; font-weight: 600; margin-bottom: 20px; }
+  .modal-input {
+    width: 100%; padding: 12px 16px; border-radius: 12px;
+    border: 2px solid #e0e0e0; font-size: 16px; font-family: 'Nunito', sans-serif;
+    font-weight: 700; text-align: center; outline: none; margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  .modal-input:focus { border-color: var(--blue); }
+  .modal-input.error { border-color: var(--coral); animation: shake 0.3s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+  .modal-error { font-size: 13px; color: var(--coral); font-weight: 700; height: 18px; margin-bottom: 8px; }
+  .modal-btn {
+    width: 100%; padding: 12px; border-radius: 12px; border: none;
+    background: var(--blue); color: white; font-family: 'Fredoka One', cursive;
+    font-size: 18px; cursor: pointer; box-shadow: 0 4px 0 #2a6acc;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .modal-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #2a6acc; }
+  .modal-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #2a6acc; }
+  .modal-cancel { display: block; margin-top: 12px; font-size: 13px; color: #aaa; font-weight: 700; cursor: pointer; }
+  .modal-cancel:hover { color: #888; }
+  .lock-icon { position: absolute; top: 12px; right: 14px; font-size: 18px; }
+
+  /* Private class banner */
+  .private-class-banner {
+    background: white;
+    border-radius: 20px;
+    padding: 20px 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.07);
+    border-left: 6px solid var(--blue);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .private-class-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 24px;
+    color: var(--dark);
+  }
+  .private-class-desc {
+    font-size: 14px;
+    font-weight: 700;
+    color: #888;
+  }
 </style>
 </head>
 <body>
@@ -125,36 +204,25 @@
 
 <div class="note-section">
   <div class="note-card">
-    <div class="note-title">Dear Parents & Kids,</div>
-    <div class="note-text">
-      My name is <strong>Ponrath Sopannarath</strong>, but everyone calls me <strong>Pang</strong>! 🌟
-      I created this little corner of the internet because I truly believe that learning English
-      should never feel like a chore — it should feel like an adventure!
-      Every lesson here is designed with love and creativity, so that your little ones
-      can <strong>enjoy every step of their English journey</strong>.
-      Let's learn, play, and grow together! 🚀
+    <img src="pang.jpg" alt="Pang" class="note-photo">
+    <div class="note-body">
+      <div class="note-title">Dear Parents & Kids,</div>
+      <div class="note-text">
+        My name is <strong>Ponrath Sopannarath</strong>, but everyone calls me <strong>Pang</strong>! 🌟
+        I created this little corner of the internet because I truly believe that learning English
+        should never feel like a chore — it should feel like an adventure!
+        Every lesson here is designed with love and creativity, so that your little ones
+        can <strong>enjoy every step of their English journey</strong>.
+        Let's learn, play, and grow together! 🚀
+      </div>
+      <div class="note-sign">— Pang 🌸</div>
     </div>
-    <div class="note-sign">— Pang 🌸</div>
   </div>
 </div>
 
 <section class="grid-section">
-  <p class="section-label">📚 Choose a topic</p>
+  <p class="section-label">📚 Explore & Learn</p>
   <div class="grid">
-
-    <a href="3-year-old/index.html" class="card card-1">
-      <span class="card-emoji">🐣</span>
-      <div class="card-title">3 Years Old</div>
-      <div class="card-desc">First words & sounds</div>
-      <span class="card-badge">Starter</span>
-    </a>
-
-    <a href="5-year-old/index.html" class="card card-2">
-      <span class="card-emoji">🌟</span>
-      <div class="card-title">5 Years Old</div>
-      <div class="card-desc">Words & colours</div>
-      <span class="card-badge">Beginner</span>
-    </a>
 
     <a href="grammar/index.html" class="card card-3">
       <span class="card-emoji">✏️</span>
@@ -186,6 +254,84 @@
 
   </div>
 </section>
+
+<section class="grid-section">
+  <div class="private-class-banner">
+    <div class="private-class-title">🎓 Private Online Classes</div>
+    <div class="private-class-desc">Age-based lessons taught by Pang</div>
+  </div>
+  <div class="grid">
+
+    <div class="card card-1" onclick="openModal('3-year-old/index.html', 'Breguet3', '🐣', '3 Years Old')">
+      <span class="lock-icon">🔒</span>
+      <span class="card-emoji">🐣</span>
+      <div class="card-title">3 Years Old</div>
+      <div class="card-desc">First words & sounds</div>
+      <span class="card-badge">Starter</span>
+    </div>
+
+    <div class="card card-2" onclick="openModal('5-year-old/index.html', 'Bouquet5', '🌟', '5 Years Old')">
+      <span class="lock-icon">🔒</span>
+      <span class="card-emoji">🌟</span>
+      <div class="card-title">5 Years Old</div>
+      <div class="card-desc">Words & colours</div>
+      <span class="card-badge">Beginner</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- Password Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <span class="modal-emoji" id="modal-emoji">🐣</span>
+    <div class="modal-title" id="modal-title">3 Years Old</div>
+    <div class="modal-subtitle">🔒 Enter the password to access this class</div>
+    <input class="modal-input" type="password" id="modal-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPassword()">
+    <div class="modal-error" id="modal-error"></div>
+    <button class="modal-btn" onclick="checkPassword()">Enter ✨</button>
+    <span class="modal-cancel" onclick="closeModal()">Cancel</span>
+  </div>
+</div>
+
+<script>
+  let currentUrl = '';
+  let currentPassword = '';
+
+  function openModal(url, password, emoji, title) {
+    currentUrl = url;
+    currentPassword = password;
+    document.getElementById('modal-emoji').textContent = emoji;
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-input').value = '';
+    document.getElementById('modal-error').textContent = '';
+    document.getElementById('modal-input').classList.remove('error');
+    document.getElementById('modal').classList.add('active');
+    setTimeout(() => document.getElementById('modal-input').focus(), 100);
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+  }
+
+  function checkPassword() {
+    const input = document.getElementById('modal-input');
+    const error = document.getElementById('modal-error');
+    if (input.value === currentPassword) {
+      window.location.href = currentUrl;
+    } else {
+      input.classList.remove('error');
+      void input.offsetWidth;
+      input.classList.add('error');
+      error.textContent = 'Incorrect password. Please try again!';
+      input.value = '';
+    }
+  }
+
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
 
 <footer>Pang made with ❤️ for kids learning English</footer>
 </body>
