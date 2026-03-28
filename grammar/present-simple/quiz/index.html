@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Present Simple – Quiz!</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;width:100vw;overflow:hidden;background:#FEF9F0;touch-action:manipulation;font-weight:800;}
+
+/* ── LAYOUT — same as lesson files ── */
+/* Content zone: below 7px progress bar, above dots+arrows+quick-nav */
+.screen{
+  display:none;
+  width:100vw;
+  height:calc(100vh - 7px - 56px - 70px);
+  position:absolute;
+  top:7px;
+  left:0;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:12px 16px 8px;
+  overflow:hidden;
+}
+.screen.active{display:flex;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}
+@keyframes popIn{0%{transform:scale(0.85);opacity:0}100%{transform:scale(1);opacity:1}}
+
+/* progress bar */
+#progress-bar-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,0.07);z-index:998;}
+#progress-bar{height:100%;background:#6BCB77;transition:width .3s ease,background .3s ease;width:0%;}
+
+/* dots */
+#dots{position:fixed;bottom:calc(70px + 28px);left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:999;}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(0,0,0,0.18);transition:all .3s;}
+.dot.active{background:#555;transform:scale(1.5);}
+
+/* nav arrows */
+.nav-btn{position:fixed;bottom:calc(70px + 14px);background:rgba(80,80,80,0.18);border:none;border-radius:50%;width:52px;height:52px;font-size:1.5rem;cursor:pointer;z-index:999;transition:transform .15s;backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,0.1);}
+.nav-btn:hover{transform:scale(1.15);}
+#prevBtn{left:16px;}#nextBtn{right:16px;}
+
+/* quick-nav bottom bar — identical to lesson files */
+#quick-nav{
+  position:fixed;bottom:0;left:0;
+  width:100%;height:70px;
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(10px);
+  border-top:2px solid #F0EAE0;
+  z-index:997;
+  padding:10px 10px 12px;
+  display:flex;align-items:center;gap:6px;
+  overflow-x:auto;scrollbar-width:none;
+}
+#quick-nav::-webkit-scrollbar{display:none;}
+.qn-btn{flex-shrink:0;border:none;border-radius:14px;padding:8px 14px;font-family:inherit;font-weight:800;font-size:clamp(0.7rem,1.5vw,1rem);cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 3px 0 rgba(0,0,0,0.13);color:white;text-shadow:0 1px 3px rgba(0,0,0,0.18);position:relative;}
+.qn-btn:hover{transform:translateY(-3px);box-shadow:0 6px 0 rgba(0,0,0,0.13);}
+.qn-btn:active{transform:translateY(1px);}
+.qn-btn.active-nav{outline:3px solid rgba(0,0,0,0.25);transform:translateY(-2px);}
+.qn-divider{flex-shrink:0;width:2px;height:32px;background:#EDE8E0;border-radius:2px;}
+/* small score badge on nav button */
+.qn-score{position:absolute;top:-6px;right:-6px;background:#FFD93D;color:#7A5800;border-radius:20px;padding:1px 6px;font-size:0.68rem;font-weight:900;display:none;box-shadow:0 2px 4px rgba(0,0,0,0.15);}
+.qn-score.show{display:block;}
+
+/* ── QUIZ QUESTION SCREEN ── */
+.q-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;}
+.q-counter{font-size:clamp(0.9rem,2vw,1.3rem);color:#bbb;}
+.q-pips{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin:4px 0;}
+.pip{width:clamp(16px,3vw,22px);height:7px;border-radius:4px;background:#eee;transition:all .25s;}
+.pip.ok{background:#6BCB77;}
+.pip.no{background:#FF6B6B;}
+.pip.now{background:#4D96FF;transform:scaleY(1.5);}
+.char-wrap{width:clamp(88px,14vw,135px);height:clamp(88px,14vw,135px);animation:charFloat 2.5s ease-in-out infinite alternate;}
+@keyframes charFloat{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+.subj-badge{font-size:clamp(1.1rem,2.8vw,2rem);padding:7px 22px;border-radius:50px;color:white;display:inline-block;text-shadow:0 2px 4px rgba(0,0,0,0.15);}
+.q-sentence{font-size:clamp(1.15rem,3.3vw,2.2rem);color:#333;text-align:center;line-height:1.5;max-width:640px;margin:4px 0;}
+.q-blank{display:inline-block;min-width:clamp(90px,17vw,170px);height:clamp(32px,5vw,48px);border-bottom:5px solid #DDD;vertical-align:middle;margin:0 5px;}
+.choices{display:flex;gap:clamp(8px,2vw,14px);justify-content:center;flex-wrap:wrap;margin-top:10px;}
+.choice-btn{border:none;border-radius:18px;padding:clamp(10px,1.8vw,16px) clamp(12px,2.5vw,28px);cursor:pointer;font-family:inherit;font-weight:900;font-size:clamp(0.95rem,2.4vw,1.75rem);box-shadow:0 6px 0 #4A6FA0;transition:transform .15s,box-shadow .15s;background:#6C9BD2;color:white;text-shadow:0 2px 5px rgba(0,0,0,0.2);}
+.choice-btn:hover{transform:translateY(-4px);box-shadow:0 10px 0 #4A6FA0;}
+.choice-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #4A6FA0;}
+.choice-btn.correct{animation:cBounce .55s ease;background:#6BCB77 !important;box-shadow:0 6px 0 #3DAD8E !important;outline:5px solid #A8F0C0;}
+.choice-btn.wrong{animation:cShake .4s ease;background:#FF6B6B !important;box-shadow:0 6px 0 #D94040 !important;}
+.feedback{font-size:clamp(1rem,2.5vw,1.7rem);min-height:38px;margin-top:5px;text-align:center;color:#333;}
+@keyframes cBounce{0%{transform:scale(1)}40%{transform:scale(1.3) rotate(-5deg)}70%{transform:scale(0.93) rotate(3deg)}100%{transform:scale(1)}}
+@keyframes cShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+
+/* ── SCORE SCREEN ── */
+.score-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;}
+.score-trophy{font-size:clamp(3.5rem,10vw,6rem);animation:titleBounce 1.4s ease-in-out infinite alternate;}
+@keyframes titleBounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-14px) rotate(2deg)}}
+.score-title{font-size:clamp(1.6rem,4.5vw,3rem);color:#333;text-align:center;}
+.score-badge{font-size:clamp(2rem,6vw,4rem);padding:12px 32px;border-radius:22px;color:white;text-align:center;text-shadow:0 4px 0 rgba(0,0,0,0.12);box-shadow:0 8px 0 rgba(0,0,0,0.12);}
+.score-msg{font-size:clamp(0.95rem,2.3vw,1.6rem);color:#888;text-align:center;}
+.score-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.sbtn{border:none;border-radius:50px;padding:11px 28px;font-family:inherit;font-weight:900;font-size:clamp(0.9rem,2vw,1.4rem);cursor:pointer;transition:transform .15s;}
+.sbtn:hover{transform:translateY(-3px);}
+.sbtn-redo{background:white;color:#555;box-shadow:0 5px 0 #ccc;border:2px solid #eee;}
+.sbtn-next{color:white;box-shadow:0 5px 0 rgba(0,0,0,0.15);}
+
+/* ── FINAL SUMMARY SCREEN ── */
+.summary-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;}
+.summary-title{font-size:clamp(1.8rem,5vw,3.5rem);color:#333;text-align:center;}
+.summary-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:540px;}
+.sum-card{background:white;border-radius:18px;padding:clamp(12px,2.2vw,20px);box-shadow:0 5px 0 rgba(0,0,0,0.09);display:flex;flex-direction:column;align-items:center;gap:5px;}
+.sum-card-title{font-size:clamp(0.8rem,1.8vw,1.2rem);color:#aaa;}
+.sum-card-score{font-size:clamp(1.3rem,3.5vw,2.5rem);font-weight:900;}
+.sum-card-stars{font-size:0.9rem;color:#FFD700;letter-spacing:2px;}
+.summary-total{background:white;border-radius:18px;padding:clamp(12px,2.2vw,20px) clamp(18px,3.5vw,32px);box-shadow:0 5px 0 rgba(0,0,0,0.09);text-align:center;width:100%;max-width:540px;}
+.summary-total-label{font-size:clamp(0.85rem,1.9vw,1.3rem);color:#aaa;margin-bottom:4px;}
+.summary-total-score{font-size:clamp(1.8rem,4.5vw,3.2rem);color:#FF9F43;}
+.btn-restart{border:none;border-radius:50px;padding:12px 40px;font-family:inherit;font-weight:900;font-size:clamp(0.95rem,2.2vw,1.5rem);cursor:pointer;color:white;background:linear-gradient(135deg,#4D96FF,#6BCB77);box-shadow:0 5px 0 rgba(0,0,0,0.15);transition:transform .15s;}
+.btn-restart:hover{transform:translateY(-3px);}
+
+/* EFFECTS */
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:2rem;animation:sparkleFly .9s ease forwards;}
+@keyframes sparkleFly{0%{opacity:1;transform:scale(0.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-90px)}}
+.confetti-piece{position:fixed;width:12px;height:12px;border-radius:3px;opacity:0;pointer-events:none;z-index:9999;animation:confettiFall 1.3s ease forwards;}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+
+<!-- nav arrows (hidden on score/summary screens) -->
+<button class="nav-btn" id="prevBtn" onclick="navPrev()" style="display:none;">◀</button>
+<button class="nav-btn" id="nextBtn" onclick="navNext()" style="display:none;">▶</button>
+<div id="dots"></div>
+
+<!-- BOTTOM QUICK-NAV — same as lesson files -->
+<div id="quick-nav">
+  <button class="qn-btn" style="background:#888" onclick="goHome()">Home</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" id="qn-0" style="background:#6BCB77" onclick="switchSection(0)">
+    ✅ Normal<span class="qn-score" id="qs-0"></span>
+  </button>
+  <button class="qn-btn" id="qn-1" style="background:#FF6B6B" onclick="switchSection(1)">
+    ❌ Negative<span class="qn-score" id="qs-1"></span>
+  </button>
+  <button class="qn-btn" id="qn-2" style="background:#C77DFF" onclick="switchSection(2)">
+    ❓ Question<span class="qn-score" id="qs-2"></span>
+  </button>
+  <button class="qn-btn" id="qn-3" style="background:#FF9F43" onclick="switchSection(3)">
+    🏆 Mix<span class="qn-score" id="qs-3"></span>
+  </button>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 0 — NORMAL QUIZ QUESTIONS
+════════════════════════════════════════════ -->
+<div class="screen active" id="sc-q-0-0"></div>
+<!-- remaining q screens for section 0 injected by JS -->
+
+<!-- SCORE SCREEN 0 -->
+<div class="screen" id="sc-score-0">
+  <div class="score-wrap">
+    <div class="score-trophy">🏆</div>
+    <div class="score-title">Normal Form Done!</div>
+    <div class="score-badge" id="sb-0" style="background:#6BCB77;box-shadow:0 8px 0 #3DAD8E;">— / 20</div>
+    <div class="score-msg" id="sm-0"></div>
+    <div class="score-btns">
+      <button class="sbtn sbtn-redo" onclick="redoSection(0)">🔁 Try Again</button>
+      <button class="sbtn sbtn-next" style="background:#FF6B6B;box-shadow:0 5px 0 #C0392B;" onclick="switchSection(1)">Next: Negative ❌</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 1 — NEGATIVE QUIZ QUESTIONS
+════════════════════════════════════════════ -->
+<div class="screen" id="sc-q-1-0"></div>
+
+<!-- SCORE SCREEN 1 -->
+<div class="screen" id="sc-score-1">
+  <div class="score-wrap">
+    <div class="score-trophy">🏆</div>
+    <div class="score-title">Negative Form Done!</div>
+    <div class="score-badge" id="sb-1" style="background:#FF6B6B;box-shadow:0 8px 0 #C0392B;">— / 20</div>
+    <div class="score-msg" id="sm-1"></div>
+    <div class="score-btns">
+      <button class="sbtn sbtn-redo" onclick="redoSection(1)">🔁 Try Again</button>
+      <button class="sbtn sbtn-next" style="background:#C77DFF;box-shadow:0 5px 0 #8338EC;" onclick="switchSection(2)">Next: Question ❓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 2 — QUESTION QUIZ QUESTIONS
+════════════════════════════════════════════ -->
+<div class="screen" id="sc-q-2-0"></div>
+
+<!-- SCORE SCREEN 2 -->
+<div class="screen" id="sc-score-2">
+  <div class="score-wrap">
+    <div class="score-trophy">🏆</div>
+    <div class="score-title">Question Form Done!</div>
+    <div class="score-badge" id="sb-2" style="background:#C77DFF;box-shadow:0 8px 0 #8338EC;">— / 20</div>
+    <div class="score-msg" id="sm-2"></div>
+    <div class="score-btns">
+      <button class="sbtn sbtn-redo" onclick="redoSection(2)">🔁 Try Again</button>
+      <button class="sbtn sbtn-next" style="background:#FF9F43;box-shadow:0 5px 0 #E67E00;" onclick="switchSection(3)">Next: Mix 🏆</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SECTION 3 — MIX QUIZ QUESTIONS
+════════════════════════════════════════════ -->
+<div class="screen" id="sc-q-3-0"></div>
+
+<!-- SCORE SCREEN 3 -->
+<div class="screen" id="sc-score-3">
+  <div class="score-wrap">
+    <div class="score-trophy">🎉</div>
+    <div class="score-title">Mix Done!</div>
+    <div class="score-badge" id="sb-3" style="background:#FF9F43;box-shadow:0 8px 0 #E67E00;">— / 20</div>
+    <div class="score-msg" id="sm-3"></div>
+    <div class="score-btns">
+      <button class="sbtn sbtn-redo" onclick="redoSection(3)">🔁 Try Again</button>
+      <button class="sbtn sbtn-next" style="background:#4D96FF;box-shadow:0 5px 0 #2B7FE0;" onclick="showFinal()">See Final Score 🌟</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     FINAL SUMMARY
+════════════════════════════════════════════ -->
+<div class="screen" id="sc-final">
+  <div class="summary-wrap">
+    <div class="summary-title">🌟 Final Results!</div>
+    <div class="summary-cards">
+      <div class="sum-card"><div class="sum-card-title">✅ Normal</div><div class="sum-card-score" id="fs-0" style="color:#6BCB77;">—</div><div class="sum-card-stars" id="fst-0"></div></div>
+      <div class="sum-card"><div class="sum-card-title">❌ Negative</div><div class="sum-card-score" id="fs-1" style="color:#FF6B6B;">—</div><div class="sum-card-stars" id="fst-1"></div></div>
+      <div class="sum-card"><div class="sum-card-title">❓ Question</div><div class="sum-card-score" id="fs-2" style="color:#C77DFF;">—</div><div class="sum-card-stars" id="fst-2"></div></div>
+      <div class="sum-card"><div class="sum-card-title">🏆 Mix</div><div class="sum-card-score" id="fs-3" style="color:#FF9F43;">—</div><div class="sum-card-stars" id="fst-3"></div></div>
+    </div>
+    <div class="summary-total">
+      <div class="summary-total-label">Total Score</div>
+      <div class="summary-total-score" id="total-sc">— / 80</div>
+    </div>
+    <button class="btn-restart" onclick="restartAll()">🔁 Start Over</button>
+  </div>
+</div>
+
+<script>
+/* ── CHARACTERS ── */
+function mkChar(skin,shirt,hair,acc){
+  const h=hair==='boy'?`<ellipse cx="60" cy="20" rx="30" ry="15" fill="#5C3D11"/>`:hair==='dark'?`<ellipse cx="60" cy="20" rx="30" ry="15" fill="#1A1A2E"/>`:`<path d="M28 22 Q60 6 92 22 Q86 46 60 48 Q34 46 28 22Z" fill="${hair}"/><ellipse cx="60" cy="15" rx="32" ry="16" fill="${hair}"/>`;
+  return `<svg viewBox="0 0 120 130">${h}<circle cx="60" cy="42" r="28" fill="${skin}"/><rect x="26" y="68" width="68" height="52" rx="18" fill="${shirt}"/>${acc?`<rect x="26" y="68" width="68" height="14" rx="9" fill="${acc}"/>`:''}<circle cx="44" cy="38" r="5.5" fill="#333"/><circle cx="76" cy="38" r="5.5" fill="#333"/><circle cx="45" cy="36" r="2" fill="white"/><circle cx="77" cy="36" r="2" fill="white"/><path d="M48 54 Q60 62 72 54" fill="none" stroke="${skin==='#C8A882'?'#8B6040':'#B07840'}" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="44" cy="50" rx="7" ry="4" fill="${skin==='#C8A882'?'#D4906A':'#F5A882'}" opacity="0.5"/><ellipse cx="76" cy="50" rx="7" ry="4" fill="${skin==='#C8A882'?'#D4906A':'#F5A882'}" opacity="0.5"/></svg>`;
+}
+const CHARS={
+  BOY:  mkChar('#FFDBA4','#4D96FF','boy','#3580C0'),
+  GIRL: mkChar('#FFDBA4','#FF6B6B','#C0392B',null),
+  MIKE: mkChar('#FFDBA4','#FF9F43','boy','#E67E00'),
+  SARA: mkChar('#FFDBA4','#C77DFF','#8338EC',null),
+  LISA: mkChar('#C8A882','#6BCB77','#2BAE66',null),
+  TOM:  mkChar('#C8A882','#1A3A6E','dark','#112850'),
+  GROUP:`<svg viewBox="0 0 130 110"><ellipse cx="36" cy="36" rx="22" ry="22" fill="#FFDBA4"/><ellipse cx="36" cy="23" rx="23" ry="12" fill="#5C3D11"/><rect x="16" y="56" width="40" height="38" rx="12" fill="#6BCB77"/><circle cx="28" cy="33" r="4" fill="#333"/><circle cx="44" cy="33" r="4" fill="#333"/><path d="M30 44 Q36 49 42 44" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="90" cy="36" rx="22" ry="22" fill="#C8A882"/><path d="M66 20 Q90 8 114 20 Q108 38 90 40 Q72 38 66 20Z" fill="#C0392B"/><rect x="70" y="56" width="40" height="38" rx="12" fill="#FF9F43"/><circle cx="82" cy="33" r="4" fill="#333"/><circle cx="98" cy="33" r="4" fill="#333"/><path d="M84 44 Q90 49 96 44" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  CROWD:`<svg viewBox="0 0 150 110"><ellipse cx="22" cy="36" rx="18" ry="18" fill="#FFDBA4"/><ellipse cx="22" cy="24" rx="19" ry="10" fill="#5C3D11"/><rect x="6" y="52" width="32" height="34" rx="10" fill="#C77DFF"/><ellipse cx="75" cy="32" rx="20" ry="20" fill="#C8A882"/><path d="M53 18 Q75 6 97 18 Q91 38 75 40 Q59 38 53 18Z" fill="#2BAE66"/><rect x="57" y="50" width="36" height="38" rx="12" fill="#FF6B6B"/><ellipse cx="128" cy="36" rx="18" ry="18" fill="#FFDBA4"/><ellipse cx="128" cy="24" rx="19" ry="10" fill="#1A1A2E"/><rect x="112" y="52" width="32" height="34" rx="10" fill="#4D96FF"/></svg>`,
+};
+
+/* ── DATA ── */
+const ALL_QS = [
+  [
+  {s:"I",sc:"#4D96FF",ck:"BOY",q:"I _______ breakfast at 7 every morning.",c:["eat", "eats", "eating"],a:"eat",f:"I eat \u2192 verb stays the same!"},
+  {s:"You",sc:"#FF9F43",ck:"MIKE",q:"You _______ to school by bus every day.",c:["goes", "go", "going"],a:"go",f:"You go \u2192 verb stays the same!"},
+  {s:"We",sc:"#6BCB77",ck:"GROUP",q:"We _______ football every Saturday.",c:["plays", "playing", "play"],a:"play",f:"We play \u2192 verb stays the same!"},
+  {s:"They",sc:"#C77DFF",ck:"CROWD",q:"They _______ TV after dinner.",c:["watches", "watch", "watching"],a:"watch",f:"They watch \u2192 verb stays the same!"},
+  {s:"I",sc:"#4D96FF",ck:"BOY",q:"I _______ my homework every evening.",c:["does", "doing", "do"],a:"do",f:"I do \u2192 verb stays the same!"},
+  {s:"You",sc:"#FF9F43",ck:"MIKE",q:"You _______ very fast!",c:["runs", "running", "run"],a:"run",f:"You run \u2192 verb stays the same!"},
+  {s:"We",sc:"#6BCB77",ck:"GROUP",q:"We _______ to the park on Sundays.",c:["goes", "going", "go"],a:"go",f:"We go \u2192 verb stays the same!"},
+  {s:"They",sc:"#C77DFF",ck:"CROWD",q:"They _______ lunch at school.",c:["eats", "eating", "eat"],a:"eat",f:"They eat \u2192 verb stays the same!"},
+  {s:"He",sc:"#FF9F43",ck:"MIKE",q:"He _______ breakfast at 7 every morning.",c:["eat", "eating", "eats"],a:"eats",f:"He eats \u2192 He/She/It add +s!"},
+  {s:"She",sc:"#FF6B6B",ck:"GIRL",q:"She _______ to school by bike.",c:["ride", "riding", "rides"],a:"rides",f:"She rides \u2192 +s!"},
+  {s:"Tom",sc:"#1A3A6E",ck:"TOM",q:"Tom _______ football every weekend.",c:["play", "playing", "plays"],a:"plays",f:"Tom plays \u2192 He/She/It add +s!"},
+  {s:"Lisa",sc:"#6BCB77",ck:"LISA",q:"Lisa _______ very quickly.",c:["walk", "walking", "walks"],a:"walks",f:"Lisa walks \u2192 +s!"},
+  {s:"She",sc:"#FF6B6B",ck:"GIRL",q:"She _______ to school at 8 every day.",c:["go", "going", "goes"],a:"goes",f:"She goes \u2192 go+es!"},
+  {s:"He",sc:"#FF9F43",ck:"MIKE",q:"He _______ his hands before eating.",c:["wash", "washing", "washes"],a:"washes",f:"He washes \u2192 wash+es!"},
+  {s:"Sara",sc:"#C77DFF",ck:"SARA",q:"Sara _______ TV every night.",c:["watch", "watching", "watches"],a:"watches",f:"Sara watches \u2192 watch+es!"},
+  {s:"She",sc:"#FF6B6B",ck:"GIRL",q:"She _______ English every day.",c:["study", "studying", "studies"],a:"studies",f:"She studies \u2192 study\u2192ies!"},
+  {s:"It",sc:"#6BCB77",ck:"GROUP",q:"The bird _______ south every winter.",c:["fly", "flying", "flies"],a:"flies",f:"It flies \u2192 fly\u2192ies!"},
+  {s:"Mike",sc:"#FF9F43",ck:"MIKE",q:"Mike _______ English very well.",c:["speak", "speaking", "speaks"],a:"speaks",f:"Mike speaks \u2192 +s!"},
+  {s:"I",sc:"#4D96FF",ck:"BOY",q:"I _______ up at 6 every morning.",c:["wakes", "waking", "wake"],a:"wake",f:"I wake \u2192 verb stays the same!"},
+  {s:"She",sc:"#FF6B6B",ck:"GIRL",q:"She _______ her teeth twice a day.",c:["brush", "brushing", "brushes"],a:"brushes",f:"She brushes \u2192 brush+es!"}
+],
+  [
+  {s:"I",sc:"#FF6B6B",ck:"BOY",q:"I _______ eat meat.",c:["don't", "doesn't", "not"],a:"don't",f:"I don't \u2192 I/You/We/They use DON'T!"},
+  {s:"She",sc:"#C0392B",ck:"GIRL",q:"She _______ like scary movies.",c:["don't", "doesn't", "isn't"],a:"doesn't",f:"She doesn't \u2192 He/She/It use DOESN'T!"},
+  {s:"They",sc:"#6BCB77",ck:"CROWD",q:"They _______ play chess.",c:["doesn't", "don't", "no"],a:"don't",f:"They don't \u2192 use DON'T!"},
+  {s:"Tom",sc:"#1A3A6E",ck:"TOM",q:"Tom _______ drink coffee.",c:["don't", "doesn't", "no does"],a:"doesn't",f:"Tom = He, so DOESN'T!"},
+  {s:"We",sc:"#6BCB77",ck:"GROUP",q:"We _______ go to school on Sunday.",c:["doesn't", "don't", "not go"],a:"don't",f:"We don't \u2192 use DON'T!"},
+  {s:"Lisa",sc:"#6BCB77",ck:"LISA",q:"Lisa _______ watch TV at night.",c:["don't", "doesn't", "not watch"],a:"doesn't",f:"Lisa = She, so DOESN'T!"},
+  {s:"You",sc:"#4D96FF",ck:"BOY",q:"You _______ like cold weather.",c:["doesn't", "don't", "not"],a:"don't",f:"You don't \u2192 use DON'T!"},
+  {s:"He",sc:"#FF9F43",ck:"MIKE",q:"He _______ have a car.",c:["don't", "doesn't", "no"],a:"doesn't",f:"He doesn't \u2192 use DOESN'T!"},
+  {s:"I",sc:"#4D96FF",ck:"BOY",q:"I _______ know the answer.",c:["doesn't", "don't", "not"],a:"don't",f:"I don't \u2192 use DON'T!"},
+  {s:"Sara",sc:"#C77DFF",ck:"SARA",q:"Sara _______ study on weekends.",c:["don't", "doesn't", "no"],a:"doesn't",f:"Sara = She, so DOESN'T!"},
+  {s:"He",sc:"#FF9F43",ck:"MIKE",q:"He doesn't _______ breakfast.",c:["eats", "eating", "eat"],a:"eat",f:"After doesn't \u2192 base verb! eat (not eats)"},
+  {s:"You",sc:"#4D96FF",ck:"BOY",q:"You don't _______ very fast.",c:["runs", "running", "run"],a:"run",f:"After don't \u2192 base verb! run (not runs)"},
+  {s:"She",sc:"#FF6B6B",ck:"GIRL",q:"She doesn't _______ to school on Sunday.",c:["goes", "going", "go"],a:"go",f:"After doesn't \u2192 base verb! go (not goes)"},
+  {s:"They",sc:"#6BCB77",ck:"CROWD",q:"They don't _______ meat.",c:["eats", "eating", "eat"],a:"eat",f:"After don't \u2192 base verb! eat"},
+  {s:"He",sc:"#FF9F43",ck:"MIKE",q:"He doesn't _______ TV at night.",c:["watches", "watching", "watch"],a:"watch",f:"After doesn't \u2192 base verb! watch (not watches)"},
+  {s:"I",sc:"#4D96FF",ck:"BOY",q:"I don't _______ coffee.",c:["drinks", "drinking", "drink"],a:"drink",f:"After don't \u2192 base verb! drink"},
+  {s:"Sara",sc:"#C77DFF",ck:"SARA",q:"Sara doesn't _______ chess.",c:["plays", "playing", "play"],a:"play",f:"After doesn't \u2192 base verb! play (not plays)"},
+  {s:"We",sc:"#6BCB77",ck:"GROUP",q:"We don't _______ on Sundays.",c:["works", "working", "work"],a:"work",f:"After don't \u2192 base verb! work"},
+  {s:"Tom",sc:"#1A3A6E",ck:"TOM",q:"Tom doesn't _______ English at home.",c:["studies", "studying", "study"],a:"study",f:"After doesn't \u2192 base verb! study (not studies)"},
+  {s:"You",sc:"#4D96FF",ck:"BOY",q:"You don't _______ the bus to school.",c:["takes", "taking", "take"],a:"take",f:"After don't \u2192 base verb! take"}
+],
+  [
+  {s:"You",sc:"#C77DFF",ck:"BOY",q:"_______ you like pizza?",c:["Does", "Do", "Have"],a:"Do",f:"Do you \u2192 You uses DO!"},
+  {s:"She",sc:"#4D96FF",ck:"GIRL",q:"_______ she play football?",c:["Do", "Does", "Is"],a:"Does",f:"Does she \u2192 She uses DOES!"},
+  {s:"They",sc:"#C77DFF",ck:"CROWD",q:"_______ they watch TV at night?",c:["Does", "Do", "Are"],a:"Do",f:"Do they \u2192 They use DO!"},
+  {s:"He",sc:"#4D96FF",ck:"MIKE",q:"_______ he eat breakfast?",c:["Do", "Does", "Is"],a:"Does",f:"Does he \u2192 He uses DOES!"},
+  {s:"We",sc:"#C77DFF",ck:"GROUP",q:"_______ we have class today?",c:["Does", "Do", "Are"],a:"Do",f:"Do we \u2192 We use DO!"},
+  {s:"Lisa",sc:"#4D96FF",ck:"LISA",q:"_______ Lisa study every day?",c:["Do", "Does", "Has"],a:"Does",f:"Lisa = She, so DOES!"},
+  {s:"I",sc:"#C77DFF",ck:"BOY",q:"_______ I need an umbrella today?",c:["Does", "Am", "Do"],a:"Do",f:"Do I \u2192 I uses DO!"},
+  {s:"Tom",sc:"#4D96FF",ck:"TOM",q:"_______ Tom go to school by bike?",c:["Do", "Does", "Did"],a:"Does",f:"Tom = He, so DOES!"},
+  {s:"You",sc:"#C77DFF",ck:"BOY",q:"_______ you speak English at home?",c:["Does", "Do", "Are"],a:"Do",f:"Do you \u2192 You uses DO!"},
+  {s:"Sara",sc:"#4D96FF",ck:"SARA",q:"_______ Sara come to school every day?",c:["Do", "Does", "Has"],a:"Does",f:"Sara = She, so DOES!"},
+  {s:"She",sc:"#4D96FF",ck:"GIRL",q:"Does she _______ dogs?",c:["likes", "liking", "like"],a:"like",f:"After Does \u2192 base verb! like (not likes)"},
+  {s:"They",sc:"#C77DFF",ck:"CROWD",q:"Do they _______ football?",c:["plays", "playing", "play"],a:"play",f:"After Do \u2192 base verb! play (not plays)"},
+  {s:"He",sc:"#4D96FF",ck:"MIKE",q:"Does he _______ to school by bus?",c:["goes", "going", "go"],a:"go",f:"After Does \u2192 base verb! go (not goes)"},
+  {s:"You",sc:"#C77DFF",ck:"BOY",q:"Do you _______ lunch at school?",c:["eats", "eating", "eat"],a:"eat",f:"After Do \u2192 base verb! eat"},
+  {s:"Lisa",sc:"#4D96FF",ck:"LISA",q:"Does Lisa _______ every morning?",c:["runs", "running", "run"],a:"run",f:"After Does \u2192 base verb! run (not runs)"},
+  {s:"You",sc:"#C77DFF",ck:"BOY",q:"Do you like ice cream? Yes, I _______.",c:["does", "do", "am"],a:"do",f:"Yes, I do. \u2192 Short answer uses DO!"},
+  {s:"She",sc:"#4D96FF",ck:"GIRL",q:"Does she like cats? Yes, she _______.",c:["do", "does", "is"],a:"does",f:"Yes, she does. \u2192 Short answer uses DOES!"},
+  {s:"He",sc:"#4D96FF",ck:"MIKE",q:"Does he play chess? No, he _______.",c:["don't", "doesn't", "does"],a:"doesn't",f:"No, he doesn't. \u2192 Negative short answer!"},
+  {s:"They",sc:"#C77DFF",ck:"CROWD",q:"Do they eat meat? No, they _______.",c:["doesn't", "don't", "do"],a:"don't",f:"No, they don't. \u2192 Negative short answer!"},
+  {s:"Tom",sc:"#4D96FF",ck:"TOM",q:"Does Tom speak French? No, he _______.",c:["don't", "do", "doesn't"],a:"doesn't",f:"No, he doesn't. \u2192 Negative short answer!"}
+],
+  [
+  {s:"I",sc:"#4D96FF",ck:"BOY",q:"I _______ English at school.",c:["studies", "studying", "study"],a:"study",f:"I study \u2192 verb stays the same!"},
+  {s:"He",sc:"#FF9F43",ck:"MIKE",q:"He _______ the bus to school.",c:["take", "taking", "takes"],a:"takes",f:"He takes \u2192 +s!"},
+  {s:"She",sc:"#FF6B6B",ck:"GIRL",q:"She _______ a shower every morning.",c:["take", "taking", "takes"],a:"takes",f:"She takes \u2192 +s!"},
+  {s:"They",sc:"#6BCB77",ck:"CROWD",q:"They _______ lunch at noon.",c:["eats", "eating", "eat"],a:"eat",f:"They eat \u2192 verb stays the same!"},
+  {s:"Lisa",sc:"#6BCB77",ck:"LISA",q:"Lisa _______ to work by train.",c:["travel", "traveling", "travels"],a:"travels",f:"Lisa travels \u2192 +s!"},
+  {s:"I",sc:"#FF6B6B",ck:"BOY",q:"I _______ like spiders.",c:["doesn't", "don't", "not"],a:"don't",f:"I don't \u2192 use DON'T!"},
+  {s:"He",sc:"#FF9F43",ck:"MIKE",q:"He _______ play video games.",c:["don't", "doesn't", "no"],a:"doesn't",f:"He doesn't \u2192 use DOESN'T!"},
+  {s:"She",sc:"#FF6B6B",ck:"GIRL",q:"She doesn't _______ coffee.",c:["drinks", "drinking", "drink"],a:"drink",f:"After doesn't \u2192 base verb! drink"},
+  {s:"We",sc:"#6BCB77",ck:"GROUP",q:"We _______ eat fish.",c:["doesn't", "don't", "no"],a:"don't",f:"We don't \u2192 use DON'T!"},
+  {s:"Tom",sc:"#1A3A6E",ck:"TOM",q:"Tom doesn't _______ TV in the morning.",c:["watches", "watching", "watch"],a:"watch",f:"After doesn't \u2192 base verb! watch"},
+  {s:"You",sc:"#C77DFF",ck:"BOY",q:"_______ you eat breakfast every day?",c:["Does", "Do", "Are"],a:"Do",f:"Do you \u2192 You uses DO!"},
+  {s:"She",sc:"#8338EC",ck:"SARA",q:"_______ she walk to school?",c:["Do", "Does", "Is"],a:"Does",f:"Does she \u2192 She uses DOES!"},
+  {s:"He",sc:"#4D96FF",ck:"MIKE",q:"Does he _______ meat?",c:["eats", "eating", "eat"],a:"eat",f:"After Does \u2192 base verb! eat"},
+  {s:"They",sc:"#C77DFF",ck:"CROWD",q:"_______ they have a pet?",c:["Does", "Do", "Have"],a:"Do",f:"Do they \u2192 They use DO!"},
+  {s:"She",sc:"#4D96FF",ck:"GIRL",q:"Does she like pizza? Yes, she _______.",c:["do", "does", "is"],a:"does",f:"Yes, she does. \u2192 Short answer!"},
+  {s:"He",sc:"#FF9F43",ck:"MIKE",q:"He _______ his teeth every morning.",c:["brush", "brushing", "brushes"],a:"brushes",f:"He brushes \u2192 brush+es!"},
+  {s:"I",sc:"#4D96FF",ck:"BOY",q:"I _______ go to school on Sunday.",c:["doesn't", "don't", "not"],a:"don't",f:"I don't \u2192 use DON'T!"},
+  {s:"Lisa",sc:"#6BCB77",ck:"LISA",q:"_______ Lisa speak Japanese?",c:["Do", "Does", "Is"],a:"Does",f:"Lisa = She, so DOES!"},
+  {s:"They",sc:"#6BCB77",ck:"CROWD",q:"They don't _______ on weekends.",c:["works", "working", "work"],a:"work",f:"After don't \u2192 base verb! work"},
+  {s:"She",sc:"#FF6B6B",ck:"GIRL",q:"She _______ to the gym three times a week.",c:["go", "going", "goes"],a:"goes",f:"She goes \u2192 go+es!"}
+]
+];
+const SEC_COLORS = ['#6BCB77','#FF6B6B','#C77DFF','#FF9F43'];
+const TOTAL = 20;
+
+/* ── STATE ── */
+const state = [0,1,2,3].map(() => ({qi:0, score:0, results:[], done:false, finalScore:null}));
+
+/* all screen IDs in order (built per section + score + final) */
+let screenOrder = [];
+let currentScreenIdx = 0;
+
+function buildScreenOrder() {
+  screenOrder = [];
+  for(let si=0;si<4;si++) {
+    for(let qi=0;qi<TOTAL;qi++) screenOrder.push(`sc-q-${si}-${qi}`);
+    screenOrder.push(`sc-score-${si}`);
+  }
+  screenOrder.push('sc-final');
+}
+
+/* ── GENERATE QUESTION SCREENS IN DOM ── */
+function buildQuestionScreens() {
+  for(let si=0;si<4;si++) {
+    for(let qi=0;qi<TOTAL;qi++) {
+      const id = `sc-q-${si}-${qi}`;
+      if(!document.getElementById(id)) {
+        const el = document.createElement('div');
+        el.className = 'screen';
+        el.id = id;
+        document.body.appendChild(el);
+      }
+    }
+  }
+}
+
+/* ── DOTS ── */
+function buildDots() {
+  const d = document.getElementById('dots');
+  d.innerHTML = '';
+  // dots represent the 4 sections + final
+  const total = 5;
+  for(let i=0;i<total;i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i===0?' active':'');
+    d.appendChild(dot);
+  }
+}
+
+function updateDots(si) {
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((d,i) => d.classList.toggle('active', i===si));
+}
+
+/* ── SHOW SCREEN ── */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if(el) el.classList.add('active');
+}
+
+/* ── RENDER QUESTION ── */
+function renderQuestion(si, qi) {
+  const q = ALL_QS[si][qi];
+  const s = state[si];
+  const id = `sc-q-${si}-${qi}`;
+  const el = document.getElementById(id);
+
+  // pip row
+  const pips = ALL_QS[si].map((_,i) => {
+    let cls = 'pip';
+    if(i < s.results.length) cls += s.results[i]==='ok' ? ' ok' : ' no';
+    else if(i===qi) cls += ' now';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="q-wrap">
+      <div class="q-counter">Question ${qi+1} of ${TOTAL}</div>
+      <div class="q-pips">${pips}</div>
+      <div class="char-wrap">${CHARS[q.ck]}</div>
+      <div class="subj-badge" style="background:${q.sc}">${q.s}</div>
+      <div class="q-sentence">${q.q.replace('_______','<span class="q-blank"></span>')}</div>
+      <div class="choices" id="ch-${si}-${qi}"></div>
+      <div class="feedback" id="fb-${si}-${qi}"></div>
+    </div>`;
+
+  // progress bar
+  const pct = ((si * TOTAL + qi) / (4 * TOTAL)) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-bar').style.background = SEC_COLORS[si];
+
+  const wrap = document.getElementById(`ch-${si}-${qi}`);
+  [...q.c].sort(() => Math.random() - 0.5).forEach(choice => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = choice;
+    btn.onclick = () => handleAnswer(si, qi, choice === q.a, btn, q.f);
+    wrap.appendChild(btn);
+  });
+}
+
+/* ── HANDLE ANSWER ── */
+function handleAnswer(si, qi, correct, btn, feedback) {
+  const s = state[si];
+  const allBtns = document.querySelectorAll(`#ch-${si}-${qi} .choice-btn`);
+  allBtns.forEach(b => b.disabled = true);
+
+  if(correct) {
+    s.score++;
+    s.results.push('ok');
+    btn.classList.add('correct');
+    document.getElementById(`fb-${si}-${qi}`).textContent = feedback;
+    spawnSparkle(btn.getBoundingClientRect().left+btn.offsetWidth/2, btn.getBoundingClientRect().top+btn.offsetHeight/2);
+    confetti();
+  } else {
+    s.results.push('no');
+    btn.classList.add('wrong');
+    document.getElementById(`fb-${si}-${qi}`).textContent = 'Try again next time!';
+  }
+
+  setTimeout(() => {
+    const nextQi = qi + 1;
+    if(nextQi >= TOTAL) {
+      showSectionScore(si);
+    } else {
+      state[si].qi = nextQi;
+      renderQuestion(si, nextQi);
+      showScreen(`sc-q-${si}-${nextQi}`);
+    }
+  }, 1400);
+}
+
+/* ── SECTION SCORE ── */
+function showSectionScore(si) {
+  const s = state[si];
+  s.done = true;
+  s.finalScore = s.score;
+
+  document.getElementById(`sb-${si}`).textContent = `${s.score} / 20`;
+  const pct = s.score / TOTAL;
+  document.getElementById(`sm-${si}`).textContent =
+    pct===1 ? '🎉 Perfect score! Amazing!' :
+    pct>=0.8 ? '🌟 Great job! Almost perfect!' :
+    pct>=0.6 ? '👍 Good work! Keep practising!' :
+    '💪 Keep going! You can do it!';
+
+  // update nav badge
+  const qs = document.getElementById(`qs-${si}`);
+  qs.textContent = `${s.score}/20`;
+  qs.classList.add('show');
+
+  document.getElementById('progress-bar').style.width = (((si+1)*TOTAL)/(4*TOTAL)*100) + '%';
+  showScreen(`sc-score-${si}`);
+  updateDots(si);
+  if(pct===1) confetti();
+}
+
+/* ── REDO SECTION ── */
+function redoSection(si) {
+  state[si].qi=0; state[si].score=0; state[si].results=[];
+  renderQuestion(si, 0);
+  showScreen(`sc-q-${si}-0`);
+  updateDots(si);
+}
+
+/* ── SWITCH SECTION (nav button) ── */
+function switchSection(si) {
+  updateDots(si);
+  updateActiveNav(si);
+  const s = state[si];
+  if(s.done) {
+    showScreen(`sc-score-${si}`);
+  } else {
+    renderQuestion(si, s.qi);
+    showScreen(`sc-q-${si}-${s.qi}`);
+  }
+  const pct = (si * TOTAL) / (4 * TOTAL) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-bar').style.background = SEC_COLORS[si];
+}
+
+function updateActiveNav(si) {
+  [0,1,2,3].forEach(i => {
+    const btn = document.getElementById(`qn-${i}`);
+    btn && btn.classList.toggle('active-nav', i===si);
+  });
+}
+
+/* ── FINAL SUMMARY ── */
+function showFinal() {
+  let total = 0;
+  [0,1,2,3].forEach(si => {
+    const sc = state[si].finalScore ?? 0;
+    document.getElementById(`fs-${si}`).textContent = sc + ' / 20';
+    const pct = sc / TOTAL;
+    document.getElementById(`fst-${si}`).textContent = pct===1?'⭐⭐⭐':pct>=0.8?'⭐⭐':pct>=0.5?'⭐':'';
+    total += sc;
+  });
+  document.getElementById('total-sc').textContent = total + ' / 80';
+  document.getElementById('progress-bar').style.width = '100%';
+  document.getElementById('progress-bar').style.background = '#FFD93D';
+  showScreen('sc-final');
+  updateDots(4);
+  [0,1,2,3].forEach(i => document.getElementById(`qn-${i}`)?.classList.remove('active-nav'));
+  confetti();
+}
+
+/* ── RESTART ALL ── */
+function restartAll() {
+  [0,1,2,3].forEach(si => {
+    state[si].qi=0; state[si].score=0; state[si].results=[]; state[si].done=false; state[si].finalScore=null;
+    const qs = document.getElementById(`qs-${si}`);
+    qs.textContent=''; qs.classList.remove('show');
+    renderQuestion(si, 0);
+  });
+  switchSection(0);
+}
+
+/* ── HOME ── */
+function goHome() { history.back(); }
+
+/* ── PREV/NEXT (not needed but kept invisible) ── */
+function navPrev(){} function navNext(){}
+
+/* ── EFFECTS ── */
+function spawnSparkle(x,y){
+  const sparks=['✨','⭐','🌟','💫'];
+  for(let i=0;i<3;i++){
+    const el=document.createElement('div');el.className='sparkle';
+    el.textContent=sparks[Math.floor(Math.random()*sparks.length)];
+    el.style.cssText=`left:${x-20+(Math.random()-.5)*60}px;top:${y-20+(Math.random()-.5)*40}px;animation-delay:${i*.12}s`;
+    document.body.appendChild(el);setTimeout(()=>el.remove(),950);
+  }
+}
+function confetti(){
+  const cols=['#6BCB77','#FF6B6B','#C77DFF','#FF9F43','#4D96FF','#FFD93D','#fff'];
+  for(let i=0;i<28;i++){
+    const el=document.createElement('div');el.className='confetti-piece';
+    el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*30}vh;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.5}s;transform:rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(el);setTimeout(()=>el.remove(),1900);
+  }
+}
+
+/* ── BOOT ── */
+buildQuestionScreens();
+buildDots();
+[0,1,2,3].forEach(si => renderQuestion(si, 0));
+switchSection(0);
+</script>
+</body>
+</html>
