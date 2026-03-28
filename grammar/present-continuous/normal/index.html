@@ -335,7 +335,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold','Helvetica Rounded',Arial,sans
       <tr><th style="background:#C77DFF">Base Verb</th><th style="background:#9B5ECC;width:55px;"></th><th style="background:#8338EC">+ -ing</th></tr>
       <tr><td class="verb-base">ru<strong>n</strong></td><td class="verb-arrow">→</td><td><span class="verb-changed" style="background:#F5EEFF;color:#8338EC">run<strong>n</strong>ing</span></td></tr>
       <tr><td class="verb-base">si<strong>t</strong></td><td class="verb-arrow">→</td><td><span class="verb-changed" style="background:#F5EEFF;color:#8338EC">sit<strong>t</strong>ing</span></td></tr>
-      <tr><td class="verb-base">swa<strong>m</strong></td><td class="verb-arrow">→</td><td><span class="verb-changed" style="background:#F5EEFF;color:#8338EC">swim<strong>m</strong>ing</span></td></tr>
+      <tr><td class="verb-base">swi<strong>m</strong></td><td class="verb-arrow">→</td><td><span class="verb-changed" style="background:#F5EEFF;color:#8338EC">swim<strong>m</strong>ing</span></td></tr>
     </table>
   </div>
 </div>
@@ -477,16 +477,13 @@ const CHARS = {
 };
 
 // ── QUIZ DATA ────────────────────────────────────────────────
-// Each question tests: correct form of be (am/is/are) OR correct -ing form OR complete verb phrase
 const QUIZZES = [
-  // am / is / are — already 3 choices, just need shuffle
   { subject:'I',     subjectColor:'#4D96FF', charKey:'BOY',   sentence:'I _______ eating lunch right now.',        choices:['am','is','are'],              correct:'am',        feedback:'I → am eating!' },
   { subject:'She',   subjectColor:'#FF6B6B', charKey:'GIRL',  sentence:'She _______ dancing in the garden.',       choices:['am','is','are'],              correct:'is',        feedback:'She → is dancing!' },
   { subject:'They',  subjectColor:'#6BCB77', charKey:'CROWD', sentence:'They _______ watching a movie.',           choices:['am','is','are'],              correct:'are',       feedback:'They → are watching!' },
   { subject:'He',    subjectColor:'#FF9F43', charKey:'MIKE',  sentence:'He _______ running to school.',            choices:['am','is','are'],              correct:'is',        feedback:'He → is running!' },
   { subject:'We',    subjectColor:'#6BCB77', charKey:'GROUP', sentence:'We _______ playing outside.',              choices:['am','is','are'],              correct:'are',       feedback:'We → are playing!' },
   { subject:'You',   subjectColor:'#4D96FF', charKey:'BOY',   sentence:'You _______ sitting on the chair.',        choices:['am','is','are'],              correct:'are',       feedback:'You → are sitting!' },
-  // -ing form — upgraded to 3 choices
   { subject:'Lisa',  subjectColor:'#6BCB77', charKey:'LISA',  sentence:'Lisa is _______ a cake right now.',        choices:['make','makeing','making'],    correct:'making',    feedback:'make → drop e → making!' },
   { subject:'Tom',   subjectColor:'#1A3A6E', charKey:'TOM',   sentence:'Tom is _______ in the park.',              choices:['runing','run','running'],     correct:'running',   feedback:'run → double n → running!' },
   { subject:'Sara',  subjectColor:'#C77DFF', charKey:'SARA',  sentence:'Sara is _______ to music.',                choices:['listens','listen','listening'],correct:'listening', feedback:'listen → just add -ing!' },
