@@ -343,21 +343,30 @@ const FAMILY_BG   = '#EAFFF5';
 
 const SVG = {
   bin:`<svg viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
-<ellipse cx="100" cy="224" rx="70" ry="6" fill="rgba(0,0,0,.08)"/>
-<rect x="62" y="28" width="56" height="70" rx="6" fill="#607D8B"/>
-<rect x="58" y="28" width="64" height="14" rx="6" fill="#546E7A"/>
-<rect x="58" y="84" width="64" height="14" rx="6" fill="#546E7A"/>
-<line x1="62" y1="44" x2="118" y2="44" stroke="#455A64" stroke-width="3"/>
-<line x1="62" y1="58" x2="118" y2="58" stroke="#455A64" stroke-width="3"/>
-<line x1="62" y1="72" x2="118" y2="72" stroke="#455A64" stroke-width="3"/>
-<path d="M62 98 L58 210 L142 210 L138 98Z" fill="#78909C"/>
-<path d="M65 104 Q80 128 65 152 Q75 162 90 158" fill="none" stroke="#546E7A" stroke-width="4"/>
-<path d="M135 104 Q120 128 135 152 Q125 160 110 158" fill="none" stroke="#546E7A" stroke-width="4"/>
-<circle cx="80" cy="218" r="12" fill="#455A64"/>
-<circle cx="80" cy="218" r="6" fill="#607D8B"/>
-<circle cx="120" cy="218" r="12" fill="#455A64"/>
-<circle cx="120" cy="218" r="6" fill="#607D8B"/>
-<ellipse cx="74" cy="130" rx="5" ry="40" fill="rgba(255,255,255,.18)" transform="rotate(-5 74 130)"/>
+<ellipse cx="100" cy="224" rx="66" ry="6" fill="rgba(0,0,0,.08)"/>
+<!-- bin body -->
+<path d="M36 80 L40 206 Q40 214 100 214 Q160 214 160 206 L164 80Z" fill="#BDBDBD"/>
+<path d="M36 80 L40 206 Q40 214 100 214 Q160 214 160 206 L164 80Z" fill="none" stroke="#9E9E9E" stroke-width="2"/>
+<!-- body shine -->
+<ellipse cx="62" cy="148" rx="7" ry="52" fill="rgba(255,255,255,.25)" transform="rotate(-4 62 148)"/>
+<!-- body band lines -->
+<path d="M38 120 Q100 128 162 120" fill="none" stroke="#9E9E9E" stroke-width="2"/>
+<path d="M38 160 Q100 168 162 160" fill="none" stroke="#9E9E9E" stroke-width="2"/>
+<!-- lid base rim -->
+<ellipse cx="100" cy="80" rx="64" ry="16" fill="#9E9E9E"/>
+<ellipse cx="100" cy="74" rx="64" ry="16" fill="#BDBDBD"/>
+<!-- swing lid flap (slightly open / angled) -->
+<path d="M38 74 Q100 60 162 74 L158 54 Q100 40 42 54 Z" fill="#9E9E9E"/>
+<path d="M38 74 Q100 60 162 74 L158 54 Q100 40 42 54 Z" fill="none" stroke="#757575" stroke-width="2"/>
+<!-- lid knob -->
+<rect x="88" y="28" width="24" height="16" rx="8" fill="#757575"/>
+<rect x="90" y="26" width="20" height="8" rx="4" fill="#9E9E9E"/>
+<!-- foot pedal at bottom -->
+<rect x="60" y="206" width="80" height="12" rx="6" fill="#757575"/>
+<rect x="30" y="210" width="32" height="8" rx="4" fill="#9E9E9E"/>
+<!-- bin feet -->
+<rect x="48" y="212" width="16" height="8" rx="4" fill="#616161"/>
+<rect x="136" y="212" width="16" height="8" rx="4" fill="#616161"/>
 </svg>`,
   fin:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
 <rect x="0" y="118" width="240" height="82" rx="0" fill="#1565C0"/>
