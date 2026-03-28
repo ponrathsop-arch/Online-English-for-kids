@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>CVC – OT Family</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--bg:#FEF9F0;--text:#2C2C54;--muted:#aaa;--green:#2BAE66;--red:#E63946;--blue:#1A78C2;--orange:#FB5607;--shadow:0 8px 0 rgba(0,0,0,0.12);}
+body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:800;background:var(--bg);height:100vh;overflow:hidden;touch-action:manipulation;}
+#prog-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,.07);z-index:999;}
+#prog-bar{height:100%;background:linear-gradient(90deg,#FF6B6B,#FFD93D,#6BCB77);transition:width .4s;width:0%;}
+.screen{display:none;position:fixed;inset:0;flex-direction:column;align-items:center;justify-content:center;padding:14px 14px 86px;overflow-y:auto;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
+.screen.active{display:flex;}
+@keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+/* ══ BOTTOM TAB BAR ══ */
+#tab-bar{position:fixed;bottom:0;left:0;width:100%;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-top:2px solid #EDE8E0;z-index:998;display:flex;align-items:stretch;justify-content:space-around;padding:6px 4px 10px;gap:2px;}
+.tab{border:none;background:none;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 2px 4px;border-radius:14px;cursor:pointer;transition:background .18s,transform .13s;font-family:'Nunito',sans-serif;font-weight:900;}
+.tab:hover{background:rgba(0,0,0,.05);}
+.tab:active{transform:scale(.92);}
+.tab-icon{font-size:clamp(1.2rem,3.5vw,1.6rem);line-height:1;}
+.tab-label{font-size:clamp(.5rem,1.4vw,.72rem);color:#999;letter-spacing:.3px;white-space:nowrap;}
+.tab.active-tab .tab-icon{filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
+.tab.active-tab .tab-label{color:var(--text);}
+.tab.active-tab{background:rgba(0,0,0,.06);}
+.tab-pip{width:5px;height:5px;border-radius:50%;background:transparent;margin-top:2px;transition:background .2s;}
+.tab.active-tab .tab-pip{background:var(--orange);}
+.big-title{font-size:clamp(1.7rem,5.5vw,3rem);color:var(--text);text-align:center;line-height:1.2;}
+.sub{font-size:clamp(.82rem,2vw,1.15rem);color:var(--muted);text-align:center;margin-top:5px;}
+/* ══ HOME ══ */
+#s-home{background:linear-gradient(145deg,#E63946,#FB5607,#FFD93D,#8338EC);padding:14px 14px 86px;}
+.home-family{font-size:clamp(4rem,14vw,9rem);color:#fff;font-weight:900;text-shadow:0 8px 0 rgba(0,0,0,.12);animation:ibounce 1.8s ease-in-out infinite alternate;line-height:1;}
+@keyframes ibounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-20px) rotate(2deg)}}
+.home-words{font-size:clamp(.9rem,2.5vw,1.5rem);color:rgba(255,255,255,.92);letter-spacing:5px;text-align:center;margin:8px 0 20px;}
+.home-tap{font-size:clamp(1rem,2.8vw,1.6rem);color:rgba(255,255,255,.88);margin-top:18px;text-align:center;animation:ipulse 1.4s ease-in-out infinite alternate;}
+@keyframes ipulse{from{opacity:.5;transform:scale(.97)}to{opacity:1;transform:scale(1.03)}}
+.home-nav-hint{margin-top:14px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);border-radius:50px;padding:10px 20px;}
+.home-nav-hint span{font-size:.85rem;color:rgba(255,255,255,.88);font-weight:800;letter-spacing:.5px;}
+/* ══ PHONICS ══ */
+#s-phonics{background:var(--bg);}
+.ph-grid{display:flex;flex-wrap:wrap;gap:clamp(8px,1.8vw,14px);justify-content:center;max-width:560px;margin-top:16px;}
+.ph-tile{border:none;border-radius:18px;width:clamp(68px,12vw,104px);height:clamp(68px,12vw,104px);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;box-shadow:var(--shadow);transition:transform .13s,box-shadow .13s;font-family:'Nunito',sans-serif;font-weight:900;}
+.ph-tile:hover{transform:translateY(-5px);box-shadow:0 13px 0 rgba(0,0,0,.12);}.ph-tile:active{transform:translateY(2px);}
+.ph-ltr{font-size:clamp(1.8rem,4.2vw,2.8rem);text-shadow:0 3px 0 rgba(0,0,0,.15);}
+.ph-hint{font-size:clamp(.5rem,1vw,.75rem);letter-spacing:.4px;opacity:.82;}
+#zoom-ov{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:8000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;cursor:pointer;}
+#zoom-ov.show{display:flex;}
+#zoom-ltr{font-size:clamp(9rem,28vw,20rem);color:#fff;font-weight:900;font-family:'Nunito',sans-serif;text-shadow:0 12px 0 rgba(0,0,0,.22);animation:zoomPop .35s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes zoomPop{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+#zoom-ex{font-size:clamp(1.3rem,4vw,2.4rem);color:rgba(255,255,255,.78);font-family:'Nunito',sans-serif;font-weight:800;letter-spacing:3px;}
+#zoom-tap{font-size:clamp(.75rem,1.8vw,1.05rem);color:rgba(255,255,255,.45);font-family:'Nunito',sans-serif;margin-top:4px;}
+/* ══ BLEND ══ */
+#s-blend{background:var(--bg);}
+.b-dots{display:flex;gap:9px;align-items:center;margin-bottom:14px;}
+.b-dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
+.b-dot.cur{background:var(--orange);transform:scale(1.5);}.b-dot.done{background:var(--green);}
+.b-card{background:#fff;border-radius:26px;padding:20px 24px;box-shadow:0 12px 0 rgba(0,0,0,.1);display:flex;flex-direction:column;align-items:center;gap:12px;max-width:430px;width:100%;}
+.b-illo{width:clamp(100px,18vw,170px);height:clamp(100px,18vw,170px);display:flex;align-items:center;justify-content:center;animation:illustPop .5s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes illustPop{0%{transform:scale(0) rotate(-8deg)}80%{transform:scale(1.06) rotate(1deg)}100%{transform:scale(1)}}
+.b-illo svg{width:100%;height:100%;}
+.b-row{display:flex;align-items:center;gap:8px;font-size:clamp(2rem,6vw,3.8rem);font-weight:900;}
+.b-con{border-radius:12px;padding:3px 13px;transition:all .5s cubic-bezier(.175,.885,.32,1.275);}
+.b-fam{color:#FB5607;background:#FFF0E8;border-radius:12px;padding:3px 13px;transition:all .5s;}
+.b-plus,.b-arrow{color:#ccc;font-size:clamp(1.1rem,2.8vw,2rem);}
+.b-res{font-size:clamp(2.4rem,7vw,4.5rem);color:var(--text);opacity:0;transform:scale(.5);transition:all .55s cubic-bezier(.175,.885,.32,1.275);}
+.b-res.show{opacity:1;transform:scale(1);}
+.b-lbl{font-size:clamp(.88rem,2vw,1.25rem);color:var(--muted);letter-spacing:2px;text-align:center;}
+.blend-btn{border:none;border-radius:50px;padding:11px 32px;background:linear-gradient(135deg,var(--blue),#5BA3E8);color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.9rem,2vw,1.3rem);cursor:pointer;box-shadow:0 6px 0 #1056a0;transition:transform .13s;}
+.blend-btn:hover{transform:translateY(-3px);}.blend-btn:active{transform:translateY(2px);}
+.blend-skip{border:none;background:none;color:var(--muted);font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;text-decoration:underline;}
+/* ══ MATCH ══ */
+#s-match{background:var(--bg);}
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:500px;margin-top:12px;}
+.match-pics,.match-words{display:flex;flex-direction:column;gap:8px;}
+.m-pic{background:#fff;border-radius:16px;height:clamp(66px,11vw,88px);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:4px;box-shadow:0 5px 0 rgba(0,0,0,.08);border:3px solid transparent;transition:all .15s;}
+.m-pic:hover{transform:translateY(-3px);}
+.m-pic.selected{border-color:var(--blue);box-shadow:0 0 0 5px rgba(26,120,194,.18),0 5px 0 var(--blue);}
+.m-pic.matched{border-color:var(--green);background:#EAFFF5;pointer-events:none;opacity:.6;}
+.m-pic svg{height:100%;width:auto;max-width:100%;}
+.m-word{background:#fff;border-radius:16px;height:clamp(66px,11vw,88px);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 0 rgba(0,0,0,.08);border:3px solid transparent;font-size:clamp(1.6rem,4.2vw,2.4rem);color:var(--text);transition:all .15s;}
+.m-word:hover{transform:translateY(-3px);}
+.m-word.matched{border-color:var(--green);background:#EAFFF5;pointer-events:none;opacity:.6;}
+.m-word.ws,.m-pic.ws{animation:shake .4s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.match-score{font-size:clamp(.88rem,2vw,1.25rem);color:var(--muted);margin-top:8px;}
+/* ══ SPELL ══ */
+#s-spell{background:var(--bg);}
+.sp-dots{display:flex;gap:7px;margin-bottom:8px;}
+.sp-dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
+.sp-dot.cur{background:var(--orange);transform:scale(1.4);}.sp-dot.done{background:var(--green);}
+.sp-illo{width:clamp(88px,16vw,145px);height:clamp(88px,16vw,145px);display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
+.sp-illo svg{width:100%;height:100%;}
+.sp-lbl{font-size:clamp(.95rem,2.2vw,1.3rem);color:var(--muted);letter-spacing:5px;margin-bottom:12px;}
+.sp-boxes{display:flex;gap:clamp(6px,1.5vw,11px);margin-bottom:14px;}
+.sp-box{width:clamp(54px,10.5vw,76px);height:clamp(58px,12vw,80px);background:#fff;border-radius:16px;border:3px solid #DDD;box-shadow:0 5px 0 rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;font-size:clamp(1.8rem,4.8vw,2.8rem);color:var(--text);font-weight:900;transition:all .2s;}
+.sp-box.ab{border-color:var(--blue);box-shadow:0 0 0 5px rgba(26,120,194,.18),0 5px 0 var(--blue);}
+.sp-box.fb{border-color:#ccc;background:#F8F8F8;}
+.sp-box.ob{border-color:var(--green);background:#EAFFF5;animation:okPop .45s ease;}
+.sp-box.eb{border-color:var(--red);animation:shake .4s ease;}
+@keyframes okPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.sp-tiles{display:flex;flex-wrap:wrap;gap:clamp(6px,1.5vw,11px);justify-content:center;max-width:360px;}
+.sp-tile{border:none;border-radius:14px;width:clamp(46px,9vw,64px);height:clamp(46px,9vw,64px);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.25rem,3vw,1.8rem);background:#6B7280;color:#fff;box-shadow:0 6px 0 #4B5563;transition:transform .13s,box-shadow .13s,opacity .13s;}
+.sp-tile:hover{transform:translateY(-4px);box-shadow:0 10px 0 #4B5563;}.sp-tile:active{transform:translateY(2px);}
+.sp-tile.used{opacity:.22;pointer-events:none;transform:none;box-shadow:none;}
+.sp-fb{font-size:clamp(1rem,2.5vw,1.7rem);min-height:36px;text-align:center;margin-top:4px;}
+.sp-clear{border:none;background:#EEE;border-radius:50px;padding:7px 20px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;color:#888;cursor:pointer;margin-top:4px;}
+.sp-clear:hover{background:#FFE4CC;}
+/* ══ FLASHCARD ══ */
+#s-flash{background:var(--bg);}
+/* Mode toggle */
+.fl-mode-toggle{display:flex;background:#EDE8E0;border-radius:50px;padding:4px;gap:4px;margin-bottom:14px;}
+.fl-mode-btn{border:none;border-radius:46px;padding:8px 18px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.75rem,1.8vw,1rem);cursor:pointer;color:#999;background:transparent;transition:all .22s;white-space:nowrap;}
+.fl-mode-btn.active-mode{background:#fff;color:var(--text);box-shadow:0 3px 8px rgba(0,0,0,.12);}
+/* Progress dots */
+.fl-dots{display:flex;gap:7px;margin-bottom:10px;}
+.fl-dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
+.fl-dot.cur{background:var(--blue);transform:scale(1.4);}.fl-dot.done{background:var(--green);}
+/* Card */
+.flashcard{width:clamp(220px,52vw,330px);height:clamp(230px,44vw,310px);cursor:pointer;perspective:900px;position:relative;}
+.fc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);}
+.fc-inner.flipped{transform:rotateY(180deg);}
+.fc-front,.fc-back{position:absolute;inset:0;border-radius:28px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;box-shadow:0 14px 0 rgba(0,0,0,.1);}
+.fc-front{background:#fff;}.fc-back{background:#fff;transform:rotateY(180deg);}
+.fc-pic{display:flex;align-items:center;justify-content:center;}
+.fc-pic svg{width:clamp(90px,18vw,155px);height:clamp(90px,18vw,155px);}
+.fc-tap{font-size:clamp(.7rem,1.5vw,.9rem);color:var(--muted);letter-spacing:.8px;}
+.fc-word{font-size:clamp(3.2rem,10vw,6rem);font-weight:900;letter-spacing:2px;}
+.fc-word-hint{font-size:clamp(.8rem,1.8vw,1.1rem);color:var(--muted);letter-spacing:3px;}
+/* Nav */
+.fl-nav{display:flex;gap:12px;margin-top:12px;align-items:center;}
+.fl-nav-btn{border:none;border-radius:50px;padding:10px 26px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.88rem,2vw,1.15rem);cursor:pointer;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.14);transition:transform .13s;}
+.fl-nav-btn:hover{transform:translateY(-3px);}
+.fl-prev{background:#bbb;box-shadow:0 5px 0 #999;}
+.fl-next{background:linear-gradient(135deg,var(--blue),#5BA3E8);box-shadow:0 5px 0 #1056a0;}
+.fl-count{font-size:clamp(.82rem,1.8vw,1rem);color:var(--muted);font-weight:800;}
+/* ══ LIGHTNING ══ */
+#s-lightning{background:var(--bg);}
+.lr-header{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:460px;margin-bottom:8px;}
+.lr-score-txt{font-size:clamp(1rem,2.5vw,1.4rem);color:var(--text);}
+.lr-timer-wrap{background:#EEE;border-radius:50px;width:120px;height:12px;overflow:hidden;}
+.lr-timer-bar{height:100%;background:linear-gradient(90deg,#6BCB77,#FFD93D,#E63946);border-radius:50px;transition:width .1s linear;width:100%;}
+.lr-card{background:#fff;border-radius:26px;padding:18px 22px;box-shadow:0 12px 0 rgba(0,0,0,.1);display:flex;flex-direction:column;align-items:center;gap:12px;max-width:420px;width:100%;margin-bottom:10px;}
+.lr-illo{width:clamp(85px,17vw,150px);height:clamp(85px,17vw,150px);display:flex;align-items:center;justify-content:center;}
+.lr-illo svg{width:100%;height:100%;}
+.lr-choices{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.lr-btn{border:none;border-radius:16px;padding:11px 20px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.2rem,3.2vw,1.9rem);cursor:pointer;background:#fff;border:3px solid #DDD;color:var(--text);box-shadow:0 5px 0 rgba(0,0,0,.08);transition:transform .13s;}
+.lr-btn:hover{transform:translateY(-4px);}
+.lr-btn.correct-lr{border-color:var(--green);background:#EAFFF5;animation:okPop .4s ease;}
+.lr-btn.wrong-lr{border-color:var(--red);background:#FFF0F0;animation:shake .4s ease;}
+@keyframes okPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.lr-feedback{font-size:clamp(1.1rem,3vw,1.8rem);min-height:36px;text-align:center;}
+.lr-qnum{font-size:clamp(.8rem,1.8vw,1rem);color:var(--muted);margin-bottom:4px;}
+.lr-result{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;width:100%;max-width:380px;}
+.lr-result-big{font-size:clamp(2.5rem,8vw,5rem);font-weight:900;color:var(--text);}
+.lr-result-msg{font-size:clamp(1rem,2.8vw,1.6rem);color:var(--muted);}
+.lr-play-again{border:none;border-radius:50px;padding:12px 34px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.95rem,2.3vw,1.35rem);color:#fff;background:linear-gradient(135deg,#FF6B6B,#FF8E53);box-shadow:0 6px 0 #c9472e;cursor:pointer;transition:transform .13s;}
+.lr-play-again:hover{transform:translateY(-3px);}
+/* ══ DONE ══ */
+#s-done{background:linear-gradient(145deg,#E63946,#FB5607,#8338EC);}
+.cel-ico{font-size:clamp(4rem,13vw,8rem);animation:ibounce 1.6s ease-in-out infinite alternate;}
+.cel-title{font-size:clamp(2rem,6.5vw,4.5rem);color:#fff;text-shadow:0 6px 0 rgba(0,0,0,.12);text-align:center;margin-top:8px;}
+.cel-sub{font-size:clamp(1rem,2.6vw,1.6rem);color:rgba(255,255,255,.9);text-align:center;margin-top:6px;}
+.cel-stars{font-size:clamp(1.6rem,4.5vw,3rem);margin-top:8px;letter-spacing:4px;}
+.cel-home{margin-top:24px;border:none;border-radius:50px;padding:14px 44px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.05rem,2.6vw,1.6rem);color:var(--text);background:#fff;box-shadow:0 8px 0 rgba(0,0,0,.12);cursor:pointer;transition:transform .14s;}
+.cel-home:hover{transform:translateY(-4px);}
+/* ══ SHARED ══ */
+.toast{position:fixed;top:22px;left:50%;transform:translateX(-50%) translateY(-18px);background:#FF6B6B;color:#fff;padding:11px 30px;border-radius:50px;font-size:1.1rem;font-family:'Nunito',sans-serif;font-weight:900;z-index:9999;opacity:0;transition:all .28s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:1.8rem;animation:spFly .9s ease forwards;}
+@keyframes spFly{0%{opacity:1;transform:scale(.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-80px)}}
+.conf-p{position:fixed;width:11px;height:11px;border-radius:3px;opacity:0;pointer-events:none;z-index:9999;animation:confFall 1.4s ease forwards;}
+@keyframes confFall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+<div id="zoom-ov" onclick="closeZoom()"><div id="zoom-ltr"></div><div id="zoom-ex"></div><div id="zoom-tap">Tap anywhere to close</div></div>
+<div id="prog-wrap"><div id="prog-bar"></div></div>
+<div class="toast" id="toast"></div>
+
+<!-- HOME -->
+<div class="screen active" id="s-home">
+  <div class="home-family">OT</div>
+  <div class="home-words">dot · hot · lot · pot · rot · cot</div>
+  <div class="home-tap">👆 Tap a section below to start!</div>
+  <div class="home-nav-hint">
+    <span>👂 Sounds</span><span>·</span>
+    <span>📖 Read</span><span>·</span>
+    <span>🎯 Match</span><span>·</span>
+    <span>✏️ Spell</span><span>·</span>
+    <span>🃏 Cards</span><span>·</span>
+    <span>⚡ Lightning</span>
+  </div>
+</div>
+
+<!-- PHONICS (accessed via sequential flow) -->
+<div class="screen" id="s-phonics">
+  <div class="big-title">Tap each sound!</div>
+  <div class="sub">Tap a letter to see it big — say it aloud!</div>
+  <div class="ph-grid" id="ph-grid"></div>
+</div>
+
+<!-- BLEND & READ -->
+<div class="screen" id="s-blend">
+  <div class="big-title">Blend &amp; Read!</div>
+  <div class="sub">Watch the sounds come together!</div>
+  <div class="b-dots" id="b-dots"></div>
+  <div class="b-card">
+    <div class="b-illo" id="b-illo"></div>
+    <div class="b-row">
+      <div class="b-con" id="b-con">p</div>
+      <div class="b-plus">+</div>
+      <div class="b-fam" id="b-fam">an</div>
+      <div class="b-arrow">→</div>
+      <div class="b-res" id="b-res">pan</div>
+    </div>
+    <div class="b-lbl" id="b-lbl">p + an = ?</div>
+    <button class="blend-btn" id="blend-btn" onclick="doBlend()">Blend it!</button>
+    <button class="blend-skip" id="blend-skip" onclick="nextBlend()">Next word ▶</button>
+  </div>
+</div>
+
+<!-- MATCH -->
+<div class="screen" id="s-match">
+  <div class="big-title">Match it!</div>
+  <div class="sub">Tap a picture · then tap its word</div>
+  <div class="match-wrap"><div class="match-pics" id="match-pics"></div><div class="match-words" id="match-words"></div></div>
+  <div class="match-score" id="match-score">0 / 6 matched</div>
+</div>
+
+<!-- SPELL -->
+<div class="screen" id="s-spell">
+  <div class="big-title">Spell it!</div>
+  <div class="sub">Tap the letters in order!</div>
+  <div class="sp-dots" id="sp-dots"></div>
+  <div class="sp-illo" id="sp-illo"></div>
+  <div class="sp-lbl" id="sp-lbl">_ _ _</div>
+  <div class="sp-boxes" id="sp-boxes"></div>
+  <div class="sp-tiles" id="sp-tiles"></div>
+  <div class="sp-fb" id="sp-fb"></div>
+  <button class="sp-clear" onclick="clearSpell()">Clear</button>
+</div>
+
+<!-- FLASHCARD -->
+<div class="screen" id="s-flash">
+  <div class="big-title">Flash Cards!</div>
+  <div class="sub">Tap the card to flip and reveal the answer!</div>
+  <!-- Mode toggle -->
+  <div class="fl-mode-toggle">
+    <button class="fl-mode-btn active-mode" id="fl-btn-pic" onclick="setFlashMode('pic')">🖼️ Picture → Word</button>
+    <button class="fl-mode-btn" id="fl-btn-word" onclick="setFlashMode('word')">🔤 Word → Picture</button>
+  </div>
+  <!-- Progress dots -->
+  <div class="fl-dots" id="fl-dots"></div>
+  <!-- Card -->
+  <div class="flashcard" id="flashcard" onclick="flipCard()">
+    <div class="fc-inner" id="fc-inner">
+      <div class="fc-front" id="fc-front">
+        <!-- filled by JS -->
+      </div>
+      <div class="fc-back" id="fc-back">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+  <!-- Nav -->
+  <div class="fl-nav">
+    <button class="fl-nav-btn fl-prev" onclick="flashPrev()">◀</button>
+    <div class="fl-count" id="fl-count">1 / 6</div>
+    <button class="fl-nav-btn fl-next" onclick="flashNext()">▶</button>
+  </div>
+</div>
+
+<!-- LIGHTNING ROUND -->
+<div class="screen" id="s-lightning">
+  <div class="big-title">⚡ Lightning Round!</div>
+  <div class="sub">Read the picture — tap the right word fast!</div>
+  <div class="lr-header">
+    <div class="lr-score-txt">Score: <strong id="lr-score">0</strong></div>
+    <div class="lr-timer-wrap"><div class="lr-timer-bar" id="lr-bar"></div></div>
+    <div class="lr-score-txt" id="lr-qnum">Q 1/6</div>
+  </div>
+  <div class="lr-card" id="lr-card">
+    <div class="lr-illo" id="lr-illo"></div>
+    <div class="lr-choices" id="lr-choices"></div>
+  </div>
+  <div class="lr-feedback" id="lr-feedback"></div>
+</div>
+
+<!-- DONE -->
+<div class="screen" id="s-done">
+  <div class="cel-ico">🏆</div>
+  <div class="cel-title">You're a star!</div>
+  <div class="cel-stars">⭐⭐⭐⭐⭐⭐</div>
+  <div class="cel-sub">Amazing — you know all the OT words!</div>
+  <button class="cel-home" onclick="goHome()">🏠 Home</button>
+</div>
+
+<!-- BOTTOM TAB BAR -->
+<div id="tab-bar">
+  <button class="tab" id="tab-home" onclick="jumpTo('s-home')">
+    <div class="tab-icon">🏠</div>
+    <div class="tab-label">Home</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-sounds" onclick="jumpTo('s-phonics')">
+    <div class="tab-icon">👂</div>
+    <div class="tab-label">Sounds</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-blend" onclick="jumpTo('s-blend')">
+    <div class="tab-icon">📖</div>
+    <div class="tab-label">Read</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-match" onclick="jumpTo('s-match')">
+    <div class="tab-icon">🎯</div>
+    <div class="tab-label">Match</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-spell" onclick="jumpTo('s-spell')">
+    <div class="tab-icon">✏️</div>
+    <div class="tab-label">Spell</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-flash" onclick="jumpTo('s-flash')">
+    <div class="tab-icon">🃏</div>
+    <div class="tab-label">Cards</div>
+    <div class="tab-pip"></div>
+  </button>
+  <button class="tab" id="tab-lightning" onclick="jumpTo('s-lightning')">
+    <div class="tab-icon">⚡</div>
+    <div class="tab-label">Lightning</div>
+    <div class="tab-pip"></div>
+  </button>
+</div>
+
+<script>
+// ═══════════════════════════ DATA ═══════════════════════════
+const FAMILY = 'ot';
+const FAMILY_COLOR = '#FB5607';
+const FAMILY_BG   = '#FFF0E8';
+
+const SVG = {
+  dot:`<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+<!-- clean white card -->
+<rect x="14" y="14" width="192" height="192" rx="18" fill="white" stroke="#E0E0E0" stroke-width="3"/>
+<!-- THE dot — small and centred, lots of white space around it -->
+<circle cx="110" cy="110" r="16" fill="#333"/>
+</svg>`,
+  hot:`<svg viewBox="0 0 220 210" xmlns="http://www.w3.org/2000/svg">
+<!-- sun behind -->
+<circle cx="110" cy="80" r="60" fill="#FFD600" opacity=".2"/>
+<!-- thermometer body -->
+<rect x="96" y="28" width="28" height="120" rx="14" fill="white" stroke="#E0E0E0" stroke-width="2"/>
+<!-- mercury column -->
+<rect x="102" y="80" width="16" height="70" rx="8" fill="#E53935"/>
+<!-- bulb -->
+<circle cx="110" cy="158" r="26" fill="#E53935"/>
+<circle cx="110" cy="156" r="20" fill="#EF5350"/>
+<!-- temperature lines -->
+<line x1="96" y1="50" x2="108" y2="50" stroke="#E0E0E0" stroke-width="2"/>
+<line x1="96" y1="66" x2="108" y2="66" stroke="#E0E0E0" stroke-width="2"/>
+<line x1="96" y1="82" x2="108" y2="82" stroke="#E0E0E0" stroke-width="2"/>
+<line x1="96" y1="98" x2="108" y2="98" stroke="#E0E0E0" stroke-width="2"/>
+<!-- heat wavy lines above -->
+<path d="M68 24 Q76 14 84 24 Q92 34 100 24" fill="none" stroke="#FF8A65" stroke-width="3" stroke-linecap="round"/>
+<path d="M120 24 Q128 14 136 24 Q144 34 152 24" fill="none" stroke="#FF8A65" stroke-width="3" stroke-linecap="round"/>
+<path d="M94 10 Q102 2 110 10 Q118 18 126 10" fill="none" stroke="#FF8A65" stroke-width="3" stroke-linecap="round"/>
+<!-- HOT text -->
+<text x="110" y="162" text-anchor="middle" font-family="Nunito,sans-serif" font-size="14" font-weight="900" fill="white">HOT</text>
+</svg>`,
+  lot:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+<!-- tarmac background -->
+<rect x="0" y="0" width="240" height="200" rx="10" fill="#546E7A"/>
+<!-- parking lines -->
+<line x1="80" y1="20" x2="80" y2="180" stroke="white" stroke-width="3" opacity=".6"/>
+<line x1="160" y1="20" x2="160" y2="180" stroke="white" stroke-width="3" opacity=".6"/>
+<!-- horizontal boundary lines -->
+<line x1="10" y1="20" x2="230" y2="20" stroke="white" stroke-width="3" opacity=".6"/>
+<line x1="10" y1="180" x2="230" y2="180" stroke="white" stroke-width="3" opacity=".6"/>
+<!-- LOT text on tarmac -->
+<text x="40" y="108" text-anchor="middle" font-family="Nunito,sans-serif" font-size="18" font-weight="900" fill="white" opacity=".5">P</text>
+<text x="120" y="108" text-anchor="middle" font-family="Nunito,sans-serif" font-size="18" font-weight="900" fill="white" opacity=".5">P</text>
+<text x="200" y="108" text-anchor="middle" font-family="Nunito,sans-serif" font-size="18" font-weight="900" fill="white" opacity=".5">P</text>
+<!-- car 1 (top view) -->
+<rect x="20" y="34" width="48" height="28" rx="6" fill="#E53935"/>
+<rect x="26" y="38" width="36" height="18" rx="4" fill="#90CAF9" opacity=".7"/>
+<circle cx="24" cy="62" r="5" fill="#212121"/><circle cx="64" cy="62" r="5" fill="#212121"/>
+<circle cx="24" cy="34" r="5" fill="#212121"/><circle cx="64" cy="34" r="5" fill="#212121"/>
+<!-- car 2 -->
+<rect x="100" y="34" width="48" height="28" rx="6" fill="#1565C0"/>
+<rect x="106" y="38" width="36" height="18" rx="4" fill="#90CAF9" opacity=".7"/>
+<circle cx="104" cy="62" r="5" fill="#212121"/><circle cx="144" cy="62" r="5" fill="#212121"/>
+<circle cx="104" cy="34" r="5" fill="#212121"/><circle cx="144" cy="34" r="5" fill="#212121"/>
+<!-- car 3 (empty space) -->
+<rect x="172" y="34" width="48" height="28" rx="6" fill="#2BAE66"/>
+<rect x="178" y="38" width="36" height="18" rx="4" fill="#90CAF9" opacity=".7"/>
+<circle cx="176" cy="62" r="5" fill="#212121"/><circle cx="216" cy="62" r="5" fill="#212121"/>
+<circle cx="176" cy="34" r="5" fill="#212121"/><circle cx="216" cy="34" r="5" fill="#212121"/>
+<!-- car bottom row -->
+<rect x="20" y="138" width="48" height="28" rx="6" fill="#FB5607"/>
+<circle cx="24" cy="166" r="5" fill="#212121"/><circle cx="64" cy="166" r="5" fill="#212121"/>
+<circle cx="24" cy="138" r="5" fill="#212121"/><circle cx="64" cy="138" r="5" fill="#212121"/>
+<rect x="172" y="138" width="48" height="28" rx="6" fill="#8338EC"/>
+<circle cx="176" cy="166" r="5" fill="#212121"/><circle cx="216" cy="166" r="5" fill="#212121"/>
+<circle cx="176" cy="138" r="5" fill="#212121"/><circle cx="216" cy="138" r="5" fill="#212121"/>
+</svg>`,
+  pot:`<svg viewBox="0 0 220 210" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="110" cy="204" rx="84" ry="6" fill="rgba(0,0,0,.08)"/>
+<!-- pot body -->
+<path d="M34 88 L42 186 Q42 196 110 196 Q178 196 178 186 L186 88Z" fill="#9E9E9E"/>
+<path d="M34 88 L42 186 Q42 196 110 196 Q178 196 186 186 L186 88Z" fill="none" stroke="#757575" stroke-width="2"/>
+<!-- pot shine -->
+<ellipse cx="66" cy="142" rx="8" ry="48" fill="rgba(255,255,255,.2)" transform="rotate(-5 66 142)"/>
+<!-- lid -->
+<ellipse cx="110" cy="88" rx="76" ry="18" fill="#757575"/>
+<ellipse cx="110" cy="82" rx="76" ry="18" fill="#9E9E9E"/>
+<ellipse cx="110" cy="78" rx="70" ry="14" fill="#BDBDBD"/>
+<!-- lid knob -->
+<rect x="96" y="54" width="28" height="28" rx="14" fill="#757575"/>
+<ellipse cx="110" cy="54" rx="14" ry="8" fill="#9E9E9E"/>
+<!-- steam from lid -->
+<path d="M80 52 Q86 40 80 28" fill="none" stroke="#CFD8DC" stroke-width="4" stroke-linecap="round"/>
+<path d="M110 48 Q116 34 110 20" fill="none" stroke="#CFD8DC" stroke-width="4" stroke-linecap="round"/>
+<path d="M140 52 Q134 40 140 28" fill="none" stroke="#CFD8DC" stroke-width="4" stroke-linecap="round"/>
+<!-- left handle -->
+<path d="M34 100 Q8 100 8 128 Q8 156 34 156" fill="none" stroke="#757575" stroke-width="14" stroke-linecap="round"/>
+<path d="M34 100 Q10 100 10 128 Q10 154 34 154" fill="none" stroke="#9E9E9E" stroke-width="8" stroke-linecap="round"/>
+<!-- right handle -->
+<path d="M186 100 Q212 100 212 128 Q212 156 186 156" fill="none" stroke="#757575" stroke-width="14" stroke-linecap="round"/>
+<path d="M186 100 Q210 100 210 128 Q210 154 186 154" fill="none" stroke="#9E9E9E" stroke-width="8" stroke-linecap="round"/>
+<!-- rim -->
+<ellipse cx="110" cy="88" rx="76" ry="18" fill="none" stroke="#616161" stroke-width="3"/>
+<!-- bottom base -->
+<ellipse cx="110" cy="192" rx="68" ry="10" fill="#757575"/>
+</svg>`,
+  rot:`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<!-- stem and leaf -->
+<rect x="96" y="14" width="8" height="26" rx="4" fill="#5D4037"/>
+<ellipse cx="120" cy="22" rx="20" ry="11" fill="#5D9E40" transform="rotate(-30 120 22)"/>
+<!-- apple base (brown rotting) -->
+<ellipse cx="100" cy="122" rx="74" ry="76" fill="#5D4037"/>
+<!-- apple green parts (remaining good bits) -->
+<path d="M40 80 Q26 122 40 162 Q64 106 40 80Z" fill="#7CB342"/>
+<path d="M92 44 Q60 50 40 80 Q70 64 92 44Z" fill="#7CB342"/>
+<!-- dark rot patches -->
+<circle cx="88" cy="100" r="24" fill="#3E2008" opacity=".8"/>
+<circle cx="130" cy="130" r="20" fill="#3E2008" opacity=".7"/>
+<circle cx="70" cy="140" r="16" fill="#3E2008" opacity=".6"/>
+<!-- mould dots -->
+<circle cx="95" cy="98" r="5" fill="#7CB342" opacity=".6"/>
+<circle cx="105" cy="108" r="4" fill="#7CB342" opacity=".5"/>
+<circle cx="88" cy="112" r="4" fill="#7CB342" opacity=".6"/>
+<circle cx="78" cy="94" r="3" fill="#7CB342" opacity=".5"/>
+<!-- worm peeking out -->
+<path d="M118 86 Q124 76 132 84 Q138 92 130 96 Q122 100 118 86Z" fill="#F5F5DC"/>
+<circle cx="134" cy="82" r="5" fill="#F5F5DC"/>
+<circle cx="136" cy="80" r="2" fill="#333"/>
+<!-- X eyes on apple to show it's rotten -->
+<text x="110" y="72" font-size="20" text-anchor="middle" fill="rgba(0,0,0,.3)">🤢</text>
+</svg>`,
+  cot:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="120" cy="194" rx="95" ry="6" fill="rgba(0,0,0,.08)"/>
+<!-- legs -->
+<rect x="28" y="138" width="12" height="52" rx="5" fill="#8B6914"/>
+<rect x="200" y="138" width="12" height="52" rx="5" fill="#8B6914"/>
+<!-- frame top rail -->
+<rect x="18" y="48" width="204" height="14" rx="7" fill="#A07820"/>
+<rect x="18" y="44" width="204" height="14" rx="7" fill="#D4A017"/>
+<!-- frame bottom rail -->
+<rect x="18" y="138" width="204" height="14" rx="7" fill="#A07820"/>
+<rect x="18" y="134" width="204" height="14" rx="7" fill="#D4A017"/>
+<!-- vertical bars -->
+<rect x="38" y="58" width="10" height="80" rx="5" fill="#C8860A"/>
+<rect x="62" y="58" width="10" height="80" rx="5" fill="#C8860A"/>
+<rect x="86" y="58" width="10" height="80" rx="5" fill="#C8860A"/>
+<rect x="110" y="58" width="10" height="80" rx="5" fill="#C8860A"/>
+<rect x="134" y="58" width="10" height="80" rx="5" fill="#C8860A"/>
+<rect x="158" y="58" width="10" height="80" rx="5" fill="#C8860A"/>
+<rect x="182" y="58" width="10" height="80" rx="5" fill="#C8860A"/>
+<!-- mattress inside -->
+<rect x="26" y="110" width="188" height="28" rx="6" fill="#ECEFF1"/>
+<!-- pillow -->
+<rect x="34" y="104" width="56" height="26" rx="10" fill="white"/>
+<!-- baby blanket -->
+<rect x="96" y="110" width="112" height="26" rx="6" fill="#E53935"/>
+<!-- mobile hanging above (decorative) -->
+<line x1="120" y1="20" x2="120" y2="44" stroke="#9E9E9E" stroke-width="2"/>
+<line x1="80" y1="28" x2="160" y2="28" stroke="#9E9E9E" stroke-width="2"/>
+<circle cx="80" cy="36" r="8" fill="#FFD600"/>
+<text x="120" y="38" text-anchor="middle" font-size="14">⭐</text>
+<circle cx="160" cy="36" r="8" fill="#E91E8C"/>
+</svg>`,
+};
+
+const WORDS = [
+  {word:'dot',consonant:'d',color:'#E63946'},
+  {word:'hot',consonant:'h',color:'#FB5607'},
+  {word:'lot',consonant:'l',color:'#2BAE66'},
+  {word:'pot',consonant:'p',color:'#8338EC'},
+  {word:'rot',consonant:'r',color:'#8B6914'},
+  {word:'cot',consonant:'c',color:'#1A78C2'},
+];
+
+const PHONICS=[
+  {letter:'d',hint:'dot',bg:'#E63946',dark:false,example:'d — dot'},
+  {letter:'h',hint:'hot',bg:'#FB5607',dark:false,example:'h — hot'},
+  {letter:'l',hint:'lot',bg:'#2BAE66',dark:false,example:'l — lot'},
+  {letter:'p',hint:'pot',bg:'#8338EC',dark:false,example:'p — pot'},
+  {letter:'r',hint:'rot',bg:'#8B6914',dark:false,example:'r — rot'},
+  {letter:'c',hint:'cot',bg:'#1A78C2',dark:false,example:'c — cot'},
+  {letter:'o',hint:'vowel',bg:'#F5C800',dark:true,example:'o — short o sound'},
+  {letter:'t',hint:'ending',bg:'#555',dark:false,example:'t — end sound'},
+  {letter:'ot',hint:'family',bg:'linear-gradient(135deg,#F5C800,#FB5607)',dark:false,example:'__ot — the family!'},
+];
+const DISTRACTORS=['a', 'b', 'e', 'g', 'i', 'k', 'm', 'n', 's', 'u', 'v', 'w', 'x'];
+
+// ═══════════════════════════ SCREEN ENGINE ═══════════════════════════
+const SCREEN_ORDER=['s-home','s-phonics','s-blend','s-match','s-spell','s-flash','s-lightning','s-done'];
+let curIdx=0;
+
+function showScreen(id){
+  const idx=SCREEN_ORDER.indexOf(id);
+  if(idx>=0) curIdx=idx;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('prog-bar').style.width=(curIdx/(SCREEN_ORDER.length-1)*100)+'%';
+  // Update tab bar active state
+  const tabMap={
+    's-home':'tab-home','s-phonics':'tab-sounds','s-blend':'tab-blend',
+    's-match':'tab-match','s-spell':'tab-spell','s-flash':'tab-flash',
+    's-lightning':'tab-lightning','s-done':'tab-lightning'
+  };
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active-tab'));
+  const activeTab=tabMap[id];
+  if(activeTab) document.getElementById(activeTab)?.classList.add('active-tab');
+  if(id==='s-phonics') initPhonics();
+  if(id==='s-blend') initBlend();
+  if(id==='s-match') initMatch();
+  if(id==='s-spell') initSpell();
+  if(id==='s-flash') initFlash();
+  if(id==='s-lightning') initLightning();
+  if(id==='s-done') bigConfetti();
+}
+function goNext(){if(curIdx<SCREEN_ORDER.length-1) showScreen(SCREEN_ORDER[curIdx+1]);}
+function goPrev(){if(curIdx>0) showScreen(SCREEN_ORDER[curIdx-1]);}
+function goHome(){showScreen('s-home');}
+function jumpTo(id){showScreen(id);}
+
+// ═══════════════════════════ PHONICS ═══════════════════════════
+function initPhonics(){
+  const g=document.getElementById('ph-grid');g.innerHTML='';
+  PHONICS.forEach(ph=>{
+    const b=document.createElement('button');b.className='ph-tile';
+    b.style.background=ph.bg;b.style.color=ph.dark?'#333':'#fff';
+    b.innerHTML=`<div class="ph-ltr" style="color:${ph.dark?'#333':'#fff'}">${ph.letter}</div><div class="ph-hint" style="color:${ph.dark?'#555':'rgba(255,255,255,.82)'}">${ph.hint}</div>`;
+    b.addEventListener('click',()=>{
+      const isG=ph.bg.includes('gradient');
+      document.getElementById('zoom-ltr').style.color=isG?'#FFD93D':ph.bg;
+      document.getElementById('zoom-ltr').textContent=ph.letter;
+      document.getElementById('zoom-ex').textContent=ph.example;
+      document.getElementById('zoom-ov').classList.add('show');
+    });
+    g.appendChild(b);
+  });
+}
+function closeZoom(){document.getElementById('zoom-ov').classList.remove('show');}
+
+// ═══════════════════════════ BLEND ═══════════════════════════
+let blendIdx=0,blended=false;
+function initBlend(){blendIdx=0;blended=false;buildBDots();renderBlend();}
+function buildBDots(){document.getElementById('b-dots').innerHTML=WORDS.map((_,i)=>`<div class="b-dot${i===0?' cur':''}" id="bd-${i}"></div>`).join('');}
+function renderBlend(){
+  blended=false;const w=WORDS[blendIdx];
+  WORDS.forEach((_,i)=>{const d=document.getElementById(`bd-${i}`);if(d)d.className='b-dot'+(i<blendIdx?' done':i===blendIdx?' cur':'');});
+  document.getElementById('b-illo').innerHTML=SVG[w.word];
+  const bC=document.getElementById('b-con'),bR=document.getElementById('b-res'),bL=document.getElementById('b-lbl'),bFam=document.getElementById('b-fam');
+  bC.textContent=w.consonant;bC.style.color=w.color;bC.style.background=w.color+'22';bC.style.opacity='1';bC.style.transform='scale(1)';
+  bFam.textContent=FAMILY;bFam.style.color=FAMILY_COLOR;bFam.style.background=FAMILY_BG;bFam.style.opacity='1';bFam.style.transform='scale(1)';
+  bR.textContent=w.word;bR.style.color=w.color;bR.className='b-res';
+  bL.textContent=`${w.consonant} + ${FAMILY} = ?`;
+  document.getElementById('blend-btn').style.display='';
+  document.getElementById('blend-skip').textContent=blendIdx<WORDS.length-1?'Next word ▶':'Go to Match!';
+}
+function doBlend(){
+  if(blended)return;blended=true;const w=WORDS[blendIdx];
+  const bC=document.getElementById('b-con'),bFam=document.getElementById('b-fam'),bR=document.getElementById('b-res'),bL=document.getElementById('b-lbl');
+  bC.style.transition='all .5s cubic-bezier(.175,.885,.32,1.275)';bFam.style.transition='all .5s';
+  bC.style.transform='scale(1.22)';bFam.style.transform='scale(1.22)';
+  setTimeout(()=>{bR.classList.add('show');bC.style.opacity='.28';bFam.style.opacity='.28';bL.textContent=`${w.consonant} + ${FAMILY} = ${w.word} ✅`;spawnSparkle(window.innerWidth/2,window.innerHeight*.52);},420);
+  document.getElementById('blend-btn').style.display='none';
+}
+function nextBlend(){if(blendIdx<WORDS.length-1){blendIdx++;renderBlend();}else goNext();}
+
+// ═══════════════════════════ MATCH ═══════════════════════════
+let matchSel=null,matchDone=0;
+function initMatch(){
+  matchSel=null;matchDone=0;document.getElementById('match-score').textContent='0 / 6 matched';
+  const sP=shuffle([...WORDS]),sW=shuffle([...WORDS]);
+  const pE=document.getElementById('match-pics'),wE=document.getElementById('match-words');
+  pE.innerHTML='';wE.innerHTML='';
+  sP.forEach(w=>{const c=document.createElement('div');c.className='m-pic';c.dataset.word=w.word;c.innerHTML=SVG[w.word];c.addEventListener('click',()=>handleMatchPic(c,w.word));pE.appendChild(c);});
+  sW.forEach(w=>{const c=document.createElement('div');c.className='m-word';c.dataset.word=w.word;c.style.color=w.color;c.textContent=w.word;c.addEventListener('click',()=>handleMatchWord(c,w.word));wE.appendChild(c);});
+}
+function handleMatchPic(card,word){if(card.classList.contains('matched'))return;document.querySelectorAll('.m-pic.selected').forEach(c=>c.classList.remove('selected'));card.classList.add('selected');matchSel={word,el:card};}
+function handleMatchWord(card,word){
+  if(card.classList.contains('matched'))return;
+  if(!matchSel){showToast('Tap a picture first!');return;}
+  if(matchSel.word===word){matchSel.el.classList.remove('selected');matchSel.el.classList.add('matched');card.classList.add('matched');matchSel=null;matchDone++;spawnSparkle(card.getBoundingClientRect().left+card.offsetWidth/2,card.getBoundingClientRect().top+card.offsetHeight/2);document.getElementById('match-score').textContent=`${matchDone} / 6 matched`;if(matchDone===6)setTimeout(()=>{bigConfetti();setTimeout(goNext,900);},350);}
+  else{[matchSel.el,card].forEach(el=>{el.classList.add('ws');setTimeout(()=>el.classList.remove('ws'),450);});matchSel.el.classList.remove('selected');matchSel=null;showToast('Try again!');}
+}
+
+// ═══════════════════════════ SPELL ═══════════════════════════
+let spellIdx=0,spellInput=[];
+function initSpell(){spellIdx=0;spellInput=[];buildSpDots();renderSpell();}
+function buildSpDots(){document.getElementById('sp-dots').innerHTML=WORDS.map((_,i)=>`<div class="sp-dot${i===0?' cur':''}" id="snd-${i}"></div>`).join('');}
+function renderSpell(){
+  spellInput=[];const w=WORDS[spellIdx];
+  WORDS.forEach((_,i)=>{const d=document.getElementById(`snd-${i}`);if(d)d.className='sp-dot'+(i<spellIdx?' done':i===spellIdx?' cur':'');});
+  document.getElementById('sp-illo').innerHTML=SVG[w.word];
+  document.getElementById('sp-lbl').textContent=w.word.split('').map(()=>'_').join('  ');
+  document.getElementById('sp-fb').textContent='';
+  document.getElementById('sp-boxes').innerHTML=w.word.split('').map((_,i)=>`<div class="sp-box${i===0?' ab':''}" id="spb-${i}"></div>`).join('');
+  const all=shuffle([...w.word.split(''),...shuffle([...DISTRACTORS]).slice(0,3)]);
+  document.getElementById('sp-tiles').innerHTML=all.map((l,i)=>`<button class="sp-tile" id="stile-${i}" onclick="tapTile('${l}',${i})">${l.toUpperCase()}</button>`).join('');
+}
+function tapTile(letter,idx){
+  const w=WORDS[spellIdx],pos=spellInput.length;
+  if(pos>=w.word.length)return;
+  const box=document.getElementById(`spb-${pos}`);
+  if(letter===w.word[pos]){
+    spellInput.push(letter);box.textContent=letter.toUpperCase();box.classList.remove('ab');box.classList.add('fb','ob');
+    document.getElementById(`stile-${idx}`).classList.add('used');
+    document.getElementById('sp-lbl').textContent=w.word.split('').map((_,i)=>i<spellInput.length?w.word[i].toUpperCase():'_').join('  ');
+    if(spellInput.length<w.word.length)document.getElementById(`spb-${spellInput.length}`)?.classList.add('ab');
+    if(spellInput.length===w.word.length){document.getElementById('sp-fb').innerHTML=`<span style="color:var(--green)">✅ ${w.word.toUpperCase()}! Great job!</span>`;spawnSparkle(window.innerWidth/2,window.innerHeight*.44);setTimeout(()=>{if(spellIdx<WORDS.length-1){spellIdx++;buildSpDots();renderSpell();}else goNext();},1500);}
+  }else{box.classList.add('eb');showToast('Try again!');setTimeout(()=>box.classList.remove('eb'),480);}
+}
+function clearSpell(){
+  const w=WORDS[spellIdx];spellInput=[];
+  w.word.split('').forEach((_,i)=>{const b=document.getElementById(`spb-${i}`);if(b){b.textContent='';b.className='sp-box'+(i===0?' ab':'');}});
+  document.querySelectorAll('.sp-tile').forEach(t=>t.classList.remove('used'));
+  document.getElementById('sp-lbl').textContent=w.word.split('').map(()=>'_').join('  ');
+  document.getElementById('sp-fb').textContent='';
+}
+
+// ═══════════════════════════ FLASHCARD ═══════════════════════════
+let flashIdx=0,flashFlipped=false,flashMode='pic'; // 'pic' = picture first, 'word' = word first
+
+function initFlash(){
+  flashIdx=0;flashFlipped=false;
+  // reset toggle to pic mode visually
+  setFlashMode(flashMode,true);
+  buildFlDots();renderFlash();
+}
+
+function setFlashMode(mode, silent){
+  flashMode=mode;
+  document.getElementById('fl-btn-pic').classList.toggle('active-mode',mode==='pic');
+  document.getElementById('fl-btn-word').classList.toggle('active-mode',mode==='word');
+  if(!silent){flashIdx=0;flashFlipped=false;buildFlDots();renderFlash();}
+}
+
+function buildFlDots(){
+  document.getElementById('fl-dots').innerHTML=WORDS.map((_,i)=>
+    `<div class="fl-dot${i===0?' cur':''}" id="fld-${i}"></div>`
+  ).join('');
+}
+
+function renderFlash(){
+  flashFlipped=false;
+  const w=WORDS[flashIdx];
+  WORDS.forEach((_,i)=>{const d=document.getElementById(`fld-${i}`);if(d)d.className='fl-dot'+(i<flashIdx?' done':i===flashIdx?' cur':'');});
+  document.getElementById('fc-inner').classList.remove('flipped');
+  document.getElementById('fl-count').textContent=`${flashIdx+1} / ${WORDS.length}`;
+
+  const picHTML=`<div class="fc-pic"><div style="width:clamp(90px,18vw,155px);height:clamp(90px,18vw,155px);display:flex;align-items:center;justify-content:center">${SVG[w.word]}</div></div>
+    <div class="fc-tap">👆 Tap to flip</div>`;
+
+  const wordHTML=`<div class="fc-word" style="color:${w.color}">${w.word}</div>
+    <div class="fc-word-hint" style="color:${w.color}">${w.consonant.toUpperCase()} + ${FAMILY.toUpperCase()}</div>
+    <div class="fc-tap">👆 Tap to flip</div>`;
+
+  if(flashMode==='pic'){
+    // Front = picture, Back = word
+    document.getElementById('fc-front').innerHTML=picHTML;
+    document.getElementById('fc-back').innerHTML=wordHTML.replace('Tap to flip','Tap for next ▶');
+  } else {
+    // Front = word, Back = picture
+    document.getElementById('fc-front').innerHTML=wordHTML;
+    document.getElementById('fc-back').innerHTML=picHTML.replace('Tap to flip','Tap for next ▶');
+  }
+}
+
+function flipCard(){
+  flashFlipped=!flashFlipped;
+  document.getElementById('fc-inner').classList.toggle('flipped',flashFlipped);
+  if(flashFlipped) spawnSparkle(window.innerWidth/2, window.innerHeight*.42);
+}
+
+function flashNext(){
+  if(flashIdx<WORDS.length-1){flashIdx++;renderFlash();}
+  else{bigConfetti();setTimeout(goNext,800);}
+}
+function flashPrev(){if(flashIdx>0){flashIdx--;renderFlash();}}
+
+// ═══════════════════════════ LIGHTNING ROUND ═══════════════════════════
+let lrScore=0,lrQ=0,lrAnswered=false,lrQueue=[],lrTimerInterval=null,lrTimeLeft=0,lrTotalTime=7;
+function initLightning(){
+  lrScore=0;lrQ=0;lrAnswered=false;
+  lrQueue=shuffle([...WORDS]);
+  document.getElementById('lr-score').textContent='0';
+  document.getElementById('lr-feedback').textContent='';
+  nextLR();
+}
+function nextLR(){
+  if(lrQ>=WORDS.length){endLR();return;}
+  lrAnswered=false;
+  const w=lrQueue[lrQ];
+  document.getElementById('lr-qnum').textContent=`Q ${lrQ+1}/${WORDS.length}`;
+  document.getElementById('lr-illo').innerHTML=SVG[w.word];
+  document.getElementById('lr-feedback').textContent='';
+  // choices: correct + 2 wrong
+  const wrongs=shuffle(WORDS.filter(x=>x.word!==w.word)).slice(0,2);
+  const choices=shuffle([w,...wrongs]);
+  document.getElementById('lr-choices').innerHTML=choices.map(c=>`
+    <button class="lr-btn" onclick="answerLR('${c.word}','${w.word}')">${c.word}</button>
+  `).join('');
+  // timer
+  clearInterval(lrTimerInterval);
+  lrTimeLeft=lrTotalTime;
+  updateTimerBar();
+  lrTimerInterval=setInterval(()=>{
+    lrTimeLeft-=0.1;
+    if(lrTimeLeft<=0){clearInterval(lrTimerInterval);if(!lrAnswered)timeOutLR(w.word);}
+    else updateTimerBar();
+  },100);
+}
+function updateTimerBar(){
+  const pct=Math.max(0,lrTimeLeft/lrTotalTime*100);
+  document.getElementById('lr-bar').style.width=pct+'%';
+}
+function answerLR(chosen,correct){
+  if(lrAnswered)return;lrAnswered=true;clearInterval(lrTimerInterval);
+  const btns=document.querySelectorAll('.lr-btn');
+  btns.forEach(b=>{if(b.textContent===correct)b.classList.add('correct-lr');else if(b.textContent===chosen&&chosen!==correct)b.classList.add('wrong-lr');});
+  if(chosen===correct){lrScore++;document.getElementById('lr-score').textContent=lrScore;document.getElementById('lr-feedback').textContent='✅ Yes!';spawnSparkle(window.innerWidth/2,window.innerHeight*.6);}
+  else{document.getElementById('lr-feedback').textContent='❌ That was: '+correct;}
+  lrQ++;setTimeout(nextLR,1100);
+}
+function timeOutLR(correct){
+  lrAnswered=true;
+  document.getElementById('lr-feedback').textContent='⏰ Too slow! It was: '+correct;
+  document.querySelectorAll('.lr-btn').forEach(b=>{if(b.textContent===correct)b.classList.add('correct-lr');});
+  lrQ++;setTimeout(nextLR,1200);
+}
+function endLR(){
+  clearInterval(lrTimerInterval);
+  const pct=Math.round(lrScore/WORDS.length*100);
+  const msg=pct===100?'🏆 Perfect score!':pct>=67?'🌟 Great job!':'💪 Keep practising!';
+  document.getElementById('lr-card').innerHTML=`
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;width:100%">
+      <div style="font-size:clamp(2.5rem,8vw,5rem);font-weight:900;color:var(--text)">${lrScore} / ${WORDS.length}</div>
+      <div style="font-size:clamp(1rem,2.8vw,1.6rem);color:var(--muted)">${msg}</div>
+      <button class="lr-play-again" onclick="initLightning()" style="border:none;border-radius:50px;padding:12px 34px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.95rem,2.3vw,1.35rem);color:#fff;background:linear-gradient(135deg,#FF6B6B,#FF8E53);box-shadow:0 6px 0 #c9472e;cursor:pointer;">Play again ⚡</button>
+      <button onclick="goNext()" style="border:none;background:none;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;color:var(--muted);cursor:pointer;text-decoration:underline;margin-top:4px;">Finish →</button>
+    </div>`;
+  document.getElementById('lr-feedback').textContent='';
+  if(pct===100)bigConfetti();
+}
+
+// ═══════════════════════════ EFFECTS ═══════════════════════════
+const SPARKS=['✨','⭐','🌟','💫','🎉'];
+function spawnSparkle(x,y){for(let i=0;i<4;i++){const el=document.createElement('div');el.className='sparkle';el.textContent=SPARKS[Math.floor(Math.random()*SPARKS.length)];el.style.cssText=`left:${x-18+(Math.random()-.5)*65}px;top:${y-18+(Math.random()-.5)*48}px;animation-delay:${i*.1}s`;document.body.appendChild(el);setTimeout(()=>el.remove(),1000);}}
+function bigConfetti(){const cols=['#E63946','#F5C800','#2BAE66','#1A78C2','#FB5607','#8338EC','#fff','#E91E8C'];for(let i=0;i<38;i++){const el=document.createElement('div');el.className='conf-p';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*28}vh;background:${cols[i%cols.length]};animation-delay:${Math.random()*.55}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),2100);}}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1400);}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+
+showScreen('s-home');
+</script>
+</body>
+</html>
