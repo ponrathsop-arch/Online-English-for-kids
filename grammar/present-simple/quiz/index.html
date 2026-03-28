@@ -355,6 +355,12 @@ const ALL_QS = [
 const SEC_COLORS = ['#6BCB77','#FF6B6B','#C77DFF','#FF9F43'];
 const TOTAL = 20;
 
+/* shuffled copy per section — reshuffled on every start/redo */
+const shuffledQS = [0,1,2,3].map(si => [...ALL_QS[si]]);
+function shuffleSection(si) {
+  shuffledQS[si] = [...ALL_QS[si]].sort(() => Math.random() - 0.5);
+}
+
 /* ── STATE ── */
 const state = [0,1,2,3].map(() => ({qi:0, score:0, results:[], done:false, finalScore:null}));
 
@@ -413,13 +419,13 @@ function showScreen(id) {
 
 /* ── RENDER QUESTION ── */
 function renderQuestion(si, qi) {
-  const q = ALL_QS[si][qi];
+  const q = shuffledQS[si][qi];
   const s = state[si];
   const id = `sc-q-${si}-${qi}`;
   const el = document.getElementById(id);
 
   // pip row
-  const pips = ALL_QS[si].map((_,i) => {
+  const pips = shuffledQS[si].map((_,i) => {
     let cls = 'pip';
     if(i < s.results.length) cls += s.results[i]==='ok' ? ' ok' : ' no';
     else if(i===qi) cls += ' now';
@@ -511,6 +517,7 @@ function showSectionScore(si) {
 /* ── REDO SECTION ── */
 function redoSection(si) {
   state[si].qi=0; state[si].score=0; state[si].results=[];
+  shuffleSection(si);
   renderQuestion(si, 0);
   showScreen(`sc-q-${si}-0`);
   updateDots(si);
@@ -562,6 +569,7 @@ function showFinal() {
 function restartAll() {
   [0,1,2,3].forEach(si => {
     state[si].qi=0; state[si].score=0; state[si].results=[]; state[si].done=false; state[si].finalScore=null;
+    shuffleSection(si);
     const qs = document.getElementById(`qs-${si}`);
     qs.textContent=''; qs.classList.remove('show');
     renderQuestion(si, 0);
@@ -597,7 +605,7 @@ function confetti(){
 /* ── BOOT ── */
 buildQuestionScreens();
 buildDots();
-[0,1,2,3].forEach(si => renderQuestion(si, 0));
+[0,1,2,3].forEach(si => { shuffleSection(si); renderQuestion(si, 0); });
 switchSection(0);
 </script>
 </body>
