@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>CVC Words – AN Family</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#FEF9F0;--text:#2C2C54;--muted:#aaa;
+  --green:#2BAE66;--red:#E63946;--blue:#1A78C2;--orange:#FB5607;
+  --shadow:0 8px 0 rgba(0,0,0,0.12);
+}
+body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:800;
+  background:var(--bg);height:100vh;overflow:hidden;touch-action:manipulation;}
+
+/* ── PROGRESS ── */
+#prog-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,.07);z-index:999;}
+#prog-bar{height:100%;background:linear-gradient(90deg,#FF6B6B,#FFD93D,#6BCB77);transition:width .4s;width:0%;}
+
+/* ── SCREENS ── */
+.screen{display:none;position:fixed;inset:0;flex-direction:column;align-items:center;
+  justify-content:center;padding:14px 14px 74px;overflow-y:auto;
+  animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
+.screen.active{display:flex;}
+@keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* ── NAV BAR ── */
+#nav-bar{position:fixed;bottom:0;left:0;width:100%;background:rgba(255,255,255,.97);
+  backdrop-filter:blur(12px);border-top:2px solid #F0EAE0;z-index:998;
+  display:flex;align-items:center;justify-content:space-between;padding:9px 18px 12px;}
+.npill{border:none;border-radius:50px;padding:10px 26px;font-family:inherit;font-weight:900;
+  font-size:.95rem;cursor:pointer;transition:transform .15s,box-shadow .15s;color:#fff;
+  box-shadow:0 5px 0 rgba(0,0,0,.14);}
+.npill:hover{transform:translateY(-3px);}
+.npill:active{transform:translateY(2px);}
+#prev-btn{background:#bbb;box-shadow:0 5px 0 #999;}
+#next-btn{background:linear-gradient(135deg,#FF6B6B,#FF8E53);box-shadow:0 5px 0 #c9472e;}
+#step-lbl{font-size:.8rem;color:var(--muted);font-weight:800;text-align:center;}
+
+.big-title{font-size:clamp(1.7rem,5.5vw,3rem);color:var(--text);text-align:center;line-height:1.2;}
+.sub{font-size:clamp(.82rem,2vw,1.15rem);color:var(--muted);text-align:center;margin-top:5px;}
+
+/* ══ S0 INTRO ══ */
+#s0{background:linear-gradient(145deg,#FF6B6B,#FFD93D,#6BCB77,#4D96FF);}
+.i-title{font-size:clamp(3.5rem,13vw,9rem);color:#fff;text-shadow:0 8px 0 rgba(0,0,0,.12);
+  font-weight:900;animation:ibounce 1.8s ease-in-out infinite alternate;line-height:1;}
+@keyframes ibounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-20px) rotate(2deg)}}
+.i-sub{font-size:clamp(1.1rem,3vw,2rem);color:#fff;margin-top:14px;text-align:center;
+  animation:ipulse 1.4s ease-in-out infinite alternate;}
+@keyframes ipulse{from{opacity:.5;transform:scale(.97)}to{opacity:1;transform:scale(1.03)}}
+.i-words{margin-top:22px;font-size:clamp(1rem,3vw,1.8rem);color:rgba(255,255,255,.93);
+  letter-spacing:6px;text-align:center;font-weight:900;}
+
+/* ══ S1 PHONICS ══ */
+#s1{background:var(--bg);}
+.ph-grid{display:flex;flex-wrap:wrap;gap:clamp(8px,1.8vw,14px);
+  justify-content:center;max-width:560px;margin-top:16px;}
+.ph-tile{border:none;border-radius:18px;
+  width:clamp(68px,12vw,104px);height:clamp(68px,12vw,104px);
+  cursor:pointer;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;
+  box-shadow:var(--shadow);transition:transform .13s,box-shadow .13s;
+  font-family:'Nunito',sans-serif;font-weight:900;}
+.ph-tile:hover{transform:translateY(-5px);box-shadow:0 13px 0 rgba(0,0,0,.12);}
+.ph-tile:active{transform:translateY(2px);box-shadow:0 3px 0 rgba(0,0,0,.12);}
+.ph-ltr{font-size:clamp(1.8rem,4.2vw,2.8rem);text-shadow:0 3px 0 rgba(0,0,0,.15);}
+.ph-hint{font-size:clamp(.5rem,1vw,.75rem);letter-spacing:.4px;opacity:.82;}
+
+/* Zoom overlay — letter fills screen */
+#zoom-ov{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:8000;
+  display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;cursor:pointer;}
+#zoom-ov.show{display:flex;}
+#zoom-ltr{font-size:clamp(9rem,28vw,20rem);color:#fff;font-weight:900;
+  font-family:'Nunito',sans-serif;text-shadow:0 12px 0 rgba(0,0,0,.22);
+  animation:zoomPop .35s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes zoomPop{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+#zoom-ex{font-size:clamp(1.3rem,4vw,2.4rem);color:rgba(255,255,255,.78);
+  font-family:'Nunito',sans-serif;font-weight:800;letter-spacing:3px;}
+#zoom-tap{font-size:clamp(.75rem,1.8vw,1.05rem);color:rgba(255,255,255,.45);
+  font-family:'Nunito',sans-serif;margin-top:4px;}
+
+/* ══ S2 BLEND ══ */
+#s2{background:var(--bg);}
+.b-dots{display:flex;gap:9px;align-items:center;margin-bottom:14px;}
+.b-dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
+.b-dot.cur{background:var(--orange);transform:scale(1.5);}
+.b-dot.done{background:var(--green);}
+.b-card{background:#fff;border-radius:26px;padding:20px 24px;
+  box-shadow:0 12px 0 rgba(0,0,0,.1);
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  max-width:430px;width:100%;}
+.b-illo{width:clamp(100px,18vw,170px);height:clamp(100px,18vw,170px);
+  display:flex;align-items:center;justify-content:center;
+  animation:illustPop .5s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes illustPop{0%{transform:scale(0) rotate(-8deg)}80%{transform:scale(1.06) rotate(1deg)}100%{transform:scale(1)}}
+.b-illo svg{width:100%;height:100%;}
+.b-row{display:flex;align-items:center;gap:8px;font-size:clamp(2rem,6vw,3.8rem);font-weight:900;}
+.b-con{border-radius:12px;padding:3px 13px;transition:all .5s cubic-bezier(.175,.885,.32,1.275);}
+.b-fam{color:#E63946;background:#FFECEE;border-radius:12px;padding:3px 13px;transition:all .5s;}
+.b-plus,.b-arrow{color:#ccc;font-size:clamp(1.1rem,2.8vw,2rem);}
+.b-res{font-size:clamp(2.4rem,7vw,4.5rem);color:var(--text);
+  opacity:0;transform:scale(.5);transition:all .55s cubic-bezier(.175,.885,.32,1.275);}
+.b-res.show{opacity:1;transform:scale(1);}
+.b-lbl{font-size:clamp(.88rem,2vw,1.25rem);color:var(--muted);letter-spacing:2px;text-align:center;}
+.blend-btn{border:none;border-radius:50px;padding:11px 32px;
+  background:linear-gradient(135deg,var(--blue),#5BA3E8);color:#fff;
+  font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.9rem,2vw,1.3rem);
+  cursor:pointer;box-shadow:0 6px 0 #1056a0;transition:transform .13s;}
+.blend-btn:hover{transform:translateY(-3px);}
+.blend-btn:active{transform:translateY(2px);}
+.blend-skip{border:none;background:none;color:var(--muted);font-family:'Nunito',sans-serif;
+  font-weight:800;font-size:.88rem;cursor:pointer;text-decoration:underline;}
+
+/* ══ S3 MATCH ══ */
+#s3{background:var(--bg);}
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  width:100%;max-width:500px;margin-top:12px;}
+.match-pics,.match-words{display:flex;flex-direction:column;gap:8px;}
+/* pic and word cards exactly same height */
+.m-pic{background:#fff;border-radius:16px;
+  height:clamp(66px,11vw,88px);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;padding:4px;
+  box-shadow:0 5px 0 rgba(0,0,0,.08);border:3px solid transparent;transition:all .15s;}
+.m-pic:hover{transform:translateY(-3px);}
+.m-pic.selected{border-color:var(--blue);box-shadow:0 0 0 5px rgba(26,120,194,.18),0 5px 0 var(--blue);}
+.m-pic.matched{border-color:var(--green);background:#EAFFF5;pointer-events:none;opacity:.6;}
+.m-pic svg{height:100%;width:auto;max-width:100%;}
+.m-word{background:#fff;border-radius:16px;
+  height:clamp(66px,11vw,88px);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 5px 0 rgba(0,0,0,.08);border:3px solid transparent;
+  font-size:clamp(1.6rem,4.2vw,2.4rem);color:var(--text);transition:all .15s;}
+.m-word:hover{transform:translateY(-3px);}
+.m-word.matched{border-color:var(--green);background:#EAFFF5;pointer-events:none;opacity:.6;}
+.m-word.ws,.m-pic.ws{animation:shake .4s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.match-score{font-size:clamp(.88rem,2vw,1.25rem);color:var(--muted);margin-top:8px;}
+
+/* ══ S4 SPELL ══ */
+#s4{background:var(--bg);}
+.sp-dots{display:flex;gap:7px;margin-bottom:8px;}
+.sp-dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
+.sp-dot.cur{background:var(--orange);transform:scale(1.4);}
+.sp-dot.done{background:var(--green);}
+.sp-illo{width:clamp(88px,16vw,145px);height:clamp(88px,16vw,145px);
+  display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
+.sp-illo svg{width:100%;height:100%;}
+.sp-lbl{font-size:clamp(.95rem,2.2vw,1.3rem);color:var(--muted);letter-spacing:5px;margin-bottom:12px;}
+.sp-boxes{display:flex;gap:clamp(6px,1.5vw,11px);margin-bottom:14px;}
+.sp-box{width:clamp(54px,10.5vw,76px);height:clamp(58px,12vw,80px);
+  background:#fff;border-radius:16px;border:3px solid #DDD;
+  box-shadow:0 5px 0 rgba(0,0,0,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(1.8rem,4.8vw,2.8rem);color:var(--text);font-weight:900;transition:all .2s;}
+.sp-box.ab{border-color:var(--blue);box-shadow:0 0 0 5px rgba(26,120,194,.18),0 5px 0 var(--blue);}
+.sp-box.fb{border-color:#ccc;background:#F8F8F8;}
+.sp-box.ob{border-color:var(--green);background:#EAFFF5;animation:okPop .45s ease;}
+.sp-box.eb{border-color:var(--red);animation:shake .4s ease;}
+@keyframes okPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.sp-tiles{display:flex;flex-wrap:wrap;gap:clamp(6px,1.5vw,11px);justify-content:center;max-width:360px;}
+.sp-tile{border:none;border-radius:14px;
+  width:clamp(46px,9vw,64px);height:clamp(46px,9vw,64px);
+  cursor:pointer;font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:clamp(1.25rem,3vw,1.8rem);
+  background:#6B7280;color:#fff;   /* ALL SAME NEUTRAL GREY */
+  box-shadow:0 6px 0 #4B5563;transition:transform .13s,box-shadow .13s,opacity .13s;}
+.sp-tile:hover{transform:translateY(-4px);box-shadow:0 10px 0 #4B5563;}
+.sp-tile:active{transform:translateY(2px);box-shadow:0 2px 0 #4B5563;}
+.sp-tile.used{opacity:.22;pointer-events:none;transform:none;box-shadow:none;}
+.sp-fb{font-size:clamp(1rem,2.5vw,1.7rem);min-height:36px;text-align:center;margin-top:4px;}
+.sp-clear{border:none;background:#EEE;border-radius:50px;padding:7px 20px;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;color:#888;
+  cursor:pointer;margin-top:4px;}
+.sp-clear:hover{background:#FFE4CC;}
+
+/* ══ S5 CELEBRATE ══ */
+#s5{background:linear-gradient(145deg,#6BCB77,#4D96FF,#FFD93D);}
+.cel-ico{font-size:clamp(4rem,13vw,8rem);animation:ibounce 1.6s ease-in-out infinite alternate;}
+.cel-title{font-size:clamp(2rem,6.5vw,4.5rem);color:#fff;text-shadow:0 6px 0 rgba(0,0,0,.12);text-align:center;margin-top:8px;}
+.cel-sub{font-size:clamp(1rem,2.6vw,1.6rem);color:rgba(255,255,255,.9);text-align:center;margin-top:6px;}
+.cel-stars{font-size:clamp(1.6rem,4.5vw,3rem);margin-top:8px;letter-spacing:4px;}
+.restart-btn{margin-top:24px;border:none;border-radius:50px;padding:14px 44px;
+  font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.05rem,2.6vw,1.6rem);
+  color:var(--text);background:#fff;box-shadow:0 8px 0 rgba(0,0,0,.12);cursor:pointer;transition:transform .14s;}
+.restart-btn:hover{transform:translateY(-4px);}
+
+/* ── TOAST ── */
+.toast{position:fixed;top:22px;left:50%;transform:translateX(-50%) translateY(-18px);
+  background:#FF6B6B;color:#fff;padding:11px 30px;border-radius:50px;
+  font-size:1.1rem;font-family:'Nunito',sans-serif;font-weight:900;
+  z-index:9999;opacity:0;transition:all .28s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── SPARKLE ── */
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:1.8rem;animation:spFly .9s ease forwards;}
+@keyframes spFly{0%{opacity:1;transform:scale(.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-80px)}}
+.conf-p{position:fixed;width:11px;height:11px;border-radius:3px;opacity:0;pointer-events:none;
+  z-index:9999;animation:confFall 1.4s ease forwards;}
+@keyframes confFall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+
+<!-- Phonics zoom overlay -->
+<div id="zoom-ov" onclick="closeZoom()">
+  <div id="zoom-ltr">A</div>
+  <div id="zoom-ex"></div>
+  <div id="zoom-tap">Tap anywhere to close</div>
+</div>
+
+<div id="prog-wrap"><div id="prog-bar"></div></div>
+<div class="toast" id="toast"></div>
+
+<!-- S0 INTRO -->
+<div class="screen active" id="s0">
+  <div class="i-title">AN Family</div>
+  <div class="i-sub">Tap to start!</div>
+  <div class="i-words">pan · tan · fan · ban · van · man</div>
+</div>
+
+<!-- S1 PHONICS -->
+<div class="screen" id="s1">
+  <div class="big-title">Tap each sound!</div>
+  <div class="sub">Tap a letter to see it big — say it aloud!</div>
+  <div class="ph-grid" id="ph-grid"></div>
+</div>
+
+<!-- S2 BLEND & READ -->
+<div class="screen" id="s2">
+  <div class="big-title">Blend &amp; Read!</div>
+  <div class="sub">Watch the sounds come together!</div>
+  <div class="b-dots" id="b-dots"></div>
+  <div class="b-card">
+    <div class="b-illo" id="b-illo"></div>
+    <div class="b-row">
+      <div class="b-con" id="b-con">p</div>
+      <div class="b-plus">+</div>
+      <div class="b-fam">an</div>
+      <div class="b-arrow">→</div>
+      <div class="b-res" id="b-res">pan</div>
+    </div>
+    <div class="b-lbl" id="b-lbl">p + an = ?</div>
+    <button class="blend-btn" id="blend-btn" onclick="doBlend()">Blend it!</button>
+    <button class="blend-skip" id="blend-skip" onclick="nextBlend()">Next word ▶</button>
+  </div>
+</div>
+
+<!-- S3 MATCH -->
+<div class="screen" id="s3">
+  <div class="big-title">Match it!</div>
+  <div class="sub">Tap a picture · then tap its word</div>
+  <div class="match-wrap">
+    <div class="match-pics" id="match-pics"></div>
+    <div class="match-words" id="match-words"></div>
+  </div>
+  <div class="match-score" id="match-score">0 / 6 matched</div>
+</div>
+
+<!-- S4 SPELL -->
+<div class="screen" id="s4">
+  <div class="big-title">Spell it!</div>
+  <div class="sub">Tap the letters in order!</div>
+  <div class="sp-dots" id="sp-dots"></div>
+  <div class="sp-illo" id="sp-illo"></div>
+  <div class="sp-lbl" id="sp-lbl">_ _ _</div>
+  <div class="sp-boxes" id="sp-boxes"></div>
+  <div class="sp-tiles" id="sp-tiles"></div>
+  <div class="sp-fb" id="sp-fb"></div>
+  <button class="sp-clear" onclick="clearSpell()">Clear</button>
+</div>
+
+<!-- S5 CELEBRATE -->
+<div class="screen" id="s5">
+  <div class="cel-ico">🏆</div>
+  <div class="cel-title">Amazing work!</div>
+  <div class="cel-stars">⭐⭐⭐⭐⭐⭐</div>
+  <div class="cel-sub">You learned all the AN words!</div>
+  <button class="restart-btn" onclick="restart()">Play again!</button>
+</div>
+
+<!-- NAV -->
+<div id="nav-bar">
+  <button class="npill" id="prev-btn" onclick="goPrev()">◀ Back</button>
+  <div id="step-lbl">Step 1 of 5</div>
+  <button class="npill" id="next-btn" onclick="goNext()">Next ▶</button>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  SVG ILLUSTRATIONS — accurate, no embedded word text
+//  Each is recognisable at a glance by a young child
+// ════════════════════════════════════════════════════════════
+const SVG = {
+
+  // PAN — classic black frying pan viewed from a slight angle, handle to right
+  pan:`<svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
+    <!-- shadow -->
+    <ellipse cx="104" cy="162" rx="75" ry="10" fill="rgba(0,0,0,.08)"/>
+    <!-- handle -->
+    <rect x="168" y="82" width="48" height="18" rx="9" fill="#3E2723"/>
+    <rect x="192" y="86" width="22" height="10" rx="5" fill="#5D4037"/>
+    <!-- pan body -->
+    <ellipse cx="100" cy="100" rx="78" ry="62" fill="#212121"/>
+    <ellipse cx="100" cy="97" rx="66" ry="52" fill="#333"/>
+    <!-- cooking surface -->
+    <ellipse cx="100" cy="95" rx="56" ry="44" fill="#2a2a2a"/>
+    <!-- sheen -->
+    <ellipse cx="80" cy="78" rx="14" ry="24" fill="rgba(255,255,255,.07)" transform="rotate(-20 80 78)"/>
+    <!-- rim highlight -->
+    <ellipse cx="100" cy="100" rx="78" ry="62" fill="none" stroke="#555" stroke-width="3"/>
+  </svg>`,
+
+  // TAN — swatch of sandy/tan colour with texture dots to show it is a colour, plus a sandcastle
+  tan:`<svg viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- sky -->
+    <rect x="0" y="0" width="220" height="200" rx="18" fill="#87CEEB"/>
+    <!-- sun -->
+    <circle cx="180" cy="36" r="22" fill="#FFD700"/>
+    <!-- sand ground -->
+    <rect x="0" y="120" width="220" height="80" rx="0" fill="#D2B48C"/>
+    <!-- sandy beach texture -->
+    <circle cx="30" cy="145" r="3" fill="#C4A47C"/><circle cx="70" cy="155" r="2" fill="#C4A47C"/>
+    <circle cx="110" cy="142" r="3" fill="#C4A47C"/><circle cx="155" cy="158" r="2" fill="#C4A47C"/>
+    <circle cx="190" cy="145" r="3" fill="#C4A47C"/>
+    <!-- sandcastle body -->
+    <rect x="74" y="78" width="72" height="46" rx="4" fill="#C4A47C"/>
+    <!-- castle top battlements -->
+    <rect x="74" y="65" width="14" height="18" rx="3" fill="#C4A47C"/>
+    <rect x="96" y="60" width="14" height="22" rx="3" fill="#C4A47C"/>
+    <rect x="118" y="65" width="14" height="18" rx="3" fill="#C4A47C"/>
+    <rect x="140" y="65" width="14" height="18" rx="3" fill="#C4A47C"/>
+    <!-- castle door -->
+    <rect x="102" y="98" width="18" height="26" rx="9" fill="#A0826D"/>
+    <!-- castle window -->
+    <circle cx="88" cy="90" r="6" fill="#A0826D"/>
+    <circle cx="134" cy="90" r="6" fill="#A0826D"/>
+    <!-- shading -->
+    <rect x="74" y="78" width="72" height="46" rx="4" fill="none" stroke="#A0826D" stroke-width="2"/>
+    <!-- flag -->
+    <line x1="110" y1="60" x2="110" y2="36" stroke="#8B4513" stroke-width="2.5"/>
+    <polygon points="110,36 126,42 110,48" fill="#E53935"/>
+    <!-- waves at bottom -->
+    <path d="M0 130 Q28 120 55 130 Q82 140 110 130 Q138 120 165 130 Q193 140 220 130" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="3"/>
+  </svg>`,
+
+  // FAN — electric desk fan, clear and recognisable
+  fan:`<svg viewBox="0 0 220 210" xmlns="http://www.w3.org/2000/svg">
+    <!-- base -->
+    <rect x="74" y="175" width="72" height="14" rx="7" fill="#546E7A"/>
+    <rect x="88" y="155" width="44" height="24" rx="5" fill="#607D8B"/>
+    <!-- guard ring outer -->
+    <circle cx="110" cy="108" r="74" fill="#B0BEC5"/>
+    <circle cx="110" cy="108" r="68" fill="#ECEFF1"/>
+    <!-- blades — 4 blades spread around centre -->
+    <ellipse cx="110" cy="60" rx="18" ry="40" fill="#1565C0" transform="rotate(0 110 108)"/>
+    <ellipse cx="110" cy="60" rx="18" ry="40" fill="#1976D2" transform="rotate(90 110 108)"/>
+    <ellipse cx="110" cy="60" rx="18" ry="40" fill="#1565C0" transform="rotate(180 110 108)"/>
+    <ellipse cx="110" cy="60" rx="18" ry="40" fill="#1976D2" transform="rotate(270 110 108)"/>
+    <!-- centre hub -->
+    <circle cx="110" cy="108" r="18" fill="#90A4AE"/>
+    <circle cx="110" cy="108" r="10" fill="#607D8B"/>
+    <circle cx="110" cy="108" r="4" fill="#37474F"/>
+    <!-- guard spokes -->
+    <circle cx="110" cy="108" r="68" fill="none" stroke="#90A4AE" stroke-width="3"/>
+    <circle cx="110" cy="108" r="45" fill="none" stroke="#90A4AE" stroke-width="2"/>
+    <line x1="110" y1="40" x2="110" y2="176" stroke="#90A4AE" stroke-width="2"/>
+    <line x1="42" y1="108" x2="178" y2="108" stroke="#90A4AE" stroke-width="2"/>
+    <line x1="62" y1="61" x2="158" y2="155" stroke="#90A4AE" stroke-width="2"/>
+    <line x1="158" y1="61" x2="62" y2="155" stroke="#90A4AE" stroke-width="2"/>
+    <!-- button -->
+    <circle cx="110" cy="190" r="7" fill="#37474F"/>
+  </svg>`,
+
+  // BAN — red circle with diagonal bar (universal "no" / banned symbol)
+  ban:`<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+    <!-- shadow -->
+    <ellipse cx="110" cy="208" rx="70" ry="8" fill="rgba(0,0,0,.08)"/>
+    <!-- white background circle -->
+    <circle cx="110" cy="108" r="88" fill="white"/>
+    <!-- red ring -->
+    <circle cx="110" cy="108" r="88" fill="none" stroke="#E53935" stroke-width="20"/>
+    <!-- diagonal bar -->
+    <line x1="47" y1="47" x2="173" y2="169" stroke="#E53935" stroke-width="20" stroke-linecap="round"/>
+    <!-- inner glow to make it pop -->
+    <circle cx="110" cy="108" r="68" fill="none" stroke="rgba(229,57,53,.15)" stroke-width="10"/>
+  </svg>`,
+
+  // VAN — side-on delivery van, very clear silhouette
+  van:`<svg viewBox="0 0 240 170" xmlns="http://www.w3.org/2000/svg">
+    <!-- shadow -->
+    <ellipse cx="120" cy="163" rx="100" ry="7" fill="rgba(0,0,0,.1)"/>
+    <!-- van body -->
+    <rect x="10" y="58" width="210" height="90" rx="14" fill="#1565C0"/>
+    <!-- cab top curve -->
+    <path d="M10 90 L10 58 Q10 44 24 44 L78 44 L100 58Z" fill="#1565C0"/>
+    <!-- cab windscreen -->
+    <path d="M20 86 L20 58 Q20 50 28 50 L74 50 L92 62 L92 86Z" fill="#90CAF9"/>
+    <!-- highlight on windscreen -->
+    <path d="M26 58 Q30 52 38 52 L56 52 L70 62" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="3" stroke-linecap="round"/>
+    <!-- cargo side window -->
+    <rect x="108" y="64" width="74" height="38" rx="7" fill="#90CAF9"/>
+    <!-- window shine -->
+    <rect x="112" y="68" width="28" height="10" rx="4" fill="rgba(255,255,255,.45)"/>
+    <!-- side panel lines -->
+    <line x1="102" y1="58" x2="102" y2="148" stroke="#0D47A1" stroke-width="2.5"/>
+    <rect x="10" y="58" width="210" height="90" rx="14" fill="none" stroke="#0D47A1" stroke-width="3"/>
+    <!-- front bumper -->
+    <rect x="6" y="120" width="18" height="10" rx="4" fill="#0D47A1"/>
+    <!-- headlights -->
+    <rect x="10" y="96" width="16" height="10" rx="4" fill="#FFF176"/>
+    <!-- rear lights -->
+    <rect x="208" y="96" width="12" height="14" rx="4" fill="#FF1744"/>
+    <!-- wheels -->
+    <circle cx="58" cy="150" r="24" fill="#212121"/>
+    <circle cx="58" cy="150" r="15" fill="#424242"/>
+    <circle cx="58" cy="150" r="6" fill="#9E9E9E"/>
+    <circle cx="174" cy="150" r="24" fill="#212121"/>
+    <circle cx="174" cy="150" r="15" fill="#424242"/>
+    <circle cx="174" cy="150" r="6" fill="#9E9E9E"/>
+    <!-- hubcaps -->
+    <circle cx="58" cy="150" r="9" fill="none" stroke="#757575" stroke-width="2"/>
+    <circle cx="174" cy="150" r="9" fill="none" stroke="#757575" stroke-width="2"/>
+    <!-- rear door handle -->
+    <rect x="196" y="110" width="6" height="18" rx="3" fill="#0D47A1"/>
+  </svg>`,
+
+  // MAN — simple standing male person, clear body/head/clothes
+  man:`<svg viewBox="0 0 220 240" xmlns="http://www.w3.org/2000/svg">
+    <!-- shadow -->
+    <ellipse cx="110" cy="234" rx="46" ry="6" fill="rgba(0,0,0,.09)"/>
+    <!-- head -->
+    <circle cx="110" cy="44" r="36" fill="#FFCC80"/>
+    <!-- hair -->
+    <path d="M76 38 Q78 10 110 10 Q142 10 144 38 Q136 22 110 22 Q84 22 76 38Z" fill="#5D4037"/>
+    <!-- neck -->
+    <rect x="101" y="76" width="18" height="14" rx="6" fill="#FFCC80"/>
+    <!-- shirt / torso -->
+    <rect x="68" y="88" width="84" height="76" rx="12" fill="#1565C0"/>
+    <!-- collar -->
+    <path d="M101 88 L110 100 L119 88" fill="white"/>
+    <!-- shirt pocket -->
+    <rect x="116" y="100" width="20" height="16" rx="4" fill="#1976D2"/>
+    <!-- left arm -->
+    <rect x="36" y="88" width="34" height="20" rx="10" fill="#1565C0" transform="rotate(10 36 88)"/>
+    <rect x="26" y="102" width="22" height="46" rx="10" fill="#1565C0" transform="rotate(8 26 102)"/>
+    <!-- left hand -->
+    <ellipse cx="34" cy="150" rx="12" ry="10" fill="#FFCC80" transform="rotate(8 34 150)"/>
+    <!-- right arm -->
+    <rect x="150" y="88" width="34" height="20" rx="10" fill="#1565C0" transform="rotate(-10 184 88)"/>
+    <rect x="160" y="102" width="22" height="46" rx="10" fill="#1565C0" transform="rotate(-8 182 102)"/>
+    <!-- right hand -->
+    <ellipse cx="186" cy="150" rx="12" ry="10" fill="#FFCC80" transform="rotate(-8 186 150)"/>
+    <!-- trousers -->
+    <rect x="74" y="158" width="34" height="68" rx="10" fill="#37474F"/>
+    <rect x="112" y="158" width="34" height="68" rx="10" fill="#37474F"/>
+    <!-- belt -->
+    <rect x="68" y="158" width="84" height="10" rx="5" fill="#1A237E"/>
+    <rect x="104" y="158" width="12" height="10" rx="3" fill="#FFD700"/>
+    <!-- shoes -->
+    <ellipse cx="91" cy="228" rx="22" ry="9" fill="#212121"/>
+    <ellipse cx="129" cy="228" rx="22" ry="9" fill="#212121"/>
+    <!-- face -->
+    <circle cx="98" cy="42" r="5" fill="#5D4037"/>
+    <circle cx="122" cy="42" r="5" fill="#5D4037"/>
+    <!-- pupils -->
+    <circle cx="99" cy="41" r="2" fill="white"/>
+    <circle cx="123" cy="41" r="2" fill="white"/>
+    <!-- smile -->
+    <path d="M98 58 Q110 70 122 58" fill="none" stroke="#E65100" stroke-width="3" stroke-linecap="round"/>
+    <!-- ear -->
+    <ellipse cx="74" cy="46" rx="7" ry="11" fill="#FFCC80"/>
+    <ellipse cx="146" cy="46" rx="7" ry="11" fill="#FFCC80"/>
+  </svg>`,
+};
+
+// ════════════════════════════════════════════════════════════
+//  DATA
+// ════════════════════════════════════════════════════════════
+const WORDS = [
+  { word:'pan', consonant:'p', color:'#E63946' },
+  { word:'tan', consonant:'t', color:'#FB5607' },
+  { word:'fan', consonant:'f', color:'#1A78C2' },
+  { word:'ban', consonant:'b', color:'#8338EC' },
+  { word:'van', consonant:'v', color:'#2BAE66' },
+  { word:'man', consonant:'m', color:'#E91E8C' },
+];
+
+const PHONICS = [
+  { letter:'p', hint:'pan',    bg:'#E63946', dark:false, example:'p — pan' },
+  { letter:'t', hint:'tan',    bg:'#FB5607', dark:false, example:'t — tan' },
+  { letter:'f', hint:'fan',    bg:'#1A78C2', dark:false, example:'f — fan' },
+  { letter:'b', hint:'ban',    bg:'#8338EC', dark:false, example:'b — ban' },
+  { letter:'v', hint:'van',    bg:'#2BAE66', dark:false, example:'v — van' },
+  { letter:'m', hint:'man',    bg:'#E91E8C', dark:false, example:'m — man' },
+  { letter:'a', hint:'vowel',  bg:'#F5C800', dark:true,  example:'a — short a sound' },
+  { letter:'n', hint:'ending', bg:'#555555', dark:false, example:'n — end sound' },
+  { letter:'an',hint:'family', bg:'linear-gradient(135deg,#F5C800,#FB5607)', dark:false, example:'__an — the family!' },
+];
+
+const DISTRACTORS = ['d','g','h','k','l','r','s','o','e','u','w','c','j'];
+
+// ════════════════════════════════════════════════════════════
+//  SCREEN ENGINE
+// ════════════════════════════════════════════════════════════
+const SCREENS = ['s0','s1','s2','s3','s4','s5'];
+const NAMES   = ['Intro','Sounds','Read','Match','Spell','Done!'];
+let cur = 0;
+
+function showScreen(n){
+  n = Math.max(0, Math.min(SCREENS.length-1, n));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(SCREENS[n]).classList.add('active');
+  cur = n;
+  document.getElementById('prog-bar').style.width=(n/(SCREENS.length-1)*100)+'%';
+  document.getElementById('prev-btn').style.visibility = n===0?'hidden':'visible';
+  document.getElementById('next-btn').style.visibility = n===SCREENS.length-1?'hidden':'visible';
+  document.getElementById('step-lbl').textContent=`Step ${n+1} of ${SCREENS.length} · ${NAMES[n]}`;
+  if(n===1) initPhonics();
+  if(n===2) initBlend();
+  if(n===3) initMatch();
+  if(n===4) initSpell();
+  if(n===5) bigConfetti();
+}
+function goNext(){ showScreen(cur+1); }
+function goPrev(){ showScreen(cur-1); }
+function restart(){
+  blendIdx=0; blended=false;
+  matchSel=null; matchDone=0;
+  spellIdx=0; spellInput=[];
+  showScreen(0);
+}
+
+// ════════════════════════════════════════════════════════════
+//  S1 PHONICS — tap opens zoom overlay, NO audio
+// ════════════════════════════════════════════════════════════
+function initPhonics(){
+  const grid=document.getElementById('ph-grid');
+  grid.innerHTML='';
+  PHONICS.forEach(ph=>{
+    const btn=document.createElement('button');
+    btn.className='ph-tile';
+    btn.style.background=ph.bg;
+    btn.style.color=ph.dark?'#333':'#fff';
+    btn.innerHTML=`<div class="ph-ltr" style="color:${ph.dark?'#333':'#fff'}">${ph.letter}</div>
+                   <div class="ph-hint" style="color:${ph.dark?'#555':'rgba(255,255,255,.82)'}">${ph.hint}</div>`;
+    btn.addEventListener('click',()=>openZoom(ph));
+    grid.appendChild(btn);
+  });
+}
+
+function openZoom(ph){
+  const ov=document.getElementById('zoom-ov');
+  const zl=document.getElementById('zoom-ltr');
+  const ze=document.getElementById('zoom-ex');
+  const isGrad=ph.bg.includes('gradient');
+  zl.style.color = isGrad ? '#FFD93D' : ph.bg;
+  zl.style.webkitTextStroke = '2px rgba(0,0,0,.15)';
+  zl.textContent = ph.letter;
+  ze.textContent = ph.example;
+  ov.classList.add('show');
+}
+function closeZoom(){
+  document.getElementById('zoom-ov').classList.remove('show');
+}
+
+// ════════════════════════════════════════════════════════════
+//  S2 BLEND & READ — no audio
+// ════════════════════════════════════════════════════════════
+let blendIdx=0, blended=false;
+
+function initBlend(){ blendIdx=0; blended=false; buildBDots(); renderBlend(); }
+
+function buildBDots(){
+  document.getElementById('b-dots').innerHTML=
+    WORDS.map((_,i)=>`<div class="b-dot${i===0?' cur':''}" id="bd-${i}"></div>`).join('');
+}
+
+function renderBlend(){
+  blended=false;
+  const w=WORDS[blendIdx];
+  WORDS.forEach((_,i)=>{
+    const d=document.getElementById(`bd-${i}`);
+    if(d) d.className='b-dot'+(i<blendIdx?' done':i===blendIdx?' cur':'');
+  });
+  document.getElementById('b-illo').innerHTML=SVG[w.word];
+  const bC=document.getElementById('b-con');
+  const bR=document.getElementById('b-res');
+  const bL=document.getElementById('b-lbl');
+  bC.textContent=w.consonant;
+  bC.style.color=w.color; bC.style.background=w.color+'22';
+  bC.style.opacity='1'; bC.style.transform='scale(1)';
+  document.querySelector('.b-fam').style.opacity='1';
+  document.querySelector('.b-fam').style.transform='scale(1)';
+  bR.textContent=w.word; bR.style.color=w.color; bR.className='b-res';
+  bL.textContent=`${w.consonant} + an = ?`;
+  document.getElementById('blend-btn').style.display='';
+  document.getElementById('blend-skip').textContent=
+    blendIdx<WORDS.length-1?'Next word ▶':'Go to Match!';
+}
+
+function doBlend(){
+  if(blended) return; blended=true;
+  const w=WORDS[blendIdx];
+  const bC=document.getElementById('b-con');
+  const bFam=document.querySelector('.b-fam');
+  const bR=document.getElementById('b-res');
+  const bL=document.getElementById('b-lbl');
+  bC.style.transition='all .5s cubic-bezier(.175,.885,.32,1.275)';
+  bFam.style.transition='all .5s';
+  bC.style.transform='scale(1.22)'; bFam.style.transform='scale(1.22)';
+  setTimeout(()=>{
+    bR.classList.add('show');
+    bC.style.opacity='.28'; bFam.style.opacity='.28';
+    bL.textContent=`${w.consonant} + an = ${w.word} ✅`;
+    spawnSparkle(window.innerWidth/2, window.innerHeight*.52);
+  },420);
+  document.getElementById('blend-btn').style.display='none';
+}
+
+function nextBlend(){
+  if(blendIdx<WORDS.length-1){ blendIdx++; renderBlend(); }
+  else goNext();
+}
+
+// ════════════════════════════════════════════════════════════
+//  S3 MATCH — no audio
+// ════════════════════════════════════════════════════════════
+let matchSel=null, matchDone=0;
+
+function initMatch(){
+  matchSel=null; matchDone=0;
+  document.getElementById('match-score').textContent='0 / 6 matched';
+  const shuffPics =shuffle([...WORDS]);
+  const shuffWords=shuffle([...WORDS]);
+  const picsEl =document.getElementById('match-pics');
+  const wordsEl=document.getElementById('match-words');
+  picsEl.innerHTML=''; wordsEl.innerHTML='';
+
+  shuffPics.forEach(w=>{
+    const card=document.createElement('div');
+    card.className='m-pic'; card.dataset.word=w.word;
+    card.innerHTML=SVG[w.word]; // picture only, no label
+    card.addEventListener('click',()=>handleMatchPic(card,w.word));
+    picsEl.appendChild(card);
+  });
+
+  shuffWords.forEach(w=>{
+    const card=document.createElement('div');
+    card.className='m-word'; card.dataset.word=w.word;
+    card.style.color=w.color; card.textContent=w.word;
+    card.addEventListener('click',()=>handleMatchWord(card,w.word));
+    wordsEl.appendChild(card);
+  });
+}
+
+function handleMatchPic(card,word){
+  if(card.classList.contains('matched')) return;
+  document.querySelectorAll('.m-pic.selected').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected'); matchSel={word,el:card};
+}
+
+function handleMatchWord(card,word){
+  if(card.classList.contains('matched')) return;
+  if(!matchSel){ showToast('Tap a picture first!'); return; }
+  if(matchSel.word===word){
+    matchSel.el.classList.remove('selected'); matchSel.el.classList.add('matched');
+    card.classList.add('matched'); matchSel=null; matchDone++;
+    spawnSparkle(card.getBoundingClientRect().left+card.offsetWidth/2,
+                 card.getBoundingClientRect().top+card.offsetHeight/2);
+    document.getElementById('match-score').textContent=`${matchDone} / 6 matched`;
+    if(matchDone===6) setTimeout(()=>{ bigConfetti(); setTimeout(goNext,900); },350);
+  } else {
+    [matchSel.el,card].forEach(el=>{
+      el.classList.add('ws');
+      setTimeout(()=>el.classList.remove('ws'),450);
+    });
+    matchSel.el.classList.remove('selected'); matchSel=null;
+    showToast('Try again!');
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+//  S4 SPELL — no audio, all tiles same grey
+// ════════════════════════════════════════════════════════════
+let spellIdx=0, spellInput=[];
+
+function initSpell(){ spellIdx=0; spellInput=[]; buildSpDots(); renderSpell(); }
+
+function buildSpDots(){
+  document.getElementById('sp-dots').innerHTML=
+    WORDS.map((_,i)=>`<div class="sp-dot${i===0?' cur':''}" id="snd-${i}"></div>`).join('');
+}
+
+function renderSpell(){
+  spellInput=[];
+  const w=WORDS[spellIdx];
+  WORDS.forEach((_,i)=>{
+    const d=document.getElementById(`snd-${i}`);
+    if(d) d.className='sp-dot'+(i<spellIdx?' done':i===spellIdx?' cur':'');
+  });
+  // illustration only — no word text anywhere
+  document.getElementById('sp-illo').innerHTML=SVG[w.word];
+  document.getElementById('sp-lbl').textContent=w.word.split('').map(()=>'_').join('  ');
+  document.getElementById('sp-fb').textContent='';
+
+  // answer boxes
+  document.getElementById('sp-boxes').innerHTML=
+    w.word.split('').map((_,i)=>
+      `<div class="sp-box${i===0?' ab':''}" id="spb-${i}"></div>`
+    ).join('');
+
+  // letter tiles — exact letters + 3 distractors, ALL SAME NEUTRAL GREY
+  const needed=w.word.split('');
+  const extras=shuffle([...DISTRACTORS]).slice(0,3);
+  const all=shuffle([...needed,...extras]);
+  document.getElementById('sp-tiles').innerHTML=all.map((l,i)=>
+    `<button class="sp-tile" id="stile-${i}" onclick="tapTile('${l}',${i})">${l.toUpperCase()}</button>`
+  ).join('');
+}
+
+function tapTile(letter,idx){
+  const w=WORDS[spellIdx];
+  const pos=spellInput.length;
+  if(pos>=w.word.length) return;
+  const expected=w.word[pos];
+  const box=document.getElementById(`spb-${pos}`);
+  const tile=document.getElementById(`stile-${idx}`);
+
+  if(letter===expected){
+    spellInput.push(letter);
+    box.textContent=letter.toUpperCase();
+    box.classList.remove('ab'); box.classList.add('fb','ob');
+    tile.classList.add('used');
+    document.getElementById('sp-lbl').textContent=
+      w.word.split('').map((_,i)=>i<spellInput.length?w.word[i].toUpperCase():'_').join('  ');
+    if(spellInput.length<w.word.length)
+      document.getElementById(`spb-${spellInput.length}`)?.classList.add('ab');
+    if(spellInput.length===w.word.length){
+      document.getElementById('sp-fb').innerHTML=
+        `<span style="color:var(--green)">✅ ${w.word.toUpperCase()}! Great job!</span>`;
+      spawnSparkle(window.innerWidth/2, window.innerHeight*.44);
+      setTimeout(()=>{
+        if(spellIdx<WORDS.length-1){ spellIdx++; buildSpDots(); renderSpell(); }
+        else goNext();
+      },1500);
+    }
+  } else {
+    box.classList.add('eb');
+    showToast('Try again!');
+    setTimeout(()=>box.classList.remove('eb'),480);
+  }
+}
+
+function clearSpell(){
+  const w=WORDS[spellIdx]; spellInput=[];
+  w.word.split('').forEach((_,i)=>{
+    const b=document.getElementById(`spb-${i}`);
+    if(b){ b.textContent=''; b.className='sp-box'+(i===0?' ab':''); }
+  });
+  document.querySelectorAll('.sp-tile').forEach(t=>t.classList.remove('used'));
+  document.getElementById('sp-lbl').textContent=w.word.split('').map(()=>'_').join('  ');
+  document.getElementById('sp-fb').textContent='';
+}
+
+// ════════════════════════════════════════════════════════════
+//  EFFECTS — visual only, no audio
+// ════════════════════════════════════════════════════════════
+const SPARKS=['✨','⭐','🌟','💫','🎉'];
+function spawnSparkle(x,y){
+  for(let i=0;i<4;i++){
+    const el=document.createElement('div'); el.className='sparkle';
+    el.textContent=SPARKS[Math.floor(Math.random()*SPARKS.length)];
+    el.style.cssText=`left:${x-18+(Math.random()-.5)*65}px;top:${y-18+(Math.random()-.5)*48}px;animation-delay:${i*.1}s`;
+    document.body.appendChild(el); setTimeout(()=>el.remove(),1000);
+  }
+}
+function bigConfetti(){
+  const cols=['#E63946','#F5C800','#2BAE66','#1A78C2','#FB5607','#8338EC','#fff','#E91E8C'];
+  for(let i=0;i<38;i++){
+    const el=document.createElement('div'); el.className='conf-p';
+    el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*28}vh;background:${cols[i%cols.length]};animation-delay:${Math.random()*.55}s;transform:rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(el); setTimeout(()=>el.remove(),2100);
+  }
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),1400);
+}
+function shuffle(a){ return a.sort(()=>Math.random()-.5); }
+
+// ════════════════════════════════════════════════════════════
+//  BOOT
+// ════════════════════════════════════════════════════════════
+document.getElementById('s0').addEventListener('click',()=>showScreen(1));
+showScreen(0);
+</script>
+</body>
+</html>
