@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pang's Students – Vocabinder</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sky: #e0f4ff; --yellow: #FFD93D; --coral: #FF6B6B; --green: #6BCB77;
+    --purple: #C77DFF; --blue: #4D96FF; --orange: #FF9A3C; --pink: #FF84B7; --dark: #2d2d2d;
+  }
+  body { font-family: 'Nunito', sans-serif; background-color: var(--sky); min-height: 100vh; overflow-x: hidden; }
+  .bg-shapes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .shape { position: absolute; border-radius: 50%; opacity: 0.15; animation: float linear infinite; }
+  .shape:nth-child(1) { width: 120px; height: 120px; background: var(--pink); top: 10%; left: 5%; animation-duration: 14s; }
+  .shape:nth-child(2) { width: 80px; height: 80px; background: var(--purple); top: 30%; right: 8%; animation-duration: 10s; animation-delay: -3s; }
+  .shape:nth-child(3) { width: 60px; height: 60px; background: var(--yellow); bottom: 20%; left: 12%; animation-duration: 12s; animation-delay: -6s; }
+  .shape:nth-child(4) { width: 100px; height: 100px; background: var(--coral); bottom: 10%; right: 15%; animation-duration: 16s; animation-delay: -2s; }
+  @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-20px) rotate(120deg); } 66% { transform: translateY(10px) rotate(240deg); } }
+
+  .nav-row { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 28px 28px 0; flex-wrap: wrap; }
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; background: white; border-radius: 999px; font-size: 14px; font-weight: 700; color: #555; text-decoration: none; box-shadow: 0 4px 0 rgba(0,0,0,0.08); transition: transform 0.15s, box-shadow 0.15s; }
+  .back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.08); }
+  .nav-sep { color: #bbb; font-weight: 700; font-size: 16px; }
+  .nav-current { font-size: 14px; font-weight: 700; color: #d4408a; }
+
+  header { position: relative; z-index: 1; text-align: center; padding: 36px 20px 28px; }
+  .star-row { font-size: 22px; letter-spacing: 6px; margin-bottom: 12px; animation: twinkle 2s ease-in-out infinite alternate; }
+  @keyframes twinkle { from { opacity: 0.6; transform: scale(1); } to { opacity: 1; transform: scale(1.05); } }
+  .page-label { font-family: 'Fredoka One', cursive; font-size: clamp(16px, 3vw, 22px); color: #888; margin-bottom: 8px; }
+  h1 { font-family: 'Fredoka One', cursive; font-size: clamp(36px, 8vw, 64px); line-height: 1.1; display: inline-flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
+  h1 span { display: inline-block; animation: bounce-letter 1.5s ease-in-out infinite alternate; }
+  h1 span:nth-child(1){color:var(--pink);animation-delay:0s} h1 span:nth-child(2){color:var(--purple);animation-delay:.08s} h1 span:nth-child(3){color:var(--coral);animation-delay:.16s} h1 span:nth-child(4){color:var(--orange);animation-delay:.24s} h1 span:nth-child(5){color:var(--yellow);animation-delay:.32s} h1 span:nth-child(6){color:var(--green);animation-delay:.40s} h1 span:nth-child(7){color:var(--blue);animation-delay:.48s} h1 span:nth-child(8){color:var(--pink);animation-delay:.56s} h1 span:nth-child(9){color:var(--purple);animation-delay:.64s} h1 span:nth-child(10){color:var(--coral);animation-delay:.72s} h1 span:nth-child(11){color:var(--orange);animation-delay:.80s} h1 span:nth-child(12){color:var(--yellow);animation-delay:.88s} h1 span:nth-child(13){color:var(--green);animation-delay:.96s} h1 span:nth-child(14){color:var(--blue);animation-delay:1.04s} h1 span:nth-child(15){color:var(--pink);animation-delay:1.12s}
+  @keyframes bounce-letter { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+  .subtitle { margin-top: 12px; font-size: 17px; color: #555; font-weight: 600; }
+
+  .grid-section { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 20px 24px 80px; }
+  .section-label { font-family: 'Fredoka One', cursive; font-size: 22px; color: #777; text-align: center; margin-bottom: 32px; letter-spacing: 1px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; }
+
+  .card { background: white; border-radius: 24px; padding: 32px 20px 28px; text-align: center; text-decoration: none; display: block; position: relative; overflow: hidden; border: 3px solid transparent; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; box-shadow: 0 6px 0 rgba(0,0,0,0.08); opacity: 0; transform: translateY(30px); animation: card-in 0.5s ease forwards; cursor: pointer; }
+  .card:nth-child(1){animation-delay:0.05s} .card:nth-child(2){animation-delay:0.12s} .card:nth-child(3){animation-delay:0.19s} .card:nth-child(4){animation-delay:0.26s}
+  @keyframes card-in { to { opacity: 1; transform: translateY(0); } }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; border-radius: 24px 24px 0 0; }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 14px 0 rgba(0,0,0,0.08); }
+
+  .card-1::before { background: var(--pink); }   .card:hover.card-1 { border-color: var(--pink); }
+  .card-2::before { background: var(--blue); }   .card:hover.card-2 { border-color: var(--blue); }
+  .card-3::before { background: var(--orange); } .card:hover.card-3 { border-color: var(--orange); }
+  .card-4::before { background: var(--green); }  .card:hover.card-4 { border-color: var(--green); }
+
+  /* Avatar circle with SVG cartoon */
+  .avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px; flex-shrink: 0; overflow: hidden;
+  }
+  .card-1 .avatar { background: #ffd6ea; box-shadow: 0 4px 0 #f0a0c8; }
+  .card-2 .avatar { background: #d6eaff; box-shadow: 0 4px 0 #90bff0; }
+  .card-3 .avatar { background: #ffe4c8; box-shadow: 0 4px 0 #f0b87a; }
+  .card-4 .avatar { background: #d6f5dc; box-shadow: 0 4px 0 #8ad494; }
+
+  .avatar svg { width: 56px; height: 56px; }
+
+  .card-name { font-family: 'Fredoka One', cursive; font-size: 26px; color: var(--dark); margin-bottom: 10px; }
+  .card-desc { font-size: 13px; color: #888; font-weight: 600; line-height: 1.5; }
+  .lock-icon { position: absolute; top: 12px; right: 14px; font-size: 16px; }
+
+  /* Password modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); align-items: center; justify-content: center; }
+  .modal-overlay.active { display: flex; }
+  .modal-box { background: white; border-radius: 28px; padding: 36px 32px; text-align: center; max-width: 360px; width: 90%; box-shadow: 0 12px 0 rgba(0,0,0,0.12); animation: modal-in 0.25s ease; }
+  @keyframes modal-in { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-avatar { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; overflow: hidden; }
+  .modal-avatar svg { width: 44px; height: 44px; }
+  .modal-title { font-family: 'Fredoka One', cursive; font-size: 26px; color: var(--dark); margin-bottom: 4px; }
+  .modal-subtitle { font-size: 14px; color: #888; font-weight: 600; margin-bottom: 20px; }
+  .modal-input { width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #e0e0e0; font-size: 16px; font-family: 'Nunito', sans-serif; font-weight: 700; text-align: center; outline: none; margin-bottom: 12px; transition: border-color 0.2s; }
+  .modal-input:focus { border-color: var(--pink); }
+  .modal-input.error { border-color: var(--coral); animation: shake 0.3s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+  .modal-error { font-size: 13px; color: var(--coral); font-weight: 700; height: 18px; margin-bottom: 8px; }
+  .modal-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: var(--pink); color: white; font-family: 'Fredoka One', cursive; font-size: 18px; cursor: pointer; box-shadow: 0 4px 0 #b8306a; transition: transform 0.15s, box-shadow 0.15s; }
+  .modal-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #b8306a; }
+  .modal-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #b8306a; }
+  .modal-cancel { display: block; margin-top: 12px; font-size: 13px; color: #aaa; font-weight: 700; cursor: pointer; }
+  .modal-cancel:hover { color: #888; }
+
+  footer { position: relative; z-index: 1; text-align: center; padding: 20px; font-size: 13px; color: #aaa; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="bg-shapes"><div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div></div>
+
+<div class="nav-row">
+  <a href="../index.html" class="back-btn">← Vocabinder</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">⭐ Pang's Students</span>
+</div>
+
+<header>
+  <div class="star-row">⭐ 💘 ⭐ 💘 ⭐</div>
+  <p class="page-label">Special Made for</p>
+  <h1>
+    <span>P</span><span>a</span><span>n</span><span>g</span><span>'</span><span>s</span>
+    <span> </span>
+    <span>S</span><span>t</span><span>u</span><span>d</span><span>e</span><span>n</span><span>t</span><span>s</span>
+  </h1>
+  <p class="subtitle">Your own personal vocab deck! 🌟</p>
+</header>
+
+<!-- SVG definitions for reuse -->
+<svg style="display:none">
+  <defs>
+    <!-- Girl cartoon (Delta & Focus) -->
+    <g id="girl-face">
+      <!-- hair -->
+      <ellipse cx="28" cy="18" rx="16" ry="14" fill="#6b3a2a"/>
+      <!-- hair sides -->
+      <ellipse cx="13" cy="26" rx="5" ry="10" fill="#6b3a2a"/>
+      <ellipse cx="43" cy="26" rx="5" ry="10" fill="#6b3a2a"/>
+      <!-- face -->
+      <ellipse cx="28" cy="28" rx="13" ry="14" fill="#FDDBB4"/>
+      <!-- eyes -->
+      <ellipse cx="22" cy="26" rx="2.5" ry="3" fill="#333"/>
+      <ellipse cx="34" cy="26" rx="2.5" ry="3" fill="#333"/>
+      <!-- eye shine -->
+      <circle cx="23" cy="25" r="0.9" fill="white"/>
+      <circle cx="35" cy="25" r="0.9" fill="white"/>
+      <!-- blush -->
+      <ellipse cx="18" cy="31" rx="3" ry="2" fill="#FFAAB5" opacity="0.6"/>
+      <ellipse cx="38" cy="31" rx="3" ry="2" fill="#FFAAB5" opacity="0.6"/>
+      <!-- smile -->
+      <path d="M22 34 Q28 39 34 34" stroke="#c0625a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- hair bow -->
+      <ellipse cx="22" cy="10" rx="5" ry="3" fill="#FF84B7" transform="rotate(-20 22 10)"/>
+      <ellipse cx="30" cy="8" rx="5" ry="3" fill="#FF84B7" transform="rotate(20 30 8)"/>
+      <circle cx="26" cy="9" r="2.5" fill="#FF84B7"/>
+    </g>
+    <!-- Boy cartoon (Famous & Well) -->
+    <g id="boy-face">
+      <!-- hair -->
+      <ellipse cx="28" cy="16" rx="14" ry="10" fill="#4a3728"/>
+      <!-- face -->
+      <ellipse cx="28" cy="28" rx="13" ry="14" fill="#FDDBB4"/>
+      <!-- ears -->
+      <ellipse cx="15" cy="28" rx="3" ry="4" fill="#FDDBB4"/>
+      <ellipse cx="41" cy="28" rx="3" ry="4" fill="#FDDBB4"/>
+      <!-- eyes -->
+      <ellipse cx="22" cy="26" rx="2.5" ry="3" fill="#333"/>
+      <ellipse cx="34" cy="26" rx="2.5" ry="3" fill="#333"/>
+      <!-- eye shine -->
+      <circle cx="23" cy="25" r="0.9" fill="white"/>
+      <circle cx="35" cy="25" r="0.9" fill="white"/>
+      <!-- blush -->
+      <ellipse cx="18" cy="31" rx="3" ry="2" fill="#FFAAB5" opacity="0.5"/>
+      <ellipse cx="38" cy="31" rx="3" ry="2" fill="#FFAAB5" opacity="0.5"/>
+      <!-- smile -->
+      <path d="M22 34 Q28 39 34 34" stroke="#c0625a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- fringe -->
+      <path d="M14 18 Q18 10 28 10 Q38 10 42 18 Q36 14 28 15 Q20 14 14 18Z" fill="#4a3728"/>
+    </g>
+  </defs>
+</svg>
+
+<section class="grid-section">
+  <p class="section-label">👇 Pick your name!</p>
+  <div class="grid">
+
+    <div class="card card-1" onclick="openModal('delta/index.html', 'Delta', '#ffd6ea', '🌸', 'girl')">
+      <span class="lock-icon">🔒</span>
+      <div class="avatar">
+        <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg"><use href="#girl-face"/></svg>
+      </div>
+      <div class="card-name">Delta</div>
+      <div class="card-desc">Your special vocab deck</div>
+    </div>
+
+    <div class="card card-2" onclick="openModal('focus/index.html', 'Focus', '#d6eaff', '🎯', 'girl')">
+      <span class="lock-icon">🔒</span>
+      <div class="avatar">
+        <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg"><use href="#girl-face"/></svg>
+      </div>
+      <div class="card-name">Focus</div>
+      <div class="card-desc">Your special vocab deck</div>
+    </div>
+
+    <div class="card card-3" onclick="openModal('famous/index.html', 'Famous', '#ffe4c8', '🌟', 'boy')">
+      <span class="lock-icon">🔒</span>
+      <div class="avatar">
+        <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg"><use href="#boy-face"/></svg>
+      </div>
+      <div class="card-name">Famous</div>
+      <div class="card-desc">Your special vocab deck</div>
+    </div>
+
+    <div class="card card-4" onclick="openModal('well/index.html', 'Well', '#d6f5dc', '💪', 'boy')">
+      <span class="lock-icon">🔒</span>
+      <div class="avatar">
+        <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg"><use href="#boy-face"/></svg>
+      </div>
+      <div class="card-name">Well</div>
+      <div class="card-desc">Your special vocab deck</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Password Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-avatar" id="modal-avatar">
+      <svg id="modal-face" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg"><use href="#girl-face"/></svg>
+    </div>
+    <div class="modal-title" id="modal-title">Delta</div>
+    <div class="modal-subtitle">🔒 Enter your password to open your deck!</div>
+    <input class="modal-input" type="password" id="modal-input" placeholder="Your password" onkeydown="if(event.key==='Enter')checkPassword()">
+    <div class="modal-error" id="modal-error"></div>
+    <button class="modal-btn" onclick="checkPassword()">Let's go! 🚀</button>
+    <span class="modal-cancel" onclick="closeModal()">Cancel</span>
+  </div>
+</div>
+
+<script>
+  let currentUrl = '';
+  let currentPassword = '';
+
+  const passwords = {
+    'Delta': 'Delta123',
+    'Focus': 'Focus123',
+    'Famous': 'Famous123',
+    'Well': 'Well123'
+  };
+
+  const bgColors = {
+    'Delta': '#ffd6ea',
+    'Focus': '#d6eaff',
+    'Famous': '#ffe4c8',
+    'Well': '#d6f5dc'
+  };
+
+  function openModal(url, name, color, emoji, gender) {
+    currentUrl = url;
+    currentPassword = passwords[name];
+    const avatar = document.getElementById('modal-avatar');
+    avatar.style.background = bgColors[name];
+    document.getElementById('modal-face').innerHTML = `<use href="#${gender}-face"/>`;
+    document.getElementById('modal-title').textContent = name + ' ' + emoji;
+    document.getElementById('modal-input').value = '';
+    document.getElementById('modal-error').textContent = '';
+    document.getElementById('modal-input').classList.remove('error');
+    document.getElementById('modal').classList.add('active');
+    setTimeout(() => document.getElementById('modal-input').focus(), 100);
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+  }
+
+  function checkPassword() {
+    const input = document.getElementById('modal-input');
+    const error = document.getElementById('modal-error');
+    if (input.value === currentPassword) {
+      window.location.href = currentUrl;
+    } else {
+      input.classList.remove('error');
+      void input.offsetWidth;
+      input.classList.add('error');
+      error.textContent = 'Incorrect password. Try again!';
+      input.value = '';
+    }
+  }
+
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
+
+<footer>Pang made with ❤️ for kids learning English</footer>
+</body>
+</html>/special/index.html
