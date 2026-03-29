@@ -71,7 +71,21 @@
   .u-color .family-card { border-top: 5px solid var(--purple); }
   .u-color .family-card:hover { border-color: var(--purple); }
 
-  .family-name { font-family: 'Fredoka One', cursive; font-size: 28px; }
+  /* Coming soon cards */
+  .family-card.soon {
+    opacity: 0.4 !important;
+    pointer-events: none;
+    cursor: default;
+    position: relative;
+  }
+  .family-card.soon .family-name::after {
+    content: '🔜';
+    font-size: 10px;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .family-name { font-family: 'Fredoka One', cursive; font-size: 28px; text-align: center; }
   .a-color .family-name { color: var(--coral); }
   .e-color .family-name { color: #3a9e46; }
   .i-color .family-name { color: var(--blue); }
@@ -93,6 +107,7 @@
 
 <section class="grid-section">
 
+  <!-- SHORT A — _at and _an ready -->
   <div class="vowel-group a-color">
     <div class="vowel-title">
       <div class="vowel-badge">A</div>
@@ -101,13 +116,14 @@
     <div class="family-grid">
       <a href="at/index.html" class="family-card"><div class="family-name">_at</div></a>
       <a href="an/index.html" class="family-card"><div class="family-name">_an</div></a>
-      <a href="ap/index.html" class="family-card"><div class="family-name">_ap</div></a>
-      <a href="ag/index.html" class="family-card"><div class="family-name">_ag</div></a>
-      <a href="ad/index.html" class="family-card"><div class="family-name">_ad</div></a>
-      <a href="am/index.html" class="family-card"><div class="family-name">_am</div></a>
+      <div class="family-card soon"><div class="family-name">_ap</div></div>
+      <div class="family-card soon"><div class="family-name">_ag</div></div>
+      <div class="family-card soon"><div class="family-name">_ad</div></div>
+      <div class="family-card soon"><div class="family-name">_am</div></div>
     </div>
   </div>
 
+  <!-- SHORT E — _en and _ed ready -->
   <div class="vowel-group e-color">
     <div class="vowel-title">
       <div class="vowel-badge">E</div>
@@ -116,11 +132,12 @@
     <div class="family-grid">
       <a href="en/index.html" class="family-card"><div class="family-name">_en</div></a>
       <a href="ed/index.html" class="family-card"><div class="family-name">_ed</div></a>
-      <a href="eg/index.html" class="family-card"><div class="family-name">_eg</div></a>
-      <a href="et/index.html" class="family-card"><div class="family-name">_et</div></a>
+      <div class="family-card soon"><div class="family-name">_eg</div></div>
+      <div class="family-card soon"><div class="family-name">_et</div></div>
     </div>
   </div>
 
+  <!-- SHORT I — _it, _in, _ig ready -->
   <div class="vowel-group i-color">
     <div class="vowel-title">
       <div class="vowel-badge">I</div>
@@ -130,35 +147,37 @@
       <a href="in/index.html" class="family-card"><div class="family-name">_in</div></a>
       <a href="it/index.html" class="family-card"><div class="family-name">_it</div></a>
       <a href="ig/index.html" class="family-card"><div class="family-name">_ig</div></a>
-      <a href="ip/index.html" class="family-card"><div class="family-name">_ip</div></a>
-      <a href="id/index.html" class="family-card"><div class="family-name">_id</div></a>
+      <div class="family-card soon"><div class="family-name">_ip</div></div>
+      <div class="family-card soon"><div class="family-name">_id</div></div>
     </div>
   </div>
 
+  <!-- SHORT O — all coming soon -->
   <div class="vowel-group o-color">
     <div class="vowel-title">
       <div class="vowel-badge">O</div>
       <span class="vowel-title-text">Short O families</span>
     </div>
     <div class="family-grid">
-      <a href="op/index.html" class="family-card"><div class="family-name">_op</div></a>
-      <a href="ot/index.html" class="family-card"><div class="family-name">_ot</div></a>
-      <a href="og/index.html" class="family-card"><div class="family-name">_og</div></a>
-      <a href="ob/index.html" class="family-card"><div class="family-name">_ob</div></a>
+      <div class="family-card soon"><div class="family-name">_op</div></div>
+      <div class="family-card soon"><div class="family-name">_ot</div></div>
+      <div class="family-card soon"><div class="family-name">_og</div></div>
+      <div class="family-card soon"><div class="family-name">_ob</div></div>
     </div>
   </div>
 
+  <!-- SHORT U — all coming soon -->
   <div class="vowel-group u-color">
     <div class="vowel-title">
       <div class="vowel-badge">U</div>
       <span class="vowel-title-text">Short U families</span>
     </div>
     <div class="family-grid">
-      <a href="un/index.html" class="family-card"><div class="family-name">_un</div></a>
-      <a href="ut/index.html" class="family-card"><div class="family-name">_ut</div></a>
-      <a href="ug/index.html" class="family-card"><div class="family-name">_ug</div></a>
-      <a href="ub/index.html" class="family-card"><div class="family-name">_ub</div></a>
-      <a href="um/index.html" class="family-card"><div class="family-name">_um</div></a>
+      <div class="family-card soon"><div class="family-name">_un</div></div>
+      <div class="family-card soon"><div class="family-name">_ut</div></div>
+      <div class="family-card soon"><div class="family-name">_ug</div></div>
+      <div class="family-card soon"><div class="family-name">_ub</div></div>
+      <div class="family-card soon"><div class="family-name">_um</div></div>
     </div>
   </div>
 
