@@ -189,17 +189,32 @@
       <span class="card-badge">All levels</span>
     </a>
 
-    <a href="vocabinder/index.html" class="card card-5">
+    <div class="card card-5" style="cursor:default;">
       <span class="card-emoji">💘</span>
       <div class="card-title">Vocabinder</div>
       <div class="card-desc">Swipe to learn vocabulary your way</div>
-      <span class="card-badge">Game</span>
-    </a>
+      <div class="private-card-inner">
+        <div class="private-student" onclick="window.location.href='vocabinder/index.html'">
+          <div class="student-avatar" style="background:#C77DFF;">🌍</div>
+          <div class="student-info">
+            <div class="student-name">General Vocab</div>
+            <div class="student-age">Coming soon</div>
+          </div>
+        </div>
+        <div class="private-student" onclick="window.location.href='vocabinder/special/index.html'">
+          <div class="student-avatar" style="background:#FF84B7;">⭐</div>
+          <div class="student-info">
+            <div class="student-name">Pang's Students</div>
+            <div class="student-age">Personalised vocab decks</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Private Online Classes card -->
     <div class="card card-7" style="cursor:default;">
       <span class="card-emoji">🎓</span>
-      <div class="card-title">Private Classes</div>
+      <div class="card-title">Online Classes</div>
       <div class="card-desc">Personalised lessons taught by Pang</div>
       <div class="private-card-inner">
         <div class="private-student" onclick="openModal('3-year-old/index.html', 'Breguet3', '🐣', 'Breguet')">
