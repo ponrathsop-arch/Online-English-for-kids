@@ -186,7 +186,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
 <!-- HOME -->
 <div class="screen active" id="s-home">
   <div class="home-family">IG</div>
-  <div class="home-words">big · dig · fig · jig · pig · wig</div>
+  <div class="home-words">big · dig · pig · wig</div>
   <div class="home-tap">👆 Tap a section below to start!</div>
   <div class="home-nav-hint">
     <span>👂 Sounds</span><span>·</span>
@@ -349,8 +349,7 @@ const FAMILY_BG   = '#FCE4EC';
 const SVG = {
   big:`<img src="https://raw.githubusercontent.com/ponrathsop-arch/Online-English-for-kids/main/cvc/big.jpg" alt="big" style="width:100%;height:100%;object-fit:contain;border-radius:12px;" onerror="this.style.opacity=0.3"/>`,
   dig:`<img src="https://raw.githubusercontent.com/ponrathsop-arch/Online-English-for-kids/main/cvc/dig.jpg" alt="dig" style="width:100%;height:100%;object-fit:contain;border-radius:12px;" onerror="this.style.opacity=0.3"/>`,
-  fig:`<img src="https://raw.githubusercontent.com/ponrathsop-arch/Online-English-for-kids/main/cvc/fig.jpg" alt="fig" style="width:100%;height:100%;object-fit:contain;border-radius:12px;" onerror="this.style.opacity=0.3"/>`,
-  jig:`<img src="https://raw.githubusercontent.com/ponrathsop-arch/Online-English-for-kids/main/cvc/jig.jpg" alt="jig" style="width:100%;height:100%;object-fit:contain;border-radius:12px;" onerror="this.style.opacity=0.3"/>`,
+
   pig:`<img src="https://raw.githubusercontent.com/ponrathsop-arch/Online-English-for-kids/main/cvc/pig.jpg" alt="pig" style="width:100%;height:100%;object-fit:contain;border-radius:12px;" onerror="this.style.opacity=0.3"/>`,
   wig:`<img src="https://raw.githubusercontent.com/ponrathsop-arch/Online-English-for-kids/main/cvc/wig.jpg" alt="wig" style="width:100%;height:100%;object-fit:contain;border-radius:12px;" onerror="this.style.opacity=0.3"/>`,
 };
@@ -358,8 +357,6 @@ const SVG = {
 const WORDS = [
   {word:'big',consonant:'b',color:'#E63946'},
   {word:'dig',consonant:'d',color:'#8B6914'},
-  {word:'fig',consonant:'f',color:'#8338EC'},
-  {word:'jig',consonant:'j',color:'#FB5607'},
   {word:'pig',consonant:'p',color:'#E91E8C'},
   {word:'wig',consonant:'w',color:'#1A78C2'},
 ];
@@ -367,8 +364,6 @@ const WORDS = [
 const PHONICS=[
   {letter:'b',hint:'big',bg:'#E63946',dark:false,example:'b — big'},
   {letter:'d',hint:'dig',bg:'#8B6914',dark:false,example:'d — dig'},
-  {letter:'f',hint:'fig',bg:'#8338EC',dark:false,example:'f — fig'},
-  {letter:'j',hint:'jig',bg:'#FB5607',dark:false,example:'j — jig'},
   {letter:'p',hint:'pig',bg:'#E91E8C',dark:false,example:'p — pig'},
   {letter:'w',hint:'wig',bg:'#1A78C2',dark:false,example:'w — wig'},
   {letter:'i',hint:'vowel',bg:'#F5C800',dark:true,example:'i — short i sound'},
@@ -457,7 +452,7 @@ function nextBlend(){if(blendIdx<WORDS.length-1){blendIdx++;renderBlend();}else 
 // ═══════════════════════════ MATCH ═══════════════════════════
 let matchSel=null,matchDone=0;
 function initMatch(){
-  matchSel=null;matchDone=0;document.getElementById('match-score').textContent='0 / 6 matched';
+  matchSel=null;matchDone=0;document.getElementById('match-score').textContent='0 / 4 matched';
   const sP=shuffle([...WORDS]),sW=shuffle([...WORDS]);
   const pE=document.getElementById('match-pics'),wE=document.getElementById('match-words');
   pE.innerHTML='';wE.innerHTML='';
@@ -468,7 +463,7 @@ function handleMatchPic(card,word){if(card.classList.contains('matched'))return;
 function handleMatchWord(card,word){
   if(card.classList.contains('matched'))return;
   if(!matchSel){showToast('Tap a picture first!');return;}
-  if(matchSel.word===word){matchSel.el.classList.remove('selected');matchSel.el.classList.add('matched');card.classList.add('matched');matchSel=null;matchDone++;spawnSparkle(card.getBoundingClientRect().left+card.offsetWidth/2,card.getBoundingClientRect().top+card.offsetHeight/2);document.getElementById('match-score').textContent=`${matchDone} / 6 matched`;if(matchDone===6)setTimeout(()=>{bigConfetti();setTimeout(goNext,900);},350);}
+  if(matchSel.word===word){matchSel.el.classList.remove('selected');matchSel.el.classList.add('matched');card.classList.add('matched');matchSel=null;matchDone++;spawnSparkle(card.getBoundingClientRect().left+card.offsetWidth/2,card.getBoundingClientRect().top+card.offsetHeight/2);document.getElementById('match-score').textContent=`${matchDone} / 4 matched`;if(matchDone===4)setTimeout(()=>{bigConfetti();setTimeout(goNext,900);},350);}
   else{[matchSel.el,card].forEach(el=>{el.classList.add('ws');setTimeout(()=>el.classList.remove('ws'),450);});matchSel.el.classList.remove('selected');matchSel=null;showToast('Try again!');}
 }
 
