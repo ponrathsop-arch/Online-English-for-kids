@@ -3,44 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Famous's CVC Vocabinder ⭐</title>
+<title>CVC Vocabinder 🌟</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap');
-:root{--bg:#fef9f0;--pink:#ff6b9d;--mint:#06d6a0;--blue:#4a90d9;--coral:#ff6b6b;--purple:#9b72cf;--text:#2d2d2d;}
+:root{
+  --bg:#fef9f0;--pink:#ff6b9d;--mint:#06d6a0;--blue:#4a90d9;
+  --coral:#ff6b6b;--purple:#9b72cf;--yellow:#ffd166;--text:#2d2d2d;
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow:hidden;user-select:none;}
-.bg-blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(60px);opacity:.17;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;overflow:hidden;user-select:none;}
+
+/* BG blobs */
+.blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(60px);opacity:.15;}
 .b1{width:280px;height:280px;background:var(--pink);top:-80px;left:-80px;}
 .b2{width:240px;height:240px;background:var(--mint);bottom:-60px;right:-60px;}
-.b3{width:200px;height:200px;background:#ffd166;top:40%;left:-50px;}
+.b3{width:200px;height:200px;background:var(--yellow);top:40%;left:-60px;}
 
-/* HEADER */
-.header{position:relative;z-index:10;width:100%;text-align:center;padding:12px 20px 5px;}
-.title{font-family:'Fredoka One',cursive;font-size:1.75rem;color:var(--pink);text-shadow:2px 2px 0 rgba(255,107,157,.18);}
-.score-row{display:flex;gap:10px;justify-content:center;margin-top:7px;font-weight:800;font-size:.83rem;}
+/* ── SCREENS ── */
+.screen{display:none;position:fixed;inset:0;flex-direction:column;
+  align-items:center;justify-content:center;z-index:5;padding:16px;}
+.screen.on{display:flex;}
+
+/* ══════════════════════════════
+   FAMILY SELECTOR SCREEN
+══════════════════════════════ */
+#sel-screen{background:var(--bg);gap:14px;justify-content:flex-start;padding-top:40px;overflow-y:auto;}
+.sel-title{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--pink);
+  text-shadow:2px 2px 0 rgba(255,107,157,.18);text-align:center;}
+.sel-sub{font-size:.85rem;color:#aaa;font-weight:700;text-align:center;}
+.family-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  max-width:380px;margin-top:4px;}
+.fam-chip{padding:10px 18px;border-radius:50px;border:3px solid transparent;
+  font-family:'Fredoka One',cursive;font-size:1.1rem;cursor:pointer;
+  background:white;color:var(--text);
+  box-shadow:0 4px 14px rgba(0,0,0,.09);transition:all .18s;white-space:nowrap;}
+.fam-chip:hover{transform:translateY(-2px);}
+.fam-chip.picked{color:white;border-color:transparent;
+  box-shadow:0 6px 18px rgba(0,0,0,.18);}
+.fam-chip[data-fam="an"].picked{background:#ff6b9d;}
+.fam-chip[data-fam="at"].picked{background:#ff8c55;}
+.fam-chip[data-fam="ed"].picked{background:#9b72cf;}
+.fam-chip[data-fam="et"].picked{background:#4a90d9;}
+.fam-chip[data-fam="ig"].picked{background:#06d6a0;}
+.fam-chip[data-fam="in"].picked{background:#ffd166;color:#333 !important;}
+.fam-chip[data-fam="it"].picked{background:#ff6b6b;}
+.sel-all-row{display:flex;gap:10px;}
+.sel-meta-btn{padding:9px 20px;border-radius:50px;border:2.5px solid #ddd;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:.82rem;
+  cursor:pointer;background:white;color:#aaa;transition:all .15s;}
+.sel-meta-btn:hover{border-color:#bbb;color:#888;}
+.start-btn{background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:white;border:none;border-radius:50px;padding:15px 44px;
+  font-family:'Fredoka One',cursive;font-size:1.25rem;cursor:pointer;
+  box-shadow:0 6px 20px rgba(155,114,207,.35);transition:all .2s;
+  margin-top:4px;}
+.start-btn:hover{transform:translateY(-3px);}
+.start-btn:disabled{opacity:.4;pointer-events:none;}
+.word-preview{font-size:.75rem;color:#bbb;font-weight:700;text-align:center;
+  max-width:340px;line-height:1.7;}
+
+/* ══════════════════════════════
+   GAME SCREEN — HEADER
+══════════════════════════════ */
+#game-screen{gap:0;justify-content:flex-start;padding:0;}
+.game-header{position:relative;z-index:10;width:100%;text-align:center;
+  padding:12px 20px 5px;}
+.game-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--pink);}
+.score-row{display:flex;gap:10px;justify-content:center;
+  margin-top:6px;font-weight:800;font-size:.82rem;}
 .pill{padding:4px 13px;border-radius:50px;}
 .pg{background:rgba(6,214,160,.15);color:#059c74;}
 .pr{background:rgba(255,107,107,.15);color:#d44;}
 .pb{background:rgba(74,144,217,.15);color:var(--blue);}
-.prog-wrap{width:calc(100% - 40px);max-width:400px;height:6px;background:rgba(0,0,0,.08);border-radius:8px;margin:6px auto 0;overflow:hidden;}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--purple));border-radius:8px;transition:width .4s ease;}
+.prog-wrap{width:calc(100% - 40px);max-width:400px;height:6px;
+  background:rgba(0,0,0,.08);border-radius:8px;margin:6px auto 0;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--purple));
+  border-radius:8px;transition:width .4s ease;}
 
-/* MAIN */
-.main{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:6px 16px;gap:10px;}
+/* ══════════════════════════════
+   GAME CONTENT AREA
+══════════════════════════════ */
+.game-body{position:relative;z-index:5;flex:1;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;
+  width:100%;padding:6px 16px;gap:10px;}
 
-/* CARD */
+/* ── SWIPE CARD ── */
+.swipe-hint{display:flex;justify-content:space-between;width:290px;
+  font-size:.7rem;color:#ccc;font-weight:800;padding:0 4px;}
 .card-wrap{position:relative;width:290px;height:300px;}
-
-.vocab-card{
-  position:absolute;inset:0;background:white;border-radius:28px;
-  box-shadow:0 10px 36px rgba(0,0,0,.13);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-  touch-action:none;will-change:transform;border:3px solid rgba(0,0,0,.05);
-  transition:box-shadow .15s;
-}
+.vocab-card{position:absolute;inset:0;background:white;border-radius:28px;
+  box-shadow:0 10px 36px rgba(0,0,0,.13);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:6px;
+  touch-action:none;will-change:transform;border:3px solid rgba(0,0,0,.05);}
 .vocab-card.shake{animation:cardShake .45s ease;}
-.vocab-card.wrong-flash{border-color:var(--coral)!important;box-shadow:0 0 0 4px rgba(255,107,107,.25),0 10px 36px rgba(0,0,0,.13)!important;}
-
+.vocab-card.wrong-flash{border-color:var(--coral)!important;
+  box-shadow:0 0 0 4px rgba(255,107,107,.25),0 10px 36px rgba(0,0,0,.13)!important;}
 @keyframes cardShake{
   0%,100%{transform:translateX(0) rotate(0);}
   15%{transform:translateX(-10px) rotate(-2deg);}
@@ -48,51 +106,95 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;displ
   55%{transform:translateX(-7px) rotate(-1deg);}
   75%{transform:translateX(7px) rotate(1deg);}
 }
+.card-img{width:200px;height:200px;object-fit:contain;border-radius:12px;}
+.card-hint{font-size:.68rem;color:#ccc;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;}
+.fam-badge{font-size:.72rem;font-weight:800;padding:3px 10px;
+  border-radius:50px;color:white;letter-spacing:1px;}
 
-.card-illus{width:190px;height:190px;display:flex;align-items:center;justify-content:center;}
-.card-illus svg{width:100%;height:100%;}
-.card-hint{font-size:.7rem;color:#ccc;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+/* peek labels on sides */
+.swipe-peek{position:absolute;top:50%;transform:translateY(-50%);
+  font-family:'Fredoka One',cursive;font-size:1.2rem;
+  padding:7px 11px;border-radius:12px;opacity:0;pointer-events:none;
+  transition:opacity .06s;white-space:nowrap;}
+.peek-left{right:calc(100% + 8px);background:rgba(255,107,107,.12);
+  color:var(--coral);border:2.5px solid var(--coral);}
+.peek-right{left:calc(100% + 8px);background:rgba(6,214,160,.12);
+  color:var(--mint);border:2.5px solid var(--mint);}
 
-/* Swipe direction word peek labels */
-.swipe-peek{
-  position:absolute;top:50%;transform:translateY(-50%);
-  font-family:'Fredoka One',cursive;font-size:1.25rem;
-  padding:8px 12px;border-radius:14px;
-  opacity:0;pointer-events:none;transition:opacity .06s;
-  white-space:nowrap;
-}
-.peek-left{
-  right:calc(100% + 8px);
-  background:rgba(255,107,107,.12);color:var(--coral);
-  border:2.5px solid var(--coral);
-}
-.peek-right{
-  left:calc(100% + 8px);
-  background:rgba(6,214,160,.12);color:var(--mint);
-  border:2.5px solid var(--mint);
-}
-
-/* CHOICES */
+/* ── CHOICES ── */
 .choices{display:flex;gap:11px;width:100%;max-width:340px;}
-.choice-btn{
-  flex:1;padding:15px 8px;border-radius:20px;border:3px solid rgba(0,0,0,.07);
-  font-family:'Fredoka One',cursive;font-size:1.5rem;cursor:pointer;
-  transition:all .14s;background:white;color:var(--text);
+.choice-btn{flex:1;padding:14px 8px;border-radius:20px;
+  border:3px solid rgba(0,0,0,.07);font-family:'Fredoka One',cursive;
+  font-size:1.45rem;cursor:pointer;transition:all .14s;
+  background:white;color:var(--text);
   box-shadow:0 4px 14px rgba(0,0,0,.09);outline:none;
-  display:flex;align-items:center;justify-content:center;gap:6px;
-}
-.choice-btn:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,0,0,.14);}
+  display:flex;align-items:center;justify-content:center;gap:5px;}
+.choice-btn:hover{transform:translateY(-3px);}
 .choice-btn:active{transform:scale(.95);}
-.choice-btn .arr{font-size:1rem;opacity:.5;}
-
-/* Hint arrows under card */
-.swipe-hint{
-  display:flex;justify-content:space-between;width:290px;
-  font-size:.7rem;color:#ccc;font-weight:800;
-  padding:0 4px;
+.choice-btn .arr{font-size:.9rem;opacity:.45;}
+/* BOTH green on correct */
+.choice-btn.both-correct{
+  background:var(--mint)!important;color:white!important;
+  border-color:#04b88a!important;
+  animation:popIn .45s ease;
 }
+.choice-btn.flash-wrong{
+  background:var(--coral)!important;color:white!important;
+  border-color:#e04f4f!important;animation:shakeX .4s ease;
+}
+@keyframes popIn{0%{transform:scale(1)}40%{transform:scale(1.1)}70%{transform:scale(.97)}100%{transform:scale(1)}}
+@keyframes shakeX{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 
-/* CELEBRATE */
+/* ── FLASH CARDS ── */
+.flash-scene{perspective:1200px;width:290px;height:200px;cursor:pointer;}
+.flash-inner{width:100%;height:100%;position:relative;
+  transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1);}
+.flash-inner.flipped{transform:rotateY(180deg);}
+.flash-face{position:absolute;inset:0;border-radius:26px;
+  backface-visibility:hidden;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:6px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);}
+.ff-front{background:linear-gradient(145deg,#fff8fc,#f8f4ff);
+  border:3px solid rgba(155,114,207,.2);}
+.ff-back{background:linear-gradient(145deg,#f0fff9,#f0f8ff);
+  border:3px solid rgba(6,214,160,.22);transform:rotateY(180deg);}
+.fl-big{font-family:'Fredoka One',cursive;font-size:3.6rem;
+  color:var(--purple);letter-spacing:5px;}
+.ff-back .fl-big{color:var(--mint);font-size:2.8rem;}
+.fl-sub{font-size:.7rem;color:#bbb;font-weight:800;
+  letter-spacing:2px;text-transform:uppercase;}
+.fl-img{width:80px;height:80px;object-fit:contain;border-radius:8px;}
+.flash-nav{display:flex;gap:12px;align-items:center;margin-top:9px;}
+.fnav{width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;
+  font-size:1.2rem;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.1);transition:all .15s;}
+.fnav:hover{transform:translateY(-2px) scale(1.06);}
+.fnav:active{transform:scale(.93);}
+.fp{background:white;color:var(--text);}
+.fn{background:var(--pink);color:white;}
+.fl-ctr{font-size:.78rem;color:#bbb;font-weight:800;text-align:center;}
+
+/* ── MODE BAR ── */
+.mode-bar{position:relative;z-index:10;display:flex;background:white;
+  border-radius:50px;padding:4px;box-shadow:0 4px 16px rgba(0,0,0,.1);
+  margin-bottom:12px;}
+.mode-tab{padding:9px 18px;border-radius:50px;border:none;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:.84rem;
+  cursor:pointer;color:#aaa;background:transparent;transition:all .25s;
+  display:flex;align-items:center;gap:5px;}
+.mode-tab.on{background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:white;box-shadow:0 4px 14px rgba(155,114,207,.3);}
+
+/* back button */
+.back-btn{position:absolute;top:14px;left:16px;z-index:20;
+  background:white;border:none;border-radius:50px;padding:7px 14px;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:.8rem;
+  color:#aaa;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.1);
+  display:flex;align-items:center;gap:4px;transition:all .15s;}
+.back-btn:hover{color:var(--pink);}
+
+/* ── CELEBRATE ── */
 .cel-overlay{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden;}
 .sp{position:absolute;top:-30px;animation:starFall linear forwards;}
 @keyframes starFall{
@@ -101,803 +203,486 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;displ
   100%{top:110vh;transform:rotate(600deg) scale(.4);opacity:0;}
 }
 
-/* FLASH */
-.flash-scene{perspective:1200px;width:290px;height:190px;cursor:pointer;}
-.flash-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1);}
-.flash-inner.flipped{transform:rotateY(180deg);}
-.flash-face{position:absolute;inset:0;border-radius:26px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:0 8px 28px rgba(0,0,0,.12);}
-.ff-front{background:linear-gradient(145deg,#fff8fc,#f8f4ff);border:3px solid rgba(155,114,207,.2);}
-.ff-back{background:linear-gradient(145deg,#f0fff9,#f0f8ff);border:3px solid rgba(6,214,160,.22);transform:rotateY(180deg);}
-.fl-big{font-family:'Fredoka One',cursive;font-size:3.8rem;color:var(--purple);letter-spacing:5px;text-shadow:3px 3px 0 rgba(155,114,207,.12);}
-.ff-back .fl-big{color:var(--mint);font-size:2.6rem;}
-.fl-sub{font-size:.72rem;color:#bbb;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
-.fl-illus{width:70px;height:70px;}
-.fl-illus svg{width:100%;height:100%;}
-.flash-nav{display:flex;gap:12px;align-items:center;}
-.fnav{width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.1);transition:all .15s;}
-.fnav:hover{transform:translateY(-2px) scale(1.06);}
-.fnav:active{transform:scale(.93);}
-.fp{background:white;color:var(--text);}
-.fn{background:var(--pink);color:white;}
-.fl-ctr{font-size:.78rem;color:#bbb;font-weight:800;text-align:center;}
-
-/* MODE BAR */
-.mode-bar{position:relative;z-index:10;display:flex;background:white;border-radius:50px;padding:4px;box-shadow:0 4px 16px rgba(0,0,0,.1);margin-bottom:12px;}
-.mode-tab{padding:9px 20px;border-radius:50px;border:none;font-family:'Nunito',sans-serif;font-weight:800;font-size:.86rem;cursor:pointer;color:#aaa;background:transparent;transition:all .25s;display:flex;align-items:center;gap:5px;}
-.mode-tab.on{background:linear-gradient(135deg,var(--pink),var(--purple));color:white;box-shadow:0 4px 14px rgba(155,114,207,.3);}
-
-/* COMPLETION */
-.completion{display:none;flex-direction:column;align-items:center;gap:12px;text-align:center;}
+/* ── COMPLETION ── */
+.completion{display:none;flex-direction:column;align-items:center;
+  gap:12px;text-align:center;}
 .completion.on{display:flex;animation:fadeUp .5s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
 .comp-title{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--pink);}
-.comp-stats{font-size:.92rem;color:#888;font-weight:700;}
-.replay-btn{background:linear-gradient(135deg,var(--pink),var(--purple));color:white;border:none;border-radius:50px;padding:13px 38px;font-family:'Fredoka One',cursive;font-size:1.1rem;cursor:pointer;box-shadow:0 6px 20px rgba(155,114,207,.3);transition:all .2s;}
+.comp-stats{font-size:.9rem;color:#888;font-weight:700;}
+.comp-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.replay-btn{background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:white;border:none;border-radius:50px;padding:12px 32px;
+  font-family:'Fredoka One',cursive;font-size:1.05rem;cursor:pointer;
+  box-shadow:0 6px 20px rgba(155,114,207,.3);transition:all .2s;}
 .replay-btn:hover{transform:translateY(-3px);}
+.change-btn{background:white;color:var(--purple);border:2.5px solid var(--purple);
+  border-radius:50px;padding:11px 28px;font-family:'Fredoka One',cursive;
+  font-size:1rem;cursor:pointer;transition:all .2s;}
+.change-btn:hover{transform:translateY(-3px);}
+
+/* img error fallback */
+.card-img-wrap{width:200px;height:200px;display:flex;align-items:center;
+  justify-content:center;position:relative;}
+.img-fallback{font-family:'Fredoka One',cursive;font-size:3rem;
+  color:#ddd;text-align:center;}
 </style>
 </head>
 <body>
-<div class="bg-blob b1"></div>
-<div class="bg-blob b2"></div>
-<div class="bg-blob b3"></div>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
 <div class="cel-overlay" id="cel"></div>
 
-<div class="header">
-  <div class="title">⭐ Famous's CVC ⭐</div>
-  <div class="score-row" id="score-row">
-    <div class="pill pg">✅ <span id="nc">0</span></div>
-    <div class="pill pr">❌ <span id="nw">0</span></div>
-    <div class="pill pb">📚 <span id="nd">0</span> / <span id="nt">30</span></div>
+<!-- ══════════════════════════════
+     FAMILY SELECTOR SCREEN
+══════════════════════════════ -->
+<div class="screen on" id="sel-screen">
+  <div class="sel-title">🌟 CVC Vocabinder</div>
+  <div class="sel-sub">Pick word families to play</div>
+
+  <div class="sel-all-row">
+    <button class="sel-meta-btn" onclick="selectAll()">✅ All families</button>
+    <button class="sel-meta-btn" onclick="clearAll()">❌ Clear all</button>
   </div>
-  <div class="prog-wrap"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+
+  <div class="family-grid" id="family-grid"></div>
+
+  <div class="word-preview" id="word-preview"></div>
+
+  <button class="start-btn" id="start-btn" onclick="startGame()" disabled>
+    Let's Play! 🎉
+  </button>
 </div>
 
-<div class="main" id="main">
+<!-- ══════════════════════════════
+     GAME SCREEN
+══════════════════════════════ -->
+<div class="screen" id="game-screen">
+  <button class="back-btn" onclick="goToSelector()">← Change families</button>
 
-  <!-- SWIPE MODE -->
-  <div id="swipe-area">
-    <div class="swipe-hint">
-      <span>👈 swipe left</span>
-      <span>swipe right 👉</span>
+  <div class="game-header">
+    <div class="game-title" id="game-title">CVC Vocabinder</div>
+    <div class="score-row" id="score-row">
+      <div class="pill pg">✅ <span id="nc">0</span></div>
+      <div class="pill pr">❌ <span id="nw">0</span></div>
+      <div class="pill pb">📚 <span id="nd">0</span> / <span id="nt">0</span></div>
     </div>
+    <div class="prog-wrap"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+  </div>
 
-    <div class="card-wrap" id="card-wrap">
-      <!-- word peeks shown when dragging -->
-      <div class="swipe-peek peek-left"  id="peek-left"></div>
-      <div class="swipe-peek peek-right" id="peek-right"></div>
-      <div class="vocab-card" id="the-card">
-        <div class="card-illus" id="cillus"></div>
-        <div class="card-hint">which word?</div>
+  <div class="game-body" id="game-body">
+
+    <!-- SWIPE MODE -->
+    <div id="swipe-area">
+      <div class="swipe-hint">
+        <span>👈 swipe left</span>
+        <span>swipe right 👉</span>
+      </div>
+      <div class="card-wrap" id="card-wrap">
+        <div class="swipe-peek peek-left"  id="peek-left"></div>
+        <div class="swipe-peek peek-right" id="peek-right"></div>
+        <div class="vocab-card" id="the-card">
+          <div class="card-img-wrap" id="card-img-wrap">
+            <img class="card-img" id="card-img" src="" alt="" onerror="imgErr(this)"/>
+          </div>
+          <div class="card-hint">which word is this?</div>
+        </div>
+      </div>
+      <div class="choices">
+        <button class="choice-btn" id="ba" onclick="pickBtn(0)">
+          <span class="arr">👈</span><span id="ba-txt">CAT</span>
+        </button>
+        <button class="choice-btn" id="bb" onclick="pickBtn(1)">
+          <span id="bb-txt">HAT</span><span class="arr">👉</span>
+        </button>
       </div>
     </div>
 
-    <!-- LEFT button = swipe left, RIGHT button = swipe right -->
-    <div class="choices">
-      <button class="choice-btn" id="ba" onclick="pickBtn(0)">
-        <span class="arr">👈</span><span id="ba-txt">CAT</span>
-      </button>
-      <button class="choice-btn" id="bb" onclick="pickBtn(1)">
-        <span id="bb-txt">HAT</span><span class="arr">👉</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- FLASH MODE -->
-  <div id="flash-area" style="display:none">
-    <div class="flash-scene" onclick="doFlip()">
-      <div class="flash-inner" id="fi">
-        <div class="flash-face ff-front">
-          <div class="fl-big" id="fw-front">CAT</div>
-          <div class="fl-sub">tap to see picture</div>
-        </div>
-        <div class="flash-face ff-back">
-          <div class="fl-illus" id="fillus"></div>
-          <div class="fl-big" id="fw-back">CAT</div>
-          <div class="fl-sub" id="ffam">-AT family</div>
+    <!-- FLASH MODE -->
+    <div id="flash-area" style="display:none">
+      <div class="flash-scene" onclick="doFlip()">
+        <div class="flash-inner" id="fi">
+          <div class="flash-face ff-front">
+            <div class="fl-big" id="fw-front">CAT</div>
+            <div class="fl-sub">tap to see picture</div>
+          </div>
+          <div class="flash-face ff-back">
+            <img class="fl-img" id="fl-img" src="" alt="" onerror="imgErrSmall(this)"/>
+            <div class="fl-big" id="fw-back">CAT</div>
+            <div class="fl-sub" id="ffam">-AT family</div>
+          </div>
         </div>
       </div>
+      <div class="flash-nav">
+        <button class="fnav fp" onclick="fNav(-1)">◀</button>
+        <button class="fnav fn" onclick="fNav(1)">▶</button>
+      </div>
+      <div class="fl-ctr" id="flctr">1 / 30</div>
     </div>
-    <div class="flash-nav" style="margin-top:9px;">
-      <button class="fnav fp" onclick="fNav(-1)">◀</button>
-      <button class="fnav fn" onclick="fNav(1)">▶</button>
+
+    <!-- COMPLETION -->
+    <div class="completion" id="comp">
+      <div style="font-size:3.5rem">🏆</div>
+      <div class="comp-title">Amazing job!</div>
+      <div class="comp-stats" id="cstats"></div>
+      <div class="comp-row">
+        <button class="replay-btn" onclick="restartGame()">Play Again! 🎉</button>
+        <button class="change-btn" onclick="goToSelector()">Change Families</button>
+      </div>
     </div>
-    <div class="fl-ctr" id="flctr">1 / 30</div>
-  </div>
 
-  <!-- COMPLETION -->
-  <div class="completion" id="comp">
-    <div style="font-size:3.8rem">🏆</div>
-    <div class="comp-title">Amazing, Famous!</div>
-    <div class="comp-stats" id="cstats"></div>
-    <button class="replay-btn" onclick="restart()">Play Again! 🎉</button>
-  </div>
-</div>
+  </div><!-- end game-body -->
 
-<div class="mode-bar">
-  <button class="mode-tab on" id="ts" onclick="setMode('swipe')">🃏 Swipe Game</button>
-  <button class="mode-tab"    id="tf" onclick="setMode('flash')">📖 Flash Cards</button>
-</div>
+  <div class="mode-bar">
+    <button class="mode-tab on" id="ts" onclick="setMode('swipe')">🃏 Swipe Game</button>
+    <button class="mode-tab"    id="tf" onclick="setMode('flash')">📖 Flash Cards</button>
+  </div>
+</div><!-- end game-screen -->
 
 <script>
-/* ─── SVG ILLUSTRATIONS ─── */
-const SVG={
-can:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="60" cy="28" rx="32" ry="10" fill="#c8d8e8" stroke="#7a9ab8" stroke-width="2.5"/>
-  <rect x="28" y="28" width="64" height="64" fill="#ddeeff" rx="2" stroke="#7a9ab8" stroke-width="2.5"/>
-  <ellipse cx="60" cy="92" rx="32" ry="10" fill="#b8cce0" stroke="#7a9ab8" stroke-width="2.5"/>
-  <rect x="34" y="42" width="52" height="36" fill="#ff6b6b" rx="3"/>
-  <rect x="38" y="48" width="44" height="3" fill="white" rx="1"/>
-  <rect x="38" y="55" width="44" height="3" fill="white" rx="1"/>
-  <rect x="38" y="62" width="30" height="3" fill="white" rx="1"/>
-  <rect x="28" y="28" width="8" height="64" fill="white" opacity=".18" rx="2"/>
-</svg>`,
-fan:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="60" cy="58" r="36" fill="#e8f4ff" stroke="#5a9fd4" stroke-width="2.5"/>
-  <ellipse cx="60" cy="34" rx="11" ry="22" fill="#5a9fd4" opacity=".85" transform="rotate(0 60 58)"/>
-  <ellipse cx="60" cy="34" rx="11" ry="22" fill="#5a9fd4" opacity=".85" transform="rotate(120 60 58)"/>
-  <ellipse cx="60" cy="34" rx="11" ry="22" fill="#5a9fd4" opacity=".85" transform="rotate(240 60 58)"/>
-  <circle cx="60" cy="58" r="9" fill="white" stroke="#5a9fd4" stroke-width="2"/>
-  <circle cx="60" cy="58" r="4" fill="#5a9fd4"/>
-  <rect x="54" y="94" width="12" height="14" fill="#aaa" rx="2"/>
-  <rect x="42" y="106" width="36" height="7" fill="#888" rx="3"/>
-  <path d="M14 44 Q7 50 14 56" stroke="#b0d4f0" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <path d="M10 56 Q3 62 10 68" stroke="#b0d4f0" stroke-width="2" fill="none" stroke-linecap="round"/>
-</svg>`,
-man:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="60" cy="26" r="17" fill="#f5c97e" stroke="#e0a855" stroke-width="2"/>
-  <ellipse cx="60" cy="13" rx="17" ry="8" fill="#5a3a1a"/>
-  <ellipse cx="44" cy="22" rx="5" ry="8" fill="#5a3a1a"/>
-  <circle cx="54" cy="26" r="2.5" fill="#5a3a1a"/>
-  <circle cx="66" cy="26" r="2.5" fill="#5a3a1a"/>
-  <path d="M54 34 Q60 39 66 34" stroke="#c0845a" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <rect x="44" y="43" width="32" height="34" fill="#4a90d9" rx="6"/>
-  <path d="M52 43 L60 52 L68 43" fill="white"/>
-  <rect x="22" y="43" width="22" height="10" fill="#4a90d9" rx="5"/>
-  <rect x="76" y="43" width="22" height="10" fill="#4a90d9" rx="5"/>
-  <circle cx="22" cy="48" r="7" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <circle cx="98" cy="48" r="7" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <rect x="46" y="77" width="12" height="30" fill="#333" rx="4"/>
-  <rect x="62" y="77" width="12" height="30" fill="#333" rx="4"/>
-  <ellipse cx="52" cy="108" rx="10" ry="6" fill="#222"/>
-  <ellipse cx="68" cy="108" rx="10" ry="6" fill="#222"/>
-</svg>`,
-pan:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="56" cy="74" rx="38" ry="30" fill="#555" stroke="#333" stroke-width="2.5"/>
-  <ellipse cx="56" cy="74" rx="32" ry="24" fill="#666"/>
-  <rect x="94" y="68" width="22" height="12" fill="#8B4513" rx="6"/>
-  <rect x="92" y="70" width="6" height="8" fill="#555"/>
-  <ellipse cx="52" cy="70" rx="20" ry="15" fill="#fff8dc" stroke="#f5d87a" stroke-width="1.5"/>
-  <circle cx="52" cy="70" r="8" fill="#ffd700"/>
-  <ellipse cx="36" cy="60" rx="6" ry="4" fill="white" opacity=".15" transform="rotate(-20 36 60)"/>
-</svg>`,
-ran:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="72" cy="22" r="14" fill="#f5c97e" stroke="#e0a855" stroke-width="2"/>
-  <path d="M60 18 Q72 8 84 18" fill="#5a3a1a"/>
-  <circle cx="68" cy="22" r="2" fill="#5a3a1a"/>
-  <circle cx="77" cy="21" r="2" fill="#5a3a1a"/>
-  <path d="M67 28 Q72 31 77 28" stroke="#c0845a" stroke-width="1.5" fill="none"/>
-  <rect x="58" y="36" width="26" height="26" fill="#ff6b6b" rx="5" transform="rotate(-10 71 49)"/>
-  <line x1="58" y1="42" x2="38" y2="28" stroke="#f5c97e" stroke-width="9" stroke-linecap="round"/>
-  <line x1="84" y1="44" x2="100" y2="58" stroke="#f5c97e" stroke-width="9" stroke-linecap="round"/>
-  <line x1="62" y1="62" x2="42" y2="88" stroke="#333" stroke-width="9" stroke-linecap="round"/>
-  <line x1="72" y1="62" x2="88" y2="88" stroke="#333" stroke-width="9" stroke-linecap="round"/>
-  <ellipse cx="40" cy="90" rx="10" ry="6" fill="#222" transform="rotate(-20 40 90)"/>
-  <ellipse cx="90" cy="91" rx="11" ry="6" fill="#222" transform="rotate(10 90 91)"/>
-  <line x1="18" y1="50" x2="36" y2="50" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
-  <line x1="12" y1="62" x2="32" y2="62" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
-</svg>`,
-van:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <rect x="8" y="42" width="104" height="54" fill="#ff6b9d" rx="8" stroke="#cc4477" stroke-width="2"/>
-  <rect x="8" y="26" width="58" height="18" fill="#ff6b9d" rx="6 6 0 0" stroke="#cc4477" stroke-width="2"/>
-  <rect x="14" y="30" width="22" height="12" fill="#b0d8f8" rx="3"/>
-  <rect x="40" y="30" width="20" height="12" fill="#b0d8f8" rx="3"/>
-  <rect x="18" y="50" width="28" height="20" fill="#b0d8f8" rx="4"/>
-  <rect x="54" y="50" width="28" height="20" fill="#b0d8f8" rx="4"/>
-  <line x1="90" y1="42" x2="90" y2="96" stroke="#cc4477" stroke-width="2"/>
-  <circle cx="30" cy="96" r="16" fill="#333" stroke="#222" stroke-width="2"/>
-  <circle cx="30" cy="96" r="8" fill="#777"/>
-  <circle cx="92" cy="96" r="16" fill="#333" stroke="#222" stroke-width="2"/>
-  <circle cx="92" cy="96" r="8" fill="#777"/>
-  <rect x="10" y="70" width="10" height="8" fill="#ffe066" rx="2"/>
-</svg>`,
-bat:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <path d="M60 30 C40 20 10 10 8 35 C6 50 22 52 32 46 C38 56 48 64 60 66 C72 64 82 56 88 46 C98 52 114 50 112 35 C110 10 80 20 60 30Z" fill="#6b3d8a" stroke="#4a2060" stroke-width="2"/>
-  <polygon points="46,26 40,10 52,20" fill="#6b3d8a" stroke="#4a2060" stroke-width="1.5"/>
-  <polygon points="74,26 80,10 68,20" fill="#6b3d8a" stroke="#4a2060" stroke-width="1.5"/>
-  <circle cx="53" cy="33" r="2" fill="#ff2255"/>
-  <circle cx="67" cy="33" r="2" fill="#ff2255"/>
-  <ellipse cx="60" cy="40" rx="4" ry="3" fill="#c080b0"/>
-  <path d="M55 44 Q60 49 65 44" stroke="#c080b0" stroke-width="1.5" fill="none"/>
-  <path d="M52 30 L50 18 M52 30 L48 17 M52 30 L54 17" stroke="#4a2060" stroke-width="2" stroke-linecap="round"/>
-  <path d="M68 30 L70 18 M68 30 L72 17 M68 30 L66 17" stroke="#4a2060" stroke-width="2" stroke-linecap="round"/>
-</svg>`,
-cat:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="60" cy="82" rx="32" ry="28" fill="#f5a94e" stroke="#e08830" stroke-width="2"/>
-  <circle cx="60" cy="44" r="26" fill="#f5a94e" stroke="#e08830" stroke-width="2"/>
-  <polygon points="38,24 30,6 50,18" fill="#f5a94e" stroke="#e08830" stroke-width="2"/>
-  <polygon points="82,24 90,6 70,18" fill="#f5a94e" stroke="#e08830" stroke-width="2"/>
-  <polygon points="40,23 34,12 48,19" fill="#ffc0a0"/>
-  <polygon points="80,23 86,12 72,19" fill="#ffc0a0"/>
-  <path d="M46 36 Q60 32 74 36" stroke="#e08830" stroke-width="1.8" fill="none"/>
-  <ellipse cx="50" cy="42" rx="7" ry="8" fill="#7ec850"/>
-  <ellipse cx="70" cy="42" rx="7" ry="8" fill="#7ec850"/>
-  <ellipse cx="50" cy="43" rx="3" ry="7" fill="#1a1a1a"/>
-  <ellipse cx="70" cy="43" rx="3" ry="7" fill="#1a1a1a"/>
-  <circle cx="48" cy="40" r="1.5" fill="white"/>
-  <circle cx="68" cy="40" r="1.5" fill="white"/>
-  <polygon points="60,50 56,54 64,54" fill="#ff8899"/>
-  <path d="M56 54 Q60 58 64 54" stroke="#e08830" stroke-width="1.5" fill="none"/>
-  <line x1="28" y1="50" x2="52" y2="52" stroke="#e08830" stroke-width="1.5"/>
-  <line x1="28" y1="56" x2="52" y2="55" stroke="#e08830" stroke-width="1.5"/>
-  <line x1="92" y1="50" x2="68" y2="52" stroke="#e08830" stroke-width="1.5"/>
-  <line x1="92" y1="56" x2="68" y2="55" stroke="#e08830" stroke-width="1.5"/>
-  <path d="M92 82 Q112 70 108 55" stroke="#f5a94e" stroke-width="10" fill="none" stroke-linecap="round"/>
-  <path d="M92 82 Q112 70 108 55" stroke="#e08830" stroke-width="2" fill="none" stroke-linecap="round"/>
-</svg>`,
-hat:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="60" cy="80" rx="48" ry="14" fill="#1a1a1a" stroke="#333" stroke-width="2"/>
-  <rect x="28" y="24" width="64" height="56" fill="#1a1a1a" stroke="#333" stroke-width="2" rx="4 4 0 0"/>
-  <ellipse cx="60" cy="80" rx="48" ry="14" fill="#222" stroke="#333" stroke-width="2"/>
-  <rect x="28" y="70" width="64" height="10" fill="#cc4444"/>
-  <rect x="55" y="72" width="10" height="7" fill="none" stroke="#ffd700" stroke-width="2" rx="1"/>
-  <line x1="60" y1="72" x2="60" y2="79" stroke="#ffd700" stroke-width="1.5"/>
-  <rect x="30" y="26" width="8" height="44" fill="white" opacity=".07" rx="2"/>
-</svg>`,
-mat:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="60" cy="100" rx="50" ry="8" fill="rgba(0,0,0,.08)"/>
-  <rect x="14" y="56" width="92" height="44" fill="#e67c3a" rx="8" stroke="#c05a18" stroke-width="2"/>
-  <rect x="20" y="62" width="80" height="32" fill="none" stroke="#f5a94e" stroke-width="3" rx="4"/>
-  <line x1="30" y1="62" x2="30" y2="94" stroke="#f5a94e" stroke-width="1.5" opacity=".6"/>
-  <line x1="45" y1="62" x2="45" y2="94" stroke="#f5a94e" stroke-width="1.5" opacity=".6"/>
-  <line x1="60" y1="62" x2="60" y2="94" stroke="#f5a94e" stroke-width="1.5" opacity=".6"/>
-  <line x1="75" y1="62" x2="75" y2="94" stroke="#f5a94e" stroke-width="1.5" opacity=".6"/>
-  <line x1="90" y1="62" x2="90" y2="94" stroke="#f5a94e" stroke-width="1.5" opacity=".6"/>
-  <line x1="14" y1="62" x2="9" y2="56" stroke="#c05a18" stroke-width="2" stroke-linecap="round"/>
-  <line x1="14" y1="68" x2="9" y2="64" stroke="#c05a18" stroke-width="2" stroke-linecap="round"/>
-  <line x1="14" y1="74" x2="9" y2="72" stroke="#c05a18" stroke-width="2" stroke-linecap="round"/>
-  <line x1="14" y1="80" x2="9" y2="80" stroke="#c05a18" stroke-width="2" stroke-linecap="round"/>
-  <line x1="14" y1="86" x2="9" y2="88" stroke="#c05a18" stroke-width="2" stroke-linecap="round"/>
-  <line x1="106" y1="62" x2="111" y2="56" stroke="#c05a18" stroke-width="2" stroke-linecap="round"/>
-  <line x1="106" y1="68" x2="111" y2="64" stroke="#c05a18" stroke-width="2" stroke-linecap="round"/>
-  <line x1="106" y1="74" x2="111" y2="72" stroke="#c05a18" stroke-width="2" stroke-linecap="round"/>
-  <line x1="106" y1="80" x2="111" y2="80" stroke="#c05a18" stroke-width="2" stroke-linecap="round"/>
-  <line x1="106" y1="86" x2="111" y2="88" stroke="#c05a18" stroke-width="2" stroke-linecap="round"/>
-  <rect x="44" y="70" width="32" height="16" fill="#c05a18" rx="3" opacity=".4"/>
-</svg>`,
-rat:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <path d="M94 80 Q115 70 112 50 Q110 38 100 36" stroke="#c0a0a0" stroke-width="5" fill="none" stroke-linecap="round"/>
-  <ellipse cx="62" cy="80" rx="34" ry="24" fill="#c8b0b0" stroke="#a08080" stroke-width="2"/>
-  <ellipse cx="34" cy="68" rx="22" ry="18" fill="#c8b0b0" stroke="#a08080" stroke-width="2"/>
-  <circle cx="26" cy="52" r="10" fill="#e8c0c0" stroke="#a08080" stroke-width="2"/>
-  <circle cx="26" cy="52" r="6" fill="#f0a0a0"/>
-  <circle cx="24" cy="64" r="4" fill="#222"/>
-  <circle cx="22" cy="62" r="1.5" fill="white"/>
-  <ellipse cx="14" cy="70" rx="5" ry="4" fill="#f0a0a0"/>
-  <path d="M14 74 Q16 78 18 74" stroke="#a08080" stroke-width="1.5" fill="none"/>
-  <line x1="6" y1="68" x2="24" y2="69" stroke="#888" stroke-width="1.2"/>
-  <line x1="6" y1="72" x2="24" y2="71" stroke="#888" stroke-width="1.2"/>
-  <line x1="6" y1="64" x2="22" y2="67" stroke="#888" stroke-width="1.2"/>
-  <ellipse cx="36" cy="100" rx="12" ry="6" fill="#b09090" stroke="#a08080" stroke-width="1.5"/>
-  <ellipse cx="60" cy="104" rx="14" ry="6" fill="#b09090" stroke="#a08080" stroke-width="1.5"/>
-  <ellipse cx="84" cy="102" rx="12" ry="6" fill="#b09090" stroke="#a08080" stroke-width="1.5"/>
-</svg>`,
-sat:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <rect x="10" y="98" width="100" height="6" fill="#d4c4a0" rx="3"/>
-  <circle cx="60" cy="30" r="18" fill="#f5c97e" stroke="#e0a855" stroke-width="2"/>
-  <path d="M42 24 Q60 12 78 24 Q82 30 78 26 Q60 14 42 26Z" fill="#5a3a1a"/>
-  <circle cx="54" cy="28" r="3" fill="#333"/>
-  <circle cx="66" cy="28" r="3" fill="#333"/>
-  <circle cx="53" cy="27" r="1" fill="white"/>
-  <circle cx="65" cy="27" r="1" fill="white"/>
-  <path d="M53 36 Q60 42 67 36" stroke="#c0845a" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <rect x="44" y="44" width="32" height="30" fill="#ff8c55" rx="8"/>
-  <path d="M44 74 Q28 80 24 98 L40 98 Q46 82 60 80 Q74 82 80 98 L96 98 Q92 80 76 74" fill="#4a90d9" stroke="#357ac0" stroke-width="1.5"/>
-  <line x1="44" y1="55" x2="24" y2="70" stroke="#f5c97e" stroke-width="9" stroke-linecap="round"/>
-  <line x1="76" y1="55" x2="96" y2="70" stroke="#f5c97e" stroke-width="9" stroke-linecap="round"/>
-  <circle cx="22" cy="72" r="7" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <circle cx="98" cy="72" r="7" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <ellipse cx="36" cy="99" rx="10" ry="5" fill="#f5c97e"/>
-  <ellipse cx="84" cy="99" rx="10" ry="5" fill="#f5c97e"/>
-</svg>`,
-bet:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <rect x="20" y="64" width="80" height="48" fill="#5a8a3a" rx="8" stroke="#3a6a1a" stroke-width="2"/>
-  <rect x="20" y="54" width="80" height="16" fill="#6a9a4a" rx="4" stroke="#3a6a1a" stroke-width="2"/>
-  <rect x="42" y="62" width="18" height="26" fill="white" stroke="#ccc" stroke-width="1.5" rx="2"/>
-  <text x="44" y="78" font-size="13" fill="red">♥</text>
-  <rect x="62" y="62" width="18" height="26" fill="white" stroke="#ccc" stroke-width="1.5" rx="2"/>
-  <text x="64" y="78" font-size="13" fill="#333">♠</text>
-  <circle cx="30" cy="74" r="8" fill="#ff4444" stroke="#cc2222" stroke-width="1.5"/>
-  <circle cx="30" cy="74" r="5" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="3,2"/>
-  <circle cx="90" cy="74" r="8" fill="#4444ff" stroke="#2222cc" stroke-width="1.5"/>
-  <circle cx="90" cy="74" r="5" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="3,2"/>
-  <circle cx="22" cy="30" r="14" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <circle cx="18" cy="27" r="2" fill="#333"/>
-  <circle cx="26" cy="27" r="2" fill="#333"/>
-  <path d="M17 36 Q22 41 27 36" stroke="#c0845a" stroke-width="1.5" fill="none"/>
-  <circle cx="98" cy="30" r="14" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <circle cx="94" cy="27" r="2" fill="#333"/>
-  <circle cx="102" cy="27" r="2" fill="#333"/>
-  <path d="M93 36 Q98 41 103 36" stroke="#c0845a" stroke-width="1.5" fill="none"/>
-  <line x1="22" y1="44" x2="40" y2="62" stroke="#f5c97e" stroke-width="8" stroke-linecap="round"/>
-  <line x1="98" y1="44" x2="80" y2="62" stroke="#f5c97e" stroke-width="8" stroke-linecap="round"/>
-  <text x="50" y="50" font-size="18" fill="#ffd700" font-weight="bold">$</text>
-</svg>`,
-get:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <rect x="36" y="58" width="48" height="42" fill="#ff6b9d" rx="4" stroke="#cc3366" stroke-width="2"/>
-  <rect x="36" y="50" width="48" height="14" fill="#ff4488" rx="3" stroke="#cc3366" stroke-width="2"/>
-  <rect x="56" y="50" width="8" height="50" fill="#ffd700"/>
-  <rect x="36" y="62" width="48" height="8" fill="#ffd700"/>
-  <path d="M60 50 Q48 36 40 42 Q38 50 56 50Z" fill="#ffd700" stroke="#cc9900" stroke-width="1"/>
-  <path d="M60 50 Q72 36 80 42 Q82 50 64 50Z" fill="#ffd700" stroke="#cc9900" stroke-width="1"/>
-  <circle cx="60" cy="50" r="5" fill="#ffa500"/>
-  <line x1="22" y1="90" x2="36" y2="76" stroke="#f5c97e" stroke-width="9" stroke-linecap="round"/>
-  <line x1="98" y1="90" x2="84" y2="76" stroke="#f5c97e" stroke-width="9" stroke-linecap="round"/>
-  <circle cx="60" cy="24" r="18" fill="#f5c97e" stroke="#e0a855" stroke-width="2"/>
-  <circle cx="52" cy="22" r="5" fill="white" stroke="#333" stroke-width="1.5"/>
-  <circle cx="68" cy="22" r="5" fill="white" stroke="#333" stroke-width="1.5"/>
-  <circle cx="53" cy="22" r="3" fill="#333"/>
-  <circle cx="69" cy="22" r="3" fill="#333"/>
-  <path d="M50 30 Q60 38 70 30" stroke="#c0845a" stroke-width="2" fill="none" stroke-linecap="round"/>
-</svg>`,
-jet:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="18" cy="28" r="10" fill="white"/>
-  <circle cx="28" cy="22" r="12" fill="white"/>
-  <circle cx="40" cy="26" r="10" fill="white"/>
-  <rect x="18" y="28" width="32" height="12" fill="white"/>
-  <ellipse cx="60" cy="62" rx="50" ry="14" fill="#ddeeff" stroke="#6699cc" stroke-width="2" transform="rotate(-15 60 62)"/>
-  <path d="M104 50 L116 62 L104 74" fill="#c0d8f0" stroke="#6699cc" stroke-width="1.5" transform="rotate(-15 60 62)"/>
-  <ellipse cx="88" cy="56" rx="10" ry="6" fill="#b0d8f8" stroke="#6699cc" stroke-width="1.5" transform="rotate(-15 60 62)"/>
-  <path d="M55 62 L20 92 L44 62" fill="#aaccee" stroke="#6699cc" stroke-width="1.5" transform="rotate(-15 60 62)"/>
-  <path d="M18 62 L4 36 L28 62" fill="#aaccee" stroke="#6699cc" stroke-width="1.5" transform="rotate(-15 60 62)"/>
-  <rect x="36" y="74" width="24" height="10" fill="#8899aa" rx="5" transform="rotate(-15 60 62)"/>
-  <circle cx="68" cy="57" r="3" fill="#b0d8f8" stroke="#6699cc" stroke-width="1" transform="rotate(-15 60 62)"/>
-  <circle cx="56" cy="60" r="3" fill="#b0d8f8" stroke="#6699cc" stroke-width="1" transform="rotate(-15 60 62)"/>
-</svg>`,
-net:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <rect x="56" y="72" width="10" height="42" fill="#8B4513" rx="4"/>
-  <circle cx="60" cy="52" r="36" fill="none" stroke="#5a3a1a" stroke-width="4"/>
-  <line x1="24" y1="52" x2="96" y2="52" stroke="#aaa" stroke-width="1.5" opacity=".7"/>
-  <line x1="26" y1="38" x2="94" y2="38" stroke="#aaa" stroke-width="1.5" opacity=".7"/>
-  <line x1="30" y1="25" x2="90" y2="25" stroke="#aaa" stroke-width="1.5" opacity=".7"/>
-  <line x1="26" y1="66" x2="94" y2="66" stroke="#aaa" stroke-width="1.5" opacity=".7"/>
-  <line x1="32" y1="79" x2="88" y2="79" stroke="#aaa" stroke-width="1.5" opacity=".7"/>
-  <line x1="36" y1="18" x2="36" y2="86" stroke="#aaa" stroke-width="1.5" opacity=".7"/>
-  <line x1="48" y1="16" x2="48" y2="88" stroke="#aaa" stroke-width="1.5" opacity=".7"/>
-  <line x1="60" y1="16" x2="60" y2="88" stroke="#aaa" stroke-width="1.5" opacity=".7"/>
-  <line x1="72" y1="16" x2="72" y2="88" stroke="#aaa" stroke-width="1.5" opacity=".7"/>
-  <line x1="84" y1="18" x2="84" y2="86" stroke="#aaa" stroke-width="1.5" opacity=".7"/>
-  <path d="M52 46 Q42 34 38 40 Q36 50 50 52Z" fill="#ff88aa" stroke="#cc4466" stroke-width="1"/>
-  <path d="M68 46 Q78 34 82 40 Q84 50 70 52Z" fill="#ff88aa" stroke="#cc4466" stroke-width="1"/>
-  <path d="M53 52 Q44 58 42 64 Q50 66 56 56Z" fill="#ffbbcc" stroke="#cc4466" stroke-width="1"/>
-  <path d="M67 52 Q76 58 78 64 Q70 66 64 56Z" fill="#ffbbcc" stroke="#cc4466" stroke-width="1"/>
-  <ellipse cx="60" cy="50" rx="3" ry="7" fill="#5a3a1a"/>
-  <circle cx="60" cy="43" r="2" fill="#5a3a1a"/>
-  <path d="M58 43 Q50 34 46 30" stroke="#5a3a1a" stroke-width="1.5" fill="none"/>
-  <path d="M62 43 Q70 34 74 30" stroke="#5a3a1a" stroke-width="1.5" fill="none"/>
-  <circle cx="46" cy="30" r="2" fill="#ff4488"/>
-  <circle cx="74" cy="30" r="2" fill="#ff4488"/>
-</svg>`,
-pet:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="70" cy="88" rx="30" ry="18" fill="#c8a06a" stroke="#a07040" stroke-width="2"/>
-  <circle cx="40" cy="76" r="18" fill="#c8a06a" stroke="#a07040" stroke-width="2"/>
-  <ellipse cx="30" cy="68" rx="9" ry="14" fill="#a07040" stroke="#805020" stroke-width="1.5" transform="rotate(-20 30 68)"/>
-  <ellipse cx="52" cy="64" rx="7" ry="11" fill="#a07040" stroke="#805020" stroke-width="1.5" transform="rotate(15 52 64)"/>
-  <circle cx="34" cy="74" r="4" fill="#333"/>
-  <circle cx="33" cy="73" r="1.5" fill="white"/>
-  <ellipse cx="28" cy="82" rx="5" ry="4" fill="#333"/>
-  <ellipse cx="28" cy="89" rx="5" ry="6" fill="#ff8899"/>
-  <path d="M100 84 Q116 70 112 54" stroke="#c8a06a" stroke-width="10" fill="none" stroke-linecap="round"/>
-  <rect x="50" y="100" width="10" height="16" fill="#c8a06a" rx="4"/>
-  <rect x="66" y="102" width="10" height="14" fill="#c8a06a" rx="4"/>
-  <rect x="82" y="100" width="10" height="16" fill="#c8a06a" rx="4"/>
-  <line x1="70" y1="30" x2="46" y2="62" stroke="#f5c97e" stroke-width="12" stroke-linecap="round"/>
-  <circle cx="46" cy="62" r="9" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <circle cx="80" cy="22" r="18" fill="#f5c97e" stroke="#e0a855" stroke-width="2"/>
-  <circle cx="75" cy="20" r="2.5" fill="#333"/>
-  <circle cx="86" cy="20" r="2.5" fill="#333"/>
-  <path d="M74 28 Q80 33 86 28" stroke="#c0845a" stroke-width="2" fill="none"/>
-</svg>`,
-set:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <rect x="16" y="52" width="88" height="54" fill="#4a90d9" rx="6" stroke="#2a6ab4" stroke-width="2"/>
-  <rect x="16" y="44" width="88" height="14" fill="#5aa0e9" rx="4" stroke="#2a6ab4" stroke-width="2"/>
-  <rect x="24" y="56" width="14" height="36" fill="#ff4444" rx="3"/>
-  <ellipse cx="31" cy="56" rx="7" ry="4" fill="#cc2222"/>
-  <rect x="42" y="56" width="14" height="36" fill="#ffd700" rx="3"/>
-  <ellipse cx="49" cy="56" rx="7" ry="4" fill="#ccaa00"/>
-  <rect x="60" y="56" width="14" height="36" fill="#44aa44" rx="3"/>
-  <ellipse cx="67" cy="56" rx="7" ry="4" fill="#228822"/>
-  <rect x="78" y="56" width="14" height="36" fill="#8844ff" rx="3"/>
-  <ellipse cx="85" cy="56" rx="7" ry="4" fill="#6622cc"/>
-  <rect x="52" y="14" width="6" height="34" fill="#8B4513" rx="2"/>
-  <ellipse cx="55" cy="14" rx="5" ry="3" fill="#1a1a1a"/>
-</svg>`,
-wet:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="20" cy="14" rx="3" ry="7" fill="#88bbff" opacity=".8"/>
-  <ellipse cx="38" cy="8" rx="3" ry="7" fill="#88bbff" opacity=".8"/>
-  <ellipse cx="56" cy="14" rx="3" ry="7" fill="#88bbff" opacity=".8"/>
-  <ellipse cx="74" cy="8" rx="3" ry="7" fill="#88bbff" opacity=".8"/>
-  <ellipse cx="92" cy="14" rx="3" ry="7" fill="#88bbff" opacity=".8"/>
-  <ellipse cx="110" cy="8" rx="3" ry="7" fill="#88bbff" opacity=".8"/>
-  <ellipse cx="28" cy="30" rx="3" ry="7" fill="#88bbff" opacity=".7"/>
-  <ellipse cx="82" cy="28" rx="3" ry="7" fill="#88bbff" opacity=".7"/>
-  <ellipse cx="100" cy="32" rx="3" ry="7" fill="#88bbff" opacity=".7"/>
-  <rect x="44" y="56" width="32" height="30" fill="#ff8c55" rx="8"/>
-  <circle cx="60" cy="40" r="18" fill="#f5c97e" stroke="#e0a855" stroke-width="2"/>
-  <path d="M42 34 Q60 26 78 34 Q82 40 76 38 Q60 30 44 38Z" fill="#5a3a1a"/>
-  <path d="M42 38 Q38 44 40 52" stroke="#5a3a1a" stroke-width="4" fill="none" stroke-linecap="round"/>
-  <path d="M78 38 Q82 44 80 52" stroke="#5a3a1a" stroke-width="4" fill="none" stroke-linecap="round"/>
-  <path d="M40 52 Q38 58 40 62" stroke="#88bbff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M80 52 Q82 58 80 62" stroke="#88bbff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M60 58 Q58 64 60 68" stroke="#88bbff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M50 40 Q54 37 58 40" stroke="#333" stroke-width="2" fill="none"/>
-  <path d="M62 40 Q66 37 70 40" stroke="#333" stroke-width="2" fill="none"/>
-  <path d="M52 50 Q60 46 68 50" stroke="#c0845a" stroke-width="2" fill="none"/>
-  <ellipse cx="60" cy="104" rx="38" ry="10" fill="#aaddff" opacity=".7"/>
-  <rect x="46" y="86" width="12" height="22" fill="#4a90d9" rx="4"/>
-  <rect x="62" y="86" width="12" height="22" fill="#4a90d9" rx="4"/>
-</svg>`,
-bed:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <rect x="14" y="90" width="8" height="22" fill="#8B4513" rx="3"/>
-  <rect x="98" y="90" width="8" height="22" fill="#8B4513" rx="3"/>
-  <rect x="10" y="56" width="100" height="40" fill="#d4a574" rx="4" stroke="#8B4513" stroke-width="2"/>
-  <rect x="14" y="52" width="92" height="38" fill="#fff5e6" rx="4" stroke="#e0c090" stroke-width="1.5"/>
-  <rect x="18" y="48" width="32" height="18" fill="white" rx="8" stroke="#ddd" stroke-width="1.5"/>
-  <rect x="14" y="66" width="92" height="24" fill="#ff6b9d" rx="4" stroke="#cc4477" stroke-width="1.5"/>
-  <rect x="14" y="73" width="92" height="4" fill="#ff4488" opacity=".5"/>
-  <rect x="8" y="30" width="24" height="32" fill="#8B4513" rx="4" stroke="#5a2a00" stroke-width="2"/>
-  <ellipse cx="20" cy="30" rx="12" ry="8" fill="#8B4513" stroke="#5a2a00" stroke-width="2"/>
-</svg>`,
-fed:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <rect x="58" y="60" width="44" height="8" fill="#c8a06a" rx="3" stroke="#a07040" stroke-width="1.5"/>
-  <rect x="66" y="68" width="28" height="8" fill="#deb880" rx="2" stroke="#a07040" stroke-width="1.5"/>
-  <rect x="62" y="76" width="8" height="36" fill="#c8a06a" rx="3"/>
-  <rect x="90" y="76" width="8" height="36" fill="#c8a06a" rx="3"/>
-  <rect x="58" y="104" width="44" height="8" fill="#a07040" rx="3"/>
-  <circle cx="80" cy="48" r="15" fill="#f5c97e" stroke="#e0a855" stroke-width="2"/>
-  <path d="M66 42 Q80 34 94 42" fill="#c8a040"/>
-  <circle cx="75" cy="47" r="2.5" fill="#333"/>
-  <circle cx="85" cy="47" r="2.5" fill="#333"/>
-  <path d="M74 55 Q80 60 86 55" stroke="#c0845a" stroke-width="2" fill="none"/>
-  <path d="M68 62 Q80 68 92 62 L90 56 Q80 60 70 56Z" fill="white" stroke="#ddd" stroke-width="1.5"/>
-  <line x1="28" y1="44" x2="62" y2="52" stroke="#c0c0c0" stroke-width="3" stroke-linecap="round"/>
-  <ellipse cx="24" cy="42" rx="8" ry="6" fill="#c0c0c0" stroke="#999" stroke-width="1.5"/>
-  <ellipse cx="24" cy="41" rx="6" ry="4" fill="#ff9944"/>
-  <line x1="8" y1="30" x2="28" y2="44" stroke="#f5c97e" stroke-width="10" stroke-linecap="round"/>
-  <circle cx="12" cy="20" r="14" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <circle cx="8" cy="18" r="2" fill="#333"/>
-  <circle cx="17" cy="18" r="2" fill="#333"/>
-  <path d="M7 26 Q12 30 17 26" stroke="#c0845a" stroke-width="1.5" fill="none"/>
-</svg>`,
-led:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="100" cy="38" r="10" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <rect x="92" y="48" width="16" height="20" fill="#9b72cf" rx="4"/>
-  <rect x="94" y="68" width="5" height="16" fill="#333" rx="2"/>
-  <rect x="103" y="68" width="5" height="16" fill="#333" rx="2"/>
-  <circle cx="74" cy="35" r="11" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <rect x="66" y="46" width="16" height="22" fill="#ff8c55" rx="4"/>
-  <rect x="68" y="68" width="5" height="18" fill="#333" rx="2"/>
-  <rect x="77" y="68" width="5" height="18" fill="#333" rx="2"/>
-  <circle cx="32" cy="28" r="16" fill="#f5c97e" stroke="#e0a855" stroke-width="2"/>
-  <path d="M16 22 Q32 10 48 22" fill="#5a3a1a"/>
-  <circle cx="27" cy="27" r="2.5" fill="#333"/>
-  <circle cx="37" cy="27" r="2.5" fill="#333"/>
-  <path d="M26 35 Q32 40 38 35" stroke="#c0845a" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <rect x="20" y="44" width="24" height="28" fill="#4a90d9" rx="5"/>
-  <text x="26" y="62" font-size="12" fill="#ffd700">★</text>
-  <line x1="44" y1="52" x2="68" y2="48" stroke="#f5c97e" stroke-width="9" stroke-linecap="round"/>
-  <circle cx="70" cy="47" r="7" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <rect x="22" y="72" width="9" height="28" fill="#333" rx="4"/>
-  <rect x="33" y="72" width="9" height="28" fill="#333" rx="4"/>
-  <ellipse cx="26" cy="102" rx="9" ry="5" fill="#222"/>
-  <ellipse cx="37" cy="102" rx="9" ry="5" fill="#222"/>
-  <path d="M6 80 L22 68" stroke="#ffd700" stroke-width="3" stroke-dasharray="5,3" stroke-linecap="round"/>
-</svg>`,
-red:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <path d="M60 10 C80 10 105 22 110 45 C116 70 98 95 75 105 C52 115 28 108 16 88 C4 68 8 40 26 24 C38 14 46 10 60 10Z" fill="#ff2222"/>
-  <path d="M60 22 C74 22 94 32 98 50 C103 68 88 88 70 96 C52 104 32 98 22 82 C12 66 16 44 30 32 C40 22 50 22 60 22Z" fill="#ff5555"/>
-  <path d="M44 28 C36 32 30 42 32 52 C34 60 40 62 46 58 C52 54 54 44 50 36 C47 30 44 28 44 28Z" fill="white" opacity=".25"/>
-  <path d="M78 105 Q76 112 74 118" stroke="#ff2222" stroke-width="6" fill="none" stroke-linecap="round"/>
-  <path d="M55 108 Q54 116 53 120" stroke="#ff2222" stroke-width="5" fill="none" stroke-linecap="round"/>
-  <text x="38" y="66" font-family="Arial Black,sans-serif" font-size="26" font-weight="900" fill="white" opacity=".85">RED</text>
-</svg>`,
-wed:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="36" cy="28" r="14" fill="#f5c97e" stroke="#e0a855" stroke-width="2"/>
-  <path d="M22 22 Q36 14 50 22" fill="#5a3a1a"/>
-  <circle cx="31" cy="27" r="2" fill="#333"/>
-  <circle cx="41" cy="27" r="2" fill="#333"/>
-  <path d="M30 34 Q36 38 42 34" stroke="#c0845a" stroke-width="1.5" fill="none"/>
-  <rect x="24" y="42" width="24" height="30" fill="#222" rx="5"/>
-  <path d="M32 42 L36 50 L40 42" fill="white"/>
-  <rect x="34" y="50" width="4" height="14" fill="#aa2222"/>
-  <rect x="26" y="72" width="9" height="30" fill="#222" rx="3"/>
-  <rect x="37" y="72" width="9" height="30" fill="#222" rx="3"/>
-  <ellipse cx="30" cy="104" rx="9" ry="5" fill="#111"/>
-  <ellipse cx="41" cy="104" rx="9" ry="5" fill="#111"/>
-  <circle cx="84" cy="28" r="14" fill="#f5c97e" stroke="#e0a855" stroke-width="2"/>
-  <path d="M70 22 Q84 12 98 22 Q104 30 102 50 L94 50 Q96 32 84 28 Q72 32 74 50 L66 50 Q64 30 70 22Z" fill="white" opacity=".9" stroke="#eee" stroke-width="1"/>
-  <circle cx="79" cy="27" r="2" fill="#333"/>
-  <circle cx="89" cy="27" r="2" fill="#333"/>
-  <path d="M78 34 Q84 39 90 34" stroke="#c0845a" stroke-width="1.5" fill="none"/>
-  <path d="M70 42 L64 105 L104 105 L98 42Z" fill="white" stroke="#ddd" stroke-width="1.5"/>
-  <circle cx="84" cy="68" r="6" fill="#ff6b9d"/>
-  <circle cx="84" cy="68" r="3" fill="#ffd700"/>
-  <circle cx="100" cy="68" r="10" fill="#ff6b9d"/>
-  <circle cx="100" cy="68" r="6" fill="#ff88bb"/>
-  <rect x="98" y="78" width="5" height="14" fill="#5a8a3a" rx="2"/>
-  <line x1="48" y1="58" x2="72" y2="62" stroke="#f5c97e" stroke-width="8" stroke-linecap="round"/>
-  <circle cx="72" cy="63" r="6" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <path d="M56 14 C56 10 60 8 60 12 C60 8 64 10 64 14 Q64 18 60 22 Q56 18 56 14Z" fill="#ff4488"/>
-</svg>`,
-bin:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <rect x="22" y="24" width="76" height="12" fill="#6aaa6a" rx="4" stroke="#4a8a4a" stroke-width="2"/>
-  <rect x="44" y="16" width="32" height="12" fill="#6aaa6a" rx="4" stroke="#4a8a4a" stroke-width="2"/>
-  <path d="M28 36 L32 108 L88 108 L92 36Z" fill="#88cc88" stroke="#4a8a4a" stroke-width="2"/>
-  <line x1="50" y1="40" x2="48" y2="104" stroke="#6aaa6a" stroke-width="2"/>
-  <line x1="60" y1="40" x2="60" y2="105" stroke="#6aaa6a" stroke-width="2"/>
-  <line x1="70" y1="40" x2="72" y2="104" stroke="#6aaa6a" stroke-width="2"/>
-  <path d="M52 64 L60 50 L68 64 L52 64Z" fill="none" stroke="#4a8a4a" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M52 64 L44 78 L76 78 L68 64" fill="none" stroke="#4a8a4a" stroke-width="3" stroke-linejoin="round"/>
-</svg>`,
-fin:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <path d="M8 78 Q22 68 36 78 Q50 88 64 78 Q78 68 92 78 Q106 88 120 78 L120 120 L8 120Z" fill="#4a90d9"/>
-  <path d="M8 82 Q22 74 36 82 Q50 90 64 82 Q78 74 92 82 Q106 90 120 82 L120 120 L8 120Z" fill="#2a70b9" opacity=".5"/>
-  <path d="M60 20 L90 80 L30 80 Z" fill="#4a5a6a" stroke="#2a3a4a" stroke-width="2"/>
-  <path d="M60 20 L66 60 L60 78" fill="white" opacity=".15"/>
-  <ellipse cx="60" cy="88" rx="42" ry="16" fill="#4a5a6a" opacity=".5"/>
-  <circle cx="72" cy="62" r="3" fill="white"/>
-  <circle cx="73" cy="62" r="2" fill="#111"/>
-  <path d="M30 80 Q22 72 16 76" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M90 80 Q98 72 104 76" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-</svg>`,
-pin:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <path d="M60 8 C36 8 18 28 18 52 C18 76 60 114 60 114 C60 114 102 76 102 52 C102 28 84 8 60 8Z" fill="#ff4444" stroke="#cc2222" stroke-width="2"/>
-  <circle cx="60" cy="50" r="20" fill="white"/>
-  <circle cx="60" cy="50" r="14" fill="#ff4444"/>
-  <path d="M34 32 C38 24 48 18 58 18 C52 18 40 26 36 38Z" fill="white" opacity=".3"/>
-</svg>`,
-sin:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="60" cy="60" r="44" fill="#ff6644" stroke="#cc3322" stroke-width="2"/>
-  <polygon points="36,20 28,4 46,16" fill="#cc3322"/>
-  <polygon points="84,20 92,4 74,16" fill="#cc3322"/>
-  <ellipse cx="46" cy="56" rx="10" ry="8" fill="#ffdd44"/>
-  <ellipse cx="74" cy="56" rx="10" ry="8" fill="#ffdd44"/>
-  <circle cx="46" cy="57" r="5" fill="#1a1a1a"/>
-  <circle cx="74" cy="57" r="5" fill="#1a1a1a"/>
-  <circle cx="44" cy="55" r="2" fill="white"/>
-  <circle cx="72" cy="55" r="2" fill="white"/>
-  <path d="M36 46 Q46 40 56 46" stroke="#cc3322" stroke-width="3" fill="none"/>
-  <path d="M64 46 Q74 40 84 46" stroke="#cc3322" stroke-width="3" fill="none"/>
-  <path d="M40 74 Q60 92 80 74" stroke="#cc3322" stroke-width="3" fill="white"/>
-  <path d="M46 78 L46 86 M54 80 L54 88 M66 80 L66 88 M74 78 L74 86" stroke="white" stroke-width="3"/>
-  <path d="M90 82 Q110 78 112 68 Q114 60 106 60 Q100 60 104 68" stroke="#cc3322" stroke-width="4" fill="none" stroke-linecap="round"/>
-  <polygon points="104,68 100,62 108,62" fill="#cc3322"/>
-</svg>`,
-tin:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="60" cy="110" rx="36" ry="8" fill="rgba(0,0,0,.1)"/>
-  <rect x="26" y="32" width="68" height="72" fill="#c8d8e0" stroke="#8aa0aa" stroke-width="2"/>
-  <ellipse cx="60" cy="32" rx="34" ry="11" fill="#a0b8c8" stroke="#8aa0aa" stroke-width="2"/>
-  <ellipse cx="60" cy="104" rx="34" ry="11" fill="#90a8b8" stroke="#8aa0aa" stroke-width="2"/>
-  <rect x="26" y="48" width="68" height="40" fill="#e8f0d0" stroke="#c0cc90" stroke-width="1.5"/>
-  <rect x="26" y="48" width="68" height="8" fill="#88aa44"/>
-  <rect x="26" y="80" width="68" height="8" fill="#88aa44"/>
-  <rect x="34" y="60" width="52" height="4" fill="#88aa44" rx="2" opacity=".6"/>
-  <rect x="38" y="68" width="44" height="4" fill="#88aa44" rx="2" opacity=".4"/>
-  <ellipse cx="70" cy="28" rx="8" ry="4" fill="none" stroke="#8aa0aa" stroke-width="2.5"/>
-  <rect x="66" y="24" width="8" height="4" fill="#a0b8c8"/>
-  <rect x="28" y="34" width="8" height="68" fill="white" opacity=".2" rx="2"/>
-</svg>`,
-win:`<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <rect x="8" y="80" width="30" height="34" fill="#cd7f32" rx="3" stroke="#aa6010" stroke-width="1.5"/>
-  <rect x="42" y="60" width="36" height="54" fill="#ffd700" rx="3" stroke="#ccaa00" stroke-width="2"/>
-  <rect x="82" y="72" width="30" height="42" fill="#c0c0c0" rx="3" stroke="#9a9a9a" stroke-width="1.5"/>
-  <text x="56" y="86" font-family="Arial Black" font-size="16" font-weight="900" fill="white">1</text>
-  <text x="16" y="100" font-family="Arial Black" font-size="14" font-weight="900" fill="white">3</text>
-  <text x="90" y="94" font-family="Arial Black" font-size="14" font-weight="900" fill="white">2</text>
-  <circle cx="60" cy="34" r="14" fill="#f5c97e" stroke="#e0a855" stroke-width="2"/>
-  <circle cx="56" cy="31" r="2" fill="#333"/>
-  <circle cx="64" cy="31" r="2" fill="#333"/>
-  <path d="M55 40 Q60 46 65 40" stroke="#c0845a" stroke-width="2" fill="none"/>
-  <line x1="50" y1="50" x2="36" y2="36" stroke="#f5c97e" stroke-width="9" stroke-linecap="round"/>
-  <line x1="70" y1="50" x2="84" y2="36" stroke="#f5c97e" stroke-width="9" stroke-linecap="round"/>
-  <circle cx="34" cy="34" r="7" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <circle cx="86" cy="34" r="7" fill="#f5c97e" stroke="#e0a855" stroke-width="1.5"/>
-  <rect x="50" y="48" width="20" height="16" fill="#ff6b9d" rx="4"/>
-  <text x="8" y="28" font-size="13" fill="#ffd700">★</text>
-  <text x="96" y="28" font-size="13" fill="#ffd700">★</text>
-</svg>`
-};
+/* ═══════════════════════════════════════
+   WORD DATA
+═══════════════════════════════════════ */
+const BASE = 'https://raw.githubusercontent.com/ponrathsop-arch/Online-English-for-kids/main/cvc/';
 
-/* ── WORD DATA ── */
-const WORDS=[
-  {word:'can',family:'an'},{word:'fan',family:'an'},{word:'man',family:'an'},
-  {word:'pan',family:'an'},{word:'ran',family:'an'},{word:'van',family:'an'},
-  {word:'bat',family:'at'},{word:'cat',family:'at'},{word:'hat',family:'at'},
-  {word:'mat',family:'at'},{word:'rat',family:'at'},{word:'sat',family:'at'},
-  {word:'bet',family:'et'},{word:'get',family:'et'},{word:'jet',family:'et'},
-  {word:'net',family:'et'},{word:'pet',family:'et'},{word:'set',family:'et'},{word:'wet',family:'et'},
-  {word:'bed',family:'ed'},{word:'fed',family:'ed'},{word:'led',family:'ed'},
-  {word:'red',family:'ed'},{word:'wed',family:'ed'},
-  {word:'bin',family:'in'},{word:'fin',family:'in'},{word:'pin',family:'in'},
-  {word:'sin',family:'in'},{word:'tin',family:'in'},{word:'win',family:'in'},
+const ALL_WORDS = [
+  // -an
+  {word:'can', family:'an'}, {word:'fan', family:'an'}, {word:'man', family:'an'},
+  {word:'pan', family:'an'}, {word:'ran', family:'an'}, {word:'van', family:'an'},
+  // -at
+  {word:'bat', family:'at'}, {word:'cat', family:'at'}, {word:'fat', family:'at'},
+  {word:'hat', family:'at'}, {word:'mat', family:'at'}, {word:'rat', family:'at'},
+  {word:'sat', family:'at'},
+  // -ed
+  {word:'bed', family:'ed'}, {word:'fed', family:'ed'}, {word:'led', family:'ed'},
+  {word:'red', family:'ed'}, {word:'ted', family:'ed'}, {word:'wed', family:'ed'},
+  // -et
+  {word:'bet', family:'et'}, {word:'get', family:'et'}, {word:'jet', family:'et'},
+  {word:'met', family:'et'}, {word:'pet', family:'et'}, {word:'set', family:'et'},
+  {word:'vet', family:'et'}, {word:'wet', family:'et'},
+  // -ig
+  {word:'big', family:'ig'}, {word:'dig', family:'ig'},
+  {word:'pig', family:'ig'}, {word:'wig', family:'ig'},
+  // -in
+  {word:'bin', family:'in'}, {word:'fin', family:'in'}, {word:'pin', family:'in'},
+  {word:'sin', family:'in'}, {word:'tin', family:'in'}, {word:'twin', family:'in'},
+  {word:'win', family:'in'},
+  // -it
+  {word:'hit', family:'it'}, {word:'kit', family:'it'}, {word:'lit', family:'it'},
+  {word:'pit', family:'it'}, {word:'sit', family:'it'},
 ];
 
-/* ── STATE ── */
-let mode='swipe', deck=[], idx=0, nC=0, nW=0;
-let fdeck=[], fi=0, flipped=false, locked=false;
-let dragX=0, dragging=false, startX=0;
-// choices[0]=left btn, choices[1]=right btn
-let choices=[];
+const FAMILIES = [
+  {id:'an', label:'-AN', words:['can','fan','man','pan','ran','van']},
+  {id:'at', label:'-AT', words:['bat','cat','fat','hat','mat','rat','sat']},
+  {id:'ed', label:'-ED', words:['bed','fed','led','red','ted','wed']},
+  {id:'et', label:'-ET', words:['bet','get','jet','met','pet','set','vet','wet']},
+  {id:'ig', label:'-IG', words:['big','dig','pig','wig']},
+  {id:'in', label:'-IN', words:['bin','fin','pin','sin','tin','twin','win']},
+  {id:'it', label:'-IT', words:['hit','kit','lit','pit','sit']},
+];
 
-const STARS=['⭐','🌟','✨','🎊','🎉','💫','🌈','🎈'];
+const FAM_COLORS = {
+  an:'#ff6b9d', at:'#ff8c55', ed:'#9b72cf',
+  et:'#4a90d9', ig:'#06d6a0', in:'#e8a000', it:'#ff6b6b',
+};
 
+function imgUrl(word){ return BASE + word + '.jpg'; }
+
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+let selectedFams = new Set();
+let mode = 'swipe';
+let deck = [], idx = 0, nC = 0, nW = 0;
+let fdeck = [], fi = 0, flipped = false;
+let locked = false;
+let choices = [];
+let dragX = 0, dragging = false, startX = 0;
+
+const STARS = ['⭐','🌟','✨','🎊','🎉','💫','🌈','🎈'];
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
-/* ── INIT ── */
-function init(){
-  deck=shuffle([...WORDS]); idx=nC=nW=0; locked=false;
-  document.getElementById('nt').textContent=deck.length;
-  updateHUD();
-  document.getElementById('comp').classList.remove('on');
-  document.getElementById('swipe-area').style.display=mode==='swipe'?'':'none';
-  document.getElementById('flash-area').style.display=mode==='flash'?'':'none';
-  if(mode==='swipe') renderCard();
-  else initFlash();
+/* ═══════════════════════════════════════
+   SELECTOR SCREEN
+═══════════════════════════════════════ */
+function buildSelector(){
+  const grid = document.getElementById('family-grid');
+  grid.innerHTML = '';
+  FAMILIES.forEach(f => {
+    const btn = document.createElement('button');
+    btn.className = 'fam-chip';
+    btn.dataset.fam = f.id;
+    btn.innerHTML = `<span>${f.label}</span> <span style="font-size:.75rem;opacity:.6;font-family:Nunito,sans-serif;font-weight:700">${f.words.length} words</span>`;
+    btn.onclick = () => toggleFam(f.id, btn);
+    grid.appendChild(btn);
+  });
+  updatePreview();
 }
 
-/* ── SWIPE GAME ── */
+function toggleFam(id, btn){
+  if(selectedFams.has(id)){ selectedFams.delete(id); btn.classList.remove('picked'); }
+  else { selectedFams.add(id); btn.classList.add('picked'); }
+  updatePreview();
+}
+
+function selectAll(){
+  FAMILIES.forEach(f => {
+    selectedFams.add(f.id);
+    document.querySelector(`.fam-chip[data-fam="${f.id}"]`)?.classList.add('picked');
+  });
+  updatePreview();
+}
+
+function clearAll(){
+  selectedFams.clear();
+  document.querySelectorAll('.fam-chip').forEach(c => c.classList.remove('picked'));
+  updatePreview();
+}
+
+function updatePreview(){
+  const words = ALL_WORDS.filter(w => selectedFams.has(w.family));
+  const btn = document.getElementById('start-btn');
+  btn.disabled = words.length === 0;
+  if(words.length === 0){
+    document.getElementById('word-preview').textContent = 'Pick at least one family to start!';
+  } else {
+    const preview = words.map(w=>w.word).join(', ');
+    document.getElementById('word-preview').textContent = `${words.length} words: ${preview}`;
+  }
+}
+
+function startGame(){
+  deck = shuffle(ALL_WORDS.filter(w => selectedFams.has(w.family)));
+  fdeck = shuffle([...deck]);
+  const famNames = [...selectedFams].map(f => {
+    const found = FAMILIES.find(x=>x.id===f);
+    return found ? found.label : f;
+  }).join(' · ');
+  document.getElementById('game-title').textContent = famNames;
+  showScreen('game');
+  initGame();
+}
+
+function goToSelector(){
+  showScreen('sel');
+}
+
+/* ═══════════════════════════════════════
+   SCREEN SWITCHER
+═══════════════════════════════════════ */
+function showScreen(s){
+  document.getElementById('sel-screen').classList.toggle('on', s==='sel');
+  document.getElementById('game-screen').classList.toggle('on', s==='game');
+}
+
+/* ═══════════════════════════════════════
+   GAME INIT
+═══════════════════════════════════════ */
+function initGame(){
+  idx=0; nC=0; nW=0; locked=false;
+  document.getElementById('nt').textContent = deck.length;
+  updateHUD();
+  document.getElementById('comp').classList.remove('on');
+  document.getElementById('swipe-area').style.display = mode==='swipe' ? '' : 'none';
+  document.getElementById('flash-area').style.display  = mode==='flash' ? '' : 'none';
+  if(mode==='swipe') renderCard();
+  else { fdeck=shuffle([...deck]); fi=0; flipped=false; renderFlash(); }
+}
+
+/* ═══════════════════════════════════════
+   SWIPE GAME
+═══════════════════════════════════════ */
 function renderCard(){
-  if(idx>=deck.length){showComp();return;}
-  const item=deck[idx];
+  if(idx >= deck.length){ showComp(); return; }
+  const item = deck[idx];
 
-  // pick one wrong answer
-  const pool=WORDS.filter(w=>w.word!==item.word);
-  const wrong=pool[Math.floor(Math.random()*pool.length)];
+  // pick wrong from a different family if possible, else any different word
+  const pool = deck.filter(w => w.word !== item.word);
+  const diffFam = pool.filter(w => w.family !== item.family);
+  const wrongPool = diffFam.length > 0 ? diffFam : pool;
+  const wrong = wrongPool[Math.floor(Math.random() * wrongPool.length)];
 
-  // randomise: correct goes left or right randomly
-  choices=shuffle([item,wrong]); // choices[0]=left, choices[1]=right
+  choices = shuffle([item, wrong]);
 
-  document.getElementById('cillus').innerHTML=SVG[item.word]||'';
+  // set image
+  const img = document.getElementById('card-img');
+  img.src = imgUrl(item.word);
+  img.alt = item.word;
+  img.style.display = 'block';
+  document.getElementById('card-img-wrap').querySelector('.img-fallback')?.remove();
 
-  // update buttons: left btn = choices[0], right btn = choices[1]
-  document.getElementById('ba-txt').textContent=choices[0].word.toUpperCase();
-  document.getElementById('bb-txt').textContent=choices[1].word.toUpperCase();
+  // family colour badge — inject into card
+  const card = document.getElementById('the-card');
 
-  // update peek labels
-  document.getElementById('peek-left').textContent=choices[0].word.toUpperCase();
-  document.getElementById('peek-right').textContent=choices[1].word.toUpperCase();
-
-  // reset button styles
-  document.getElementById('ba').className='choice-btn';
-  document.getElementById('bb').className='choice-btn';
+  // set buttons
+  document.getElementById('ba-txt').textContent = choices[0].word.toUpperCase();
+  document.getElementById('bb-txt').textContent = choices[1].word.toUpperCase();
+  document.getElementById('peek-left').textContent  = choices[0].word.toUpperCase();
+  document.getElementById('peek-right').textContent = choices[1].word.toUpperCase();
+  document.getElementById('ba').className = 'choice-btn';
+  document.getElementById('bb').className = 'choice-btn';
 
   // reset card
-  const card=document.getElementById('the-card');
-  card.style.transition='none';
-  card.style.transform='translateX(0) rotate(0)';
-  card.style.opacity='1';
+  card.style.transition = 'none';
+  card.style.transform = 'translateX(0) rotate(0)';
+  card.style.opacity = '1';
   card.classList.remove('shake','wrong-flash');
-  document.getElementById('peek-left').style.opacity=0;
-  document.getElementById('peek-right').style.opacity=0;
-
-  locked=false;
+  document.getElementById('peek-left').style.opacity  = 0;
+  document.getElementById('peek-right').style.opacity = 0;
+  locked = false;
   setupDrag();
 }
 
-// pickBtn: 0=left button clicked, 1=right button clicked
 function pickBtn(side){
   if(locked) return;
-  // side 0 = left choice, side 1 = right choice
-  const chosen=choices[side];
-  const correct=deck[idx];
-  const isOk=chosen.word===correct.word;
+  const isOk = choices[side].word === deck[idx].word;
   resolveAnswer(isOk, side);
 }
 
 function resolveAnswer(isOk, side){
   if(locked) return;
-  locked=true;
-
+  locked = true;
   if(isOk){
     nC++;
     playTone('correct');
     celebrate();
-    // fly toward the side chosen
-    flyOut(side===0?'left':'right');
+    // both buttons go green
+    document.getElementById('ba').classList.add('both-correct');
+    document.getElementById('bb').classList.add('both-correct');
+    setTimeout(() => flyOut(side===0?'left':'right'), 120);
   } else {
     nW++;
     playTone('wrong');
     wrongFeedback();
-    // fly toward the side chosen (wrong side)
-    flyOut(side===0?'left':'right');
+    setTimeout(() => flyOut(side===0?'left':'right'), 50);
   }
-
   updateHUD();
-  setTimeout(()=>{idx++; renderCard();}, isOk ? 600 : 800);
+  setTimeout(() => { idx++; renderCard(); }, isOk ? 680 : 860);
 }
 
 function flyOut(dir){
-  const card=document.getElementById('the-card');
-  card.style.transition='transform .45s ease, opacity .4s';
-  const x=dir==='right'?400:-400;
-  const r=dir==='right'?18:-18;
-  card.style.transform=`translateX(${x}px) rotate(${r}deg)`;
-  card.style.opacity='0';
+  const card = document.getElementById('the-card');
+  card.style.transition = 'transform .45s ease, opacity .4s';
+  const x = dir==='right' ? 420 : -420;
+  const r = dir==='right' ? 18 : -18;
+  card.style.transform = `translateX(${x}px) rotate(${r}deg)`;
+  card.style.opacity = '0';
 }
 
 function wrongFeedback(){
-  const card=document.getElementById('the-card');
-  card.classList.add('wrong-flash');
-  // We do a quick shake then fly out — shake is 0.45s, fly starts at 0.5s via resolveAnswer timeout
-  card.classList.add('shake');
-  setTimeout(()=>card.classList.remove('shake'),450);
+  const card = document.getElementById('the-card');
+  card.classList.add('wrong-flash','shake');
+  setTimeout(() => card.classList.remove('shake'), 450);
 }
 
-/* ── DRAG / SWIPE ── */
+/* ── DRAG ── */
 function setupDrag(){
-  const card=document.getElementById('the-card');
-  card.onmousedown=e=>startDrag(e.clientX);
-  card.ontouchstart=e=>{e.preventDefault();startDrag(e.touches[0].clientX);};
+  const card = document.getElementById('the-card');
+  card.onmousedown  = e => startDrag(e.clientX);
+  card.ontouchstart = e => { e.preventDefault(); startDrag(e.touches[0].clientX); };
 }
 
 function startDrag(x){
   if(locked) return;
   dragging=true; startX=x; dragX=0;
-  const card=document.getElementById('the-card');
+  const card = document.getElementById('the-card');
 
   function onMove(cx){
     if(!dragging) return;
-    dragX=cx-startX;
-    const rot=dragX*0.07;
-    card.style.transition='none';
-    card.style.transform=`translateX(${dragX}px) rotate(${rot}deg)`;
-    // show the peek word on the side being dragged toward
-    const thr=40;
-    document.getElementById('peek-left').style.opacity  = dragX < -thr ? Math.min((-dragX-thr)/60,1) : 0;
-    document.getElementById('peek-right').style.opacity = dragX >  thr ? Math.min((dragX-thr)/60,1)  : 0;
+    dragX = cx - startX;
+    card.style.transition = 'none';
+    card.style.transform = `translateX(${dragX}px) rotate(${dragX*.07}deg)`;
+    const t = 40;
+    document.getElementById('peek-left').style.opacity  = dragX < -t ? Math.min((-dragX-t)/60,1) : 0;
+    document.getElementById('peek-right').style.opacity = dragX >  t ? Math.min((dragX-t)/60,1)  : 0;
   }
 
   function onUp(){
     if(!dragging) return;
-    dragging=false;
+    dragging = false;
     document.removeEventListener('mousemove',mm);
     document.removeEventListener('mouseup',mu);
     document.removeEventListener('touchmove',tm);
     document.removeEventListener('touchend',tu);
-
-    const THRESHOLD=90;
-    if(dragX > THRESHOLD){
-      // swiped right → chose right choice (index 1)
+    const T = 90;
+    if(dragX > T){
       resolveAnswer(choices[1].word===deck[idx].word, 1);
-    } else if(dragX < -THRESHOLD){
-      // swiped left → chose left choice (index 0)
+    } else if(dragX < -T){
       resolveAnswer(choices[0].word===deck[idx].word, 0);
     } else {
-      // snap back
-      card.style.transition='transform .3s ease';
-      card.style.transform='translateX(0) rotate(0)';
-      document.getElementById('peek-left').style.opacity=0;
-      document.getElementById('peek-right').style.opacity=0;
+      const card = document.getElementById('the-card');
+      card.style.transition = 'transform .3s ease';
+      card.style.transform = 'translateX(0) rotate(0)';
+      document.getElementById('peek-left').style.opacity  = 0;
+      document.getElementById('peek-right').style.opacity = 0;
     }
-    dragX=0;
+    dragX = 0;
   }
 
   const mm=e=>onMove(e.clientX);
   const mu=()=>onUp();
   const tm=e=>{e.preventDefault();onMove(e.touches[0].clientX);};
   const tu=()=>onUp();
-
   document.addEventListener('mousemove',mm);
   document.addEventListener('mouseup',mu);
   document.addEventListener('touchmove',tm,{passive:false});
   document.addEventListener('touchend',tu);
 }
 
-/* ── AUDIO ── */
+/* ═══════════════════════════════════════
+   FLASH CARDS
+═══════════════════════════════════════ */
+function renderFlash(){
+  const item = fdeck[fi];
+  flipped = false;
+  document.getElementById('fi').classList.remove('flipped');
+  document.getElementById('fw-front').textContent = item.word.toUpperCase();
+  document.getElementById('fw-back').textContent  = item.word.toUpperCase();
+  document.getElementById('ffam').textContent     = `-${item.family.toUpperCase()} family`;
+  const flImg = document.getElementById('fl-img');
+  flImg.src = imgUrl(item.word);
+  flImg.alt = item.word;
+  flImg.style.display = 'block';
+  document.getElementById('flctr').textContent = `${fi+1} / ${fdeck.length}`;
+}
+
+function doFlip(){
+  flipped = !flipped;
+  document.getElementById('fi').classList.toggle('flipped', flipped);
+}
+
+function fNav(d){
+  fi = (fi + d + fdeck.length) % fdeck.length;
+  renderFlash();
+}
+
+/* ═══════════════════════════════════════
+   IMG ERROR FALLBACKS
+═══════════════════════════════════════ */
+function imgErr(img){
+  img.style.display = 'none';
+  const wrap = document.getElementById('card-img-wrap');
+  if(!wrap.querySelector('.img-fallback')){
+    const fb = document.createElement('div');
+    fb.className = 'img-fallback';
+    fb.textContent = img.alt.toUpperCase();
+    wrap.appendChild(fb);
+  }
+}
+function imgErrSmall(img){
+  img.style.display = 'none';
+}
+
+/* ═══════════════════════════════════════
+   AUDIO
+═══════════════════════════════════════ */
 function playTone(type){
   try{
     const ctx=new(window.AudioContext||window.webkitAudioContext)();
     if(type==='correct'){
-      [[523,.0],[659,.12],[784,.24]].forEach(([freq,delay])=>{
+      [[523,.0],[659,.13],[784,.26]].forEach(([freq,delay])=>{
         const o=ctx.createOscillator(),g=ctx.createGain();
         o.connect(g);g.connect(ctx.destination);
         o.frequency.value=freq;o.type='sine';
@@ -916,74 +701,71 @@ function playTone(type){
   }catch(e){}
 }
 
-/* ── CELEBRATE ── */
+/* ═══════════════════════════════════════
+   CELEBRATE
+═══════════════════════════════════════ */
 function celebrate(){
-  const box=document.getElementById('cel');
-  for(let i=0;i<20;i++){
-    const el=document.createElement('span');
-    el.className='sp';
-    el.textContent=STARS[Math.floor(Math.random()*STARS.length)];
-    el.style.left=Math.random()*100+'vw';
-    el.style.fontSize=(0.9+Math.random()*1.1)+'rem';
-    el.style.animationDuration=(1+Math.random()*1.4)+'s';
-    el.style.animationDelay=(Math.random()*.3)+'s';
+  const box = document.getElementById('cel');
+  for(let i=0;i<18;i++){
+    const el = document.createElement('span');
+    el.className = 'sp';
+    el.textContent = STARS[Math.floor(Math.random()*STARS.length)];
+    el.style.left = Math.random()*100+'vw';
+    el.style.fontSize = (.9+Math.random()*1.1)+'rem';
+    el.style.animationDuration = (1+Math.random()*1.4)+'s';
+    el.style.animationDelay = (Math.random()*.3)+'s';
     box.appendChild(el);
-    setTimeout(()=>el.remove(),2800);
+    setTimeout(()=>el.remove(), 2800);
   }
 }
 
-/* ── FLASH ── */
-function initFlash(){fdeck=shuffle([...WORDS]);fi=0;flipped=false;renderFlash();}
-
-function renderFlash(){
-  const item=fdeck[fi];flipped=false;
-  document.getElementById('fi').classList.remove('flipped');
-  document.getElementById('fw-front').textContent=item.word.toUpperCase();
-  document.getElementById('fw-back').textContent=item.word.toUpperCase();
-  document.getElementById('ffam').textContent=`-${item.family.toUpperCase()} family`;
-  document.getElementById('fillus').innerHTML=SVG[item.word]||'';
-  document.getElementById('flctr').textContent=`${fi+1} / ${fdeck.length}`;
-}
-
-function doFlip(){flipped=!flipped;document.getElementById('fi').classList.toggle('flipped',flipped);}
-function fNav(d){fi=(fi+d+fdeck.length)%fdeck.length;renderFlash();}
-
-/* ── HUD ── */
+/* ═══════════════════════════════════════
+   HUD
+═══════════════════════════════════════ */
 function updateHUD(){
-  document.getElementById('nc').textContent=nC;
-  document.getElementById('nw').textContent=nW;
-  document.getElementById('nd').textContent=idx;
-  document.getElementById('prog').style.width=(deck.length?(idx/deck.length)*100:0)+'%';
+  document.getElementById('nc').textContent = nC;
+  document.getElementById('nw').textContent = nW;
+  document.getElementById('nd').textContent = idx;
+  const pct = deck.length ? (idx/deck.length)*100 : 0;
+  document.getElementById('prog').style.width = pct+'%';
 }
 
-/* ── COMPLETION ── */
+/* ═══════════════════════════════════════
+   COMPLETION
+═══════════════════════════════════════ */
 function showComp(){
-  document.getElementById('swipe-area').style.display='none';
+  document.getElementById('swipe-area').style.display = 'none';
+  document.getElementById('flash-area').style.display = 'none';
   document.getElementById('comp').classList.add('on');
-  document.getElementById('cstats').textContent=`✅ ${nC} correct  ❌ ${nW} wrong — all ${deck.length} words done!`;
-  celebrate();setTimeout(celebrate,400);setTimeout(celebrate,800);
+  document.getElementById('cstats').textContent =
+    `✅ ${nC} correct  ❌ ${nW} wrong — all ${deck.length} words done!`;
+  celebrate(); setTimeout(celebrate,400); setTimeout(celebrate,800);
 }
 
-function restart(){
+function restartGame(){
   document.getElementById('comp').classList.remove('on');
-  document.getElementById('swipe-area').style.display=mode==='swipe'?'':'none';
-  document.getElementById('flash-area').style.display=mode==='flash'?'':'none';
-  init();
+  deck = shuffle([...deck]);
+  fdeck = shuffle([...deck]);
+  initGame();
 }
 
-/* ── MODE ── */
+/* ═══════════════════════════════════════
+   MODE
+═══════════════════════════════════════ */
 function setMode(m){
-  mode=m;
-  document.getElementById('ts').classList.toggle('on',m==='swipe');
-  document.getElementById('tf').classList.toggle('on',m==='flash');
-  document.getElementById('score-row').style.display=m==='swipe'?'flex':'none';
+  mode = m;
+  document.getElementById('ts').classList.toggle('on', m==='swipe');
+  document.getElementById('tf').classList.toggle('on', m==='flash');
+  document.getElementById('score-row').style.display = m==='swipe' ? 'flex' : 'none';
   document.getElementById('comp').classList.remove('on');
-  document.getElementById('swipe-area').style.display=m==='swipe'?'':'none';
-  document.getElementById('flash-area').style.display=m==='flash'?'':'none';
-  init();
+  document.getElementById('swipe-area').style.display = m==='swipe' ? '' : 'none';
+  document.getElementById('flash-area').style.display  = m==='flash' ? '' : 'none';
+  if(m==='swipe'){ idx=0; nC=0; nW=0; locked=false; updateHUD(); renderCard(); }
+  else { fdeck=shuffle([...deck]); fi=0; flipped=false; renderFlash(); }
 }
 
-init();
+/* ── START ── */
+buildSelector();
 </script>
 </body>
 </html>
