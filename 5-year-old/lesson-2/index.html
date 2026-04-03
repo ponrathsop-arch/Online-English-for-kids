@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowers & Feelings 🌸😊</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF6B9D;
+    --yellow: #FFD93D;
+    --green: #6BCB77;
+    --blue: #4D96FF;
+    --purple: #C77DFF;
+    --orange: #FF9A3C;
+    --red: #FF4757;
+    --teal: #26C6DA;
+    --bg: #FFF9F0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* FLOATING BACKGROUND SHAPES */
+  .bg-shapes {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.12;
+    animation: floatShape 8s ease-in-out infinite;
+  }
+  .shape:nth-child(1) { width: 200px; height: 200px; background: var(--pink); top: -50px; left: -50px; animation-delay: 0s; }
+  .shape:nth-child(2) { width: 150px; height: 150px; background: var(--yellow); top: 20%; right: -30px; animation-delay: 1s; }
+  .shape:nth-child(3) { width: 180px; height: 180px; background: var(--green); bottom: -60px; left: 20%; animation-delay: 2s; }
+  .shape:nth-child(4) { width: 120px; height: 120px; background: var(--blue); bottom: 10%; right: 10%; animation-delay: 3s; }
+  .shape:nth-child(5) { width: 100px; height: 100px; background: var(--purple); top: 50%; left: 5%; animation-delay: 4s; }
+  @keyframes floatShape {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(1.05); }
+  }
+
+  /* SLIDE CONTAINER */
+  .slide-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    animation: slideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .slide.active { display: flex; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: scale(0.85) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* SLIDE COUNTER */
+  .slide-counter {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: #888;
+    z-index: 100;
+    background: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* SECTION LABEL (top-left) */
+  .section-tag {
+    position: fixed;
+    top: 16px;
+    left: 20px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    z-index: 100;
+    transition: background 0.4s;
+  }
+
+  /* NAVIGATION */
+  .nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 100;
+  }
+  .nav-btn {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  .nav-btn:hover { transform: translateY(-3px); box-shadow: 0 9px 0 rgba(0,0,0,0.15); }
+  .nav-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 rgba(0,0,0,0.15); }
+  #prevBtn { background: linear-gradient(135deg, #b0bec5, #90a4ae); }
+  #nextBtn { background: linear-gradient(135deg, var(--green), #43a047); }
+
+  /* ===== TITLE SLIDES ===== */
+  .title-emoji {
+    font-size: 7rem;
+    animation: bounce 1s ease-in-out infinite alternate;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-18px); }
+  }
+  .title-main {
+    font-family: 'Fredoka One', cursive;
+    font-size: 5rem;
+    line-height: 1.1;
+    margin: 10px 0;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.08);
+  }
+  .title-sub {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #555;
+    margin-top: 8px;
+  }
+
+  /* ===== VOCAB SLIDES ===== */
+  .vocab-word {
+    font-family: 'Fredoka One', cursive;
+    font-size: 4.5rem;
+    margin-bottom: 12px;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.08);
+    animation: wordBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes wordBounce {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .vocab-img {
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 30px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    margin: 10px 0;
+    animation: imgPop 0.5s 0.1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    border: 6px solid white;
+  }
+  @keyframes imgPop {
+    from { transform: scale(0.7) rotate(-5deg); opacity: 0; }
+    to { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  .vocab-phrase {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #333;
+    margin: 6px 0;
+  }
+  .vocab-say {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--blue);
+    background: rgba(77,150,255,0.12);
+    padding: 8px 24px;
+    border-radius: 20px;
+    margin: 4px 0;
+  }
+  .vocab-question {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--orange);
+    margin: 4px 0;
+  }
+  .vocab-extra {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: white;
+    padding: 8px 24px;
+    border-radius: 20px;
+    margin-top: 6px;
+    display: inline-block;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+  }
+
+  /* ===== MEMORY GAME ===== */
+  .game-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.8rem;
+    margin-bottom: 16px;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.08);
+  }
+  .game-status {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #555;
+    margin-bottom: 14px;
+    min-height: 28px;
+  }
+  .game-grid {
+    display: grid;
+    gap: 12px;
+    justify-content: center;
+  }
+  .card {
+    width: 100px;
+    height: 100px;
+    perspective: 600px;
+    cursor: pointer;
+  }
+  .card-inner {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
+    border-radius: 18px;
+  }
+  .card.flipped .card-inner { transform: rotateY(180deg); }
+  .card-front, .card-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  }
+  .card-front {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-size: 2.5rem;
+    color: white;
+    border: 4px solid white;
+  }
+  .card-back {
+    background: white;
+    transform: rotateY(180deg);
+    overflow: hidden;
+    border: 4px solid white;
+  }
+  .card-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+  }
+  .card.matched .card-inner {
+    box-shadow: 0 0 0 4px #6BCB77, 0 8px 20px rgba(107,203,119,0.4);
+  }
+  .card.matched .card-front {
+    background: linear-gradient(135deg, #6BCB77, #43a047);
+  }
+  .game-reset {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    padding: 10px 28px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 12px;
+    background: linear-gradient(135deg, var(--orange), #e65100);
+    color: white;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+    transition: transform 0.15s;
+  }
+  .game-reset:hover { transform: translateY(-2px); }
+
+  /* ===== TALK SLIDE ===== */
+  .talk-img-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    max-width: 700px;
+    margin: 14px 0;
+  }
+  .talk-img-grid img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 4px solid white;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    transition: transform 0.2s;
+  }
+  .talk-img-grid img:hover { transform: scale(1.12); }
+  .talk-prompt {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.8rem;
+    color: #333;
+    margin: 10px 0;
+  }
+  .talk-blank {
+    display: inline-block;
+    width: 160px;
+    height: 12px;
+    background: currentColor;
+    border-radius: 6px;
+    opacity: 0.3;
+    vertical-align: middle;
+    margin: 0 8px;
+  }
+
+  /* ===== GAME TIME SLIDE ===== */
+  .qt-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 860px;
+  }
+  .qt-header {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.4rem;
+    margin-bottom: 6px;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.08);
+  }
+  .qt-progress {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #aaa;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .qt-question-text {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 12px;
+    min-height: 48px;
+  }
+  .qt-image-box {
+    width: 180px;
+    height: 180px;
+    border-radius: 28px;
+    overflow: hidden;
+    border: 6px solid white;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    margin-bottom: 18px;
+    flex-shrink: 0;
+  }
+  .qt-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .qt-image-box img.celebrate { transform: scale(1.15); }
+  .qt-choices {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+  .qt-choice-btn {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    min-width: 160px;
+  }
+  .qt-choice-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 9px 0 rgba(0,0,0,0.15); }
+  .qt-choice-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 3px 0 rgba(0,0,0,0.15); }
+  .qt-choice-btn:disabled { opacity: 0.6; cursor: default; }
+  .qt-choice-btn.correct {
+    animation: correctPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    background: linear-gradient(135deg,#6BCB77,#43a047) !important;
+    box-shadow: 0 6px 0 #2e7d32, 0 0 0 4px #c8e6c9 !important;
+  }
+  .qt-choice-btn.wrong {
+    animation: wrongShake 0.5s ease;
+    background: linear-gradient(135deg,#FF4757,#c62828) !important;
+  }
+  @keyframes correctPop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
+  @keyframes wrongShake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-8px); }
+    80% { transform: translateX(8px); }
+  }
+  .qt-feedback {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+    min-height: 46px;
+    margin-bottom: 8px;
+    transition: opacity 0.3s;
+  }
+  .qt-next-btn {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    padding: 12px 36px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--blue), #1565c0);
+    color: white;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+    transition: transform 0.15s, opacity 0.3s;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .qt-next-btn.show { opacity: 1; pointer-events: all; }
+  .qt-next-btn:hover { transform: translateY(-2px); }
+  .qt-dots {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .qt-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #ddd;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .qt-dot.done { background: var(--green); transform: scale(1.2); }
+  .qt-dot.active { background: var(--blue); transform: scale(1.3); }
+
+  /* ===== CONFETTI ===== */
+  .confetti-piece {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confettiFall 3s forwards;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .title-main { font-size: 3rem; }
+    .title-emoji { font-size: 5rem; }
+    .vocab-word { font-size: 3rem; }
+    .vocab-img { width: 160px; height: 160px; }
+    .card { width: 75px; height: 75px; }
+    .gametime-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND SHAPES -->
+<div class="bg-shapes">
+  <div class="shape"></div><div class="shape"></div>
+  <div class="shape"></div><div class="shape"></div><div class="shape"></div>
+</div>
+
+<!-- HUD -->
+<div class="section-tag" id="sectionTag">🌸 Flowers</div>
+<div class="slide-counter" id="slideCounter">1 / 19</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Back</button>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+</div>
+
+<!-- ===================== SLIDES ===================== -->
+<div class="slide-wrapper">
+
+  <!-- SLIDE 1: Flowers Title -->
+  <div class="slide active" data-section="flowers">
+    <div class="title-emoji">🌸</div>
+    <div class="title-main" style="color:var(--pink)">Flowers</div>
+    <div class="title-sub">Let's learn!</div>
+  </div>
+
+  <!-- SLIDE 2: Rose -->
+  <div class="slide" data-section="flowers">
+    <div class="vocab-word" style="color:var(--red)">🌹 Rose</div>
+    <img class="vocab-img" src="rose.jpg" alt="Rose">
+    <div class="vocab-phrase">This is a rose</div>
+    <div class="vocab-say">👄 Say: <strong>rose</strong></div>
+    <div class="vocab-question">What is this? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--red),#c62828)">🔴 Red rose</span>
+  </div>
+
+  <!-- SLIDE 3: Sunflower -->
+  <div class="slide" data-section="flowers">
+    <div class="vocab-word" style="color:var(--yellow); -webkit-text-stroke:2px #e0a800">🌻 Sunflower</div>
+    <img class="vocab-img" src="sunflower.jpg" alt="Sunflower">
+    <div class="vocab-phrase">This is a sunflower</div>
+    <div class="vocab-say">👄 Say: <strong>sunflower</strong></div>
+    <div class="vocab-question">What is this? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--orange),#e65100)">☀️ Big sunflower</span>
+  </div>
+
+  <!-- SLIDE 4: Tulip -->
+  <div class="slide" data-section="flowers">
+    <div class="vocab-word" style="color:var(--purple)">🌷 Tulip</div>
+    <img class="vocab-img" src="tulip.jpg" alt="Tulip">
+    <div class="vocab-phrase">This is a tulip</div>
+    <div class="vocab-say">👄 Say: <strong>tulip</strong></div>
+    <div class="vocab-question">What is this? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--purple),#6a1b9a)">💜 Pretty tulip</span>
+  </div>
+
+  <!-- SLIDE 5: Lily -->
+  <div class="slide" data-section="flowers">
+    <div class="vocab-word" style="color:var(--teal)">🌺 Lily</div>
+    <img class="vocab-img" src="lily.jpg" alt="Lily">
+    <div class="vocab-phrase">This is a lily</div>
+    <div class="vocab-say">👄 Say: <strong>lily</strong></div>
+    <div class="vocab-question">What is this? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--teal),#00838f)">🌊 White lily</span>
+  </div>
+
+  <!-- SLIDE 6: Lotus -->
+  <div class="slide" data-section="flowers">
+    <div class="vocab-word" style="color:var(--pink)">🪷 Lotus</div>
+    <img class="vocab-img" src="lotus.jpg" alt="Lotus">
+    <div class="vocab-phrase">This is a lotus</div>
+    <div class="vocab-say">👄 Say: <strong>lotus</strong></div>
+    <div class="vocab-question">What is this? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--pink),#ad1457)">🩷 Pink lotus</span>
+  </div>
+
+  <!-- SLIDE 7: Flower Memory Game -->
+  <div class="slide" data-section="flowers">
+    <div class="game-title" style="color:var(--green)">🧠 Flower Match!</div>
+    <div class="game-status" id="flowerStatus">Find the matching pairs! 🌸</div>
+    <div class="game-grid" id="flowerGrid" style="grid-template-columns:repeat(5,100px)"></div>
+    <button class="game-reset" onclick="initGame('flower')">🔄 Play Again</button>
+  </div>
+
+  <!-- SLIDE 8: Feelings Title -->
+  <div class="slide" data-section="feelings">
+    <div class="title-emoji">😊</div>
+    <div class="title-main" style="color:var(--orange)">Feelings</div>
+    <div class="title-sub">How do you feel?</div>
+  </div>
+
+  <!-- SLIDE 9: Happy -->
+  <div class="slide" data-section="feelings">
+    <div class="vocab-word" style="color:var(--yellow); -webkit-text-stroke:2px #e0a800">😊 Happy</div>
+    <img class="vocab-img" src="happy.jpg" alt="Happy">
+    <div class="vocab-phrase">I am happy</div>
+    <div class="vocab-say">👄 Say: <strong>happy</strong></div>
+    <div class="vocab-question">Happy or sad? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,#FFD93D,#f9a825)">🌟 So happy!</span>
+  </div>
+
+  <!-- SLIDE 10: Sad -->
+  <div class="slide" data-section="feelings">
+    <div class="vocab-word" style="color:var(--blue)">😢 Sad</div>
+    <img class="vocab-img" src="sad.jpg" alt="Sad">
+    <div class="vocab-phrase">I am sad</div>
+    <div class="vocab-say">👄 Say: <strong>sad</strong></div>
+    <div class="vocab-question">Happy or sad? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--blue),#1565c0)">💧 Feeling sad</span>
+  </div>
+
+  <!-- SLIDE 11: Angry -->
+  <div class="slide" data-section="feelings">
+    <div class="vocab-word" style="color:var(--red)">😠 Angry</div>
+    <img class="vocab-img" src="angry.jpg" alt="Angry">
+    <div class="vocab-phrase">I am angry</div>
+    <div class="vocab-say">👄 Say: <strong>angry</strong></div>
+    <div class="vocab-question">Angry or happy? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--red),#b71c1c)">🔥 Very angry</span>
+  </div>
+
+  <!-- SLIDE 12: Excited -->
+  <div class="slide" data-section="feelings">
+    <div class="vocab-word" style="color:var(--orange)">🤩 Excited</div>
+    <img class="vocab-img" src="excited.jpg" alt="Excited">
+    <div class="vocab-phrase">I am excited</div>
+    <div class="vocab-say">👄 Say: <strong>excited</strong></div>
+    <div class="vocab-question">Excited or tired? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--orange),#e65100)">⭐ So excited!</span>
+  </div>
+
+  <!-- SLIDE 13: Scared -->
+  <div class="slide" data-section="feelings">
+    <div class="vocab-word" style="color:var(--purple)">😨 Scared</div>
+    <img class="vocab-img" src="scared.jpg" alt="Scared">
+    <div class="vocab-phrase">I am scared</div>
+    <div class="vocab-say">👄 Say: <strong>scared</strong></div>
+    <div class="vocab-question">Scared or angry? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--purple),#4a148c)">👻 I'm scared!</span>
+  </div>
+
+  <!-- SLIDE 14: Tired -->
+  <div class="slide" data-section="feelings">
+    <div class="vocab-word" style="color:#78909c)">😴 Tired</div>
+    <img class="vocab-img" src="tired.jpg" alt="Tired">
+    <div class="vocab-phrase">I am tired</div>
+    <div class="vocab-say">👄 Say: <strong>tired</strong></div>
+    <div class="vocab-question">Tired or excited? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,#78909c,#37474f)">💤 So tired...</span>
+  </div>
+
+  <!-- SLIDE 15: Surprised -->
+  <div class="slide" data-section="feelings">
+    <div class="vocab-word" style="color:var(--teal)">😲 Surprised</div>
+    <img class="vocab-img" src="surprised.jpg" alt="Surprised">
+    <div class="vocab-phrase">I am surprised</div>
+    <div class="vocab-say">👄 Say: <strong>surprised</strong></div>
+    <div class="vocab-question">Surprised or sad? 🤔</div>
+    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--teal),#006064)">🎉 Surprise!</span>
+  </div>
+
+  <!-- SLIDE 16: Feelings Memory Game -->
+  <div class="slide" data-section="feelings">
+    <div class="game-title" style="color:var(--orange)">🧠 Feelings Match!</div>
+    <div class="game-status" id="feelingStatus">Find the matching pairs! 😊</div>
+    <div class="game-grid" id="feelingGrid" style="grid-template-columns:repeat(7,90px)"></div>
+    <button class="game-reset" onclick="initGame('feeling')">🔄 Play Again</button>
+  </div>
+
+  <!-- SLIDE 17: Let's Talk – Feelings -->
+  <div class="slide" data-section="talk">
+    <div class="title-main" style="color:var(--orange);font-size:3rem">Let's Talk! 💬</div>
+    <div class="talk-img-grid" id="feelingTalkGrid"></div>
+    <div class="talk-prompt" style="color:var(--orange)">I feel <span class="talk-blank" style="color:var(--orange)"></span></div>
+    <p style="font-size:1.1rem;color:#777;font-weight:700">👆 Point to a picture and say how you feel!</p>
+  </div>
+
+  <!-- SLIDE 18: Let's Talk – Flowers -->
+  <div class="slide" data-section="talk">
+    <div class="title-main" style="color:var(--pink);font-size:3rem">I Like Flowers! 🌸</div>
+    <div class="talk-img-grid" id="flowerTalkGrid"></div>
+    <div class="talk-prompt" style="color:var(--pink)">I like <span class="talk-blank" style="color:var(--pink)"></span></div>
+    <p style="font-size:1.1rem;color:#777;font-weight:700">👆 Point to a flower and say its name!</p>
+  </div>
+
+  <!-- SLIDE 19: Game Time -->
+  <div class="slide" data-section="gametime">
+    <div class="qt-wrapper">
+      <div class="qt-header" style="color:var(--blue)">🎯 Game Time!</div>
+      <div class="qt-progress" id="qtProgress">Question 1 of 10</div>
+      <div class="qt-question-text" id="qtQuestion">...</div>
+      <div class="qt-image-box"><img id="qtImage" src="" alt=""></div>
+      <div class="qt-choices" id="qtChoices"></div>
+      <div class="qt-feedback" id="qtFeedback"></div>
+      <button class="qt-next-btn" id="qtNextBtn" onclick="qtNext()">Next ▶</button>
+      <div class="qt-dots" id="qtDots"></div>
+    </div>
+  </div>
+
+</div><!-- end slide-wrapper -->
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+// ===== SLIDE NAVIGATION =====
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+const sectionColors = {
+  flowers: '#FF6B9D',
+  feelings: '#FF9A3C',
+  talk: '#4D96FF',
+  gametime: '#6BCB77'
+};
+const sectionLabels = {
+  flowers: '🌸 Flowers',
+  feelings: '😊 Feelings',
+  talk: '💬 Let\'s Talk',
+  gametime: '🎯 Game Time'
+};
+
+function showSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  currentSlide = Math.max(0, Math.min(n, totalSlides - 1));
+  slides[currentSlide].classList.add('active');
+
+  // Update counter
+  document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+
+  // Update section tag
+  const sec = slides[currentSlide].dataset.section;
+  const tag = document.getElementById('sectionTag');
+  tag.textContent = sectionLabels[sec] || '';
+  tag.style.background = sectionColors[sec] || '#aaa';
+
+  // Update nav buttons
+  document.getElementById('prevBtn').style.opacity = currentSlide === 0 ? '0.4' : '1';
+  document.getElementById('nextBtn').textContent = currentSlide === totalSlides - 1 ? '🏆 Done!' : 'Next ▶';
+
+  // Init games when arriving at game slides
+  if (currentSlide === 6) initGame('flower');
+  if (currentSlide === 15) initGame('feeling');
+  if (currentSlide === 18) qtInit();
+}
+
+function changeSlide(dir) {
+  showSlide(currentSlide + dir);
+}
+
+// ===== MEMORY GAME =====
+const flowerImages = ['rose.jpg','sunflower.jpg','tulip.jpg','lily.jpg','lotus.jpg'];
+const feelingImages = ['happy.jpg','sad.jpg','angry.jpg','excited.jpg','scared.jpg','tired.jpg','surprised.jpg'];
+
+function shuffle(arr) {
+  const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a;
+}
+
+function initGame(type) {
+  const isFlower = type === 'flower';
+  const images = isFlower ? flowerImages : feelingImages;
+  const gridId = isFlower ? 'flowerGrid' : 'feelingGrid';
+  const statusId = isFlower ? 'flowerStatus' : 'feelingStatus';
+  const grid = document.getElementById(gridId);
+  const status = document.getElementById(statusId);
+
+  // Update grid column width for feeling game
+  if (!isFlower) grid.style.gridTemplateColumns = 'repeat(7,90px)';
+
+  const pairs = shuffle([...images, ...images]);
+  let flipped = [], matched = 0, lock = false;
+  status.textContent = `Find ${images.length} pairs! 🔍`;
+  grid.innerHTML = '';
+
+  pairs.forEach((img, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<div class="card-inner"><div class="card-front">❓</div><div class="card-back"><img src="${img}" alt=""></div></div>`;
+    card.addEventListener('click', () => {
+      if (lock || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+      card.classList.add('flipped');
+      flipped.push({ card, img });
+      if (flipped.length === 2) {
+        lock = true;
+        if (flipped[0].img === flipped[1].img) {
+          flipped[0].card.classList.add('matched');
+          flipped[1].card.classList.add('matched');
+          matched++;
+          flipped = []; lock = false;
+          status.textContent = matched === images.length ? '🎉 Amazing! All matched!' : `✅ ${matched} matched! Keep going!`;
+          if (matched === images.length) launchConfetti();
+        } else {
+          setTimeout(() => {
+            flipped[0].card.classList.remove('flipped');
+            flipped[1].card.classList.remove('flipped');
+            flipped = []; lock = false;
+          }, 900);
+        }
+      }
+    });
+    grid.appendChild(card);
+  });
+}
+
+// ===== TALK SLIDES =====
+function buildTalkGrids() {
+  // Feelings
+  const fg = document.getElementById('feelingTalkGrid');
+  feelingImages.forEach(img => {
+    const el = document.createElement('img');
+    el.src = img; el.alt = img.replace('.jpg','');
+    fg.appendChild(el);
+  });
+  // Flowers
+  const flg = document.getElementById('flowerTalkGrid');
+  flowerImages.forEach(img => {
+    const el = document.createElement('img');
+    el.src = img; el.alt = img.replace('.jpg','');
+    flg.appendChild(el);
+  });
+}
+
+// ===== GAME TIME QUIZ =====
+const qtQuestions = [
+  { q: "Happy or angry?",           img: "happy.jpg",     correct: "Happy",         wrong: "Angry",         btnColors: ["#FFD93D","#FF4757"] },
+  { q: "Rose or lotus?",            img: "rose.jpg",      correct: "Rose",          wrong: "Lotus",         btnColors: ["#FF6B9D","#C77DFF"] },
+  { q: "Happy lotus or sad lotus?", img: "lotus.jpg",     correct: "Happy lotus",   wrong: "Sad lotus",     btnColors: ["#FFD93D","#4D96FF"] },
+  { q: "Excited or tired?",         img: "excited.jpg",   correct: "Excited",       wrong: "Tired",         btnColors: ["#FF9A3C","#78909c"] },
+  { q: "Sunflower or tulip?",       img: "sunflower.jpg", correct: "Sunflower",     wrong: "Tulip",         btnColors: ["#FFD93D","#C77DFF"] },
+  { q: "Sad or surprised?",         img: "sad.jpg",       correct: "Sad",           wrong: "Surprised",     btnColors: ["#4D96FF","#26C6DA"] },
+  { q: "Pink lotus or red rose?",   img: "lotus.jpg",     correct: "Pink lotus",    wrong: "Red rose",      btnColors: ["#FF6B9D","#FF4757"] },
+  { q: "Angry or scared?",          img: "angry.jpg",     correct: "Angry",         wrong: "Scared",        btnColors: ["#FF4757","#C77DFF"] },
+  { q: "Lily or rose?",             img: "lily.jpg",      correct: "Lily",          wrong: "Rose",          btnColors: ["#26C6DA","#FF6B9D"] },
+  { q: "Happy sunflower or sad sunflower?", img: "sunflower.jpg", correct: "Happy sunflower", wrong: "Sad sunflower", btnColors: ["#FFD93D","#4D96FF"] }
+];
+let qtIndex = 0;
+let qtAnswered = false;
+
+function qtInit() {
+  qtIndex = 0;
+  qtAnswered = false;
+  // Build dots
+  const dots = document.getElementById('qtDots');
+  dots.innerHTML = '';
+  qtQuestions.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'qt-dot' + (i === 0 ? ' active' : '');
+    dots.appendChild(d);
+  });
+  qtShow();
+}
+
+function qtShow() {
+  const q = qtQuestions[qtIndex];
+  qtAnswered = false;
+
+  document.getElementById('qtProgress').textContent = `Question ${qtIndex + 1} of ${qtQuestions.length}`;
+  document.getElementById('qtQuestion').textContent = q.q;
+  document.getElementById('qtFeedback').textContent = '';
+
+  const img = document.getElementById('qtImage');
+  img.src = q.img;
+  img.className = '';
+
+  const nextBtn = document.getElementById('qtNextBtn');
+  nextBtn.className = 'qt-next-btn';
+  nextBtn.textContent = qtIndex === qtQuestions.length - 1 ? '🏆 Finish!' : 'Next ▶';
+
+  // Shuffle choices
+  const choices = Math.random() > 0.5
+    ? [{ label: q.correct, isCorrect: true, color: q.btnColors[0] }, { label: q.wrong, isCorrect: false, color: q.btnColors[1] }]
+    : [{ label: q.wrong, isCorrect: false, color: q.btnColors[1] }, { label: q.correct, isCorrect: true, color: q.btnColors[0] }];
+
+  const choicesDiv = document.getElementById('qtChoices');
+  choicesDiv.innerHTML = '';
+  choices.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'qt-choice-btn';
+    btn.textContent = c.label;
+    btn.style.background = `linear-gradient(135deg, ${c.color}, ${c.color}cc)`;
+    btn.addEventListener('click', () => qtAnswer(btn, c.isCorrect));
+    choicesDiv.appendChild(btn);
+  });
+
+  // Update dots
+  document.querySelectorAll('.qt-dot').forEach((d, i) => {
+    d.className = 'qt-dot' + (i < qtIndex ? ' done' : i === qtIndex ? ' active' : '');
+  });
+}
+
+function qtAnswer(btn, isCorrect) {
+  if (qtAnswered) return;
+  qtAnswered = true;
+
+  const allBtns = document.querySelectorAll('.qt-choice-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  const feedback = document.getElementById('qtFeedback');
+  const img = document.getElementById('qtImage');
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    feedback.textContent = '⭐ Great job!';
+    feedback.style.color = '#43a047';
+    img.classList.add('celebrate');
+    launchConfetti();
+  } else {
+    btn.classList.add('wrong');
+    feedback.textContent = '😊 Try again!';
+    feedback.style.color = '#e53935';
+    // Re-enable after shake so they can retry
+    setTimeout(() => {
+      allBtns.forEach(b => { b.disabled = false; });
+      btn.disabled = true; // keep wrong one disabled
+      qtAnswered = false;
+      feedback.textContent = '';
+    }, 900);
+    return;
+  }
+
+  document.getElementById('qtNextBtn').classList.add('show');
+}
+
+function qtNext() {
+  if (qtIndex === qtQuestions.length - 1) {
+    // All done!
+    document.getElementById('qtQuestion').textContent = '🏆 Amazing! You finished!';
+    document.getElementById('qtImage').src = '';
+    document.getElementById('qtChoices').innerHTML = '';
+    document.getElementById('qtFeedback').textContent = '';
+    document.getElementById('qtNextBtn').className = 'qt-next-btn';
+    document.getElementById('qtProgress').textContent = 'All done! 🎉';
+    document.querySelectorAll('.qt-dot').forEach(d => d.className = 'qt-dot done');
+    launchConfetti(); launchConfetti();
+    return;
+  }
+  qtIndex++;
+  qtShow();
+}
+
+// ===== CONFETTI =====
+function launchConfetti() {
+  const colors = ['#FF6B9D','#FFD93D','#6BCB77','#4D96FF','#C77DFF','#FF9A3C'];
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.cssText = `
+      left:${Math.random()*100}vw;
+      top:-20px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-delay:${Math.random()*1.5}s;
+      animation-duration:${2+Math.random()*2}s;
+      transform:rotate(${Math.random()*360}deg);
+      border-radius:${Math.random()>0.5?'50%':'2px'};
+    `;
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 4000);
+  }
+}
+
+// ===== KEYBOARD SUPPORT =====
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
+});
+
+// ===== INIT =====
+buildTalkGrids();
+showSlide(0);
+</script>
+</body>
+</html>
