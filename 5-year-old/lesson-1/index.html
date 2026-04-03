@@ -103,6 +103,17 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
 .jbtn-move   { background:#FFFDE7; color:#E65100; }
 .jbtn-review { background:#E8F5E9; color:#1B5E20; }
 
+/* Intro screens */
+.pang-photo{width:clamp(120px,22vw,200px);height:clamp(120px,22vw,200px);border-radius:50%;object-fit:cover;border:6px solid white;box-shadow:0 10px 30px rgba(0,0,0,0.15);animation:illustPop .6s cubic-bezier(0.175,0.885,0.32,1.275);}
+@keyframes illustPop{0%{transform:scale(0) rotate(-10deg)}80%{transform:scale(1.08) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
+.pang-photo-fallback{width:clamp(120px,22vw,200px);height:clamp(120px,22vw,200px);border-radius:50%;background:linear-gradient(135deg,#FF9A8B,#FF6B6B);border:6px solid white;box-shadow:0 10px 30px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;font-size:clamp(3rem,8vw,5rem);}
+.pang-hi{font-size:clamp(2rem,6vw,4.5rem);color:#E67E22;margin-top:16px;text-align:center;}
+.pang-sub{font-size:clamp(1.1rem,2.8vw,2rem);color:#888;margin-top:8px;text-align:center;}
+.pang-age{font-size:clamp(3rem,10vw,7rem);text-align:center;}
+.pang-question{font-size:clamp(1.2rem,3vw,2.2rem);color:#555;margin-top:12px;text-align:center;}
+.finger-row{display:flex;gap:clamp(6px,1.5vw,14px);margin-top:16px;justify-content:center;flex-wrap:wrap;}
+.finger-num{width:clamp(42px,7vw,70px);height:clamp(42px,7vw,70px);border-radius:50%;background:white;border:3px solid #FFD93D;display:flex;align-items:center;justify-content:center;font-size:clamp(1.2rem,3vw,2rem);box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+
 /* X / Y counter — used by color game and review */
 .xyctr { font-family:var(--ff); font-size:1.4rem; font-weight:900; color:var(--dark); margin-bottom:8px; letter-spacing:1px; }
 .xyctr .xy-cur { color:var(--coral); font-size:2rem; }
@@ -178,7 +189,6 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
 .fcard * { pointer-events:none; }
 .fcard:hover { transform:translateY(-4px); box-shadow:0 8px 20px rgba(0,0,0,.12); }
 .fcard svg { width:64px; height:64px; }
-.fcard .flbl { font-size:.72rem; font-weight:800; color:#aaa; text-align:center; }
 .fcard.ok { pointer-events:none; }
 .fcard.no { animation:fshake .4s ease; }
 @keyframes fshake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
@@ -337,17 +347,44 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
 
 <!-- JUMP MENU -->
 <div id="jump-menu">
-  <button class="jbtn jbtn-emo"    onclick="jumpTo(0)" id="jb-0">&#128522; How Are You?</button>
-  <button class="jbtn jbtn-color"  onclick="jumpTo(1)" id="jb-1">&#127912; Color Game</button>
-  <button class="jbtn jbtn-find"   onclick="jumpTo(2)" id="jb-2">&#128269; Find Color</button>
-  <button class="jbtn jbtn-obj"    onclick="jumpTo(3)" id="jb-3">&#127968; Objects</button>
-  <button class="jbtn jbtn-sent"   onclick="jumpTo(4)" id="jb-4">&#128172; Sentences</button>
-  <button class="jbtn jbtn-move"   onclick="jumpTo(5)" id="jb-5">&#127939; Move &amp; Play</button>
-  <button class="jbtn jbtn-review" onclick="jumpTo(6)" id="jb-6">&#127918; Review</button>
+  <button class="jbtn jbtn-emo"    onclick="jumpTo(0)" id="jb-0">&#128075; Hi!</button>
+  <button class="jbtn jbtn-emo"    onclick="jumpTo(1)" id="jb-1">&#127874; Age</button>
+  <button class="jbtn jbtn-emo"    onclick="jumpTo(2)" id="jb-2">&#128522; Feeling</button>
+  <button class="jbtn jbtn-move"   onclick="jumpTo(3)" id="jb-3">&#127939; Move #1</button>
+  <button class="jbtn jbtn-color"  onclick="jumpTo(4)" id="jb-4">&#127912; Color</button>
+  <button class="jbtn jbtn-find"   onclick="jumpTo(5)" id="jb-5">&#128269; Find</button>
+  <button class="jbtn jbtn-obj"    onclick="jumpTo(6)" id="jb-6">&#127968; Objects</button>
+  <button class="jbtn jbtn-sent"   onclick="jumpTo(7)" id="jb-7">&#128172; Sentences</button>
+  <button class="jbtn jbtn-move"   onclick="jumpTo(8)" id="jb-8">&#127939; Move #2</button>
+  <button class="jbtn jbtn-review" onclick="jumpTo(9)" id="jb-9">&#127918; Review</button>
+  <button class="jbtn jbtn-review" onclick="jumpTo(10)" id="jb-10">&#127912; Color Mix</button>
+  <button class="jbtn jbtn-review" onclick="jumpTo(11)" id="jb-11">&#127968; Object Mix</button>
+</div>
+
+<!-- NEW INTRO SCREENS -->
+<div class="screen active" id="s-pang" style="background:linear-gradient(160deg,#FFF9F0,#FFE8D6);">
+  <img src="https://raw.githubusercontent.com/ponrathsop-arch/Online-English-for-kids/3ee3faec4d401cf8f2d55720ffe16a8326336bcb/pang.jpg" class="pang-photo" alt="Pang" onerror="this.style.display='none';document.getElementById('pang-fb').style.display='flex'"/>
+  <div class="pang-photo-fallback" id="pang-fb" style="display:none">👩‍🏫</div>
+  <div class="pang-hi">Hi! I am Pang 👋</div>
+  <div class="pang-sub">What's your name? 😊</div>
+  <button class="btn-primary" onclick="nextSec()" style="margin-top:20px">Next</button>
+</div>
+
+<div class="screen" id="s-age" style="background:linear-gradient(160deg,#FFF9F0,#E8F4FF);">
+  <div class="pang-age">🎂 I am 25!</div>
+  <div class="pang-question">How old are you?</div>
+  <div class="finger-row">
+    <div class="finger-num">☝️</div>
+    <div class="finger-num">✌️</div>
+    <div class="finger-num">🤟</div>
+    <div class="finger-num">🖖</div>
+    <div class="finger-num">🖐️</div>
+  </div>
+  <button class="btn-primary" onclick="nextSec()" style="margin-top:20px">Next</button>
 </div>
 
 <!-- S1 EMOTIONS -->
-<div class="screen active" id="s-emo">
+<div class="screen" id="s-emo">
   <div class="big-q">How are you today?</div>
   <div class="emo-row">
     <div class="emo-card" id="ec-happy" onclick="pickEmo('happy')">
@@ -371,7 +408,15 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   <button class="btn-primary" id="emo-go" onclick="nextSec()" style="display:none">Let's Start!</button>
 </div>
 
-<!-- S2 COLOR -->
+<!-- S2 MOVE #1 -->
+<div class="screen" id="s-move1">
+  <div class="mtitle">Move &amp; Play!</div>
+  <div class="msub">Watch the light sweep — when it stops, do that action together!</div>
+  <div class="mgrid" id="mgrid1"></div>
+  <div class="mcta" id="mcta1"></div>
+</div>
+
+<!-- S4 COLOR -->
 <div class="screen" id="s-color">
   <div class="badge" style="background:#FFF9C4;color:#E65100;">Color Game</div>
   <div class="big-q">What color is this?</div>
@@ -387,7 +432,7 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   </div>
 </div>
 
-<!-- S3 FINDING -->
+<!-- S5 FINDING -->
 <div class="screen" id="s-find">
   <div class="badge" style="background:#E8F5E9;color:#2E7D32;">Finding Game</div>
   <div class="fq" id="fq"></div>
@@ -398,7 +443,7 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   <div id="ffeedback"></div>
 </div>
 
-<!-- S4 OBJECTS -->
+<!-- S6 OBJECTS -->
 <div class="screen" id="s-obj">
   <div class="badge" style="background:#E8EAF6;color:#3949AB;">Meet the Objects!</div>
   <div class="big-q" style="font-size:1.4rem">Tap the objects to see what they do!</div>
@@ -406,7 +451,7 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   <button class="btn-primary" onclick="nextSec()" style="margin-top:14px">Next</button>
 </div>
 
-<!-- S5 SENTENCES -->
+<!-- S7 SENTENCES -->
 <div class="screen" id="s-sent">
   <div class="badge" style="background:#FCE4EC;color:#880E4F;">Let's Read!</div>
   <div class="dots" id="sdots"></div>
@@ -417,7 +462,7 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   <button class="btn-primary" id="snext" onclick="nextSentStep()">Next</button>
 </div>
 
-<!-- S5b OBJECT QUIZ (after each object's sentences) -->
+<!-- S7b OBJECT QUIZ (after each object's sentences) -->
 <div class="screen" id="s-obj-quiz">
   <div class="badge" style="background:#FFF9C4;color:#E65100;">Which one is it?</div>
   <div class="oq-progress" id="oq-progress"></div>
@@ -428,7 +473,7 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   <button class="btn-next-q" id="oq-next" onclick="nextObjQuiz()">Next</button>
 </div>
 
-<!-- S6 MOVE -->
+<!-- S8 MOVE #2 -->
 <div class="screen" id="s-move">
   <div class="mtitle">Move &amp; Play!</div>
   <div class="msub">Watch the light sweep — when it stops, do that action together!</div>
@@ -436,7 +481,7 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
   <div class="mcta" id="mcta"></div>
 </div>
 
-<!-- S7 REVIEW -->
+<!-- S9 REVIEW -->
 <div class="screen" id="s-review">
   <div class="badge" style="background:#E8F5E9;color:#1B5E20;">Review Game</div>
   <div class="xyctr" id="rdots"></div>
@@ -449,6 +494,22 @@ body { font-family: var(--ff); font-weight: 800; background: #E8F4FD; }
       <button class="btn-next-q" id="rnext" onclick="nextReviewPage()">Next Question</button>
     </div>
   </div>
+</div>
+
+<!-- S10 COLOR MIX REVIEW -->
+<div class="screen" id="s-color-mix" style="background:linear-gradient(155deg,#FFF8E1,#FFFDE7);">
+  <div class="badge" style="background:#FFF9C4;color:#E65100;">Color Mix Review</div>
+  <div class="big-q" style="font-size:1.6rem">Point to all the color objects!</div>
+  <div id="cmix-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;max-width:880px;padding:0 12px;"></div>
+  <button class="btn-primary" onclick="nextSec()" style="margin-top:20px">Next</button>
+</div>
+
+<!-- S11 OBJECT MIX REVIEW -->
+<div class="screen" id="s-obj-mix" style="background:linear-gradient(155deg,#E8EAF6,#F3E5F5);">
+  <div class="badge" style="background:#E8EAF6;color:#3949AB;">Object Mix Review</div>
+  <div class="big-q" style="font-size:1.6rem">Point to all the house objects!</div>
+  <div id="omix-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:780px;"></div>
+  <button class="btn-primary" onclick="nextSec()" style="margin-top:20px">Next</button>
 </div>
 
 <!-- DONE -->
@@ -705,10 +766,10 @@ var ACTIONS=[
 ];
 
 // ─── APP STATE ───────────────────────────────────────────────────────────
-var SCREENS=['s-emo','s-color','s-find','s-obj','s-sent','s-move','s-review','s-done'];
-var SNAMES=['How Are You?','Color Game','Finding Game','Meet Objects','Sentences','Move & Play','Review Game','Done!'];
+var SCREENS=['s-pang','s-age','s-emo','s-move1','s-color','s-find','s-obj','s-sent','s-move','s-review','s-color-mix','s-obj-mix','s-done'];
+var SNAMES=['Hi Pang!','How Old?','How Are You?','Move #1','Color Game','Finding Game','Meet Objects','Sentences','Move #2','Review Game','Color Mix','Object Mix','Done!'];
 // Map screen id → jump button index (s-obj-quiz maps to sentences button)
-var SCREEN_TO_JBTN={'s-emo':0,'s-color':1,'s-find':2,'s-obj':3,'s-sent':4,'s-obj-quiz':4,'s-move':5,'s-review':6,'s-done':-1};
+var SCREEN_TO_JBTN={'s-pang':0,'s-age':1,'s-emo':2,'s-move1':3,'s-color':4,'s-find':5,'s-obj':6,'s-sent':7,'s-obj-quiz':7,'s-move':8,'s-review':9,'s-color-mix':10,'s-obj-mix':11,'s-done':-1};
 var cur=0;
 
 function updProg(){
@@ -738,12 +799,15 @@ function showScreen(id){
   updJumpHighlight(id);
 }
 function initScreen(id){
+  if(id==='s-move1')  initMove1();
   if(id==='s-color')  initColor();
   if(id==='s-find')   initFind();
   if(id==='s-obj')    initObj();
   if(id==='s-sent')   initSent();
   if(id==='s-move')   initMove();
   if(id==='s-review') initReview();
+  if(id==='s-color-mix') initColorMix();
+  if(id==='s-obj-mix') initObjMix();
 }
 function nextSec(){if(cur>=SCREENS.length-1)return;cur++;updProg();showScreen(SCREENS[cur]);initScreen(SCREENS[cur]);}
 function prevSec(){if(cur<=0)return;cur--;updProg();showScreen(SCREENS[cur]);initScreen(SCREENS[cur]);}
@@ -753,7 +817,7 @@ function jumpTo(idx){
   showScreen(SCREENS[cur]); initScreen(SCREENS[cur]);
 }
 function restartApp(){
-  cur=0;updProg();showScreen('s-emo');
+  cur=0;updProg();showScreen('s-pang');
   var cards=document.querySelectorAll('.emo-card');
   for(var i=0;i<cards.length;i++) cards[i].classList.remove('picked');
   document.getElementById('emo-resp').textContent='';
@@ -860,7 +924,7 @@ function renderFind(){
   for(var idx=0;idx<all.length;idx++){
     (function(item,i){
       var d=document.createElement('div'); d.className='fcard';
-      d.innerHTML=item.s+'<div class="flbl">'+item.l+'</div>';
+      d.innerHTML=item.s;
       d.onclick=function(){
         if(fPicked[i]||fRoundDone) return;
         fPicked[i]=true;
@@ -1061,6 +1125,68 @@ function nextObjQuiz(){
 
 // ─── S6 MOVE & PLAY ──────────────────────────────────────────────────────
 var mList=[],mRound=0,mDone={},mLanded=-1,mTmr=null;
+
+// Move #1 (after emotions)
+function initMove1(){
+  mList=shuffle(ACTIONS).slice(0,5);
+  mRound=0; mDone={}; mLanded=-1;
+  renderBoxes1(); startSweep1();
+}
+function renderBoxes1(){
+  var g=document.getElementById('mgrid1'); g.innerHTML='';
+  for(var i=0;i<mList.length;i++){
+    var a=mList[i], b=document.createElement('div');
+    b.className='abox'+(mDone[i]?' done-a':''); b.id='ab1-'+i;
+    b.innerHTML='<div style="font-size:2.4rem">'+a.e+'</div><div class="aword">'+a.w+'</div><div class="atick">&#10003;</div>';
+    g.appendChild(b);
+  }
+  document.getElementById('mcta1').innerHTML='';
+}
+function clearSweep1(){
+  for(var i=0;i<5;i++){var b=document.getElementById('ab1-'+i);if(b){b.classList.remove('sweep','landed');}}
+}
+function startSweep1(){
+  if(mTmr) clearTimeout(mTmr); clearSweep1();
+  document.getElementById('mcta1').innerHTML='<div style="font-size:1rem;font-weight:900;color:#FB8C00">Watch the light!</div>';
+  var avail=[];
+  for(var i=0;i<5;i++) if(!mDone[i]) avail.push(i);
+  if(avail.length===0){ nextSec(); return; }
+  mLanded=avail[Math.floor(Math.random()*avail.length)];
+  var step=0, total=18+Math.floor(Math.random()*10), sp=0;
+  function sweep(){
+    clearSweep1();
+    var b=document.getElementById('ab1-'+sp);
+    if(b&&!mDone[sp]) b.classList.add('sweep');
+    step++; sp=(sp+1)%5;
+    var sk=0; while(mDone[sp]&&sk<5){sp=(sp+1)%5;sk++;}
+    var prog=step/total, delay=prog<0.5?80:prog<0.75?140:prog<0.9?230:360;
+    if(step<total){ mTmr=setTimeout(sweep,delay); }
+    else{
+      clearSweep1();
+      var lb=document.getElementById('ab1-'+mLanded); if(lb) lb.classList.add('landed');
+      document.getElementById('mcta1').innerHTML=
+        '<div style="font-size:1.3rem;font-weight:900;color:#E65100;margin-bottom:6px">Do it! '+mList[mLanded].w+'!</div>'+
+        '<button class="btn-done" onclick="confirmAction1()">Done!</button>';
+    }
+  }
+  mTmr=setTimeout(sweep,80);
+}
+function confirmAction1(){
+  mDone[mLanded]=true; clearSweep1();
+  var lb=document.getElementById('ab1-'+mLanded);
+  if(lb){lb.classList.remove('landed');lb.classList.add('done-a');lb.querySelector('.atick').style.display='block';}
+  confetti(); mRound++;
+  if(mRound>=5){
+    document.getElementById('mcta1').innerHTML='<div style="font-size:1.3rem;font-weight:900;color:#5CC8A8">Amazing! You did all 5! &#127942;</div>';
+    setTimeout(function(){ nextSec(); }, 1400);
+  } else {
+    document.getElementById('mcta1').innerHTML=
+      '<div style="font-size:.95rem;font-weight:900;color:#FB8C00;margin-bottom:7px">Great! Ready for next?</div>'+
+      '<button class="btn-done" style="background:linear-gradient(135deg,#FFB347,#FF8E53)" onclick="startSweep1()">Try Again! &#127920;</button>';
+  }
+}
+
+// Move #2 (original move section)
 function initMove(){
   mList=shuffle(ACTIONS).slice(0,5);
   mRound=0; mDone={}; mLanded=-1;
@@ -1148,6 +1274,78 @@ function checkReview(picked,correct,btn){
   else{btn.classList.add('no-ans');fb.textContent='Try again!';fb.className='fb no';var rem=document.querySelectorAll('.rchoice:not(.no-ans)');for(var i=0;i<rem.length;i++){(function(rb){rb.onclick=function(){checkReview(rb.textContent,correct,rb);};})(rem[i]);}}
 }
 function nextReviewPage(){rIdx++;if(rIdx>=ODEFS.length)nextSec();else renderReview();}
+
+// ─── S10 COLOR MIX REVIEW ────────────────────────────────────────────────
+function initColorMix(){
+  var grid=document.getElementById('cmix-grid'); grid.innerHTML='';
+  var allColorItems=[];
+  var num=1;
+  // Collect all correct items from each color round in FORDER sequence
+  for(var c=0;c<FORDER.length;c++){
+    var key=FORDER[c];
+    var rd=FROUND_DATA[key];
+    for(var i=0;i<rd.correct.length;i++){
+      allColorItems.push({s:rd.correct[i].s, l:rd.correct[i].l, n:num, color:FBGS[key]});
+      num++;
+    }
+  }
+  // Render all 24 items (6 colors × 4 items each)
+  for(var idx=0;idx<allColorItems.length;idx++){
+    (function(item,i){
+      var card=document.createElement('div');
+      card.style.cssText='background:white;border-radius:16px;padding:12px 8px 10px;box-shadow:0 4px 10px rgba(0,0,0,.07);display:flex;flex-direction:column;align-items:center;gap:5px;border:3px solid transparent;position:relative;min-height:110px;cursor:pointer;transition:transform .15s;';
+      var numBadge=document.createElement('div');
+      numBadge.style.cssText='position:absolute;top:6px;left:6px;width:26px;height:26px;border-radius:50%;background:#FFD93D;color:#333;font-size:0.9rem;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.15);';
+      numBadge.textContent=item.n;
+      card.appendChild(numBadge);
+      var svgWrap=document.createElement('div');
+      svgWrap.innerHTML=item.s;
+      var svg=svgWrap.querySelector('svg');
+      if(svg) svg.style.cssText='width:56px;height:56px;';
+      card.appendChild(svgWrap);
+      card.onclick=function(){
+        document.querySelectorAll('#cmix-grid > div').forEach(function(c){c.style.borderColor='transparent';c.style.background='white';});
+        card.style.borderColor='#FFD93D';
+        card.style.background='#FFFDE7';
+        card.style.animation='oqpop .4s ease';
+        fspawnSparkle(card);
+      };
+      grid.appendChild(card);
+    })(allColorItems[idx],idx);
+  }
+}
+
+// ─── S11 OBJECT MIX REVIEW ───────────────────────────────────────────────
+function initObjMix(){
+  var grid=document.getElementById('omix-grid'); grid.innerHTML='';
+  for(var idx=0;idx<ODEFS.length;idx++){
+    (function(def,i){
+      var card=document.createElement('div');
+      card.style.cssText='background:white;border-radius:20px;padding:16px 10px 12px;box-shadow:0 5px 0 rgba(0,0,0,.07);display:flex;flex-direction:column;align-items:center;gap:5px;position:relative;border:3px solid transparent;cursor:pointer;transition:transform .15s;';
+      var numBadge=document.createElement('div');
+      numBadge.style.cssText='position:absolute;top:8px;left:8px;width:32px;height:32px;border-radius:50%;background:#CE93D8;color:white;font-size:1.05rem;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.15);';
+      numBadge.textContent=(i+1);
+      card.appendChild(numBadge);
+      var svgWrap=document.createElement('div');
+      svgWrap.innerHTML=getOSVG({key:def.key,state:false});
+      card.appendChild(svgWrap);
+      var nameDiv=document.createElement('div');
+      nameDiv.style.cssText='font-size:0.95rem;font-weight:900;color:#2C2C54;';
+      nameDiv.textContent=def.nm;
+      card.appendChild(nameDiv);
+      card.onclick=function(){
+        document.querySelectorAll('#omix-grid > div').forEach(function(c){c.style.borderColor='transparent';c.style.background='white';});
+        card.style.borderColor='#9C27B0';
+        card.style.background='#F3E5F5';
+        card.style.animation='oqpop .4s ease';
+        fspawnSparkle(card);
+      };
+      card.onmouseover=function(){card.style.transform='translateY(-4px)';};
+      card.onmouseout=function(){card.style.transform='';};
+      grid.appendChild(card);
+    })(ODEFS[idx],idx);
+  }
+}
 
 updProg();
 </script>
