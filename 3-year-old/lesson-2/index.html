@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn S & P Sounds</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Comic Sans MS',cursive;overflow:hidden;background:#FFF9E6;height:100vh;display:flex;align-items:center;justify-content:center;}
+.slide{display:none;width:100vw;height:100vh;flex-direction:column;align-items:center;justify-content:center;position:absolute;padding:20px;}
+.slide.active{display:flex;}
+.nav-btn{position:fixed;top:50%;transform:translateY(-50%);background:#FFB347;border:none;border-radius:50%;width:60px;height:60px;font-size:2rem;cursor:pointer;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+.nav-btn:active{transform:translateY(-50%) scale(0.95);}
+#prevBtn{left:20px;}
+#nextBtn{right:20px;}
+h1{font-size:clamp(2rem,6vw,4rem);color:#FF6B6B;margin-bottom:30px;text-align:center;}
+.emotion-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:500px;}
+.emotion-btn{background:white;border:4px solid #FFD93D;border-radius:20px;padding:20px;cursor:pointer;transition:transform 0.2s;font-size:3rem;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.emotion-btn:hover{transform:scale(1.1);border-color:#FF6B6B;}
+.emotion-label{font-size:1.5rem;color:#333;font-weight:bold;}
+.color-box{width:clamp(200px,40vw,400px);height:clamp(200px,40vw,400px);border-radius:30px;box-shadow:0 8px 20px rgba(0,0,0,0.15);border:6px solid white;}
+.word-img{width:clamp(300px,50vw,520px);height:clamp(300px,50vw,520px);object-fit:contain;border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,0.1);background:white;padding:20px;}
+.scene{position:relative;width:clamp(400px,70vw,800px);height:clamp(300px,50vh,600px);background:#87CEEB;border-radius:20px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+.scene-bg{position:absolute;width:100%;height:100%;z-index:1;}
+.ground{position:absolute;bottom:0;width:100%;height:35%;background:linear-gradient(to bottom,#90EE90,#6B8E23);z-index:2;}
+.tree{position:absolute;bottom:25%;width:80px;height:100px;z-index:3;}
+.trunk{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:20px;height:40px;background:#8B4513;border-radius:4px;}
+.leaves{position:absolute;top:0;left:50%;transform:translateX(-50%);width:60px;height:70px;background:#228B22;border-radius:50%;}
+.bush{position:absolute;bottom:25%;width:60px;height:40px;background:#2E8B57;border-radius:50%;z-index:3;}
+.cloud{position:absolute;background:white;border-radius:50%;z-index:2;}
+.hidden-obj{position:absolute;width:clamp(40px,6vw,70px);height:clamp(40px,6vw,70px);cursor:pointer;z-index:4;transition:transform 0.2s;}
+.hidden-obj img{width:100%;height:100%;object-fit:contain;}
+.hidden-obj.found{transform:scale(1.3);filter:brightness(1.2);animation:bounce 0.5s;}
+@keyframes bounce{0%,100%{transform:scale(1.3)}50%{transform:scale(1.5)}}
+.counter{font-size:clamp(2rem,5vw,3.5rem);color:#FF6B6B;font-weight:bold;margin-top:20px;}
+.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;max-width:600px;}
+.card{width:clamp(80px,15vw,130px);height:clamp(80px,15vw,130px);background:#FFD93D;border-radius:15px;cursor:pointer;position:relative;transform-style:preserve-3d;transition:transform 0.6s;border:4px solid #FF6B6B;box-shadow:0 4px 8px rgba(0,0,0,0.2);}
+.card.flipped{transform:rotateY(180deg);}
+.card-front,.card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:bold;}
+.card-front{background:#FF6B6B;color:white;transform:rotateY(180deg);}
+.card-front img{width:80%;height:80%;object-fit:contain;}
+.card-back{background:#FFD93D;color:#333;}
+.review-img{width:clamp(250px,45vw,450px);height:clamp(250px,45vw,450px);object-fit:contain;background:white;border-radius:20px;padding:20px;box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+</style>
+</head>
+<body>
+<button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀</button>
+<button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">▶</button>
+
+<!-- Slide 1: Greeting -->
+<div class="slide active">
+<h1>How are you today? 😊</h1>
+<div class="emotion-grid">
+<div class="emotion-btn" onclick="selectEmotion()">
+<span>😊</span>
+<span class="emotion-label">Happy</span>
+</div>
+<div class="emotion-btn" onclick="selectEmotion()">
+<span>😢</span>
+<span class="emotion-label">Sad</span>
+</div>
+<div class="emotion-btn" onclick="selectEmotion()">
+<span>😠</span>
+<span class="emotion-label">Angry</span>
+</div>
+<div class="emotion-btn" onclick="selectEmotion()">
+<span>😴</span>
+<span class="emotion-label">Sleepy</span>
+</div>
+</div>
+</div>
+
+<!-- Slides 2-7: Colors -->
+<div class="slide">
+<h1>What color is this?</h1>
+<div class="color-box" style="background:#FF0000;"></div>
+<p style="font-size:2rem;margin-top:20px;color:#333;">RED</p>
+</div>
+<div class="slide">
+<h1>What color is this?</h1>
+<div class="color-box" style="background:#0000FF;"></div>
+<p style="font-size:2rem;margin-top:20px;color:#333;">BLUE</p>
+</div>
+<div class="slide">
+<h1>What color is this?</h1>
+<div class="color-box" style="background:#FFFF00;"></div>
+<p style="font-size:2rem;margin-top:20px;color:#333;">YELLOW</p>
+</div>
+<div class="slide">
+<h1>What color is this?</h1>
+<div class="color-box" style="background:#00FF00;"></div>
+<p style="font-size:2rem;margin-top:20px;color:#333;">GREEN</p>
+</div>
+<div class="slide">
+<h1>What color is this?</h1>
+<div class="color-box" style="background:#FFA500;"></div>
+<p style="font-size:2rem;margin-top:20px;color:#333;">ORANGE</p>
+</div>
+<div class="slide">
+<h1>What color is this?</h1>
+<div class="color-box" style="background:#800080;"></div>
+<p style="font-size:2rem;margin-top:20px;color:#333;">PURPLE</p>
+</div>
+
+<!-- S Sound Words -->
+<div class="slide">
+<h1>🐍 SNAKE</h1>
+<img class="word-img" src="snake.jpg" alt="Snake">
+<p style="font-size:2rem;margin-top:20px;color:#FF6B6B;">Say: SNAKE! 🐍</p>
+</div>
+<div class="slide">
+<h1>☀️ SUN</h1>
+<img class="word-img" src="sun.jpg" alt="Sun">
+<p style="font-size:2rem;margin-top:20px;color:#FF6B6B;">Say: SUN! ☀️</p>
+</div>
+<div class="slide">
+<h1>⭐ STAR</h1>
+<img class="word-img" src="star.jpg" alt="Star">
+<p style="font-size:2rem;margin-top:20px;color:#FF6B6B;">Say: STAR! ⭐</p>
+</div>
+<div class="slide">
+<h1>🧦 SOCK</h1>
+<img class="word-img" src="sock.jpg" alt="Sock">
+<p style="font-size:2rem;margin-top:20px;color:#FF6B6B;">Say: SOCK! 🧦</p>
+</div>
+
+<!-- Counting S: Snake -->
+<div class="slide" id="count-snake">
+<h1>How many SNAKES? 🐍</h1>
+<div class="scene">
+<div class="ground"></div>
+<div class="tree" style="left:10%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="tree" style="right:15%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="bush" style="left:25%;"></div>
+<div class="bush" style="right:30%;"></div>
+<div class="cloud" style="top:10%;left:20%;width:80px;height:50px;"></div>
+<div class="cloud" style="top:15%;right:25%;width:100px;height:60px;"></div>
+</div>
+<div class="counter">Count: <span id="snake-count">0</span></div>
+</div>
+
+<!-- Counting S: Sun -->
+<div class="slide" id="count-sun">
+<h1>How many SUNS? ☀️</h1>
+<div class="scene">
+<div class="ground"></div>
+<div class="tree" style="left:15%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="tree" style="right:20%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="bush" style="left:35%;"></div>
+<div class="bush" style="right:40%;"></div>
+<div class="cloud" style="top:8%;left:15%;width:90px;height:55px;"></div>
+<div class="cloud" style="top:12%;right:20%;width:85px;height:50px;"></div>
+</div>
+<div class="counter">Count: <span id="sun-count">0</span></div>
+</div>
+
+<!-- Counting S: Star -->
+<div class="slide" id="count-star">
+<h1>How many STARS? ⭐</h1>
+<div class="scene" style="background:#1a1a2e;">
+<div class="ground" style="background:linear-gradient(to bottom,#4a4a6a,#2a2a4a);"></div>
+<div class="tree" style="left:12%;"><div class="trunk"></div><div class="leaves" style="background:#1a4a1a;"></div></div>
+<div class="tree" style="right:18%;"><div class="trunk"></div><div class="leaves" style="background:#1a4a1a;"></div></div>
+<div class="bush" style="left:30%;background:#1a3a1a;"></div>
+<div class="bush" style="right:35%;background:#1a3a1a;"></div>
+</div>
+<div class="counter">Count: <span id="star-count">0</span></div>
+</div>
+
+<!-- Counting S: Sock -->
+<div class="slide" id="count-sock">
+<h1>How many SOCKS? 🧦</h1>
+<div class="scene">
+<div class="ground"></div>
+<div class="tree" style="left:8%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="tree" style="right:12%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="bush" style="left:28%;"></div>
+<div class="bush" style="right:33%;"></div>
+<div class="cloud" style="top:12%;left:25%;width:75px;height:45px;"></div>
+<div class="cloud" style="top:10%;right:30%;width:95px;height:58px;"></div>
+</div>
+<div class="counter">Count: <span id="sock-count">0</span></div>
+</div>
+
+<!-- P Sound Words -->
+<div class="slide">
+<h1>🐷 PIG</h1>
+<img class="word-img" src="pig.jpg" alt="Pig">
+<p style="font-size:2rem;margin-top:20px;color:#FF6B6B;">Say: PIG! 🐷</p>
+</div>
+<div class="slide">
+<h1>🖊️ PEN</h1>
+<img class="word-img" src="pen.jpg" alt="Pen">
+<p style="font-size:2rem;margin-top:20px;color:#FF6B6B;">Say: PEN! 🖊️</p>
+</div>
+<div class="slide">
+<h1>🥧 PIE</h1>
+<img class="word-img" src="pie.jpg" alt="Pie">
+<p style="font-size:2rem;margin-top:20px;color:#FF6B6B;">Say: PIE! 🥧</p>
+</div>
+<div class="slide">
+<h1>🍳 PAN</h1>
+<img class="word-img" src="pan.jpg" alt="Pan">
+<p style="font-size:2rem;margin-top:20px;color:#FF6B6B;">Say: PAN! 🍳</p>
+</div>
+
+<!-- Counting P: Pig -->
+<div class="slide" id="count-pig">
+<h1>How many PIGS? 🐷</h1>
+<div class="scene">
+<div class="ground"></div>
+<div class="tree" style="left:14%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="tree" style="right:16%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="bush" style="left:32%;"></div>
+<div class="bush" style="right:38%;"></div>
+<div class="cloud" style="top:9%;left:22%;width:88px;height:52px;"></div>
+<div class="cloud" style="top:14%;right:28%;width:92px;height:56px;"></div>
+</div>
+<div class="counter">Count: <span id="pig-count">0</span></div>
+</div>
+
+<!-- Counting P: Pen -->
+<div class="slide" id="count-pen">
+<h1>How many PENS? 🖊️</h1>
+<div class="scene">
+<div class="ground"></div>
+<div class="tree" style="left:11%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="tree" style="right:14%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="bush" style="left:27%;"></div>
+<div class="bush" style="right:36%;"></div>
+<div class="cloud" style="top:11%;left:18%;width:82px;height:48px;"></div>
+<div class="cloud" style="top:13%;right:24%;width:96px;height:60px;"></div>
+</div>
+<div class="counter">Count: <span id="pen-count">0</span></div>
+</div>
+
+<!-- Counting P: Pie -->
+<div class="slide" id="count-pie">
+<h1>How many PIES? 🥧</h1>
+<div class="scene">
+<div class="ground"></div>
+<div class="tree" style="left:13%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="tree" style="right:19%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="bush" style="left:29%;"></div>
+<div class="bush" style="right:34%;"></div>
+<div class="cloud" style="top:10%;left:24%;width:86px;height:54px;"></div>
+<div class="cloud" style="top:12%;right:26%;width:90px;height:58px;"></div>
+</div>
+<div class="counter">Count: <span id="pie-count">0</span></div>
+</div>
+
+<!-- Counting P: Pan -->
+<div class="slide" id="count-pan">
+<h1>How many PANS? 🍳</h1>
+<div class="scene">
+<div class="ground"></div>
+<div class="tree" style="left:9%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="tree" style="right:13%;"><div class="trunk"></div><div class="leaves"></div></div>
+<div class="bush" style="left:31%;"></div>
+<div class="bush" style="right:37%;"></div>
+<div class="cloud" style="top:8%;left:21%;width:84px;height:50px;"></div>
+<div class="cloud" style="top:15%;right:27%;width:94px;height:62px;"></div>
+</div>
+<div class="counter">Count: <span id="pan-count">0</span></div>
+</div>
+
+<!-- Memory Game -->
+<div class="slide" id="memory-game">
+<h1>Memory Game! 🎮</h1>
+<p style="font-size:1.5rem;color:#333;margin-bottom:20px;">Find the matching pairs!</p>
+<div class="memory-grid" id="memory-grid"></div>
+</div>
+
+<!-- Final Review: Snake -->
+<div class="slide">
+<h1>What is it? 🤔</h1>
+<img class="review-img" src="snake.jpg" alt="Snake">
+</div>
+<div class="slide">
+<h1>What is it? 🤔</h1>
+<img class="review-img" src="sun.jpg" alt="Sun">
+</div>
+<div class="slide">
+<h1>What is it? 🤔</h1>
+<img class="review-img" src="star.jpg" alt="Star">
+</div>
+<div class="slide">
+<h1>What is it? 🤔</h1>
+<img class="review-img" src="sock.jpg" alt="Sock">
+</div>
+<div class="slide">
+<h1>What is it? 🤔</h1>
+<img class="review-img" src="pig.jpg" alt="Pig">
+</div>
+<div class="slide">
+<h1>What is it? 🤔</h1>
+<img class="review-img" src="pen.jpg" alt="Pen">
+</div>
+<div class="slide">
+<h1>What is it? 🤔</h1>
+<img class="review-img" src="pie.jpg" alt="Pie">
+</div>
+<div class="slide">
+<h1>What is it? 🤔</h1>
+<img class="review-img" src="pan.jpg" alt="Pan">
+</div>
+
+<!-- Final Slide -->
+<div class="slide">
+<h1>🎉 Great Job!</h1>
+<p style="font-size:2.5rem;color:#FF6B6B;margin-top:20px;">You did amazing! ⭐</p>
+</div>
+
+<script>
+let current=0;
+const slides=document.querySelectorAll('.slide');
+const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+
+function playDing(){
+const osc=audioCtx.createOscillator();
+const gain=audioCtx.createGain();
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+osc.frequency.value=800;
+osc.type='sine';
+gain.gain.setValueAtTime(0.3,audioCtx.currentTime);
+gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.3);
+osc.start(audioCtx.currentTime);
+osc.stop(audioCtx.currentTime+0.3);
+}
+
+function changeSlide(dir){
+slides[current].classList.remove('active');
+current=Math.max(0,Math.min(slides.length-1,current+dir));
+slides[current].classList.add('active');
+updateNav();
+initSlide();
+}
+
+function updateNav(){
+document.getElementById('prevBtn').style.display=current===0?'none':'block';
+document.getElementById('nextBtn').style.display=current===slides.length-1?'none':'block';
+}
+
+function selectEmotion(){
+playDing();
+setTimeout(()=>changeSlide(1),500);
+}
+
+function initSlide(){
+const slide=slides[current];
+if(slide.id.startsWith('count-')){
+initCountingSlide(slide);
+}
+if(slide.id==='memory-game'){
+initMemoryGame();
+}
+}
+
+function initCountingSlide(slide){
+const type=slide.id.split('-')[1];
+const positions=[
+{top:'15%',left:'8%'},{top:'20%',right:'10%'},{top:'45%',left:'15%'},
+{top:'50%',right:'20%'},{top:'30%',left:'45%'},{top:'35%',right:'48%'},
+{top:'60%',left:'30%'},{top:'55%',right:'35%'},{top:type==='star'?'5%':'25%',left:'60%'}
+];
+const total=5+Math.floor(Math.random()*4);
+let count=0;
+const scene=slide.querySelector('.scene');
+const counter=slide.querySelector(`#${type}-count`);
+scene.querySelectorAll('.hidden-obj').forEach(e=>e.remove());
+
+for(let i=0;i<total;i++){
+const obj=document.createElement('div');
+obj.className='hidden-obj';
+obj.innerHTML=`<img src="${type}.jpg" alt="${type}">`;
+obj.style.top=positions[i].top;
+if(positions[i].left)obj.style.left=positions[i].left;
+else obj.style.right=positions[i].right;
+obj.addEventListener('click',function(){
+if(!this.classList.contains('found')){
+this.classList.add('found');
+count++;
+counter.textContent=count;
+playDing();
+}
+});
+scene.appendChild(obj);
+}
+}
+
+let memoryState={cards:[],flipped:[],matched:0,canFlip:true};
+function initMemoryGame(){
+const grid=document.getElementById('memory-grid');
+grid.innerHTML='';
+const pairs=['snake','snake','sun','sun','pig','pig','pen','pen'];
+memoryState={cards:shuffle([...pairs]),flipped:[],matched:0,canFlip:true};
+
+setTimeout(()=>{
+memoryState.cards.forEach((img,i)=>{
+const card=document.createElement('div');
+card.className='card flipped';
+card.dataset.index=i;
+card.innerHTML=`
+<div class="card-back">${i+1}</div>
+<div class="card-front"><img src="${img}.jpg" alt="${img}"></div>
+`;
+grid.appendChild(card);
+});
+
+setTimeout(()=>{
+grid.querySelectorAll('.card').forEach(c=>c.classList.remove('flipped'));
+grid.querySelectorAll('.card').forEach(c=>{
+c.addEventListener('click',()=>flipCard(c));
+});
+},5000);
+},100);
+}
+
+function flipCard(card){
+if(!memoryState.canFlip||card.classList.contains('flipped'))return;
+card.classList.add('flipped');
+memoryState.flipped.push(card);
+if(memoryState.flipped.length===2){
+memoryState.canFlip=false;
+const [c1,c2]=memoryState.flipped;
+const i1=parseInt(c1.dataset.index);
+const i2=parseInt(c2.dataset.index);
+if(memoryState.cards[i1]===memoryState.cards[i2]){
+playDing();
+memoryState.matched+=2;
+memoryState.flipped=[];
+memoryState.canFlip=true;
+}else{
+setTimeout(()=>{
+c1.classList.remove('flipped');
+c2.classList.remove('flipped');
+memoryState.flipped=[];
+memoryState.canFlip=true;
+},1000);
+}
+}
+}
+
+function shuffle(arr){
+for(let i=arr.length-1;i>0;i--){
+const j=Math.floor(Math.random()*(i+1));
+[arr[i],arr[j]]=[arr[j],arr[i]];
+}
+return arr;
+}
+
+updateNav();
+</script>
+</body>
+</html>
