@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -235,5 +236,6 @@ function spawnSparkle(x,y){['✨','⭐','🌟'].forEach((s,i)=>{const el=documen
 function confetti(){const cols=['#FF6B6B','#FF9F43','#6BCB77','#FFD93D','#C77DFF','#fff','#4D96FF'];for(let i=0;i<32;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*30}vh;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.5}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),1900);}}
 buildDots();showSlide(0);
 </script>
+
 </body>
 </html>
