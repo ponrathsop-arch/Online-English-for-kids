@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Be + Adjective – Quiz!</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;width:100vw;overflow:hidden;background:#FEF9F0;touch-action:manipulation;font-weight:800;}
+#progress-bar-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,0.07);z-index:998;}
+#progress-bar{height:100%;background:linear-gradient(90deg,#6BCB77,#4D96FF,#FF6B6B,#FFD93D);transition:width .4s ease;width:0%;}
+#quick-nav{position:fixed;bottom:0;left:0;width:100%;height:70px;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border-top:2px solid #F0EAE0;z-index:997;padding:10px 10px 12px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;}
+#quick-nav::-webkit-scrollbar{display:none;}
+.qn-btn{flex-shrink:0;border:none;border-radius:14px;padding:8px 14px;font-family:inherit;font-weight:800;font-size:clamp(0.7rem,1.5vw,1rem);cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 3px 0 rgba(0,0,0,0.13);color:white;text-shadow:0 1px 3px rgba(0,0,0,0.18);}
+.qn-btn:hover{transform:translateY(-3px);}
+.qn-btn.active-nav{outline:3px solid rgba(0,0,0,0.25);transform:translateY(-2px);}
+.qn-divider{flex-shrink:0;width:2px;height:32px;background:#EDE8E0;border-radius:2px;}
+
+/* MAIN LAYOUT */
+#quiz-area{position:fixed;top:7px;left:0;width:100%;height:calc(100vh - 7px - 70px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 16px 8px;gap:8px;}
+
+/* SCORE SCREEN */
+#score-screen{display:none;position:fixed;top:7px;left:0;width:100%;height:calc(100vh - 7px - 70px);flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;}
+.score-title{font-size:clamp(2rem,6vw,4rem);text-align:center;}
+.score-badge{font-size:clamp(2.5rem,8vw,5rem);color:#333;text-align:center;}
+.score-msg{font-size:clamp(1rem,3vw,1.8rem);color:#888;text-align:center;}
+.score-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:500px;width:100%;}
+.score-card{background:white;border-radius:16px;padding:12px;box-shadow:0 5px 0 rgba(0,0,0,0.08);text-align:center;}
+.score-card-title{font-size:clamp(0.8rem,2vw,1.1rem);color:#aaa;}
+.score-card-val{font-size:clamp(1.4rem,4vw,2.2rem);color:#333;}
+.score-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.score-btn{border:none;border-radius:50px;padding:12px 32px;font-family:inherit;font-weight:900;font-size:clamp(1rem,2.5vw,1.5rem);cursor:pointer;transition:transform .15s;box-shadow:0 5px 0 rgba(0,0,0,0.1);}
+.score-btn:hover{transform:translateY(-3px);}
+
+/* PIP ROW */
+#pip-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:500px;}
+.pip{width:18px;height:18px;border-radius:50%;background:#DDD;transition:background .3s;}
+.pip.correct{background:#6BCB77;}
+.pip.wrong{background:#FF6B6B;}
+.pip.current{background:#4D96FF;transform:scale(1.3);}
+
+/* QUIZ CARD */
+.quiz-counter{font-size:clamp(1rem,2.2vw,1.6rem);color:#bbb;}
+.quiz-char-wrap{width:clamp(90px,14vw,140px);height:clamp(90px,14vw,140px);animation:charFloat 2.5s ease-in-out infinite alternate;}
+@keyframes charFloat{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+.quiz-subject-badge{font-size:clamp(1.1rem,2.8vw,2rem);padding:7px 22px;border-radius:50px;color:white;display:inline-block;text-shadow:0 2px 4px rgba(0,0,0,0.15);}
+.quiz-sentence{font-size:clamp(1.3rem,3.5vw,2.5rem);color:#333;text-align:center;line-height:1.5;max-width:680px;}
+.quiz-blank{display:inline-block;min-width:clamp(80px,15vw,160px);height:clamp(34px,5.5vw,50px);border-bottom:6px solid #DDD;vertical-align:middle;margin:0 6px;}
+.quiz-choices{display:flex;gap:clamp(8px,2vw,14px);justify-content:center;flex-wrap:wrap;}
+.quiz-btn{border:none;border-radius:20px;padding:clamp(10px,1.8vw,18px) clamp(12px,2.5vw,28px);cursor:pointer;font-family:inherit;font-weight:900;font-size:clamp(1rem,2.4vw,1.8rem);box-shadow:0 7px 0 #4A6FA0;transition:transform .15s,box-shadow .15s;background:#6C9BD2;color:white;text-shadow:0 2px 5px rgba(0,0,0,0.2);}
+.quiz-btn:hover{transform:translateY(-5px);box-shadow:0 12px 0 #4A6FA0;}
+.quiz-btn.correct{animation:correctBounce .55s ease;background:#6BCB77!important;box-shadow:0 7px 0 #3DAD8E!important;outline:5px solid #A8F0C0;}
+.quiz-btn.wrong{animation:wrongShake .4s ease;background:#FF6B6B!important;box-shadow:0 7px 0 #D94040!important;}
+.quiz-feedback{font-size:clamp(1.1rem,3vw,2.2rem);min-height:44px;text-align:center;color:#333;}
+@keyframes correctBounce{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-5deg)}70%{transform:scale(0.93) rotate(3deg)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-12px)}75%{transform:translateX(12px)}}
+
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:2rem;animation:sparkleFly .9s ease forwards;}
+@keyframes sparkleFly{0%{opacity:1;transform:scale(0.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-90px)}}
+.confetti-piece{position:fixed;width:13px;height:13px;border-radius:4px;opacity:0;pointer-events:none;z-index:9999;animation:confettiFall 1.3s ease forwards;}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(800deg)}}
+</style>
+</head>
+<body>
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+
+<div id="quiz-area">
+  <div id="pip-row"></div>
+  <div class="quiz-counter" id="q-counter">Question 1</div>
+  <div class="quiz-char-wrap" id="q-char"></div>
+  <div class="quiz-subject-badge" id="q-badge"></div>
+  <div class="quiz-sentence" id="q-sentence"></div>
+  <div class="quiz-choices" id="q-choices"></div>
+  <div class="quiz-feedback" id="q-feedback"></div>
+</div>
+
+<div id="score-screen">
+  <div class="score-title" id="sc-title">🏆 Section Done!</div>
+  <div class="score-badge" id="sc-badge">10 / 10</div>
+  <div class="score-msg" id="sc-msg"></div>
+  <div class="score-grid" id="sc-grid"></div>
+  <div class="score-btns">
+    <button class="score-btn" style="background:#FF9F43;color:white" onclick="retrySection()">🔄 Try Again</button>
+    <button class="score-btn" style="background:#6BCB77;color:white" id="sc-next-btn" onclick="nextSection()">Next ➡️</button>
+  </div>
+</div>
+
+<div id="quick-nav">
+  <button class="qn-btn" style="background:#6BCB77" id="tab-normal" onclick="startSection('normal')">✅ Normal</button>
+  <button class="qn-btn" style="background:#FF6B6B" id="tab-negative" onclick="startSection('negative')">❌ Negative</button>
+  <button class="qn-btn" style="background:#4D96FF" id="tab-question" onclick="startSection('question')">❓ Question</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#FFD93D;color:#7A5800;text-shadow:none" id="tab-mix" onclick="startSection('mix')">🏆 Mix!</button>
+</div>
+
+<script>
+function mkChar(skin,shirt,hair,acc){
+  const h=hair==='boy'?`<ellipse cx="60" cy="20" rx="30" ry="15" fill="#5C3D11"/>`:hair==='dark'?`<ellipse cx="60" cy="20" rx="30" ry="15" fill="#1A1A2E"/>`:`<path d="M28 22 Q60 6 92 22 Q86 46 60 48 Q34 46 28 22Z" fill="${hair}"/><ellipse cx="60" cy="15" rx="32" ry="16" fill="${hair}"/>`;
+  return `<svg viewBox="0 0 120 130">${h}<circle cx="60" cy="42" r="28" fill="${skin}"/><rect x="26" y="68" width="68" height="52" rx="18" fill="${shirt}"/>${acc?`<rect x="26" y="68" width="68" height="14" rx="9" fill="${acc}"/>`:''}
+  <circle cx="44" cy="38" r="5.5" fill="#333"/><circle cx="76" cy="38" r="5.5" fill="#333"/>
+  <circle cx="45" cy="36" r="2" fill="white"/><circle cx="77" cy="36" r="2" fill="white"/>
+  <path d="M48 54 Q60 62 72 54" fill="none" stroke="${skin==='#C8A882'?'#8B6040':'#B07840'}" stroke-width="3.5" stroke-linecap="round"/>
+  <ellipse cx="44" cy="50" rx="7" ry="4" fill="${skin==='#C8A882'?'#D4906A':'#F5A882'}" opacity="0.5"/>
+  <ellipse cx="76" cy="50" rx="7" ry="4" fill="${skin==='#C8A882'?'#D4906A':'#F5A882'}" opacity="0.5"/>
+  </svg>`;
+}
+const C={
+  BOY:mkChar('#FFDBA4','#4D96FF','boy','#3580C0'),
+  GIRL:mkChar('#FFDBA4','#FF6B6B','#C0392B',null),
+  MIKE:mkChar('#FFDBA4','#FF9F43','boy','#E67E00'),
+  SARA:mkChar('#FFDBA4','#C77DFF','#8338EC',null),
+  LISA:mkChar('#C8A882','#6BCB77','#2BAE66',null),
+  TOM:mkChar('#C8A882','#1A3A6E','dark','#112850'),
+  GROUP:`<svg viewBox="0 0 130 110"><ellipse cx="36" cy="36" rx="22" ry="22" fill="#FFDBA4"/><ellipse cx="36" cy="23" rx="23" ry="12" fill="#5C3D11"/><rect x="16" y="56" width="40" height="38" rx="12" fill="#6BCB77"/><circle cx="28" cy="33" r="4" fill="#333"/><circle cx="44" cy="33" r="4" fill="#333"/><path d="M30 44 Q36 49 42 44" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="90" cy="36" rx="22" ry="22" fill="#C8A882"/><path d="M66 20 Q90 8 114 20 Q108 38 90 40 Q72 38 66 20Z" fill="#C0392B"/><rect x="70" y="56" width="40" height="38" rx="12" fill="#FF9F43"/><circle cx="82" cy="33" r="4" fill="#333"/><circle cx="98" cy="33" r="4" fill="#333"/><path d="M84 44 Q90 49 96 44" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  CROWD:`<svg viewBox="0 0 150 110"><ellipse cx="22" cy="36" rx="18" ry="18" fill="#FFDBA4"/><ellipse cx="22" cy="24" rx="19" ry="10" fill="#5C3D11"/><rect x="6" y="52" width="32" height="34" rx="10" fill="#C77DFF"/><ellipse cx="75" cy="32" rx="20" ry="20" fill="#C8A882"/><path d="M53 18 Q75 6 97 18 Q91 38 75 40 Q59 38 53 18Z" fill="#2BAE66"/><rect x="57" y="50" width="36" height="38" rx="12" fill="#FF6B6B"/><ellipse cx="128" cy="36" rx="18" ry="18" fill="#FFDBA4"/><ellipse cx="128" cy="24" rx="19" ry="10" fill="#1A1A2E"/><rect x="112" y="52" width="32" height="34" rx="10" fill="#4D96FF"/></svg>`,
+};
+
+const BANK={
+  normal:[
+    {s:'I',c:'#4D96FF',k:'BOY',  q:'I _______ excited about the trip!',         ch:['am','is','are'],        ans:'am',      fb:'I → am!'},
+    {s:'She',c:'#FF6B6B',k:'GIRL', q:'She _______ tired after the game.',        ch:['am','is','are'],        ans:'is',      fb:'She → is!'},
+    {s:'They',c:'#6BCB77',k:'CROWD',q:'They _______ hungry after school.',       ch:['am','is','are'],        ans:'are',     fb:'They → are!'},
+    {s:'He',c:'#FF9F43',k:'MIKE', q:'Mike _______ proud of his drawing.',        ch:['am','is','are'],        ans:'is',      fb:'He → is!'},
+    {s:'We',c:'#C77DFF',k:'GROUP',q:'We _______ nervous before the show.',       ch:['am','is','are'],        ans:'are',     fb:'We → are!'},
+    {s:'Tom',c:'#1A3A6E',k:'TOM', q:'Tom _______ confused about the question.', ch:['am','is','are'],        ans:'is',      fb:'He → is!'},
+    {s:'I',c:'#4D96FF',k:'BOY',   q:'I _______ happy today!',                   ch:['am','is','are'],        ans:'am',      fb:'I → am!'},
+    {s:'Lisa',c:'#6BCB77',k:'LISA',q:'Lisa _______ determined to win.',          ch:['am','is','are'],        ans:'is',      fb:'She → is!'},
+    {s:'You',c:'#4D96FF',k:'BOY', q:'You _______ angry about that?',             ch:['am','is','are'],        ans:'are',     fb:'You → are!'},
+    {s:'Sara',c:'#C77DFF',k:'SARA',q:'Sara _______ overwhelmed with work.',      ch:['am','is','are'],        ans:'is',      fb:'She → is!'},
+  ],
+  negative:[
+    {s:'I',c:'#4D96FF',k:'BOY',   q:'I _______ sad today!',                     ch:['am not','isn\'t','aren\'t'], ans:'am not',  fb:'I → am not!'},
+    {s:'She',c:'#FF6B6B',k:'GIRL',q:'She _______ angry anymore.',                ch:['am not','isn\'t','aren\'t'], ans:'isn\'t',  fb:'She → isn\'t!'},
+    {s:'They',c:'#6BCB77',k:'CROWD',q:'They _______ bored at all.',              ch:['am not','isn\'t','aren\'t'], ans:'aren\'t', fb:'They → aren\'t!'},
+    {s:'He',c:'#FF9F43',k:'MIKE', q:'Mike _______ tired yet.',                   ch:['am not','isn\'t','aren\'t'], ans:'isn\'t',  fb:'He → isn\'t!'},
+    {s:'We',c:'#C77DFF',k:'GROUP',q:'We _______ hungry. We just ate.',           ch:['am not','isn\'t','aren\'t'], ans:'aren\'t', fb:'We → aren\'t!'},
+    {s:'Tom',c:'#1A3A6E',k:'TOM', q:'Tom _______ confused. He understands.',    ch:['am not','isn\'t','aren\'t'], ans:'isn\'t',  fb:'He → isn\'t!'},
+    {s:'I',c:'#4D96FF',k:'BOY',   q:'I _______ nervous. I am ready!',            ch:['am not','isn\'t','aren\'t'], ans:'am not',  fb:'I → am not!'},
+    {s:'Lisa',c:'#6BCB77',k:'LISA',q:'Lisa _______ embarrassed at all.',         ch:['am not','isn\'t','aren\'t'], ans:'isn\'t',  fb:'She → isn\'t!'},
+    {s:'You',c:'#4D96FF',k:'BOY', q:'You _______ terrified, are you?',           ch:['am not','isn\'t','aren\'t'], ans:'aren\'t', fb:'You → aren\'t!'},
+    {s:'Sara',c:'#C77DFF',k:'SARA',q:'Sara _______ exhausted today.',            ch:['am not','isn\'t','aren\'t'], ans:'isn\'t',  fb:'She → isn\'t!'},
+  ],
+  question:[
+    {s:'Is/Are?',c:'#4D96FF',k:'GIRL', q:'_______ she happy today?',             ch:['Am','Is','Are'],        ans:'Is',      fb:'She → Is!'},
+    {s:'Is/Are?',c:'#6BCB77',k:'CROWD',q:'_______ they excited?',                ch:['Am','Is','Are'],        ans:'Are',     fb:'They → Are!'},
+    {s:'Is/Are?',c:'#FF9F43',k:'MIKE', q:'_______ Mike tired after school?',     ch:['Am','Is','Are'],        ans:'Is',      fb:'He → Is!'},
+    {s:'Is/Are?',c:'#C77DFF',k:'GROUP',q:'_______ we ready to start?',           ch:['Am','Is','Are'],        ans:'Are',     fb:'We → Are!'},
+    {s:'Yes/No?',c:'#FF6B6B',k:'SARA', q:'Is Sara nervous? — Yes, she ___.',    ch:['am','is','are'],        ans:'is',      fb:'Yes, she is!'},
+    {s:'Yes/No?',c:'#4D96FF',k:'BOY',  q:'Are you hungry? — No, I ___ not.',    ch:['am','is','are'],        ans:'am',      fb:'No, I am not!'},
+    {s:'Yes/No?',c:'#6BCB77',k:'CROWD',q:'Are they bored? — No, they ___.',     ch:['isn\'t','aren\'t','am not'], ans:'aren\'t', fb:'No, they aren\'t!'},
+    {s:'Is/Are?',c:'#1A3A6E',k:'TOM',  q:'_______ Tom proud of his work?',      ch:['Am','Is','Are'],        ans:'Is',      fb:'He → Is!'},
+    {s:'Is/Are?',c:'#6BCB77',k:'LISA', q:'_______ Lisa confused?',               ch:['Am','Is','Are'],        ans:'Is',      fb:'She → Is!'},
+    {s:'Yes/No?',c:'#C77DFF',k:'GROUP',q:'Are we exhausted? — Yes, we ___.',    ch:['am','is','are'],        ans:'are',     fb:'Yes, we are!'},
+  ],
+};
+// build mix from all 3
+BANK.mix=[...BANK.normal,...BANK.negative,...BANK.question].sort(()=>Math.random()-.5).slice(0,20);
+
+const SECTION_COLORS={normal:'#6BCB77',negative:'#FF6B6B',question:'#4D96FF',mix:'#FFD93D'};
+const SECTION_LABELS={normal:'✅ Normal',negative:'❌ Negative',question:'❓ Question',mix:'🏆 Mix'};
+const scores={normal:null,negative:null,question:null,mix:null};
+
+let curSection='normal', questions=[], curQ=0, curScore=0, answered=false;
+
+function startSection(sec){
+  curSection=sec;
+  document.querySelectorAll('.qn-btn').forEach(b=>b.classList.remove('active-nav'));
+  document.getElementById('tab-'+sec)?.classList.add('active-nav');
+  // shuffle
+  if(sec==='mix') BANK.mix=[...BANK.normal,...BANK.negative,...BANK.question].sort(()=>Math.random()-.5).slice(0,20);
+  questions=[...BANK[sec]].sort(()=>Math.random()-.5);
+  curQ=0;curScore=0;answered=false;
+  document.getElementById('score-screen').style.display='none';
+  document.getElementById('quiz-area').style.display='flex';
+  buildPips();renderQ();
+}
+
+function buildPips(){
+  const r=document.getElementById('pip-row');r.innerHTML='';
+  questions.forEach((_,i)=>{const p=document.createElement('div');p.className='pip'+(i===0?' current':'');p.id=`pip-${i}`;r.appendChild(p);});
+}
+function setPip(i,state){const p=document.getElementById(`pip-${i}`);if(p)p.className='pip '+state;}
+
+function renderQ(){
+  const q=questions[curQ];answered=false;
+  document.getElementById('q-counter').textContent=`Question ${curQ+1} of ${questions.length}`;
+  document.getElementById('q-char').innerHTML=C[q.k];
+  document.getElementById('q-badge').textContent=q.s;
+  document.getElementById('q-badge').style.background=q.c;
+  document.getElementById('q-sentence').innerHTML=q.q.replace('_______','<span class="quiz-blank"></span>').replace('___','<span class="quiz-blank" style="min-width:55px"></span>');
+  document.getElementById('q-feedback').textContent='';
+  const wrap=document.getElementById('q-choices');wrap.innerHTML='';
+  [...q.ch].sort(()=>Math.random()-.5).forEach(choice=>{
+    const btn=document.createElement('button');btn.className='quiz-btn';btn.textContent=choice;
+    btn.onclick=()=>handleAnswer(choice===q.ans,btn,q.fb);
+    wrap.appendChild(btn);
+  });
+  document.getElementById('progress-bar').style.width=((curQ/questions.length)*100)+'%';
+  setPip(curQ,'current');
+}
+
+function handleAnswer(correct,btn,fb){
+  if(answered) return;answered=true;
+  if(correct){
+    curScore++;btn.classList.add('correct');
+    document.getElementById('q-feedback').textContent=fb;
+    document.querySelectorAll('.quiz-btn').forEach(b=>{b.disabled=true;if(b!==btn)b.style.opacity='0.35';});
+    setPip(curQ,'correct');
+    spawnSparkle(btn.getBoundingClientRect().left+btn.offsetWidth/2,btn.getBoundingClientRect().top+btn.offsetHeight/2);
+    if(curScore===questions.length) confetti();
+    setTimeout(()=>{curQ++;if(curQ<questions.length){setPip(curQ-1,'correct');renderQ();}else showScore();},1500);
+  } else {
+    btn.classList.add('wrong');setPip(curQ,'wrong');
+    document.getElementById('q-feedback').textContent='Try again!';
+    setTimeout(()=>{btn.classList.remove('wrong');btn.style.background='';document.getElementById('q-feedback').textContent='';answered=false;},850);
+  }
+}
+
+function showScore(){
+  scores[curSection]=curScore;
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('score-screen').style.display='flex';
+  document.getElementById('progress-bar').style.width='100%';
+  const pct=curScore/questions.length;
+  const emoji=pct===1?'🏆':pct>=0.7?'⭐':'💪';
+  const msg=pct===1?'Perfect score!':pct>=0.7?'Great job!':'Keep practicing!';
+  document.getElementById('sc-title').textContent=`${emoji} ${SECTION_LABELS[curSection]}`;
+  document.getElementById('sc-badge').textContent=`${curScore} / ${questions.length}`;
+  document.getElementById('sc-msg').textContent=msg;
+  // show all section scores
+  const grid=document.getElementById('sc-grid');grid.innerHTML='';
+  ['normal','negative','question','mix'].forEach(sec=>{
+    const card=document.createElement('div');card.className='score-card';
+    card.innerHTML=`<div class="score-card-title" style="color:${SECTION_COLORS[sec]}">${SECTION_LABELS[sec]}</div>
+    <div class="score-card-val">${scores[sec]!==null?scores[sec]+' / '+BANK[sec].length:'—'}</div>`;
+    grid.appendChild(card);
+  });
+  // next button logic
+  const secs=['normal','negative','question','mix'];
+  const nextSec=secs[secs.indexOf(curSection)+1];
+  const btn=document.getElementById('sc-next-btn');
+  if(nextSec){btn.textContent=`${SECTION_LABELS[nextSec]} ➡️`;btn.style.display='';}
+  else{btn.textContent='🏠 Home';btn.onclick=()=>{document.getElementById('score-screen').style.display='none';document.getElementById('quiz-area').style.display='flex';startSection('normal');};}
+}
+
+function retrySection(){startSection(curSection);}
+function nextSection(){
+  const secs=['normal','negative','question','mix'];
+  const next=secs[secs.indexOf(curSection)+1];
+  if(next) startSection(next);
+}
+
+function spawnSparkle(x,y){const sp=['✨','⭐','🌟','💫'];for(let i=0;i<3;i++){const el=document.createElement('div');el.className='sparkle';el.textContent=sp[Math.floor(Math.random()*sp.length)];el.style.cssText=`left:${x-20+(Math.random()-.5)*60}px;top:${y-20+(Math.random()-.5)*40}px;animation-delay:${i*.12}s`;document.body.appendChild(el);setTimeout(()=>el.remove(),950);}}
+function confetti(){const cols=['#4D96FF','#FF6B6B','#6BCB77','#FFD93D','#C77DFF','#fff','#FF9F43'];for(let i=0;i<32;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*30}vh;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.5}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),1900);}}
+
+startSection('normal');
+</script>
+</body>
+</html>
