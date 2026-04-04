@@ -180,6 +180,7 @@
   .card:nth-child(5) { animation-delay: 0.25s; }
   .card:nth-child(6) { animation-delay: 0.30s; }
   .card:nth-child(7) { animation-delay: 0.35s; }
+  .card:nth-child(8) { animation-delay: 0.40s; }
 
   @keyframes card-in {
     to { opacity: 1; transform: translateY(0); }
@@ -202,6 +203,7 @@
   .card-5::before { background: var(--orange); }
   .card-6::before { background: var(--pink); }
   .card-7::before { background: var(--yellow); }
+  .card-8::before { background: var(--green); }
 
   .card:hover.card-1 { border-color: var(--green); }
   .card:hover.card-2 { border-color: var(--purple); }
@@ -210,6 +212,7 @@
   .card:hover.card-5 { border-color: var(--orange); }
   .card:hover.card-6 { border-color: var(--pink); }
   .card:hover.card-7 { border-color: var(--yellow); }
+  .card:hover.card-8 { border-color: var(--green); }
 
   .card-emoji { font-size: 48px; display: block; margin-bottom: 14px; line-height: 1; }
   .card-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--dark); margin-bottom: 8px; }
@@ -233,6 +236,7 @@
   .card-5 .card-badge { background: #fff4e8; color: #d47200; }
   .card-6 .card-badge { background: #fff0f6; color: #d4408a; }
   .card-7 .card-badge { background: #fffbe8; color: #c49b00; }
+  .card-8 .card-badge { background: #eefbf0; color: #3a9e46; }
 
   .card-soon {
     opacity: 0.45 !important;
@@ -317,22 +321,29 @@
       <span class="card-badge">Verb</span>
     </a>
 
+    <a href="be-adjective/index.html" class="card card-5">
+      <span class="card-emoji">😊</span>
+      <div class="card-title">Be + Adjective</div>
+      <div class="card-desc">Describing feelings & qualities</div>
+      <span class="card-badge">Adjective</span>
+    </a>
+
     <!-- COMING SOON -->
-    <div class="card card-5 card-soon">
+    <div class="card card-6 card-soon">
       <span class="card-emoji">🕰️</span>
       <div class="card-title">Past Continuous</div>
       <div class="card-desc">What was happening before</div>
       <span class="card-badge">Tense</span>
     </div>
 
-    <div class="card card-6 card-soon">
+    <div class="card card-7 card-soon">
       <span class="card-emoji">🔮</span>
       <div class="card-title">Future Simple</div>
       <div class="card-desc">Things that will happen</div>
       <span class="card-badge">Tense</span>
     </div>
 
-    <div class="card card-7 card-soon">
+    <div class="card card-8 card-soon">
       <span class="card-emoji">💎</span>
       <div class="card-title">Present Perfect</div>
       <div class="card-desc">Experience & recent events</div>
