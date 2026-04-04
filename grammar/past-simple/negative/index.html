@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Past Simple — Negative!</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito',Arial,sans-serif;height:100vh;width:100vw;overflow:hidden;background:#FEF9F0;touch-action:manipulation;font-weight:800;}
+.slide{display:none;width:100vw;height:calc(100vh - 7px - 56px - 70px);position:absolute;top:7px;left:0;flex-direction:column;align-items:center;justify-content:center;padding:12px 16px 8px;overflow:hidden;}
+.slide.active{display:flex;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}
+@keyframes popIn{0%{transform:scale(0.85);opacity:0}100%{transform:scale(1);opacity:1}}
+#progress-bar-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,0.07);z-index:998;}
+#progress-bar{height:100%;background:linear-gradient(90deg,#FF6B6B,#FF9F43,#C77DFF,#FFD93D);transition:width .4s ease;width:0%;}
+#dots{position:fixed;bottom:calc(70px + 28px);left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:999;}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(0,0,0,0.18);transition:all .3s;}
+.dot.active{background:#555;transform:scale(1.5);}
+.nav-btn{position:fixed;bottom:calc(70px + 14px);background:rgba(80,80,80,0.18);border:none;border-radius:50%;width:52px;height:52px;font-size:1.5rem;cursor:pointer;z-index:999;transition:transform .15s;backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,0.1);}
+.nav-btn:hover{transform:scale(1.15);}
+#prevBtn{left:16px;}#nextBtn{right:16px;}
+#quick-nav{position:fixed;bottom:0;left:0;width:100%;height:70px;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border-top:2px solid #F0EAE0;z-index:997;padding:10px 10px 12px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;}
+#quick-nav::-webkit-scrollbar{display:none;}
+.qn-btn{flex-shrink:0;border:none;border-radius:14px;padding:8px 14px;font-family:inherit;font-weight:800;font-size:clamp(0.7rem,1.5vw,1rem);cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 3px 0 rgba(0,0,0,0.13);color:white;text-shadow:0 1px 3px rgba(0,0,0,0.18);}
+.qn-btn:hover{transform:translateY(-3px);}
+.qn-btn.active-nav{outline:3px solid rgba(0,0,0,0.25);transform:translateY(-2px);}
+.qn-divider{flex-shrink:0;width:2px;height:32px;background:#EDE8E0;border-radius:2px;}
+#s0{background:linear-gradient(145deg,#FF6B6B,#FF9F43,#FFD93D,#C77DFF);justify-content:center;gap:16px;}
+.rainbow-title{font-size:clamp(2.4rem,8vw,6.5rem);color:white;text-shadow:0 8px 0 rgba(0,0,0,0.12);animation:titleBounce 1.8s ease-in-out infinite alternate;text-align:center;line-height:1.15;}
+@keyframes titleBounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-16px) rotate(2deg)}}
+.tap-hint{font-size:clamp(1.2rem,3.5vw,2.2rem);color:white;animation:pulse 1.4s ease-in-out infinite alternate;}
+@keyframes pulse{from{opacity:.4;transform:scale(0.97)}to{opacity:1;transform:scale(1.03)}}
+.formula-slide{gap:12px;}
+.formula-title{font-size:clamp(1.4rem,4vw,2.8rem);color:white;text-shadow:0 4px 0 rgba(0,0,0,0.1);text-align:center;}
+.formula-card{background:white;border-radius:24px;padding:clamp(14px,2.5vw,26px) clamp(18px,3.5vw,36px);box-shadow:0 8px 0 rgba(0,0,0,0.1);max-width:640px;width:100%;display:flex;flex-direction:column;gap:14px;}
+.formula-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;}
+.pill{padding:8px 18px;border-radius:50px;font-size:clamp(1rem,2.5vw,1.7rem);color:white;font-weight:900;text-shadow:0 2px 4px rgba(0,0,0,0.15);}
+.pill-op{font-size:clamp(1.2rem,3vw,2rem);color:#ccc;font-weight:900;}
+.formula-sub{font-size:clamp(0.85rem,2vw,1.35rem);color:#aaa;text-align:center;}
+.ex-box{background:#FEF9F0;border-radius:14px;padding:10px 16px;font-size:clamp(1rem,2.4vw,1.7rem);color:#333;border-left:5px solid transparent;}
+.examples-slide{background:#FEF9F0;gap:8px;}
+.ex-title{font-size:clamp(1.6rem,4.5vw,3rem);color:#333;text-align:center;}
+.ex-who-badge{display:inline-block;padding:8px 24px;border-radius:50px;font-size:clamp(1rem,2.5vw,1.9rem);font-weight:900;color:white;text-shadow:0 2px 4px rgba(0,0,0,0.15);}
+.ex-sentences{display:flex;flex-direction:column;gap:10px;width:100%;max-width:640px;}
+.ex-sentence-box{background:white;border-radius:18px;padding:clamp(10px,2vw,18px) clamp(14px,2.5vw,26px);box-shadow:0 5px 0 rgba(0,0,0,0.07);border-left:7px solid transparent;display:flex;align-items:center;gap:14px;font-size:clamp(1.1rem,2.8vw,1.85rem);color:#333;}
+.ex-char{width:clamp(36px,5.5vw,56px);height:clamp(36px,5.5vw,56px);flex-shrink:0;}
+.ex-verb{font-weight:900;padding:2px 9px;border-radius:7px;}
+#s-summary{background:#FFD93D;gap:12px;}
+.summary-title{font-size:clamp(1.8rem,5vw,3.8rem);color:#7A5800;text-align:center;}
+.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:680px;width:100%;}
+.summary-card{background:white;border-radius:18px;padding:clamp(11px,2vw,20px);box-shadow:0 6px 0 rgba(0,0,0,0.09);}
+.summary-card-title{font-size:clamp(0.88rem,2vw,1.4rem);color:#aaa;margin-bottom:8px;}
+.summary-card-content{font-size:clamp(0.95rem,2.2vw,1.55rem);color:#333;line-height:1.85;}
+.hl{font-weight:900;padding:2px 7px;border-radius:6px;}
+.quiz-slide{background:#FEF9F0;gap:6px;}
+.quiz-counter{font-size:clamp(1rem,2.2vw,1.6rem);color:#bbb;}
+.quiz-char-wrap{width:clamp(100px,16vw,155px);height:clamp(100px,16vw,155px);animation:charFloat 2.5s ease-in-out infinite alternate;}
+@keyframes charFloat{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+.quiz-subject-badge{font-size:clamp(1.2rem,3vw,2.2rem);padding:8px 26px;border-radius:50px;color:white;display:inline-block;text-shadow:0 2px 4px rgba(0,0,0,0.15);}
+.quiz-sentence{font-size:clamp(1.4rem,4vw,2.8rem);color:#333;text-align:center;line-height:1.5;max-width:680px;}
+.quiz-blank{display:inline-block;min-width:clamp(100px,17vw,175px);height:clamp(38px,6vw,55px);border-bottom:6px solid #DDD;vertical-align:middle;margin:0 6px;}
+.quiz-choices{display:flex;gap:clamp(8px,2vw,16px);justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.quiz-btn{border:none;border-radius:20px;padding:clamp(12px,2vw,20px) clamp(14px,3vw,32px);cursor:pointer;font-family:inherit;font-weight:900;font-size:clamp(1.05rem,2.6vw,2rem);box-shadow:0 7px 0 #4A6FA0;transition:transform .15s,box-shadow .15s;background:#6C9BD2;color:white;text-shadow:0 2px 5px rgba(0,0,0,0.2);}
+.quiz-btn:hover{transform:translateY(-5px);box-shadow:0 12px 0 #4A6FA0;}
+.quiz-btn.correct{animation:correctBounce .55s ease;background:#6BCB77!important;box-shadow:0 7px 0 #3DAD8E!important;outline:5px solid #A8F0C0;}
+.quiz-btn.wrong{animation:wrongShake .4s ease;background:#FF6B6B!important;box-shadow:0 7px 0 #D94040!important;}
+.quiz-feedback{font-size:clamp(1.3rem,3.5vw,2.5rem);min-height:48px;margin-top:6px;text-align:center;color:#333;}
+@keyframes correctBounce{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-5deg)}70%{transform:scale(0.93) rotate(3deg)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-12px)}75%{transform:translateX(12px)}}
+#finish-slide{background:linear-gradient(145deg,#FF6B6B,#FF9F43,#C77DFF);gap:12px;}
+.finish-char{width:clamp(120px,18vw,190px);height:clamp(120px,18vw,190px);animation:titleBounce 1.4s ease-in-out infinite alternate;}
+.finish-title{font-size:clamp(2.2rem,7vw,5.5rem);color:white;text-shadow:0 7px 0 rgba(0,0,0,0.12);text-align:center;}
+.finish-sub{font-size:clamp(1.1rem,2.8vw,2rem);color:rgba(255,255,255,0.9);text-align:center;}
+.restart-btn{border:none;border-radius:50px;padding:14px 48px;font-family:inherit;font-size:clamp(1.1rem,2.8vw,1.8rem);font-weight:900;color:#FF6B6B;background:white;box-shadow:0 6px 0 rgba(0,0,0,0.12);cursor:pointer;transition:transform .15s;}
+.restart-btn:hover{transform:translateY(-4px);}
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:2rem;animation:sparkleFly .9s ease forwards;}
+@keyframes sparkleFly{0%{opacity:1;transform:scale(0.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-90px)}}
+.confetti-piece{position:fixed;width:13px;height:13px;border-radius:4px;opacity:0;pointer-events:none;z-index:9999;animation:confettiFall 1.3s ease forwards;}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(800deg)}}
+</style>
+</head>
+<body>
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀</button>
+<button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">▶</button>
+<div id="dots"></div>
+<div id="quick-nav">
+  <button class="qn-btn" style="background:#888" onclick="showSlide(0)">🏠 Home</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#FF6B6B" id="qn-formula" onclick="goToSection('formula')">Formula</button>
+  <button class="qn-btn" style="background:#FF9F43" id="qn-examples" onclick="goToSection('examples')">Examples</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#C77DFF" id="qn-quiz" onclick="goToSection('quiz')">Quiz!</button>
+</div>
+
+<div class="slide active" id="s0">
+  <div class="rainbow-title">Past Simple<br>Negative! ❌</div>
+  <div class="tap-hint">Tap to start!</div>
+</div>
+
+<div class="slide formula-slide" id="s-formula" style="background:#FF6B6B" data-section="formula">
+  <div class="formula-title">The Formula</div>
+  <div class="formula-card">
+    <div class="formula-row">
+      <span class="pill" style="background:#4D96FF">Subject</span>
+      <span class="pill-op">+</span>
+      <span class="pill" style="background:#FF6B6B">didn't</span>
+      <span class="pill-op">+</span>
+      <span class="pill" style="background:#6BCB77">base verb</span>
+    </div>
+    <div class="formula-sub">Use <strong>didn't</strong> for ALL subjects!<br>I / You / He / She / We / They → all use <strong>didn't</strong></div>
+    <div class="ex-box" style="border-color:#FF6B6B">She <strong>didn't go</strong> to school. (NOT didn't went)</div>
+    <div class="ex-box" style="border-color:#FF9F43">He <strong>didn't eat</strong> lunch. (NOT didn't ate)</div>
+  </div>
+</div>
+
+<div class="slide formula-slide" id="s-rule" style="background:#FF9F43" data-section="formula">
+  <div class="formula-title">⚠️ Key Rule — Base Verb!</div>
+  <div class="formula-card">
+    <div class="formula-sub" style="font-size:clamp(1rem,2.5vw,1.6rem);color:#333;">After <strong style="color:#FF6B6B">didn't</strong>, always use the BASE verb</div>
+    <div class="ex-box" style="border-color:#6BCB77">✅ I <strong>didn't walk</strong> to school.</div>
+    <div class="ex-box" style="border-color:#6BCB77">✅ She <strong>didn't eat</strong> breakfast.</div>
+    <div class="ex-box" style="border-color:#FF6B6B">❌ I didn't <del>walked</del> to school.</div>
+    <div class="ex-box" style="border-color:#FF6B6B">❌ She didn't <del>ate</del> breakfast.</div>
+    <div class="formula-sub">didn't already carries the past tense! ✅</div>
+  </div>
+</div>
+
+<div class="slide examples-slide" id="s-ex1" data-section="examples">
+  <div class="ex-title">didn't + base verb ❌</div>
+  <div class="ex-who-badge" style="background:#FF6B6B">All subjects use didn't!</div>
+  <div class="ex-sentences">
+    <div class="ex-sentence-box" style="border-color:#FF6B6B">
+      <svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>
+      I <span class="ex-verb" style="background:#FFF0F0;color:#FF6B6B">didn't go</span> to the park.
+    </div>
+    <div class="ex-sentence-box" style="border-color:#FF6B6B">
+      <svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>
+      She <span class="ex-verb" style="background:#FFF0F0;color:#FF6B6B">didn't eat</span> breakfast.
+    </div>
+    <div class="ex-sentence-box" style="border-color:#FF6B6B">
+      <svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF9F43"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>
+      He <span class="ex-verb" style="background:#FFF0F0;color:#FF6B6B">didn't play</span> football.
+    </div>
+    <div class="ex-sentence-box" style="border-color:#FF6B6B">
+      <svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF6B6B"/></svg>
+      They <span class="ex-verb" style="background:#FFF0F0;color:#FF6B6B">didn't watch</span> TV.
+    </div>
+  </div>
+</div>
+
+<div class="slide examples-slide" id="s-ex2" data-section="examples">
+  <div class="ex-title">More Examples ❌</div>
+  <div class="ex-who-badge" style="background:#FF9F43">Base verb after didn't!</div>
+  <div class="ex-sentences">
+    <div class="ex-sentence-box" style="border-color:#FF9F43">
+      <svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#2BAE66"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#6BCB77"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>
+      Lisa <span class="ex-verb" style="background:#FFF3E0;color:#FF9F43">didn't walk</span> to school.
+    </div>
+    <div class="ex-sentence-box" style="border-color:#FF9F43">
+      <svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#1A1A2E"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#1A3A6E"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>
+      Tom <span class="ex-verb" style="background:#FFF3E0;color:#FF9F43">didn't study</span> last night.
+    </div>
+    <div class="ex-sentence-box" style="border-color:#FF9F43">
+      <svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#8338EC"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#C77DFF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>
+      We <span class="ex-verb" style="background:#FFF3E0;color:#FF9F43">didn't see</span> the movie.
+    </div>
+    <div class="ex-sentence-box" style="border-color:#FF9F43">
+      <svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>
+      You <span class="ex-verb" style="background:#FFF3E0;color:#FF9F43">didn't do</span> your homework.
+    </div>
+  </div>
+</div>
+
+<div class="slide" id="s-summary" data-section="examples">
+  <div class="summary-title">Quick Summary! ❌</div>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-card-title" style="color:#FF6B6B">Formula</div>
+      <div class="summary-card-content">Subject +<br><span class="hl" style="background:#FFF0F0;color:#FF6B6B">didn't</span> +<br>base verb</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-title" style="color:#FF9F43">All subjects!</div>
+      <div class="summary-card-content">I <span class="hl" style="background:#FFF0F0;color:#FF6B6B">didn't</span><br>He <span class="hl" style="background:#FFF0F0;color:#FF6B6B">didn't</span><br>They <span class="hl" style="background:#FFF0F0;color:#FF6B6B">didn't</span></div>
+    </div>
+    <div class="summary-card" style="grid-column:1/-1">
+      <div class="summary-card-title">⚠️ Remember!</div>
+      <div class="summary-card-content" style="display:flex;gap:16px;flex-wrap:wrap;">
+        <span>✅ didn't <span class="hl" style="background:#DFFFF0;color:#2BAE66">go</span></span>
+        <span>✅ didn't <span class="hl" style="background:#DFFFF0;color:#2BAE66">eat</span></span>
+        <span>❌ didn't <span class="hl" style="background:#FFF0F0;color:#FF6B6B"><del>went</del></span></span>
+        <span>❌ didn't <span class="hl" style="background:#FFF0F0;color:#FF6B6B"><del>ate</del></span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" id="finish-slide">
+  <svg class="finish-char" viewBox="0 0 200 200"><rect x="70" y="130" width="60" height="20" rx="6" fill="#E6A800"/><rect x="52" y="148" width="96" height="18" rx="9" fill="#F5C800"/><path d="M38 38 Q38 122 100 122 Q162 122 162 38Z" fill="#F5C800"/><path d="M38 52 Q16 52 16 80 Q16 108 38 108" fill="none" stroke="#E6A800" stroke-width="14" stroke-linecap="round"/><path d="M162 52 Q184 52 184 80 Q184 108 162 108" fill="none" stroke="#E6A800" stroke-width="14" stroke-linecap="round"/><polygon points="100,52 110,78 138,78 116,94 124,120 100,104 76,120 84,94 62,78 90,78" fill="white" opacity="0.45"/></svg>
+  <div class="finish-title">Well Done! 🎉</div>
+  <div class="finish-sub">You learned Past Simple Negative!</div>
+  <button class="restart-btn" onclick="showSlide(0)">Play Again</button>
+</div>
+
+<script>
+function mkChar(skin,shirt,hair,acc){const h=hair==='boy'?`<ellipse cx="60" cy="20" rx="30" ry="15" fill="#5C3D11"/>`:hair==='dark'?`<ellipse cx="60" cy="20" rx="30" ry="15" fill="#1A1A2E"/>`:`<path d="M28 22 Q60 6 92 22 Q86 46 60 48 Q34 46 28 22Z" fill="${hair}"/><ellipse cx="60" cy="15" rx="32" ry="16" fill="${hair}"/>`;return `<svg viewBox="0 0 120 130">${h}<circle cx="60" cy="42" r="28" fill="${skin}"/><rect x="26" y="68" width="68" height="52" rx="18" fill="${shirt}"/>${acc?`<rect x="26" y="68" width="68" height="14" rx="9" fill="${acc}"/>`:''}<circle cx="44" cy="38" r="5.5" fill="#333"/><circle cx="76" cy="38" r="5.5" fill="#333"/><circle cx="45" cy="36" r="2" fill="white"/><circle cx="77" cy="36" r="2" fill="white"/><path d="M48 54 Q60 62 72 54" fill="none" stroke="${skin==='#C8A882'?'#8B6040':'#B07840'}" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="44" cy="50" rx="7" ry="4" fill="${skin==='#C8A882'?'#D4906A':'#F5A882'}" opacity="0.5"/><ellipse cx="76" cy="50" rx="7" ry="4" fill="${skin==='#C8A882'?'#D4906A':'#F5A882'}" opacity="0.5"/></svg>`;}
+const CHARS={BOY:mkChar('#FFDBA4','#4D96FF','boy','#3580C0'),GIRL:mkChar('#FFDBA4','#FF6B6B','#C0392B',null),MIKE:mkChar('#FFDBA4','#FF9F43','boy','#E67E00'),SARA:mkChar('#FFDBA4','#C77DFF','#8338EC',null),LISA:mkChar('#C8A882','#6BCB77','#2BAE66',null),TOM:mkChar('#C8A882','#1A3A6E','dark','#112850'),GROUP:`<svg viewBox="0 0 130 110"><ellipse cx="36" cy="36" rx="22" ry="22" fill="#FFDBA4"/><ellipse cx="36" cy="23" rx="23" ry="12" fill="#5C3D11"/><rect x="16" y="56" width="40" height="38" rx="12" fill="#6BCB77"/><circle cx="28" cy="33" r="4" fill="#333"/><circle cx="44" cy="33" r="4" fill="#333"/><path d="M30 44 Q36 49 42 44" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="90" cy="36" rx="22" ry="22" fill="#C8A882"/><path d="M66 20 Q90 8 114 20 Q108 38 90 40 Q72 38 66 20Z" fill="#C0392B"/><rect x="70" y="56" width="40" height="38" rx="12" fill="#FF9F43"/><circle cx="82" cy="33" r="4" fill="#333"/><circle cx="98" cy="33" r="4" fill="#333"/><path d="M84 44 Q90 49 96 44" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>`,CROWD:`<svg viewBox="0 0 150 110"><ellipse cx="22" cy="36" rx="18" ry="18" fill="#FFDBA4"/><ellipse cx="22" cy="24" rx="19" ry="10" fill="#5C3D11"/><rect x="6" y="52" width="32" height="34" rx="10" fill="#C77DFF"/><ellipse cx="75" cy="32" rx="20" ry="20" fill="#C8A882"/><path d="M53 18 Q75 6 97 18 Q91 38 75 40 Q59 38 53 18Z" fill="#2BAE66"/><rect x="57" y="50" width="36" height="38" rx="12" fill="#FF6B6B"/><ellipse cx="128" cy="36" rx="18" ry="18" fill="#FFDBA4"/><ellipse cx="128" cy="24" rx="19" ry="10" fill="#1A1A2E"/><rect x="112" y="52" width="32" height="34" rx="10" fill="#4D96FF"/></svg>`};
+const QUIZZES=[
+  {subject:'I',subjectColor:'#4D96FF',charKey:'BOY',sentence:'I _______ to the park yesterday.',choices:["didn't go","didn't went","not go"],correct:"didn't go",feedback:"didn't + base verb: go!"},
+  {subject:'She',subjectColor:'#FF6B6B',charKey:'GIRL',sentence:'She _______ breakfast this morning.',choices:["didn't eat","didn't ate","not eat"],correct:"didn't eat",feedback:"didn't + base verb: eat!"},
+  {subject:'He',subjectColor:'#FF9F43',charKey:'MIKE',sentence:'He _______ football last Sunday.',choices:["didn't played","didn't play","not play"],correct:"didn't play",feedback:"didn't + base verb: play!"},
+  {subject:'They',subjectColor:'#6BCB77',charKey:'CROWD',sentence:'They _______ TV last night.',choices:["didn't watched","not watch","didn't watch"],correct:"didn't watch",feedback:"didn't + base verb: watch!"},
+  {subject:'Tom',subjectColor:'#1A3A6E',charKey:'TOM',sentence:'Tom _______ his homework yesterday.',choices:["didn't did","didn't do","not did"],correct:"didn't do",feedback:"didn't + base verb: do!"},
+  {subject:'Lisa',subjectColor:'#6BCB77',charKey:'LISA',sentence:'Lisa _______ to school last Monday.',choices:["didn't walked","not walked","didn't walk"],correct:"didn't walk",feedback:"didn't + base verb: walk!"},
+  {subject:'We',subjectColor:'#FF9F43',charKey:'GROUP',sentence:'We _______ the movie last night.',choices:["didn't saw","didn't see","not seen"],correct:"didn't see",feedback:"didn't + base verb: see (not saw)!"},
+  {subject:'Sara',subjectColor:'#C77DFF',charKey:'SARA',sentence:"Sara didn't _______ last night.",choices:["studied","studying","study"],correct:"study",feedback:"After didn't → always base verb!"},
+  {subject:'Mike',subjectColor:'#FF9F43',charKey:'MIKE',sentence:"Mike didn't _______ anything.",choices:["said","saying","say"],correct:"say",feedback:"After didn't → base verb: say!"},
+  {subject:'You',subjectColor:'#4D96FF',charKey:'BOY',sentence:'You _______ your lunch yesterday.',choices:["didn't ate","didn't eat","not eaten"],correct:"didn't eat",feedback:"didn't + base verb: eat!"},
+];
+const STATIC=['s0','s-formula','s-rule','s-ex1','s-ex2','s-summary'];
+const slideOrder=[...STATIC];const quizAnswered={};
+QUIZZES.forEach((_,qi)=>{const id=`quiz-${qi}`;const el=document.createElement('div');el.className='slide quiz-slide';el.id=id;el.dataset.section='quiz';document.body.appendChild(el);slideOrder.push(id);});
+slideOrder.push('finish-slide');
+let current=0;
+function buildDots(){const d=document.getElementById('dots');d.innerHTML='';slideOrder.forEach((_,i)=>{const dot=document.createElement('div');dot.className='dot'+(i===0?' active':'');d.appendChild(dot);});}
+function updateDots(){document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));document.getElementById('progress-bar').style.width=(current/(slideOrder.length-1)*100)+'%';updateQuickNav();}
+function updateQuickNav(){document.querySelectorAll('.qn-btn').forEach(b=>b.classList.remove('active-nav'));const sid=slideOrder[current];const sec=document.getElementById(sid)?.dataset?.section;if(sid==='s0')document.querySelectorAll('.qn-btn')[0].classList.add('active-nav');if(sec==='formula')document.getElementById('qn-formula')?.classList.add('active-nav');if(sec==='examples')document.getElementById('qn-examples')?.classList.add('active-nav');if(sec==='quiz')document.getElementById('qn-quiz')?.classList.add('active-nav');}
+function showSlide(n){n=Math.max(0,Math.min(slideOrder.length-1,n));document.getElementById(slideOrder[current]).classList.remove('active');current=n;document.getElementById(slideOrder[current]).classList.add('active');updateDots();document.getElementById('prevBtn').style.display=current===0?'none':'';document.getElementById('nextBtn').style.display=current===slideOrder.length-1?'none':'';const sid=slideOrder[current];if(sid.startsWith('quiz-'))initQuiz(parseInt(sid.split('-')[1]));if(sid==='finish-slide')confetti();}
+function changeSlide(d){showSlide(current+d);}
+function goToSection(sec){const idx=slideOrder.findIndex(id=>document.getElementById(id)?.dataset?.section===sec);if(idx>=0)showSlide(idx);}
+document.body.addEventListener('click',e=>{if(e.target.closest('.nav-btn,.quiz-btn,.qn-btn,.restart-btn'))return;const sid=slideOrder[current];if(sid.startsWith('quiz-')||sid==='finish-slide')return;spawnSparkle(e.clientX,e.clientY);changeSlide(1);});
+function initQuiz(qi){const q=QUIZZES[qi];const el=document.getElementById(`quiz-${qi}`);const done=quizAnswered[qi];el.innerHTML=`<div class="quiz-counter">Question ${qi+1} of ${QUIZZES.length}</div><div class="quiz-char-wrap">${CHARS[q.charKey]}</div><div class="quiz-subject-badge" style="background:${q.subjectColor}">${q.subject}</div><div class="quiz-sentence">${q.sentence.replace('_______','<span class="quiz-blank"></span>')}</div><div class="quiz-choices" id="qz-${qi}"></div><div class="quiz-feedback" id="qf-${qi}">${done?q.feedback:''}</div>`;const wrap=el.querySelector(`#qz-${qi}`);[...q.choices].sort(()=>Math.random()-.5).forEach(ch=>{const btn=document.createElement('button');btn.className='quiz-btn';btn.textContent=ch;if(done){if(ch===q.correct){btn.classList.add('correct');btn.style.background='#6BCB77';btn.style.boxShadow='0 7px 0 #3DAD8E';}else{btn.disabled=true;btn.style.opacity='0.35';}}btn.onclick=()=>handleAnswer(qi,ch===q.correct,btn,el,q.feedback);wrap.appendChild(btn);});}
+function handleAnswer(qi,correct,btn,el,feedback){if(quizAnswered[qi])return;if(correct){quizAnswered[qi]=true;btn.classList.add('correct');el.querySelector(`#qf-${qi}`).textContent=feedback;el.querySelectorAll('.quiz-btn').forEach(b=>{b.disabled=true;if(b!==btn)b.style.opacity='0.35';});spawnSparkle(btn.getBoundingClientRect().left+btn.offsetWidth/2,btn.getBoundingClientRect().top);confetti();setTimeout(()=>changeSlide(1),1500);}else{btn.classList.add('wrong');el.querySelector(`#qf-${qi}`).textContent='Try again! 💪';setTimeout(()=>{btn.classList.remove('wrong');btn.style.background='';el.querySelector(`#qf-${qi}`).textContent='';},850);}}
+function spawnSparkle(x,y){['✨','⭐','🌟'].forEach((s,i)=>{const el=document.createElement('div');el.className='sparkle';el.textContent=s;el.style.cssText=`left:${x-20+(Math.random()-.5)*60}px;top:${y-20+(Math.random()-.5)*40}px;animation-delay:${i*.12}s`;document.body.appendChild(el);setTimeout(()=>el.remove(),950);});}
+function confetti(){const cols=['#FF6B6B','#FF9F43','#6BCB77','#FFD93D','#C77DFF','#fff','#4D96FF'];for(let i=0;i<32;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*30}vh;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.5}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),1900);}}
+buildDots();showSlide(0);
+</script>
+</body>
+</html>
