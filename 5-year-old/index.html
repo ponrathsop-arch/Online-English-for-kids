@@ -3,716 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flowers & Feelings 🌸😊</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<title>Bouquet – English with Pang</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --pink: #FF6B9D;
-    --yellow: #FFD93D;
-    --green: #6BCB77;
-    --blue: #4D96FF;
-    --purple: #C77DFF;
-    --orange: #FF9A3C;
-    --red: #FF4757;
-    --teal: #26C6DA;
-    --bg: #FFF9F0;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--bg);
-    overflow: hidden;
-    height: 100vh; width: 100vw;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-  }
-  .bg-shapes { position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden; }
-  .shape { position:absolute;border-radius:50%;opacity:0.12;animation:floatShape 8s ease-in-out infinite; }
-  .shape:nth-child(1){width:200px;height:200px;background:var(--pink);top:-50px;left:-50px;animation-delay:0s;}
-  .shape:nth-child(2){width:150px;height:150px;background:var(--yellow);top:20%;right:-30px;animation-delay:1s;}
-  .shape:nth-child(3){width:180px;height:180px;background:var(--green);bottom:-60px;left:20%;animation-delay:2s;}
-  .shape:nth-child(4){width:120px;height:120px;background:var(--blue);bottom:10%;right:10%;animation-delay:3s;}
-  .shape:nth-child(5){width:100px;height:100px;background:var(--purple);top:50%;left:5%;animation-delay:4s;}
-  @keyframes floatShape{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-20px) scale(1.05);}}
-
-  .slide-wrapper{position:relative;z-index:1;width:100%;height:100vh;display:flex;align-items:center;justify-content:center;}
-  .slide{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;max-width:900px;padding:20px;animation:slideIn 0.5s cubic-bezier(0.34,1.56,0.64,1);}
-  .slide.active{display:flex;}
-  @keyframes slideIn{from{opacity:0;transform:scale(0.85) translateY(30px);}to{opacity:1;transform:scale(1) translateY(0);}}
-
-  .slide-counter{position:fixed;top:16px;right:20px;font-family:'Fredoka One',cursive;font-size:1.1rem;color:#888;z-index:100;background:white;padding:6px 14px;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-  .section-tag{position:fixed;top:16px;left:20px;font-family:'Fredoka One',cursive;font-size:1rem;color:white;padding:6px 16px;border-radius:20px;z-index:100;transition:background 0.4s;}
-
-  .nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:20px;z-index:100;}
-  .nav-btn{font-family:'Fredoka One',cursive;font-size:1.2rem;padding:14px 36px;border:none;border-radius:50px;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;box-shadow:0 6px 0 rgba(0,0,0,0.15);color:white;text-shadow:0 2px 4px rgba(0,0,0,0.2);}
-  .nav-btn:hover{transform:translateY(-3px);box-shadow:0 9px 0 rgba(0,0,0,0.15);}
-  .nav-btn:active{transform:translateY(2px);box-shadow:0 3px 0 rgba(0,0,0,0.15);}
-  #prevBtn{background:linear-gradient(135deg,#b0bec5,#90a4ae);}
-  #nextBtn{background:linear-gradient(135deg,var(--green),#43a047);}
-
-  /* TITLE */
-  .title-emoji{font-size:7rem;animation:bounce 1s ease-in-out infinite alternate;line-height:1;margin-bottom:10px;}
-  @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-18px);}}
-  .title-main{font-family:'Fredoka One',cursive;font-size:5rem;line-height:1.1;margin:10px 0;text-shadow:4px 4px 0 rgba(0,0,0,0.08);}
-  .title-sub{font-size:2rem;font-weight:800;color:#555;margin-top:8px;}
-
-  /* VOCAB */
-  .vocab-word{font-family:'Fredoka One',cursive;font-size:4.5rem;margin-bottom:12px;text-shadow:3px 3px 0 rgba(0,0,0,0.08);animation:wordBounce 0.6s cubic-bezier(0.34,1.56,0.64,1);}
-  @keyframes wordBounce{from{transform:scale(0.5);opacity:0;}to{transform:scale(1);opacity:1;}}
-  .vocab-img{width:220px;height:220px;object-fit:cover;border-radius:30px;box-shadow:0 12px 30px rgba(0,0,0,0.15);margin:10px 0;animation:imgPop 0.5s 0.1s cubic-bezier(0.34,1.56,0.64,1) both;border:6px solid white;}
-  @keyframes imgPop{from{transform:scale(0.7) rotate(-5deg);opacity:0;}to{transform:scale(1) rotate(0deg);opacity:1;}}
-  .vocab-phrase{font-size:1.8rem;font-weight:800;color:#333;margin:6px 0;}
-  .vocab-say{font-size:1.5rem;font-weight:700;color:var(--blue);background:rgba(77,150,255,0.12);padding:8px 24px;border-radius:20px;margin:4px 0;}
-  .vocab-question{font-size:1.4rem;font-weight:700;color:var(--orange);margin:4px 0;}
-  .vocab-extra{font-size:1.3rem;font-weight:800;color:white;padding:8px 24px;border-radius:20px;margin-top:6px;display:inline-block;box-shadow:0 4px 0 rgba(0,0,0,0.15);}
-
-  /* SENTENCE SLIDES */
-  .sentence-header{font-family:'Fredoka One',cursive;font-size:2rem;margin-bottom:10px;}
-  .sentence-rows{display:flex;flex-direction:column;gap:14px;width:100%;max-width:780px;}
-  .sentence-row{display:flex;align-items:center;gap:16px;background:white;border-radius:24px;padding:14px 20px;box-shadow:0 6px 18px rgba(0,0,0,0.09);text-align:left;}
-  .sentence-row img{width:200px;height:200px;object-fit:cover;border-radius:16px;border:4px solid white;box-shadow:0 4px 12px rgba(0,0,0,0.12);flex-shrink:0;}
-  .sentence-text{font-size:1.5rem;font-weight:800;color:#333;line-height:1.4;}
-  .sentence-text em{font-style:normal;padding:2px 10px;border-radius:8px;color:white;}
-
-  /* MEMORY GAME */
-  .game-title{font-family:'Fredoka One',cursive;font-size:2.8rem;margin-bottom:16px;text-shadow:3px 3px 0 rgba(0,0,0,0.08);}
-  .game-status{font-size:1.2rem;font-weight:800;color:#555;margin-bottom:14px;min-height:28px;}
-  .game-grid{display:grid;gap:12px;justify-content:center;}
-  .card{width:100px;height:100px;perspective:600px;cursor:pointer;}
-  .card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.45s cubic-bezier(0.34,1.2,0.64,1);border-radius:18px;}
-  .card.flipped .card-inner{transform:rotateY(180deg);}
-  .card-front,.card-back{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,0.15);}
-  .card-front{background:linear-gradient(135deg,#667eea,#764ba2);font-size:2.5rem;color:white;border:4px solid white;}
-  .card-back{background:white;transform:rotateY(180deg);overflow:hidden;border:4px solid white;}
-  .card-back img{width:100%;height:100%;object-fit:cover;border-radius:14px;}
-  .card.matched .card-inner{box-shadow:0 0 0 4px #6BCB77,0 8px 20px rgba(107,203,119,0.4);}
-  .card.matched .card-front{background:linear-gradient(135deg,#6BCB77,#43a047);}
-  .game-reset{font-family:'Fredoka One',cursive;font-size:1.1rem;padding:10px 28px;border:none;border-radius:50px;cursor:pointer;margin-top:12px;background:linear-gradient(135deg,var(--orange),#e65100);color:white;box-shadow:0 4px 0 rgba(0,0,0,0.15);transition:transform 0.15s;}
-  .game-reset:hover{transform:translateY(-2px);}
-
-  /* TALK SLIDES */
-  .talk-img-grid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:700px;margin:14px 0;}
-  .talk-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
-  .talk-item img{width:90px;height:90px;object-fit:cover;border-radius:20px;border:4px solid white;box-shadow:0 6px 16px rgba(0,0,0,0.12);transition:transform 0.2s,box-shadow 0.2s;}
-  .talk-item:hover img{transform:scale(1.12);}
-  .talk-label{font-family:'Fredoka One',cursive;font-size:1rem;color:#555;opacity:0;transition:opacity 0.3s,transform 0.3s;transform:translateY(4px);background:white;padding:2px 10px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-  .talk-item.revealed .talk-label{opacity:1;transform:translateY(0);}
-  .talk-item.revealed img{border-color:var(--green);box-shadow:0 6px 16px rgba(107,203,119,0.4);}
-  .talk-prompt{font-family:'Fredoka One',cursive;font-size:2.8rem;color:#333;margin:10px 0;}
-  .talk-blank{display:inline-block;width:160px;height:12px;background:currentColor;border-radius:6px;opacity:0.3;vertical-align:middle;margin:0 8px;}
-
-  /* GAME TIME */
-  .qt-wrapper{display:flex;flex-direction:column;align-items:center;width:100%;max-width:860px;}
-  .qt-header{font-family:'Fredoka One',cursive;font-size:2.4rem;margin-bottom:6px;text-shadow:3px 3px 0 rgba(0,0,0,0.08);}
-  .qt-progress{font-size:1rem;font-weight:800;color:#aaa;margin-bottom:14px;letter-spacing:1px;}
-  .qt-question-text{font-family:'Fredoka One',cursive;font-size:2rem;color:#333;margin-bottom:12px;min-height:48px;}
-  .qt-image-box{width:180px;height:180px;border-radius:28px;overflow:hidden;border:6px solid white;box-shadow:0 12px 30px rgba(0,0,0,0.15);margin-bottom:18px;flex-shrink:0;}
-  .qt-image-box img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);}
-  .qt-image-box img.celebrate{transform:scale(1.15);}
-  .qt-choices{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;}
-  .qt-choice-btn{font-family:'Fredoka One',cursive;font-size:1.5rem;padding:14px 36px;border:none;border-radius:50px;cursor:pointer;color:white;box-shadow:0 6px 0 rgba(0,0,0,0.15);transition:transform 0.15s,box-shadow 0.15s;text-shadow:0 2px 4px rgba(0,0,0,0.15);min-width:160px;}
-  .qt-choice-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 9px 0 rgba(0,0,0,0.15);}
-  .qt-choice-btn:active:not(:disabled){transform:translateY(2px);box-shadow:0 3px 0 rgba(0,0,0,0.15);}
-  .qt-choice-btn:disabled{opacity:0.6;cursor:default;}
-  .qt-choice-btn.correct{animation:correctPop 0.5s cubic-bezier(0.34,1.56,0.64,1);background:linear-gradient(135deg,#6BCB77,#43a047) !important;box-shadow:0 6px 0 #2e7d32,0 0 0 4px #c8e6c9 !important;}
-  .qt-choice-btn.wrong{animation:wrongShake 0.5s ease;background:linear-gradient(135deg,#FF4757,#c62828) !important;}
-  @keyframes correctPop{0%{transform:scale(1);}40%{transform:scale(1.25);}100%{transform:scale(1);}}
-  @keyframes wrongShake{0%,100%{transform:translateX(0);}20%{transform:translateX(-10px);}40%{transform:translateX(10px);}60%{transform:translateX(-8px);}80%{transform:translateX(8px);}}
-  .qt-feedback{font-family:'Fredoka One',cursive;font-size:1.8rem;min-height:46px;margin-bottom:8px;transition:opacity 0.3s;}
-  .qt-next-btn{font-family:'Fredoka One',cursive;font-size:1.2rem;padding:12px 36px;border:none;border-radius:50px;cursor:pointer;background:linear-gradient(135deg,var(--blue),#1565c0);color:white;box-shadow:0 5px 0 rgba(0,0,0,0.15);transition:transform 0.15s,opacity 0.3s;opacity:0;pointer-events:none;}
-  .qt-next-btn.show{opacity:1;pointer-events:all;}
-  .qt-next-btn:hover{transform:translateY(-2px);}
-  .qt-dots{display:flex;gap:8px;margin-top:10px;}
-  .qt-dot{width:12px;height:12px;border-radius:50%;background:#ddd;transition:background 0.3s,transform 0.3s;}
-  .qt-dot.done{background:var(--green);transform:scale(1.2);}
-  .qt-dot.active{background:var(--blue);transform:scale(1.3);}
-
-  /* CONFETTI */
-  .confetti-piece{position:fixed;width:12px;height:12px;border-radius:2px;pointer-events:none;z-index:9999;animation:confettiFall 3s forwards;}
-  @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
-
-  @media(max-width:600px){
-    .title-main{font-size:3rem;}.title-emoji{font-size:5rem;}.vocab-word{font-size:3rem;}.vocab-img{width:160px;height:160px;}.card{width:75px;height:75px;}
-  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --sky: #e0f4ff; --yellow: #FFD93D; --coral: #FF6B6B; --green: #6BCB77; --purple: #C77DFF; --blue: #4D96FF; --orange: #FF9A3C; --pink: #FF84B7; --dark: #2d2d2d; }
+  body { font-family: 'Nunito', sans-serif; background-color: var(--sky); min-height: 100vh; overflow-x: hidden; }
+  .bg-shapes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .shape { position: absolute; border-radius: 50%; opacity: 0.15; animation: float linear infinite; }
+  .shape:nth-child(1) { width: 120px; height: 120px; background: var(--yellow); top: 10%; left: 5%; animation-duration: 14s; }
+  .shape:nth-child(2) { width: 80px; height: 80px; background: var(--coral); top: 30%; right: 8%; animation-duration: 10s; animation-delay: -3s; }
+  .shape:nth-child(3) { width: 60px; height: 60px; background: var(--green); bottom: 20%; left: 12%; animation-duration: 12s; animation-delay: -6s; }
+  .shape:nth-child(4) { width: 100px; height: 100px; background: var(--purple); bottom: 10%; right: 15%; animation-duration: 16s; animation-delay: -2s; }
+  @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-20px) rotate(120deg); } 66% { transform: translateY(10px) rotate(240deg); } }
+  .back-btn { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; margin: 28px 0 0 28px; padding: 8px 18px; background: white; border-radius: 999px; font-size: 14px; font-weight: 700; color: #555; text-decoration: none; box-shadow: 0 4px 0 rgba(0,0,0,0.08); transition: transform 0.15s, box-shadow 0.15s; }
+  .back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.08); }
+  header { position: relative; z-index: 1; text-align: center; padding: 40px 20px 30px; }
+  .star-row { font-size: 22px; letter-spacing: 6px; margin-bottom: 12px; animation: twinkle 2s ease-in-out infinite alternate; }
+  @keyframes twinkle { from { opacity: 0.6; transform: scale(1); } to { opacity: 1; transform: scale(1.05); } }
+  .age-label { font-family: 'Fredoka One', cursive; font-size: clamp(16px, 3vw, 22px); color: #888; margin-bottom: 8px; letter-spacing: 1px; }
+  h1 { font-family: 'Fredoka One', cursive; font-size: clamp(48px, 10vw, 80px); line-height: 1; display: inline-flex; gap: 4px; }
+  h1 span { display: inline-block; animation: bounce-letter 1.5s ease-in-out infinite alternate; }
+  h1 span:nth-child(1){color:var(--pink);animation-delay:0s} h1 span:nth-child(2){color:var(--coral);animation-delay:.1s} h1 span:nth-child(3){color:var(--orange);animation-delay:.2s} h1 span:nth-child(4){color:var(--yellow);animation-delay:.3s} h1 span:nth-child(5){color:var(--green);animation-delay:.4s} h1 span:nth-child(6){color:var(--blue);animation-delay:.5s} h1 span:nth-child(7){color:var(--purple);animation-delay:.6s}
+  @keyframes bounce-letter { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+  .age-tag { display: inline-block; margin-top: 10px; background: white; border-radius: 999px; padding: 5px 18px; font-size: 14px; font-weight: 800; color: #888; box-shadow: 0 3px 0 rgba(0,0,0,0.07); }
+  .subtitle { margin-top: 12px; font-size: 17px; color: #555; font-weight: 600; }
+  .grid-section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 20px 24px 80px; }
+  .section-label { font-family: 'Fredoka One', cursive; font-size: 22px; color: #777; text-align: center; margin-bottom: 32px; letter-spacing: 1px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+  .card { background: white; border-radius: 24px; padding: 32px 24px 28px; text-align: center; cursor: pointer; text-decoration: none; display: block; position: relative; overflow: hidden; border: 3px solid transparent; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; box-shadow: 0 6px 0 rgba(0,0,0,0.08); opacity: 0; transform: translateY(30px); animation: card-in 0.5s ease forwards; }
+  .card:nth-child(1){animation-delay:0.05s} .card:nth-child(2){animation-delay:0.1s} .card:nth-child(3){animation-delay:0.15s} .card:nth-child(4){animation-delay:0.2s} .card:nth-child(5){animation-delay:0.25s}
+  @keyframes card-in { to { opacity: 1; transform: translateY(0); } }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; border-radius: 24px 24px 0 0; }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 14px 0 rgba(0,0,0,0.08); }
+  .card-1::before { background: var(--coral); } .card:hover.card-1 { border-color: var(--coral); }
+  .card-2::before { background: var(--blue); }  .card:hover.card-2 { border-color: var(--blue); }
+  .card-3::before { background: var(--green); } .card:hover.card-3 { border-color: var(--green); }
+  .card-4::before { background: var(--purple); }.card:hover.card-4 { border-color: var(--purple); }
+  .card-5::before { background: var(--orange); }.card:hover.card-5 { border-color: var(--orange); }
+  .card-emoji { font-size: 48px; display: block; margin-bottom: 14px; line-height: 1; }
+  .card-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--dark); margin-bottom: 8px; }
+  .card-desc { font-size: 13px; color: #888; font-weight: 600; line-height: 1.5; }
+  .card-badge { display: inline-block; margin-top: 14px; padding: 4px 14px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+  .card-1 .card-badge { background: #fff0ee; color: var(--coral); }
+  .card-2 .card-badge { background: #eef4ff; color: var(--blue); }
+  .card-3 .card-badge { background: #eefbf0; color: #3a9e46; }
+  .card-4 .card-badge { background: #f7eeff; color: #9a3de0; }
+  .card-5 .card-badge { background: #fff4e8; color: #d47200; }
+  footer { position: relative; z-index: 1; text-align: center; padding: 20px; font-size: 13px; color: #aaa; font-weight: 600; }
 </style>
 </head>
 <body>
-
-<div class="bg-shapes">
-  <div class="shape"></div><div class="shape"></div>
-  <div class="shape"></div><div class="shape"></div><div class="shape"></div>
-</div>
-
-<div class="section-tag" id="sectionTag">🌸 Flowers</div>
-<div class="slide-counter" id="slideCounter">1 / 31</div>
-
-<div class="nav">
-  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Back</button>
-  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
-</div>
-
-<div class="slide-wrapper">
-
-  <!-- ===== FLOWERS ===== -->
-
-  <!-- S1: Flowers Title -->
-  <div class="slide active" data-section="flowers">
-    <div class="title-emoji">🌸</div>
-    <div class="title-main" style="color:var(--pink)">Flowers</div>
-    <div class="title-sub">Let's learn!</div>
+<div class="bg-shapes"><div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div></div>
+<a href="../index.html" class="back-btn">← Back to Home</a>
+<header>
+  <div class="star-row">🌸 ⭐ 🌸 ⭐ 🌸</div>
+  <p class="age-label">Lessons for</p>
+  <h1><span>B</span><span>o</span><span>u</span><span>q</span><span>u</span><span>e</span><span>t</span></h1>
+  <div class="age-tag">🎀 5 Years Old</div>
+  <p class="subtitle">Pick a lesson to start! 🚀</p>
+</header>
+<section class="grid-section">
+  <p class="section-label">📖 Lessons</p>
+  <div class="grid">
+    <a href="lesson-1/index.html" class="card card-1">
+      <span class="card-emoji">🐣</span>
+      <div class="card-title">Lesson 1</div>
+      <div class="card-desc">Your first English lesson</div>
+      <span class="card-badge">Start here</span>
+    </a>
+    <a href="lesson-2/index.html" class="card card-2">
+      <span class="card-emoji">🌹🌷🌸🌺🌼💐</span>
+      <div class="card-title">Lesson 2</div>
+      <span class="card-badge">Lesson</span>
+    </a>
+    <a href="lesson-3/index.html" class="card card-3">
+      <span class="card-emoji">🌟</span>
+      <div class="card-title">Lesson 3</div>
+      <span class="card-badge">Lesson</span>
+    </a>
+    <a href="lesson-4/index.html" class="card card-4">
+      <span class="card-emoji">🦋</span>
+      <div class="card-title">Lesson 4</div>
+      <span class="card-badge">Lesson</span>
+    </a>
+    <a href="lesson-5/index.html" class="card card-5">
+      <span class="card-emoji">🌞</span>
+      <div class="card-title">Lesson 5</div>
+      <span class="card-badge">Lesson</span>
+    </a>
   </div>
-
-  <!-- S2: Rose vocab -->
-  <div class="slide" data-section="flowers">
-    <div class="vocab-word" style="color:var(--red)">🌹 Rose</div>
-    <img class="vocab-img" src="rose.jpg" alt="Rose">
-    <div class="vocab-phrase">This is a rose</div>
-    <div class="vocab-say">👄 Say: <strong>rose</strong></div>
-    <div class="vocab-question">What is this? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--red),#c62828)">🔴 Red rose</span>
-  </div>
-
-  <!-- S3: Rose sentences -->
-  <div class="slide" data-section="flowers">
-    <div class="sentence-header" style="color:var(--red)">🌹 Rose Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="rose1.jpg" alt="roses">
-        <div class="sentence-text">I have a bouquet of <em style="background:var(--red)">roses</em>!</div>
-      </div>
-      <div class="sentence-row">
-        <img src="rose2.jpg" alt="rose smell">
-        <div class="sentence-text">I have white, pink, and red <em style="background:var(--red)">roses</em>.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S4: Sunflower vocab -->
-  <div class="slide" data-section="flowers">
-    <div class="vocab-word" style="color:var(--yellow);-webkit-text-stroke:2px #e0a800">🌻 Sunflower</div>
-    <img class="vocab-img" src="sunflower.jpg" alt="Sunflower">
-    <div class="vocab-phrase">This is a sunflower</div>
-    <div class="vocab-say">👄 Say: <strong>sunflower</strong></div>
-    <div class="vocab-question">What is this? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--orange),#e65100)">☀️ Big sunflower</span>
-  </div>
-
-  <!-- S5: Sunflower sentences -->
-  <div class="slide" data-section="flowers">
-    <div class="sentence-header" style="color:var(--orange)">🌻 Sunflower Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="sunflower1.jpg" alt="sunflower garden">
-        <div class="sentence-text">I see a big, bright <em style="background:var(--orange)">sunflower</em> in the garden.</div>
-      </div>
-      <div class="sentence-row">
-        <img src="sunflower2.jpg" alt="sunflower tall">
-        <div class="sentence-text">The <em style="background:var(--orange)">sunflower</em> is very tall!</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S6: Tulip vocab -->
-  <div class="slide" data-section="flowers">
-    <div class="vocab-word" style="color:var(--purple)">🌷 Tulip</div>
-    <img class="vocab-img" src="tulip.jpg" alt="Tulip">
-    <div class="vocab-phrase">This is a tulip</div>
-    <div class="vocab-say">👄 Say: <strong>tulip</strong></div>
-    <div class="vocab-question">What is this? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--purple),#6a1b9a)">💜 Pretty tulip</span>
-  </div>
-
-  <!-- S7: Tulip sentences -->
-  <div class="slide" data-section="flowers">
-    <div class="sentence-header" style="color:var(--purple)">🌷 Tulip Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="tulip1.jpg" alt="tulip gift">
-        <div class="sentence-text">She gave me a purple <em style="background:var(--purple)">tulip</em> today.</div>
-      </div>
-      <div class="sentence-row">
-        <img src="tulip2.jpg" alt="tulip pretty">
-        <div class="sentence-text">I think the <em style="background:var(--purple)">tulip</em> is so pretty!</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S8: Lily vocab -->
-  <div class="slide" data-section="flowers">
-    <div class="vocab-word" style="color:var(--teal)">🌺 Lily</div>
-    <img class="vocab-img" src="lily.jpg" alt="Lily">
-    <div class="vocab-phrase">This is a lily</div>
-    <div class="vocab-say">👄 Say: <strong>lily</strong></div>
-    <div class="vocab-question">What is this? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--teal),#00838f)">🌊 White lily</span>
-  </div>
-
-  <!-- S9: Lily sentences -->
-  <div class="slide" data-section="flowers">
-    <div class="sentence-header" style="color:var(--teal)">🌺 Lily Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="lily1.jpg" alt="lily white">
-        <div class="sentence-text">I love this white <em style="background:var(--teal)">lily</em>!</div>
-      </div>
-      <div class="sentence-row">
-        <img src="lily2.jpg" alt="lily pond">
-        <div class="sentence-text">There is a <em style="background:var(--teal)">lily</em> near the pond.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S10: Lotus vocab -->
-  <div class="slide" data-section="flowers">
-    <div class="vocab-word" style="color:var(--pink)">🪷 Lotus</div>
-    <img class="vocab-img" src="lotus.jpg" alt="Lotus">
-    <div class="vocab-phrase">This is a lotus</div>
-    <div class="vocab-say">👄 Say: <strong>lotus</strong></div>
-    <div class="vocab-question">What is this? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--pink),#ad1457)">🩷 Pink lotus</span>
-  </div>
-
-  <!-- S11: Lotus sentences -->
-  <div class="slide" data-section="flowers">
-    <div class="sentence-header" style="color:var(--pink)">🪷 Lotus Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="lotus1.jpg" alt="lotus water">
-        <div class="sentence-text">The pink <em style="background:var(--pink)">lotus</em> is floating on the water.</div>
-      </div>
-      <div class="sentence-row">
-        <img src="lotus2.jpg" alt="lotus lake">
-        <div class="sentence-text">I see a <em style="background:var(--pink)">lotus</em> in the lake!</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S12: Flower Memory Game -->
-  <div class="slide" data-section="flowers">
-    <div class="game-title" style="color:var(--green)">🧠 Flower Match!</div>
-    <div class="game-status" id="flowerStatus">Find the matching pairs! 🌸</div>
-    <div class="game-grid" id="flowerGrid" style="grid-template-columns:repeat(5,100px)"></div>
-    <button class="game-reset" onclick="initGame('flower')">🔄 Play Again</button>
-  </div>
-
-  <!-- ===== FEELINGS ===== -->
-
-  <!-- S12b: All Flowers sentence -->
-  <div class="slide" data-section="flowers">
-    <div class="sentence-header" style="color:var(--pink)">🌸 All Together!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="all_flowers.jpg" alt="all flowers">
-        <div class="sentence-text">I have <em style="background:var(--red)">roses</em>, <em style="background:var(--orange)">sunflowers</em>, <em style="background:var(--teal)">lilies</em>, <em style="background:var(--purple)">tulips</em>, and a <em style="background:var(--pink)">lotus</em> in the vase.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S13: Feelings Title -->
-  <div class="slide" data-section="feelings">
-    <div class="title-emoji">😊</div>
-    <div class="title-main" style="color:var(--orange)">Feelings</div>
-    <div class="title-sub">How do you feel?</div>
-  </div>
-
-  <!-- S14: Happy vocab -->
-  <div class="slide" data-section="feelings">
-    <div class="vocab-word" style="color:var(--yellow);-webkit-text-stroke:2px #e0a800">😊 Happy</div>
-    <img class="vocab-img" src="happy.jpg" alt="Happy">
-    <div class="vocab-phrase">I am happy</div>
-    <div class="vocab-say">👄 Say: <strong>happy</strong></div>
-    <div class="vocab-question">Happy or sad? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,#FFD93D,#f9a825)">🌟 So happy!</span>
-  </div>
-
-  <!-- S15: Happy sentences -->
-  <div class="slide" data-section="feelings">
-    <div class="sentence-header" style="color:#f9a825">😊 Happy Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="happy1.jpg" alt="feel happy">
-        <div class="sentence-text">I feel <em style="background:#f9a825">happy</em>.</div>
-      </div>
-      <div class="sentence-row">
-        <img src="happy2.jpg" alt="happy because">
-        <div class="sentence-text">I am <em style="background:#f9a825">happy</em> because I finished my work.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S16: Sad vocab -->
-  <div class="slide" data-section="feelings">
-    <div class="vocab-word" style="color:var(--blue)">😢 Sad</div>
-    <img class="vocab-img" src="sad.jpg" alt="Sad">
-    <div class="vocab-phrase">I am sad</div>
-    <div class="vocab-say">👄 Say: <strong>sad</strong></div>
-    <div class="vocab-question">Happy or sad? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--blue),#1565c0)">💧 Feeling sad</span>
-  </div>
-
-  <!-- S17: Sad sentences -->
-  <div class="slide" data-section="feelings">
-    <div class="sentence-header" style="color:var(--blue)">😢 Sad Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="sad1.jpg" alt="feel sad">
-        <div class="sentence-text">I feel <em style="background:var(--blue)">sad</em>.</div>
-      </div>
-      <div class="sentence-row">
-        <img src="sad2.jpg" alt="sad because">
-        <div class="sentence-text">I am <em style="background:var(--blue)">sad</em> because I lost my toy.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S18: Angry vocab -->
-  <div class="slide" data-section="feelings">
-    <div class="vocab-word" style="color:var(--red)">😠 Angry</div>
-    <img class="vocab-img" src="angry.jpg" alt="Angry">
-    <div class="vocab-phrase">I am angry</div>
-    <div class="vocab-say">👄 Say: <strong>angry</strong></div>
-    <div class="vocab-question">Angry or happy? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--red),#b71c1c)">🔥 Very angry</span>
-  </div>
-
-  <!-- S19: Angry sentences -->
-  <div class="slide" data-section="feelings">
-    <div class="sentence-header" style="color:var(--red)">😠 Angry Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="angry1.jpg" alt="feel angry">
-        <div class="sentence-text">I feel <em style="background:var(--red)">angry</em>.</div>
-      </div>
-      <div class="sentence-row">
-        <img src="angry2.jpg" alt="angry because">
-        <div class="sentence-text">I am <em style="background:var(--red)">angry</em> because someone took my book.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S20: Excited vocab -->
-  <div class="slide" data-section="feelings">
-    <div class="vocab-word" style="color:var(--orange)">🤩 Excited</div>
-    <img class="vocab-img" src="excited.jpg" alt="Excited">
-    <div class="vocab-phrase">I am excited</div>
-    <div class="vocab-say">👄 Say: <strong>excited</strong></div>
-    <div class="vocab-question">Excited or tired? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--orange),#e65100)">⭐ So excited!</span>
-  </div>
-
-  <!-- S21: Excited sentences -->
-  <div class="slide" data-section="feelings">
-    <div class="sentence-header" style="color:var(--orange)">🤩 Excited Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="excited1.jpg" alt="feel excited">
-        <div class="sentence-text">I feel <em style="background:var(--orange)">excited</em>!</div>
-      </div>
-      <div class="sentence-row">
-        <img src="excited2.jpg" alt="excited birthday">
-        <div class="sentence-text">I am <em style="background:var(--orange)">excited</em> about my birthday party.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S22: Scared vocab -->
-  <div class="slide" data-section="feelings">
-    <div class="vocab-word" style="color:var(--purple)">😨 Scared</div>
-    <img class="vocab-img" src="scared.jpg" alt="Scared">
-    <div class="vocab-phrase">I am scared</div>
-    <div class="vocab-say">👄 Say: <strong>scared</strong></div>
-    <div class="vocab-question">Scared or angry? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--purple),#4a148c)">👻 I'm scared!</span>
-  </div>
-
-  <!-- S23: Scared sentences -->
-  <div class="slide" data-section="feelings">
-    <div class="sentence-header" style="color:var(--purple)">😨 Scared Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="scared1.jpg" alt="feel scared">
-        <div class="sentence-text">I feel <em style="background:var(--purple)">scared</em>.</div>
-      </div>
-      <div class="sentence-row">
-        <img src="scared2.jpg" alt="scared of dark">
-        <div class="sentence-text">I am <em style="background:var(--purple)">scared</em> of the dark.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S24: Tired vocab -->
-  <div class="slide" data-section="feelings">
-    <div class="vocab-word" style="color:#78909c">😴 Tired</div>
-    <img class="vocab-img" src="tired.jpg" alt="Tired">
-    <div class="vocab-phrase">I am tired</div>
-    <div class="vocab-say">👄 Say: <strong>tired</strong></div>
-    <div class="vocab-question">Tired or excited? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,#78909c,#37474f)">💤 So tired...</span>
-  </div>
-
-  <!-- S25: Tired sentences -->
-  <div class="slide" data-section="feelings">
-    <div class="sentence-header" style="color:#78909c">😴 Tired Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="tired1.jpg" alt="feel tired">
-        <div class="sentence-text">I feel <em style="background:#78909c">tired</em>.</div>
-      </div>
-      <div class="sentence-row">
-        <img src="tired2.jpg" alt="tired played all day">
-        <div class="sentence-text">I am <em style="background:#78909c">tired</em> because I played all day.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S26: Surprised vocab -->
-  <div class="slide" data-section="feelings">
-    <div class="vocab-word" style="color:var(--teal)">😲 Surprised</div>
-    <img class="vocab-img" src="surprised.jpg" alt="Surprised">
-    <div class="vocab-phrase">I am surprised</div>
-    <div class="vocab-say">👄 Say: <strong>surprised</strong></div>
-    <div class="vocab-question">Surprised or sad? 🤔</div>
-    <span class="vocab-extra" style="background:linear-gradient(135deg,var(--teal),#006064)">🎉 Surprise!</span>
-  </div>
-
-  <!-- S27: Surprised sentences -->
-  <div class="slide" data-section="feelings">
-    <div class="sentence-header" style="color:var(--teal)">😲 Surprised Sentences!</div>
-    <div class="sentence-rows">
-      <div class="sentence-row">
-        <img src="surprised1.jpg" alt="feel surprised">
-        <div class="sentence-text">I feel <em style="background:var(--teal)">surprised</em>!</div>
-      </div>
-      <div class="sentence-row">
-        <img src="surprised2.jpg" alt="surprised by gift">
-        <div class="sentence-text">I am <em style="background:var(--teal)">surprised</em> by the gift!</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- S28: Feelings Memory Game -->
-  <div class="slide" data-section="feelings">
-    <div class="game-title" style="color:var(--orange)">🧠 Feelings Match!</div>
-    <div class="game-status" id="feelingStatus">Find the matching pairs! 😊</div>
-    <div class="game-grid" id="feelingGrid" style="grid-template-columns:repeat(7,90px)"></div>
-    <button class="game-reset" onclick="initGame('feeling')">🔄 Play Again</button>
-  </div>
-
-  <!-- ===== TALK ===== -->
-
-  <!-- S29: Let's Talk – Feelings -->
-  <div class="slide" data-section="talk">
-    <div class="title-main" style="color:var(--orange);font-size:3rem">Let's Talk! 💬</div>
-    <div class="talk-img-grid" id="feelingTalkGrid"></div>
-    <div class="talk-prompt" style="color:var(--orange)">I feel <span class="talk-blank" style="color:var(--orange)"></span></div>
-    <p style="font-size:1.1rem;color:#777;font-weight:700">👆 Tap a picture to see the word!</p>
-  </div>
-
-  <!-- S30: Let's Talk – Flowers -->
-  <div class="slide" data-section="talk">
-    <div class="title-main" style="color:var(--pink);font-size:3rem">I Like Flowers! 🌸</div>
-    <div class="talk-img-grid" id="flowerTalkGrid"></div>
-    <div class="talk-prompt" style="color:var(--pink)">I like <span class="talk-blank" style="color:var(--pink)"></span></div>
-    <p style="font-size:1.1rem;color:#777;font-weight:700">👆 Tap a picture to see the word!</p>
-  </div>
-
-  <!-- S31: Game Time -->
-  <div class="slide" data-section="gametime">
-    <div class="qt-wrapper">
-      <div class="qt-header" style="color:var(--blue)">🎯 Game Time!</div>
-      <div class="qt-progress" id="qtProgress">Question 1 of 10</div>
-      <div class="qt-question-text" id="qtQuestion">...</div>
-      <div class="qt-image-box"><img id="qtImage" src="" alt=""></div>
-      <div class="qt-choices" id="qtChoices"></div>
-      <div class="qt-feedback" id="qtFeedback"></div>
-      <button class="qt-next-btn" id="qtNextBtn" onclick="qtNext()">Next ▶</button>
-      <div class="qt-dots" id="qtDots"></div>
-    </div>
-  </div>
-
-</div>
-
-<script>
-let currentSlide = 0;
-const slides = document.querySelectorAll('.slide');
-const totalSlides = slides.length;
-
-const sectionColors = {flowers:'#FF6B9D',feelings:'#FF9A3C',talk:'#4D96FF',gametime:'#6BCB77'};
-const sectionLabels = {flowers:'🌸 Flowers',feelings:'😊 Feelings',talk:"💬 Let's Talk",gametime:'🎯 Game Time'};
-
-function showSlide(n) {
-  slides[currentSlide].classList.remove('active');
-  currentSlide = Math.max(0, Math.min(n, totalSlides-1));
-  slides[currentSlide].classList.add('active');
-  document.getElementById('slideCounter').textContent = `${currentSlide+1} / ${totalSlides}`;
-  const sec = slides[currentSlide].dataset.section;
-  const tag = document.getElementById('sectionTag');
-  tag.textContent = sectionLabels[sec]||'';
-  tag.style.background = sectionColors[sec]||'#aaa';
-  document.getElementById('prevBtn').style.opacity = currentSlide===0?'0.4':'1';
-  document.getElementById('nextBtn').textContent = currentSlide===totalSlides-1?'🏆 Done!':'Next ▶';
-  if (currentSlide===11) initGame('flower');
-  if (currentSlide===27) initGame('feeling');
-  if (currentSlide===30) qtInit();
-}
-function changeSlide(dir){ showSlide(currentSlide+dir); }
-
-const flowerImages=['rose.jpg','sunflower.jpg','tulip.jpg','lily.jpg','lotus.jpg'];
-const feelingImages=['happy.jpg','sad.jpg','angry.jpg','excited.jpg','scared.jpg','tired.jpg','surprised.jpg'];
-
-function shuffle(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-  return a;
-}
-
-function initGame(type){
-  const isFlower=type==='flower';
-  const images=isFlower?flowerImages:feelingImages;
-  const grid=document.getElementById(isFlower?'flowerGrid':'feelingGrid');
-  const status=document.getElementById(isFlower?'flowerStatus':'feelingStatus');
-  if(!isFlower) grid.style.gridTemplateColumns='repeat(7,90px)';
-  const pairs=shuffle([...images,...images]);
-  let flipped=[],matched=0,lock=false;
-  status.textContent=`Find ${images.length} pairs! 🔍`;
-  grid.innerHTML='';
-  pairs.forEach(img=>{
-    const card=document.createElement('div');
-    card.className='card';
-    const num=grid.children.length+1;
-    card.innerHTML=`<div class="card-inner"><div class="card-front" style="font-size:2rem">${num}</div><div class="card-back"><img src="${img}" alt=""></div></div>`;
-    card.addEventListener('click',()=>{
-      if(lock||card.classList.contains('flipped')||card.classList.contains('matched'))return;
-      card.classList.add('flipped');
-      flipped.push({card,img});
-      if(flipped.length===2){
-        lock=true;
-        if(flipped[0].img===flipped[1].img){
-          flipped[0].card.classList.add('matched');flipped[1].card.classList.add('matched');
-          matched++;flipped=[];lock=false;
-          status.textContent=matched===images.length?'🎉 Amazing! All matched!':`✅ ${matched} matched! Keep going!`;
-          if(matched===images.length)launchConfetti();
-        } else {
-          setTimeout(()=>{flipped[0].card.classList.remove('flipped');flipped[1].card.classList.remove('flipped');flipped=[];lock=false;},900);
-        }
-      }
-    });
-    grid.appendChild(card);
-  });
-  // 2s preview: show all cards then flip back
-  const gid=isFlower?'flowerGrid':'feelingGrid';
-  lock=true;
-  document.querySelectorAll(`#${gid} .card`).forEach(c=>c.classList.add('flipped'));
-  setTimeout(()=>{document.querySelectorAll(`#${gid} .card`).forEach(c=>c.classList.remove('flipped'));lock=false;},2000);
-}
-
-const feelingData=[
-  {img:'happy.jpg',label:'happy'},{img:'sad.jpg',label:'sad'},{img:'angry.jpg',label:'angry'},
-  {img:'excited.jpg',label:'excited'},{img:'scared.jpg',label:'scared'},{img:'tired.jpg',label:'tired'},{img:'surprised.jpg',label:'surprised'}
-];
-const flowerData=[
-  {img:'rose.jpg',label:'rose'},{img:'sunflower.jpg',label:'sunflower'},{img:'tulip.jpg',label:'tulip'},
-  {img:'lily.jpg',label:'lily'},{img:'lotus.jpg',label:'lotus'}
-];
-
-function buildTalkGrids(){
-  buildTalkGrid('feelingTalkGrid',feelingData);
-  buildTalkGrid('flowerTalkGrid',flowerData);
-}
-function buildTalkGrid(gridId,data){
-  const grid=document.getElementById(gridId);
-  data.forEach(item=>{
-    const wrap=document.createElement('div');
-    wrap.className='talk-item';
-    const img=document.createElement('img');
-    img.src=item.img;img.alt=item.label;
-    const lbl=document.createElement('div');
-    lbl.className='talk-label';lbl.textContent=item.label;
-    wrap.appendChild(img);wrap.appendChild(lbl);
-    wrap.addEventListener('click',()=>wrap.classList.toggle('revealed'));
-    grid.appendChild(wrap);
-  });
-}
-
-const qtQuestions=[
-  {q:"Happy or angry?",           img:"happy.jpg",     correct:"Happy",            wrong:"Angry",          btnColors:["#FFD93D","#FF4757"]},
-  {q:"Rose or lotus?",            img:"rose.jpg",      correct:"Rose",             wrong:"Lotus",          btnColors:["#FF6B9D","#C77DFF"]},
-  {q:"Sunflower or lotus?",       img:"lotus.jpg",     correct:"Lotus",            wrong:"Sunflower",      btnColors:["#C77DFF","#FFD93D"]},
-  {q:"Excited or tired?",         img:"excited.jpg",   correct:"Excited",          wrong:"Tired",          btnColors:["#FF9A3C","#78909c"]},
-  {q:"Sunflower or tulip?",       img:"sunflower.jpg", correct:"Sunflower",        wrong:"Tulip",          btnColors:["#FFD93D","#C77DFF"]},
-  {q:"Sad or surprised?",         img:"sad.jpg",       correct:"Sad",              wrong:"Surprised",      btnColors:["#4D96FF","#26C6DA"]},
-  {q:"Pink lotus or red rose?",   img:"lotus.jpg",     correct:"Pink lotus",       wrong:"Red rose",       btnColors:["#FF6B9D","#FF4757"]},
-  {q:"Angry or scared?",          img:"angry.jpg",     correct:"Angry",            wrong:"Scared",         btnColors:["#FF4757","#C77DFF"]},
-  {q:"Lily or rose?",             img:"lily.jpg",      correct:"Lily",             wrong:"Rose",           btnColors:["#26C6DA","#FF6B9D"]},
-  {q:"Happy sunflower or sad sunflower?",img:"sunflower.jpg",correct:"Happy sunflower",wrong:"Sad sunflower",btnColors:["#FFD93D","#4D96FF"]}
-];
-let qtIndex=0,qtAnswered=false;
-
-function qtInit(){
-  qtIndex=0;qtAnswered=false;
-  const dots=document.getElementById('qtDots');dots.innerHTML='';
-  qtQuestions.forEach((_,i)=>{const d=document.createElement('div');d.className='qt-dot'+(i===0?' active':'');dots.appendChild(d);});
-  qtShow();
-}
-function qtShow(){
-  const q=qtQuestions[qtIndex];qtAnswered=false;
-  document.getElementById('qtProgress').textContent=`Question ${qtIndex+1} of ${qtQuestions.length}`;
-  document.getElementById('qtQuestion').textContent=q.q;
-  document.getElementById('qtFeedback').textContent='';
-  const img=document.getElementById('qtImage');img.src=q.img;img.className='';
-  const nextBtn=document.getElementById('qtNextBtn');nextBtn.className='qt-next-btn';
-  nextBtn.textContent=qtIndex===qtQuestions.length-1?'🏆 Finish!':'Next ▶';
-  const choices=Math.random()>0.5
-    ?[{label:q.correct,isCorrect:true,color:q.btnColors[0]},{label:q.wrong,isCorrect:false,color:q.btnColors[1]}]
-    :[{label:q.wrong,isCorrect:false,color:q.btnColors[1]},{label:q.correct,isCorrect:true,color:q.btnColors[0]}];
-  const choicesDiv=document.getElementById('qtChoices');choicesDiv.innerHTML='';
-  choices.forEach(c=>{
-    const btn=document.createElement('button');btn.className='qt-choice-btn';btn.textContent=c.label;
-    btn.style.background=`linear-gradient(135deg,${c.color},${c.color}cc)`;
-    btn.addEventListener('click',()=>qtAnswer(btn,c.isCorrect));choicesDiv.appendChild(btn);
-  });
-  document.querySelectorAll('.qt-dot').forEach((d,i)=>{d.className='qt-dot'+(i<qtIndex?' done':i===qtIndex?' active':'');});
-}
-function qtAnswer(btn,isCorrect){
-  if(qtAnswered)return;qtAnswered=true;
-  const allBtns=document.querySelectorAll('.qt-choice-btn');allBtns.forEach(b=>b.disabled=true);
-  const feedback=document.getElementById('qtFeedback');const img=document.getElementById('qtImage');
-  if(isCorrect){
-    btn.classList.add('correct');feedback.textContent='⭐ Great job!';feedback.style.color='#43a047';
-    img.classList.add('celebrate');launchConfetti();document.getElementById('qtNextBtn').classList.add('show');
-  } else {
-    btn.classList.add('wrong');feedback.textContent='😊 Try again!';feedback.style.color='#e53935';
-    setTimeout(()=>{allBtns.forEach(b=>{b.disabled=false;});btn.disabled=true;qtAnswered=false;feedback.textContent='';},900);
-  }
-}
-function qtNext(){
-  if(qtIndex===qtQuestions.length-1){
-    document.getElementById('qtQuestion').textContent='🏆 Amazing! You finished!';
-    document.getElementById('qtImage').src='';document.getElementById('qtChoices').innerHTML='';
-    document.getElementById('qtFeedback').textContent='';document.getElementById('qtNextBtn').className='qt-next-btn';
-    document.getElementById('qtProgress').textContent='All done! 🎉';
-    document.querySelectorAll('.qt-dot').forEach(d=>d.className='qt-dot done');
-    launchConfetti();launchConfetti();return;
-  }
-  qtIndex++;qtShow();
-}
-
-function launchConfetti(){
-  const colors=['#FF6B9D','#FFD93D','#6BCB77','#4D96FF','#C77DFF','#FF9A3C'];
-  for(let i=0;i<60;i++){
-    const piece=document.createElement('div');piece.className='confetti-piece';
-    piece.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*1.5}s;animation-duration:${2+Math.random()*2}s;transform:rotate(${Math.random()*360}deg);border-radius:${Math.random()>0.5?'50%':'2px'};`;
-    document.body.appendChild(piece);setTimeout(()=>piece.remove(),4000);
-  }
-}
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'||e.key==='ArrowDown')changeSlide(1);
-  if(e.key==='ArrowLeft'||e.key==='ArrowUp')changeSlide(-1);
-});
-
-buildTalkGrids();
-showSlide(0);
-</script>
+</section>
+<footer>Pang made with ❤️ for kids learning English</footer>
 </body>
 </html>
