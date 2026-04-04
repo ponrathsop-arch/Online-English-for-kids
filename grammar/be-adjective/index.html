@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Be + Adjective!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:800;min-height:100vh;background:linear-gradient(135deg,#FEF9F0,#FFF0F8);overflow-x:hidden;display:flex;flex-direction:column;align-items:center;padding:20px 16px 60px;}
+.shape{position:fixed;border-radius:50%;opacity:0.13;pointer-events:none;animation:float 6s ease-in-out infinite alternate;}
+@keyframes float{from{transform:translateY(0) rotate(0deg)}to{transform:translateY(-30px) rotate(15deg)}}
+.title-wrap{margin:32px 0 8px;text-align:center;}
+.title{font-family:'Fredoka One',cursive;font-size:clamp(2.8rem,9vw,5.5rem);line-height:1.1;animation:bounce 1.8s ease-in-out infinite alternate;}
+@keyframes bounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-12px) rotate(2deg)}}
+.title span:nth-child(1){color:#FF6B6B;}
+.title span:nth-child(2){color:#4D96FF;}
+.title span:nth-child(3){color:#6BCB77;}
+.subtitle{font-size:clamp(1rem,3vw,1.5rem);color:#888;margin-bottom:28px;}
+.card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:560px;width:100%;}
+.card{background:white;border-radius:22px;box-shadow:0 8px 0 rgba(0,0,0,0.09);overflow:hidden;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s;display:block;}
+.card:hover{transform:translateY(-5px);box-shadow:0 13px 0 rgba(0,0,0,0.09);}
+.card-top{height:10px;}
+.card-body{padding:20px 18px 22px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.card-icon{font-size:2.5rem;}
+.card-title{font-size:clamp(1.1rem,3vw,1.5rem);color:#333;text-align:center;}
+.card-desc{font-size:clamp(0.8rem,2vw,1rem);color:#999;text-align:center;}
+footer{margin-top:40px;font-size:0.95rem;color:#bbb;}
+</style>
+</head>
+<body>
+<div class="shape" style="width:200px;height:200px;background:#FF6B6B;top:5%;left:-5%;animation-delay:0s"></div>
+<div class="shape" style="width:150px;height:150px;background:#4D96FF;top:60%;right:-4%;animation-delay:2s"></div>
+<div class="shape" style="width:120px;height:120px;background:#FFD93D;bottom:10%;left:10%;animation-delay:1s"></div>
+
+<div class="title-wrap">
+  <div class="title"><span>Be</span> <span>+</span> <span>Adjective!</span></div>
+</div>
+<div class="subtitle">I am happy • She is tired • They are excited</div>
+
+<div class="card-grid">
+  <a class="card" href="normal/index.html">
+    <div class="card-top" style="background:#C77DFF"></div>
+    <div class="card-body"><div class="card-icon">✅</div><div class="card-title">Normal Form</div><div class="card-desc">I am happy!</div></div>
+  </a>
+  <a class="card" href="negative/index.html">
+    <div class="card-top" style="background:#FF6B6B"></div>
+    <div class="card-body"><div class="card-icon">❌</div><div class="card-title">Negative Form</div><div class="card-desc">I am not sad.</div></div>
+  </a>
+  <a class="card" href="question/index.html">
+    <div class="card-top" style="background:#4D96FF"></div>
+    <div class="card-body"><div class="card-icon">❓</div><div class="card-title">Question Form</div><div class="card-desc">Are you tired?</div></div>
+  </a>
+  <a class="card" href="quiz/index.html">
+    <div class="card-top" style="background:#FFD93D"></div>
+    <div class="card-body"><div class="card-icon">🏆</div><div class="card-title">Quiz Time!</div><div class="card-desc">Test yourself!</div></div>
+  </a>
+</div>
+
+<footer>Pang made with ❤️ for kids learning English</footer>
+</body>
+</html>
