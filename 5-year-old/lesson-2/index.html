@@ -579,7 +579,8 @@ function initGame(type){
   pairs.forEach(img=>{
     const card=document.createElement('div');
     card.className='card';
-    card.innerHTML=`<div class="card-inner"><div class="card-front">❓</div><div class="card-back"><img src="${img}" alt=""></div></div>`;
+    const num=grid.children.length+1;
+    card.innerHTML=`<div class="card-inner"><div class="card-front" style="font-size:2rem">${num}</div><div class="card-back"><img src="${img}" alt=""></div></div>`;
     card.addEventListener('click',()=>{
       if(lock||card.classList.contains('flipped')||card.classList.contains('matched'))return;
       card.classList.add('flipped');
@@ -598,6 +599,11 @@ function initGame(type){
     });
     grid.appendChild(card);
   });
+  // 2s preview: show all cards then flip back
+  const gid=isFlower?'flowerGrid':'feelingGrid';
+  lock=true;
+  document.querySelectorAll(`#${gid} .card`).forEach(c=>c.classList.add('flipped'));
+  setTimeout(()=>{document.querySelectorAll(`#${gid} .card`).forEach(c=>c.classList.remove('flipped'));lock=false;},2000);
 }
 
 const feelingData=[
