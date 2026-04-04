@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -48,8 +49,9 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 .color-box{width:clamp(200px,40vw,400px);height:clamp(200px,40vw,400px);border-radius:30px;box-shadow:0 8px 20px rgba(0,0,0,0.15);border:6px solid white;animation:illustPop 0.6s cubic-bezier(0.175,0.885,0.32,1.275);}
 .color-label{font-size:clamp(1.8rem,5vw,3.5rem);margin-top:20px;color:#333;font-weight:900;}
 .word-title{font-size:clamp(2rem,6vw,4.5rem);color:#FF6B6B;margin-bottom:16px;text-align:center;}
-.word-img-wrap{position:relative;width:clamp(380px,60vw,620px);height:clamp(380px,60vw,620px);border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,0.1);background:white;padding:10px;animation:illustPop 0.5s cubic-bezier(0.175,0.885,0.32,1.275);}
-.word-img{width:120%;height:120%;object-fit:contain;border-radius:10px;margin:-10%;}
+.word-img-wrap{position:relative;width:clamp(450px,70vw,720px);height:clamp(450px,70vw,720px);border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,0.1);background:white;padding:20px;animation:illustPop 0.5s cubic-bezier(0.175,0.885,0.32,1.275);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.word-img{width:100%;height:100%;object-fit:contain;border-radius:10px;}
+.word-img-fallback{width:100%;height:100%;display:none;align-items:center;justify-content:center;font-size:clamp(5rem,14vw,10rem);background:linear-gradient(135deg,#FFE5E5,#FFF5E5);border-radius:10px;}
 .word-img-fallback{width:100%;height:100%;display:none;align-items:center;justify-content:center;font-size:clamp(4rem,12vw,8rem);background:linear-gradient(135deg,#FFE5E5,#FFF5E5);border-radius:10px;}
 .say-badge{background:#FFF0D6;border:3px solid #FFCC80;border-radius:50px;padding:clamp(8px,2vw,12px) clamp(18px,4vw,28px);font-size:clamp(0.9rem,2vw,1.5rem);color:#E67E22;margin-top:12px;}
 .scene-wrap{position:relative;width:clamp(400px,70vw,800px);height:clamp(300px,50vh,600px);background:#87CEEB;border-radius:20px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.15);animation:illustPop 0.5s cubic-bezier(0.175,0.885,0.32,1.275);}
@@ -64,8 +66,8 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 .bg-mountain{position:absolute;bottom:35%;width:0;height:0;border-left:clamp(80px,12vw,150px) solid transparent;border-right:clamp(80px,12vw,150px) solid transparent;border-bottom:clamp(60px,9vw,120px) solid #8B7355;animation:mountainFloat 3s ease-in-out infinite;}
 .bg-cloud{position:absolute;background:white;border-radius:50%;animation:floatCloud 6s ease-in-out infinite alternate;opacity:0.9;}
 .scene-cloud{animation:floatCloud 7s ease-in-out infinite alternate;}
-.hidden-obj{position:absolute;width:clamp(50px,7vw,80px);height:clamp(50px,7vw,80px);cursor:pointer;z-index:4;transition:transform 0.2s,filter 0.2s;}
-.hidden-obj img{width:100%;height:100%;object-fit:contain;border-radius:8px;padding:4px;}
+.hidden-obj{position:absolute;width:clamp(70px,10vw,110px);height:clamp(70px,10vw,110px);cursor:pointer;z-index:4;transition:transform 0.2s,filter 0.2s;}
+.hidden-obj img{width:100%;height:100%;object-fit:contain;border-radius:8px;padding:4px;background:transparent;}
 .hidden-obj.found{transform:scale(1.3);filter:brightness(1.2) drop-shadow(0 0 10px rgba(255,215,0,0.8));animation:bounce 0.5s;}
 @keyframes bounce{0%,100%{transform:scale(1.3)}50%{transform:scale(1.5)}}
 .counter-wrap{margin-top:clamp(12px,3vw,20px);}
@@ -80,8 +82,9 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 .card-front img{width:90%;height:90%;object-fit:contain;border-radius:8px;padding:4px;}
 .card-back{background:#FFD93D;color:#333;}
 .review-title{font-size:clamp(2rem,6vw,4.5rem);color:#333;margin-bottom:clamp(12px,3vw,20px);text-align:center;}
-.review-img-wrap{position:relative;width:clamp(320px,55vw,550px);height:clamp(320px,55vw,550px);background:white;border-radius:20px;padding:10px;box-shadow:0 8px 20px rgba(0,0,0,0.15);animation:illustPop 0.5s cubic-bezier(0.175,0.885,0.32,1.275);}
-.review-img{width:120%;height:120%;object-fit:contain;border-radius:10px;margin:-10%;}
+.review-img-wrap{position:relative;width:clamp(400px,65vw,650px);height:clamp(400px,65vw,650px);background:white;border-radius:20px;padding:20px;box-shadow:0 8px 20px rgba(0,0,0,0.15);animation:illustPop 0.5s cubic-bezier(0.175,0.885,0.32,1.275);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.review-img{width:100%;height:100%;object-fit:contain;border-radius:10px;}
+.review-img-fallback{width:100%;height:100%;display:none;align-items:center;justify-content:center;font-size:clamp(4rem,12vw,8rem);background:linear-gradient(135deg,#FFE5E5,#FFF5E5);border-radius:10px;}
 .review-img-fallback{width:100%;height:100%;display:none;align-items:center;justify-content:center;font-size:clamp(3rem,10vw,6rem);background:linear-gradient(135deg,#FFE5E5,#FFF5E5);border-radius:10px;}
 .section-divider{background:linear-gradient(135deg,#FF6B6B,#FFD93D,#6BCB77);}
 .section-title{font-size:clamp(2.5rem,8vw,6rem);color:white;text-shadow:0 6px 0 rgba(0,0,0,0.15);animation:titleBounce 1.6s ease-in-out infinite alternate;}
@@ -100,6 +103,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 <div id="dots"></div>
 
 <!-- Greeting -->
+
 <div class="slide active" style="background:linear-gradient(160deg,#FFF9F0,#FFE8D6);position:relative;">
 <div class="slide-bg-animated">
 <div class="bg-sun-small"></div>
@@ -122,6 +126,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 </div>
 
 <!-- Colors -->
+
 <div class="slide" style="background:#FEF9F0;position:relative;">
 <div class="slide-bg-animated">
 <div class="bg-sun-small"></div>
@@ -196,12 +201,14 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 </div>
 
 <!-- S Sound Divider -->
+
 <div class="slide section-divider">
 <div class="section-title">🐍 S Sound!</div>
 <div class="section-subtitle">Snake, Sun, Star, Sock</div>
 </div>
 
 <!-- S Words -->
+
 <div class="slide" style="background:#FEF9F0;position:relative;">
 <div class="slide-bg-animated">
 <div class="bg-sun-small"></div>
@@ -264,6 +271,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 </div>
 
 <!-- S Counting Slides -->
+
 <div class="slide" id="count-snake" style="background:#FEF9F0;">
 <div class="word-title">How many SNAKES? 🐍</div>
 <div class="scene-wrap">
@@ -344,12 +352,14 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 </div>
 
 <!-- P Sound Divider -->
+
 <div class="slide section-divider">
 <div class="section-title">🐷 P Sound!</div>
 <div class="section-subtitle">Pig, Pen, Pie, Pan</div>
 </div>
 
 <!-- P Words -->
+
 <div class="slide" style="background:#FEF9F0;position:relative;">
 <div class="slide-bg-animated">
 <div class="bg-sun-small"></div>
@@ -412,6 +422,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 </div>
 
 <!-- P Counting Slides -->
+
 <div class="slide" id="count-pig" style="background:#FEF9F0;">
 <div class="word-title">How many PIGS? 🐷</div>
 <div class="scene-wrap">
@@ -497,6 +508,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 </div>
 
 <!-- Memory Game -->
+
 <div class="slide" id="memory-game" style="background:#FEF9F0;position:relative;">
 <div class="slide-bg-animated">
 <div class="bg-sun-small"></div>
@@ -511,6 +523,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 </div>
 
 <!-- Memory Game 2 -->
+
 <div class="slide" id="memory-game-2" style="background:#FEF9F0;position:relative;">
 <div class="slide-bg-animated">
 <div class="bg-sun-small"></div>
@@ -525,12 +538,14 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 </div>
 
 <!-- Final Review Divider -->
+
 <div class="slide section-divider">
 <div class="section-title">⭐ Review Time!</div>
 <div class="section-subtitle">What do you remember?</div>
 </div>
 
 <!-- Final Review Slides -->
+
 <div class="slide" style="background:#FEF9F0;position:relative;">
 <div class="slide-bg-animated">
 <div class="bg-sun-small"></div>
@@ -645,6 +660,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;
 </div>
 
 <!-- Final Slide -->
+
 <div class="slide" style="background:linear-gradient(145deg,#FF6B6B,#FFD93D,#6BCB77);">
 <div class="rainbow-title">🎉 Great Job!</div>
 <div class="tap-hint">You did amazing! ⭐</div>
@@ -719,7 +735,7 @@ scene.querySelectorAll('.hidden-obj').forEach(e=>e.remove());
 for(let i=0;i<total;i++){
 const obj=document.createElement('div');
 obj.className='hidden-obj';
-obj.innerHTML=`<img src="${type}.jpg" alt="${type}" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\\'font-size:clamp(2rem,5vw,3rem);background:white;border-radius:8px;padding:8px;\\'>${type==='snake'?'🐍':type==='sun'?'☀️':type==='star'?'⭐':type==='sock'?'🧦':type==='pig'?'🐷':type==='pen'?'🖊️':type==='pie'?'🥧':'🍳'}</div>'">`;
+obj.innerHTML=`<img src="${type}.jpg" alt="${type}" style="background:transparent;" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\\'font-size:clamp(2.5rem,6vw,4rem);background:transparent;\\'>${type==='snake'?'🐍':type==='sun'?'☀️':type==='star'?'⭐':type==='sock'?'🧦':type==='pig'?'🐷':type==='pen'?'🖊️':type==='pie'?'🥧':'🍳'}</div>'">`;
 obj.style.top=positions[i].top;
 if(positions[i].left)obj.style.left=positions[i].left;
 else obj.style.right=positions[i].right;
@@ -879,5 +895,6 @@ setTimeout(()=>el.remove(),1800);
 
 buildDots();updateNav();
 </script>
+
 </body>
 </html>
