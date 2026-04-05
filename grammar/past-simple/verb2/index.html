@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Past Simple – Verb 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;width:100vw;overflow:hidden;background:#FEF9F0;touch-action:manipulation;font-weight:800;}
+.slide{display:none;width:100vw;height:calc(100vh - 7px - 56px - 70px);position:absolute;top:7px;left:0;flex-direction:column;align-items:center;justify-content:center;padding:12px 16px 8px;overflow:hidden;}
+.slide.active{display:flex;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}
+@keyframes popIn{0%{transform:scale(0.85);opacity:0}100%{transform:scale(1);opacity:1}}
+#progress-bar-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,0.07);z-index:998;}
+#progress-bar{height:100%;background:linear-gradient(90deg,#FF9F43,#FF6B6B,#C77DFF,#4D96FF,#6BCB77);transition:width .4s ease;width:0%;}
+#dots{position:fixed;bottom:calc(70px + 28px);left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:999;flex-wrap:wrap;justify-content:center;max-width:90vw;}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.18);transition:all .3s;flex-shrink:0;}
+.dot.active{background:#555;transform:scale(1.5);}
+.nav-btn{position:fixed;bottom:calc(70px + 14px);background:rgba(80,80,80,0.18);border:none;border-radius:50%;width:52px;height:52px;font-size:1.5rem;cursor:pointer;z-index:999;transition:transform .15s;backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,0.1);}
+.nav-btn:hover{transform:scale(1.15);}
+#prevBtn{left:16px;}#nextBtn{right:16px;}
+#quick-nav{position:fixed;bottom:0;left:0;width:100%;height:70px;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border-top:2px solid #F0EAE0;z-index:997;padding:10px 10px 12px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;}
+#quick-nav::-webkit-scrollbar{display:none;}
+.qn-btn{flex-shrink:0;border:none;border-radius:14px;padding:8px 14px;font-family:inherit;font-weight:800;font-size:clamp(0.7rem,1.5vw,1rem);cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 3px 0 rgba(0,0,0,0.13);color:white;text-shadow:0 1px 3px rgba(0,0,0,0.18);}
+.qn-btn:hover{transform:translateY(-3px);}
+.qn-btn.active-nav{outline:3px solid rgba(0,0,0,0.25);transform:translateY(-2px);}
+.qn-divider{flex-shrink:0;width:2px;height:32px;background:#EDE8E0;border-radius:2px;}
+
+/* INTRO */
+#s0{background:linear-gradient(145deg,#FF9F43,#FF6B6B,#C77DFF,#4D96FF);justify-content:center;gap:16px;}
+.rainbow-title{font-size:clamp(2.8rem,9vw,7rem);color:white;text-shadow:0 8px 0 rgba(0,0,0,0.12);animation:titleBounce 1.8s ease-in-out infinite alternate;text-align:center;line-height:1.15;}
+@keyframes titleBounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-16px) rotate(2deg)}}
+.tap-hint{font-size:clamp(1.2rem,3.5vw,2.2rem);color:white;animation:pulse 1.4s ease-in-out infinite alternate;}
+@keyframes pulse{from{opacity:.4;transform:scale(0.97)}to{opacity:1;transform:scale(1.03)}}
+
+/* SECTION INTRO SLIDES */
+.section-intro{justify-content:center;gap:18px;}
+.section-intro-icon{font-size:clamp(3rem,10vw,6rem);}
+.section-intro-title{font-size:clamp(2rem,6vw,4.5rem);color:white;text-shadow:0 6px 0 rgba(0,0,0,0.12);text-align:center;line-height:1.2;}
+.section-intro-sub{font-size:clamp(1rem,3vw,1.8rem);color:rgba(255,255,255,0.92);text-align:center;}
+.section-intro-badge{padding:8px 24px;border-radius:50px;background:rgba(255,255,255,0.25);color:white;font-size:clamp(0.9rem,2.2vw,1.4rem);border:2px solid rgba(255,255,255,0.4);}
+
+/* VERB CARD SLIDE */
+.verb-slide{background:#FEF9F0;gap:10px;}
+.verb-header{display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;}
+.verb-base-pill{padding:8px 22px;border-radius:50px;font-size:clamp(1.2rem,3vw,2rem);color:#888;background:white;box-shadow:0 4px 0 rgba(0,0,0,0.08);}
+.verb-arrow-big{font-size:clamp(1.4rem,3.5vw,2.2rem);color:#ccc;}
+.verb-v2-pill{padding:8px 28px;border-radius:50px;font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:900;color:white;box-shadow:0 5px 0 rgba(0,0,0,0.15);}
+.verb-meaning{font-size:clamp(0.9rem,2vw,1.3rem);color:#aaa;text-align:center;}
+/* change highlight */
+.ch{text-decoration:underline;text-decoration-style:wavy;text-underline-offset:4px;}
+
+.verb-examples{display:flex;flex-direction:column;gap:8px;width:100%;max-width:640px;}
+.verb-ex-box{background:white;border-radius:16px;padding:clamp(9px,1.8vw,16px) clamp(12px,2.5vw,22px);box-shadow:0 4px 0 rgba(0,0,0,0.07);border-left:6px solid transparent;font-size:clamp(1rem,2.5vw,1.65rem);color:#333;display:flex;align-items:center;gap:12px;}
+.ex-char{width:clamp(32px,5vw,50px);height:clamp(32px,5vw,50px);flex-shrink:0;}
+.v2-hl{font-weight:900;padding:1px 8px;border-radius:6px;}
+
+/* PATTERNS SLIDE */
+.pattern-slide{background:#FEF9F0;gap:10px;}
+.pattern-title{font-size:clamp(1.5rem,4vw,2.8rem);color:#333;text-align:center;}
+.pattern-cards{display:flex;flex-direction:column;gap:8px;width:100%;max-width:640px;}
+.pattern-card{background:white;border-radius:16px;padding:12px 18px;box-shadow:0 4px 0 rgba(0,0,0,0.07);display:flex;align-items:center;gap:14px;}
+.pattern-badge{flex-shrink:0;padding:6px 14px;border-radius:50px;font-size:clamp(0.8rem,1.8vw,1.1rem);font-weight:900;color:white;}
+.pattern-examples{font-size:clamp(0.85rem,2vw,1.25rem);color:#555;}
+
+/* QUIZ */
+.quiz-slide{background:#FEF9F0;gap:6px;}
+.quiz-counter{font-size:clamp(1rem,2.2vw,1.6rem);color:#bbb;}
+.quiz-char-wrap{width:clamp(90px,14vw,140px);height:clamp(90px,14vw,140px);animation:charFloat 2.5s ease-in-out infinite alternate;}
+@keyframes charFloat{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+.quiz-prompt{font-size:clamp(1.1rem,2.8vw,2rem);color:#888;text-align:center;}
+.quiz-base-word{font-size:clamp(2rem,6vw,4rem);color:#333;text-align:center;font-weight:900;}
+.quiz-choices{display:flex;gap:clamp(8px,2vw,16px);justify-content:center;margin-top:8px;flex-wrap:wrap;}
+.quiz-btn{border:none;border-radius:20px;padding:clamp(12px,2vw,20px) clamp(14px,3vw,32px);cursor:pointer;font-family:inherit;font-weight:900;font-size:clamp(1.05rem,2.6vw,2rem);box-shadow:0 7px 0 #4A6FA0;transition:transform .15s,box-shadow .15s;background:#6C9BD2;color:white;text-shadow:0 2px 5px rgba(0,0,0,0.2);}
+.quiz-btn:hover{transform:translateY(-5px);box-shadow:0 12px 0 #4A6FA0;}
+.quiz-btn.correct{animation:correctBounce .55s ease;background:#6BCB77!important;box-shadow:0 7px 0 #3DAD8E!important;outline:5px solid #A8F0C0;}
+.quiz-btn.wrong{animation:wrongShake .4s ease;background:#FF6B6B!important;box-shadow:0 7px 0 #D94040!important;}
+.quiz-feedback{font-size:clamp(1.1rem,3vw,2rem);min-height:44px;margin-top:4px;text-align:center;color:#333;}
+@keyframes correctBounce{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-5deg)}70%{transform:scale(0.93) rotate(3deg)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-12px)}75%{transform:translateX(12px)}}
+
+/* FINISH */
+#finish-slide{background:linear-gradient(145deg,#FF9F43,#FF6B6B,#C77DFF);gap:12px;}
+.finish-char{width:clamp(120px,18vw,190px);height:clamp(120px,18vw,190px);animation:titleBounce 1.4s ease-in-out infinite alternate;}
+.finish-title{font-size:clamp(2.2rem,7vw,5.5rem);color:white;text-shadow:0 7px 0 rgba(0,0,0,0.12);text-align:center;}
+.finish-sub{font-size:clamp(1.1rem,2.8vw,2rem);color:rgba(255,255,255,0.9);text-align:center;}
+.restart-btn{border:none;border-radius:50px;padding:14px 48px;font-family:inherit;font-size:clamp(1.1rem,2.8vw,1.8rem);font-weight:900;color:#FF9F43;background:white;box-shadow:0 6px 0 rgba(0,0,0,0.12);cursor:pointer;transition:transform .15s;}
+.restart-btn:hover{transform:translateY(-4px);}
+
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:2rem;animation:sparkleFly .9s ease forwards;}
+@keyframes sparkleFly{0%{opacity:1;transform:scale(0.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-90px)}}
+.confetti-piece{position:fixed;width:13px;height:13px;border-radius:4px;opacity:0;pointer-events:none;z-index:9999;animation:confettiFall 1.3s ease forwards;}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(800deg)}}
+</style>
+</head>
+<body>
+
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀</button>
+<button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">▶</button>
+<div id="dots"></div>
+
+<div id="quick-nav">
+  <button class="qn-btn" style="background:#888" onclick="showSlide(0)">🏠 Home</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#6BCB77"  id="qn-ed"       onclick="goToSection('ed')">+ed</button>
+  <button class="qn-btn" style="background:#4D96FF"  id="qn-d"        onclick="goToSection('d')">+d</button>
+  <button class="qn-btn" style="background:#FF9F43"  id="qn-ied"      onclick="goToSection('ied')">y→ied</button>
+  <button class="qn-btn" style="background:#FF6B6B"  id="qn-change"   onclick="goToSection('change')">Change!</button>
+  <button class="qn-btn" style="background:#C77DFF"  id="qn-patterns" onclick="goToSection('patterns')">Patterns</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#FFD93D;color:#7A5800;text-shadow:none" id="qn-quiz" onclick="goToSection('quiz')">Quiz!</button>
+</div>
+
+<!-- ══ INTRO ══ -->
+<div class="slide active" id="s0">
+  <div class="rainbow-title">Verb 2<br>Past! ⏰</div>
+  <div class="tap-hint">Tap to start!</div>
+</div>
+
+<!-- ══════════════════════════════════
+     SECTION 1: REGULAR +ed
+════════════════════════════════════ -->
+<div class="slide section-intro" id="s-ed-intro" style="background:#6BCB77" data-section="ed">
+  <div class="section-intro-icon">✅</div>
+  <div class="section-intro-title">Regular Verbs<br>add <span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">-ed</span></div>
+  <div class="section-intro-sub">Most verbs follow this rule!</div>
+  <div class="section-intro-badge">walk → walk<strong>ed</strong> &nbsp;·&nbsp; play → play<strong>ed</strong></div>
+</div>
+
+<!-- walk -->
+<div class="slide verb-slide" id="s-walk" data-section="ed">
+  <div class="verb-header">
+    <span class="verb-base-pill">walk</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#6BCB77">walk<span class="ch">ed</span></span>
+  </div>
+  <div class="verb-meaning">to move on foot</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#6BCB77"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#DFFFF0;color:#2BAE66">walked</span> to school yesterday.</div>
+    <div class="verb-ex-box" style="border-color:#6BCB77"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>She <span class="v2-hl" style="background:#DFFFF0;color:#2BAE66">walked</span> home alone last night.</div>
+    <div class="verb-ex-box" style="border-color:#6BCB77"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>They <span class="v2-hl" style="background:#DFFFF0;color:#2BAE66">walked</span> along the beach.</div>
+  </div>
+</div>
+
+<!-- play -->
+<div class="slide verb-slide" id="s-play" data-section="ed">
+  <div class="verb-header">
+    <span class="verb-base-pill">play</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#6BCB77">play<span class="ch">ed</span></span>
+  </div>
+  <div class="verb-meaning">to take part in a game or activity</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#6BCB77"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF9F43"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>He <span class="v2-hl" style="background:#DFFFF0;color:#2BAE66">played</span> football yesterday.</div>
+    <div class="verb-ex-box" style="border-color:#6BCB77"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They <span class="v2-hl" style="background:#DFFFF0;color:#2BAE66">played</span> games all afternoon.</div>
+    <div class="verb-ex-box" style="border-color:#6BCB77"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#8338EC"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#C77DFF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>Sara <span class="v2-hl" style="background:#DFFFF0;color:#2BAE66">played</span> the piano at the concert.</div>
+  </div>
+</div>
+
+<!-- watch -->
+<div class="slide verb-slide" id="s-watch" data-section="ed">
+  <div class="verb-header">
+    <span class="verb-base-pill">watch</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#6BCB77">watch<span class="ch">ed</span></span>
+  </div>
+  <div class="verb-meaning">to look at something carefully</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#6BCB77"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#DFFFF0;color:#2BAE66">watched</span> a movie last night.</div>
+    <div class="verb-ex-box" style="border-color:#6BCB77"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#1A1A2E"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#1A3A6E"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>Tom <span class="v2-hl" style="background:#DFFFF0;color:#2BAE66">watched</span> the game on TV.</div>
+    <div class="verb-ex-box" style="border-color:#6BCB77"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#DFFFF0;color:#2BAE66">watched</span> the birds in the garden.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SECTION 2: +d  (ends in e)
+════════════════════════════════════ -->
+<div class="slide section-intro" id="s-d-intro" style="background:#4D96FF" data-section="d">
+  <div class="section-intro-icon">➕</div>
+  <div class="section-intro-title">Verb ends in <span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">-e</span><br>just add <span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">-d</span></div>
+  <div class="section-intro-sub">Already has the e — no need to add another!</div>
+  <div class="section-intro-badge">like → like<strong>d</strong> &nbsp;·&nbsp; dance → dance<strong>d</strong></div>
+</div>
+
+<!-- like -->
+<div class="slide verb-slide" id="s-like" data-section="d">
+  <div class="verb-header">
+    <span class="verb-base-pill">like</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#4D96FF">like<span class="ch">d</span></span>
+  </div>
+  <div class="verb-meaning">to enjoy or feel positive about something</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#4D96FF"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#EEF4FF;color:#4D96FF">liked</span> the new restaurant.</div>
+    <div class="verb-ex-box" style="border-color:#4D96FF"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>She <span class="v2-hl" style="background:#EEF4FF;color:#4D96FF">liked</span> the movie very much.</div>
+    <div class="verb-ex-box" style="border-color:#4D96FF"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They <span class="v2-hl" style="background:#EEF4FF;color:#4D96FF">liked</span> the pizza a lot.</div>
+  </div>
+</div>
+
+<!-- dance -->
+<div class="slide verb-slide" id="s-dance" data-section="d">
+  <div class="verb-header">
+    <span class="verb-base-pill">dance</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#4D96FF">dance<span class="ch">d</span></span>
+  </div>
+  <div class="verb-meaning">to move your body to music</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#4D96FF"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#8338EC"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#C77DFF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>Sara <span class="v2-hl" style="background:#EEF4FF;color:#4D96FF">danced</span> at the party last night.</div>
+    <div class="verb-ex-box" style="border-color:#4D96FF"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#EEF4FF;color:#4D96FF">danced</span> together all evening.</div>
+    <div class="verb-ex-box" style="border-color:#4D96FF"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF9F43"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>He <span class="v2-hl" style="background:#EEF4FF;color:#4D96FF">danced</span> on the stage beautifully.</div>
+  </div>
+</div>
+
+<!-- smile -->
+<div class="slide verb-slide" id="s-smile" data-section="d">
+  <div class="verb-header">
+    <span class="verb-base-pill">smile</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#4D96FF">smile<span class="ch">d</span></span>
+  </div>
+  <div class="verb-meaning">to make a happy expression</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#4D96FF"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>She <span class="v2-hl" style="background:#EEF4FF;color:#4D96FF">smiled</span> when she got the gift.</div>
+    <div class="verb-ex-box" style="border-color:#4D96FF"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#1A1A2E"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#1A3A6E"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>Tom <span class="v2-hl" style="background:#EEF4FF;color:#4D96FF">smiled</span> and said hello.</div>
+    <div class="verb-ex-box" style="border-color:#4D96FF"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They all <span class="v2-hl" style="background:#EEF4FF;color:#4D96FF">smiled</span> for the photo.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SECTION 3: y → ied
+════════════════════════════════════ -->
+<div class="slide section-intro" id="s-ied-intro" style="background:#FF9F43" data-section="ied">
+  <div class="section-intro-icon">🔄</div>
+  <div class="section-intro-title">Consonant + <span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">y</span><br>→ drop y, add <span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">ied</span></div>
+  <div class="section-intro-sub">The y changes to ied!</div>
+  <div class="section-intro-badge">study → stud<strong>ied</strong> &nbsp;·&nbsp; cry → cr<strong>ied</strong></div>
+</div>
+
+<!-- study -->
+<div class="slide verb-slide" id="s-study" data-section="ied">
+  <div class="verb-header">
+    <span class="verb-base-pill">stud<span style="color:#FF9F43;font-weight:900">y</span></span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#FF9F43">stud<span class="ch">ied</span></span>
+  </div>
+  <div class="verb-meaning">to learn about a subject</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF9F43"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF3E0;color:#FF9F43">studied</span> all night for the test.</div>
+    <div class="verb-ex-box" style="border-color:#FF9F43"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#2BAE66"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#6BCB77"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>Lisa <span class="v2-hl" style="background:#FFF3E0;color:#FF9F43">studied</span> English every day.</div>
+    <div class="verb-ex-box" style="border-color:#FF9F43"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>They <span class="v2-hl" style="background:#FFF3E0;color:#FF9F43">studied</span> together at the library.</div>
+  </div>
+</div>
+
+<!-- cry -->
+<div class="slide verb-slide" id="s-cry" data-section="ied">
+  <div class="verb-header">
+    <span class="verb-base-pill">cr<span style="color:#FF9F43;font-weight:900">y</span></span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#FF9F43">cr<span class="ch">ied</span></span>
+  </div>
+  <div class="verb-meaning">to have tears from eyes, often when sad</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF9F43"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 27 Q30 22 36 27" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>She <span class="v2-hl" style="background:#FFF3E0;color:#FF9F43">cried</span> at the sad movie.</div>
+    <div class="verb-ex-box" style="border-color:#FF9F43"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 27 Q30 22 36 27" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>He <span class="v2-hl" style="background:#FFF3E0;color:#FF9F43">cried</span> when he lost his toy.</div>
+    <div class="verb-ex-box" style="border-color:#FF9F43"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>The baby <span class="v2-hl" style="background:#FFF3E0;color:#FF9F43">cried</span> all night.</div>
+  </div>
+</div>
+
+<!-- try -->
+<div class="slide verb-slide" id="s-try" data-section="ied">
+  <div class="verb-header">
+    <span class="verb-base-pill">tr<span style="color:#FF9F43;font-weight:900">y</span></span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#FF9F43">tr<span class="ch">ied</span></span>
+  </div>
+  <div class="verb-meaning">to attempt or make an effort</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF9F43"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF3E0;color:#FF9F43">tried</span> the new food and loved it.</div>
+    <div class="verb-ex-box" style="border-color:#FF9F43"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF9F43"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>He <span class="v2-hl" style="background:#FFF3E0;color:#FF9F43">tried</span> very hard to win.</div>
+    <div class="verb-ex-box" style="border-color:#FF9F43"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#FFF3E0;color:#FF9F43">tried</span> to fix the problem.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SECTION 4: CHANGE FORM (Irregular)
+     be, go, eat, have, see, do, come, get, say, give,
+     take, make, know, think, buy, bring, teach, write, run, fly
+════════════════════════════════════ -->
+<div class="slide section-intro" id="s-change-intro" style="background:#FF6B6B" data-section="change">
+  <div class="section-intro-icon">🔀</div>
+  <div class="section-intro-title">Irregular Verbs<br><span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">Form changes!</span></div>
+  <div class="section-intro-sub">No rule — you must memorise these! 🧠</div>
+  <div class="section-intro-badge">go → went &nbsp;·&nbsp; eat → ate &nbsp;·&nbsp; see → saw</div>
+</div>
+
+<!-- MACRO for irregular verb slides — just copy pattern -->
+<!-- be -->
+<div class="slide verb-slide" id="s-be" data-section="change">
+  <div class="verb-header">
+    <span class="verb-base-pill">be</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">was / were</span></span>
+  </div>
+  <div class="verb-meaning">to exist or describe a state &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">I/he/she/it → was &nbsp; you/we/they → were</em></div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">was</span> very happy yesterday.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">were</span> at the park all morning.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF9F43"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>He <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">was</span> the best player on the team.</div>
+  </div>
+</div>
+
+<!-- go -->
+<div class="slide verb-slide" id="s-go" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">go</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">went</span></span></div>
+  <div class="verb-meaning">to move to a place</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#8338EC"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#C77DFF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>Sara <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">went</span> to the market yesterday.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">went</span> to the beach on Saturday.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">went</span> home right after school.</div>
+  </div>
+</div>
+
+<!-- eat -->
+<div class="slide verb-slide" id="s-eat" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">eat</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">ate</span></span></div>
+  <div class="verb-meaning">to put food in your mouth</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF9F43"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>He <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">ate</span> a big bowl of rice for lunch.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>She <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">ate</span> ice cream after dinner.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">ate</span> together as a family.</div>
+  </div>
+</div>
+
+<!-- have -->
+<div class="slide verb-slide" id="s-have" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">have</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">had</span></span></div>
+  <div class="verb-meaning">to own or experience something</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">had</span> a great time at the party.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#1A1A2E"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#1A3A6E"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>Tom <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">had</span> a dog when he was young.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">had</span> a test on Monday.</div>
+  </div>
+</div>
+
+<!-- see -->
+<div class="slide verb-slide" id="s-see" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">see</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">saw</span></span></div>
+  <div class="verb-meaning">to notice with your eyes</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">saw</span> a rainbow after the rain.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>She <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">saw</span> her friend at the mall.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">saw</span> a funny show last night.</div>
+  </div>
+</div>
+
+<!-- do -->
+<div class="slide verb-slide" id="s-do" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">do</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">did</span></span></div>
+  <div class="verb-meaning">to perform an action or task</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">did</span> my homework right after school.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#2BAE66"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#6BCB77"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>Lisa <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">did</span> a great job on the project.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">did</span> all the exercises in the book.</div>
+  </div>
+</div>
+
+<!-- come -->
+<div class="slide verb-slide" id="s-come" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">come</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">came</span></span></div>
+  <div class="verb-meaning">to move toward a place or person</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF9F43"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>He <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">came</span> to my house last Saturday.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#8338EC"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#C77DFF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>Sara <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">came</span> early to help set up.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">came</span> home before dark.</div>
+  </div>
+</div>
+
+<!-- get -->
+<div class="slide verb-slide" id="s-get" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">get</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">got</span></span></div>
+  <div class="verb-meaning">to receive or obtain something</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">got</span> a new bike for my birthday.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>She <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">got</span> a perfect score on the test.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">got</span> lost in the forest.</div>
+  </div>
+</div>
+
+<!-- give -->
+<div class="slide verb-slide" id="s-give" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">give</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">gave</span></span></div>
+  <div class="verb-meaning">to hand something to someone</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF9F43"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>He <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">gave</span> her a beautiful flower.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">gave</span> my friend some chocolate.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">gave</span> food to the poor family.</div>
+  </div>
+</div>
+
+<!-- take -->
+<div class="slide verb-slide" id="s-take" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">take</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">took</span></span></div>
+  <div class="verb-meaning">to carry or move something with you</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>She <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">took</span> her umbrella because it was raining.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#1A1A2E"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#1A3A6E"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>Tom <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">took</span> the bus to work.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">took</span> lots of photos on the trip.</div>
+  </div>
+</div>
+
+<!-- make -->
+<div class="slide verb-slide" id="s-make" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">make</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">made</span></span></div>
+  <div class="verb-meaning">to create or produce something</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">made</span> a card for my mum.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#8338EC"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#C77DFF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>Sara <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">made</span> cookies for the class.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">made</span> a sandcastle at the beach.</div>
+  </div>
+</div>
+
+<!-- know -->
+<div class="slide verb-slide" id="s-know" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">know</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">knew</span></span></div>
+  <div class="verb-meaning">to have information or understanding</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">knew</span> the answer right away.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#1A1A2E"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#1A3A6E"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>Tom <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">knew</span> how to fix the problem.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">knew</span> each other for years.</div>
+  </div>
+</div>
+
+<!-- think -->
+<div class="slide verb-slide" id="s-think" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">think</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">thought</span></span></div>
+  <div class="verb-meaning">to use your mind to form ideas</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">thought</span> about the problem all day.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>She <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">thought</span> it was a great idea.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">thought</span> the film was boring.</div>
+  </div>
+</div>
+
+<!-- buy -->
+<div class="slide verb-slide" id="s-buy" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">buy</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">bought</span></span></div>
+  <div class="verb-meaning">to get something by paying money</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF9F43"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>He <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">bought</span> a new phone last week.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">bought</span> a gift for my friend.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">bought</span> snacks for the trip.</div>
+  </div>
+</div>
+
+<!-- write -->
+<div class="slide verb-slide" id="s-write" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">write</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">wrote</span></span></div>
+  <div class="verb-meaning">to put words on paper or screen</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">wrote</span> a letter to my grandma.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#2BAE66"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#6BCB77"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>Lisa <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">wrote</span> a story about dragons.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>They <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">wrote</span> their names on the board.</div>
+  </div>
+</div>
+
+<!-- run -->
+<div class="slide verb-slide" id="s-run" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">run</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">ran</span></span></div>
+  <div class="verb-meaning">to move fast on your feet</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">ran</span> 5 km this morning.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF9F43"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>He <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">ran</span> to catch the bus.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">ran</span> around the track three times.</div>
+  </div>
+</div>
+
+<!-- fly -->
+<div class="slide verb-slide" id="s-fly" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">fly</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">flew</span></span></div>
+  <div class="verb-meaning">to move through the air</div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>She <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">flew</span> to Japan last summer.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>A bird <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">flew</span> past my window.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">flew</span> there in two hours.</div>
+  </div>
+</div>
+
+<!-- sing -->
+<div class="slide verb-slide" id="s-sing" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">s<span style="color:#FF6B6B">i</span>ng</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B">s<span class="ch">a</span>ng</span></div>
+  <div class="verb-meaning">to make music with your voice &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">vowel i → a</em></div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#8338EC"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#C77DFF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>Sara <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">sang</span> a beautiful song.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">sang</span> along to all the songs.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="13" cy="22" r="9" fill="#FFDBA4"/><circle cx="30" cy="22" r="9" fill="#C8A882"/><circle cx="47" cy="22" r="9" fill="#FFDBA4"/><rect x="5" y="32" width="16" height="16" rx="5" fill="#C77DFF"/><rect x="22" y="32" width="16" height="16" rx="5" fill="#FF9F43"/><rect x="39" y="32" width="16" height="16" rx="5" fill="#4D96FF"/></svg>They <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">sang</span> happy birthday together.</div>
+  </div>
+</div>
+
+<!-- drink -->
+<div class="slide verb-slide" id="s-drink" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">dr<span style="color:#FF6B6B">i</span>nk</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B">dr<span class="ch">a</span>nk</span></div>
+  <div class="verb-meaning">to swallow liquid &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">vowel i → a</em></div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>I <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">drank</span> two glasses of water.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#1A1A2E"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#1A3A6E"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>Tom <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">drank</span> all of his juice at breakfast.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="20" cy="21" r="10" fill="#FFDBA4"/><circle cx="40" cy="21" r="10" fill="#C8A882"/><rect x="8" y="31" width="20" height="18" rx="6" fill="#6BCB77"/><rect x="32" y="31" width="20" height="18" rx="6" fill="#FF9F43"/></svg>We <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">drank</span> hot chocolate in the cold.</div>
+  </div>
+</div>
+
+<!-- teach -->
+<div class="slide verb-slide" id="s-teach" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">teach</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">taught</span></span></div>
+  <div class="verb-meaning">to help someone learn &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">-aught pattern</em></div>
+  <div class="verb-examples">
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#C8A882"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#1A1A2E"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#1A3A6E"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#8B6040" stroke-width="2.5" stroke-linecap="round"/></svg>Tom <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">taught</span> us how to cook.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><path d="M17 11 Q30 5 43 11 Q38 22 30 24 Q22 22 17 11Z" fill="#C0392B"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#FF6B6B"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>She <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">taught</span> English for ten years.</div>
+    <div class="verb-ex-box" style="border-color:#FF6B6B"><svg class="ex-char" viewBox="0 0 60 60"><circle cx="30" cy="19" r="13" fill="#FFDBA4"/><ellipse cx="30" cy="11" rx="15" ry="8" fill="#5C3D11"/><rect x="14" y="31" width="32" height="22" rx="9" fill="#4D96FF"/><circle cx="24" cy="17" r="2.5" fill="#444"/><circle cx="36" cy="17" r="2.5" fill="#444"/><path d="M24 25 Q30 30 36 25" fill="none" stroke="#B07840" stroke-width="2.5" stroke-linecap="round"/></svg>My dad <span class="v2-hl" style="background:#FFF0F0;color:#FF6B6B">taught</span> me to ride a bike.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SECTION 5: PATTERNS
+════════════════════════════════════ -->
+<div class="slide pattern-slide" id="s-patterns" data-section="patterns">
+  <div class="pattern-title">🧠 Quick Patterns!</div>
+  <div class="pattern-cards">
+    <div class="pattern-card">
+      <span class="pattern-badge" style="background:#FF6B6B">-ought / -aught</span>
+      <div class="pattern-examples">buy→<strong>bought</strong> &nbsp;·&nbsp; bring→<strong>brought</strong> &nbsp;·&nbsp; teach→<strong>taught</strong> &nbsp;·&nbsp; think→<strong>thought</strong></div>
+    </div>
+    <div class="pattern-card">
+      <span class="pattern-badge" style="background:#4D96FF">-ew</span>
+      <div class="pattern-examples">fly→<strong>flew</strong> &nbsp;·&nbsp; know→<strong>knew</strong> &nbsp;·&nbsp; grow→<strong>grew</strong> &nbsp;·&nbsp; draw→<strong>drew</strong></div>
+    </div>
+    <div class="pattern-card">
+      <span class="pattern-badge" style="background:#FF9F43">i → a</span>
+      <div class="pattern-examples">s<strong>i</strong>ng→s<strong>a</strong>ng &nbsp;·&nbsp; dr<strong>i</strong>nk→dr<strong>a</strong>nk &nbsp;·&nbsp; sw<strong>i</strong>m→sw<strong>a</strong>m &nbsp;·&nbsp; r<strong>i</strong>ng→r<strong>a</strong>ng</div>
+    </div>
+    <div class="pattern-card">
+      <span class="pattern-badge" style="background:#6BCB77">same spelling!</span>
+      <div class="pattern-examples"><strong>read</strong>→<strong>read</strong> (different sound!) &nbsp;·&nbsp; <strong>put</strong>→<strong>put</strong> &nbsp;·&nbsp; <strong>cut</strong>→<strong>cut</strong></div>
+    </div>
+    <div class="pattern-card">
+      <span class="pattern-badge" style="background:#C77DFF">was / were</span>
+      <div class="pattern-examples">I/he/she/it → <strong>was</strong> &nbsp;·&nbsp; you/we/they → <strong>were</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- FINISH -->
+<div class="slide" id="finish-slide">
+  <svg class="finish-char" viewBox="0 0 200 200"><rect x="70" y="130" width="60" height="20" rx="6" fill="#E6A800"/><rect x="52" y="148" width="96" height="18" rx="9" fill="#F5C800"/><path d="M38 38 Q38 122 100 122 Q162 122 162 38Z" fill="#F5C800"/><path d="M38 52 Q16 52 16 80 Q16 108 38 108" fill="none" stroke="#E6A800" stroke-width="14" stroke-linecap="round"/><path d="M162 52 Q184 52 184 80 Q184 108 162 108" fill="none" stroke="#E6A800" stroke-width="14" stroke-linecap="round"/><polygon points="100,52 110,78 138,78 116,94 124,120 100,104 76,120 84,94 62,78 90,78" fill="white" opacity="0.45"/></svg>
+  <div class="finish-title">You did it! 🎉</div>
+  <div class="finish-sub">You know Verb 2 now!</div>
+  <button class="restart-btn" onclick="showSlide(0)">Play Again</button>
+</div>
+
+<script>
+// ── QUIZ DATA ─────────────────────────────────────────────────
+const QUIZZES=[
+  // +ed
+  {q:'walk',choices:['walked','walkked','walkt'],ans:'walked',fb:'walk + ed = walked ✅'},
+  {q:'play',choices:['played','plaied','playied'],ans:'played',fb:'play + ed = played ✅'},
+  {q:'watch',choices:['watcht','watchd','watched'],ans:'watched',fb:'watch + ed = watched ✅'},
+  // +d
+  {q:'like',choices:['likeed','liked','liket'],ans:'liked',fb:'like already ends in e → +d = liked ✅'},
+  {q:'dance',choices:['danced','danceed','dancied'],ans:'danced',fb:'dance already ends in e → +d = danced ✅'},
+  {q:'smile',choices:['smilied','smiled','smileed'],ans:'smiled',fb:'smile already ends in e → +d = smiled ✅'},
+  // y→ied
+  {q:'study',choices:['studyed','studied','studid'],ans:'studied',fb:'consonant+y → drop y, add ied = studied ✅'},
+  {q:'cry',choices:['cryed','cried','criied'],ans:'cried',fb:'cry → drop y, add ied = cried ✅'},
+  {q:'try',choices:['tryed','tried','tryied'],ans:'tried',fb:'try → drop y, add ied = tried ✅'},
+  // irregular
+  {q:'be',choices:['beed','was/were','be-d'],ans:'was/were',fb:'be → was / were (irregular!) 🔀'},
+  {q:'go',choices:['goed','went','gone'],ans:'went',fb:'go → went (irregular!) 🔀'},
+  {q:'eat',choices:['eated','eaten','ate'],ans:'ate',fb:'eat → ate (irregular!) 🔀'},
+  {q:'have',choices:['haved','had','have-d'],ans:'had',fb:'have → had (irregular!) 🔀'},
+  {q:'see',choices:['seed','seen','saw'],ans:'saw',fb:'see → saw (irregular!) 🔀'},
+  {q:'do',choices:['doed','did','done'],ans:'did',fb:'do → did (irregular!) 🔀'},
+  {q:'make',choices:['maked','made','maket'],ans:'made',fb:'make → made (irregular!) 🔀'},
+  {q:'think',choices:['thinked','thought','thinkt'],ans:'thought',fb:'think → thought (-ought pattern) 🔀'},
+  {q:'buy',choices:['buyed','boughten','bought'],ans:'bought',fb:'buy → bought (-ought pattern) 🔀'},
+  {q:'fly',choices:['flyed','flewed','flew'],ans:'flew',fb:'fly → flew (-ew pattern) 🔀'},
+  {q:'sing',choices:['singed','sang','sung'],ans:'sang',fb:'sing → sang (vowel i→a) 🔀'},
+];
+
+// ── SLIDE SETUP ────────────────────────────────────────────────
+const STATIC=['s0','s-ed-intro','s-walk','s-play','s-watch',
+  's-d-intro','s-like','s-dance','s-smile',
+  's-ied-intro','s-study','s-cry','s-try',
+  's-change-intro','s-be','s-go','s-eat','s-have','s-see','s-do',
+  's-come','s-get','s-give','s-take','s-make','s-know','s-think',
+  's-buy','s-write','s-run','s-fly','s-sing','s-drink','s-teach',
+  's-patterns'];
+const slideOrder=[...STATIC];
+const quizAnswered={};
+QUIZZES.forEach((_,qi)=>{
+  const id=`quiz-${qi}`;const el=document.createElement('div');
+  el.className='slide quiz-slide';el.id=id;el.dataset.section='quiz';
+  document.body.appendChild(el);slideOrder.push(id);
+});
+slideOrder.push('finish-slide');
+
+let current=0;
+function buildDots(){const d=document.getElementById('dots');d.innerHTML='';slideOrder.forEach((_,i)=>{const dot=document.createElement('div');dot.className='dot'+(i===0?' active':'');d.appendChild(dot);});}
+function updateDots(){document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));document.getElementById('progress-bar').style.width=(current/(slideOrder.length-1)*100)+'%';updateQuickNav();}
+function updateQuickNav(){
+  document.querySelectorAll('.qn-btn').forEach(b=>b.classList.remove('active-nav'));
+  const sid=slideOrder[current];const sec=document.getElementById(sid)?.dataset?.section;
+  if(sid==='s0') document.querySelectorAll('.qn-btn')[0].classList.add('active-nav');
+  if(sec==='ed') document.getElementById('qn-ed')?.classList.add('active-nav');
+  if(sec==='d') document.getElementById('qn-d')?.classList.add('active-nav');
+  if(sec==='ied') document.getElementById('qn-ied')?.classList.add('active-nav');
+  if(sec==='change') document.getElementById('qn-change')?.classList.add('active-nav');
+  if(sec==='patterns') document.getElementById('qn-patterns')?.classList.add('active-nav');
+  if(sec==='quiz') document.getElementById('qn-quiz')?.classList.add('active-nav');
+}
+function showSlide(n){
+  n=Math.max(0,Math.min(slideOrder.length-1,n));
+  document.getElementById(slideOrder[current]).classList.remove('active');
+  current=n;document.getElementById(slideOrder[current]).classList.add('active');
+  updateDots();
+  document.getElementById('prevBtn').style.display=current===0?'none':'';
+  document.getElementById('nextBtn').style.display=current===slideOrder.length-1?'none':'';
+  const sid=slideOrder[current];
+  if(sid.startsWith('quiz-')) initQuiz(parseInt(sid.split('-')[1]));
+  if(sid==='finish-slide') confetti();
+}
+function changeSlide(d){showSlide(current+d);}
+function goToSection(sec){const idx=slideOrder.findIndex(id=>document.getElementById(id)?.dataset?.section===sec);if(idx>=0)showSlide(idx);}
+document.body.addEventListener('click',e=>{
+  if(e.target.closest('.nav-btn,.quiz-btn,.qn-btn,.restart-btn')) return;
+  const sid=slideOrder[current];if(sid.startsWith('quiz-')||sid==='finish-slide') return;
+  spawnSparkle(e.clientX,e.clientY);changeSlide(1);
+});
+
+function initQuiz(qi){
+  const q=QUIZZES[qi];const el=document.getElementById(`quiz-${qi}`);const done=quizAnswered[qi];
+  el.innerHTML=`<div class="quiz-counter">Question ${qi+1} of ${QUIZZES.length}</div>
+  <div class="quiz-char-wrap"><svg viewBox="0 0 120 130"><ellipse cx="60" cy="20" rx="30" ry="15" fill="#5C3D11"/><circle cx="60" cy="42" r="28" fill="#FFDBA4"/><rect x="26" y="68" width="68" height="52" rx="18" fill="#FF9F43"/><rect x="26" y="68" width="68" height="14" rx="9" fill="#E67E00"/>
+  <circle cx="44" cy="38" r="5.5" fill="#333"/><circle cx="76" cy="38" r="5.5" fill="#333"/>
+  <circle cx="45" cy="36" r="2" fill="white"/><circle cx="77" cy="36" r="2" fill="white"/>
+  <path d="M48 54 Q60 62 72 54" fill="none" stroke="#B07840" stroke-width="3.5" stroke-linecap="round"/>
+  <ellipse cx="44" cy="50" rx="7" ry="4" fill="#F5A882" opacity="0.5"/>
+  <ellipse cx="76" cy="50" rx="7" ry="4" fill="#F5A882" opacity="0.5"/></svg></div>
+  <div class="quiz-prompt">What is the past form of...</div>
+  <div class="quiz-base-word">${q.q}</div>
+  <div class="quiz-choices" id="qz-c-${qi}"></div>
+  <div class="quiz-feedback" id="qz-f-${qi}">${done?q.fb:''}</div>`;
+  const wrap=el.querySelector(`#qz-c-${qi}`);
+  [...q.choices].sort(()=>Math.random()-.5).forEach(choice=>{
+    const btn=document.createElement('button');btn.className='quiz-btn';btn.textContent=choice;
+    if(done){if(choice===q.ans){btn.classList.add('correct');btn.style.background='#6BCB77';btn.style.boxShadow='0 7px 0 #3DAD8E';}else{btn.disabled=true;btn.style.opacity='0.35';}}
+    btn.onclick=()=>handleAnswer(qi,choice===q.ans,btn,el,q.fb);
+    wrap.appendChild(btn);
+  });
+}
+function handleAnswer(qi,correct,btn,el,fb){
+  if(quizAnswered[qi]) return;
+  if(correct){
+    quizAnswered[qi]=true;btn.classList.add('correct');
+    el.querySelector(`#qz-f-${qi}`).textContent=fb;
+    el.querySelectorAll('.quiz-btn').forEach(b=>{b.disabled=true;if(b!==btn)b.style.opacity='0.35';});
+    spawnSparkle(btn.getBoundingClientRect().left+btn.offsetWidth/2,btn.getBoundingClientRect().top);
+    confetti();setTimeout(()=>changeSlide(1),1500);
+  } else {
+    btn.classList.add('wrong');el.querySelector(`#qz-f-${qi}`).textContent='Try again! 💪';
+    setTimeout(()=>{btn.classList.remove('wrong');btn.style.background='';el.querySelector(`#qz-f-${qi}`).textContent='';},850);
+  }
+}
+function spawnSparkle(x,y){const sp=['✨','⭐','🌟','💫'];for(let i=0;i<3;i++){const el=document.createElement('div');el.className='sparkle';el.textContent=sp[Math.floor(Math.random()*sp.length)];el.style.cssText=`left:${x-20+(Math.random()-.5)*60}px;top:${y-20+(Math.random()-.5)*40}px;animation-delay:${i*.12}s`;document.body.appendChild(el);setTimeout(()=>el.remove(),950);}}
+function confetti(){const cols=['#FF9F43','#FF6B6B','#6BCB77','#FFD93D','#C77DFF','#fff','#4D96FF'];for(let i=0;i<32;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*30}vh;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.5}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),1900);}}
+buildDots();showSlide(0);
+</script>
+</body>
+</html>
