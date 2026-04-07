@@ -16,10 +16,8 @@
   .shape:nth-child(3) { width: 60px; height: 60px; background: var(--green); bottom: 20%; left: 12%; animation-duration: 12s; animation-delay: -6s; }
   .shape:nth-child(4) { width: 100px; height: 100px; background: var(--blue); bottom: 10%; right: 15%; animation-duration: 16s; animation-delay: -2s; }
   @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-20px) rotate(120deg); } 66% { transform: translateY(10px) rotate(240deg); } }
-
   .back-btn { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; margin: 28px 0 0 28px; padding: 8px 18px; background: white; border-radius: 999px; font-size: 14px; font-weight: 700; color: #555; text-decoration: none; box-shadow: 0 4px 0 rgba(0,0,0,0.08); transition: transform 0.15s, box-shadow 0.15s; }
   .back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.08); }
-
   header { position: relative; z-index: 1; text-align: center; padding: 40px 20px 30px; }
   .star-row { font-size: 22px; letter-spacing: 6px; margin-bottom: 12px; animation: twinkle 2s ease-in-out infinite alternate; }
   @keyframes twinkle { from { opacity: 0.6; transform: scale(1); } to { opacity: 1; transform: scale(1.05); } }
@@ -29,13 +27,10 @@
   h1 span:nth-child(1){color:var(--coral);animation-delay:0s} h1 span:nth-child(2){color:var(--blue);animation-delay:.1s} h1 span:nth-child(3){color:var(--green);animation-delay:.2s}
   @keyframes bounce-letter { from { transform: translateY(0); } to { transform: translateY(-8px); } }
   .subtitle { margin-top: 12px; font-size: 17px; color: #555; font-weight: 600; }
-
   .grid-section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 20px 24px 80px; }
-
   .vowel-group { margin-bottom: 48px; }
   .vowel-title { font-family: 'Fredoka One', cursive; font-size: 28px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
   .vowel-badge { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; font-size: 24px; color: white; flex-shrink: 0; }
-
   .a-color .vowel-badge { background: var(--coral); }
   .e-color .vowel-badge { background: var(--green); }
   .i-color .vowel-badge { background: var(--blue); }
@@ -46,20 +41,10 @@
   .i-color .vowel-title-text { color: var(--blue); }
   .o-color .vowel-title-text { color: #d47200; }
   .u-color .vowel-title-text { color: #9a3de0; }
-
   .family-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 14px; }
-
-  .family-card {
-    background: white; border-radius: 16px; padding: 18px 10px;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.08); text-decoration: none;
-    display: flex; align-items: center; justify-content: center;
-    border: 2px solid transparent;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    opacity: 0; transform: translateY(16px); animation: card-in 0.4s ease forwards;
-  }
+  .family-card { background: white; border-radius: 16px; padding: 18px 10px; box-shadow: 0 4px 0 rgba(0,0,0,0.08); text-decoration: none; display: flex; align-items: center; justify-content: center; border: 2px solid transparent; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; opacity: 0; transform: translateY(16px); animation: card-in 0.4s ease forwards; }
   .family-card:hover { transform: translateY(-4px); box-shadow: 0 8px 0 rgba(0,0,0,0.08); }
   @keyframes card-in { to { opacity: 1; transform: translateY(0); } }
-
   .a-color .family-card { border-top: 5px solid var(--coral); }
   .a-color .family-card:hover { border-color: var(--coral); }
   .e-color .family-card { border-top: 5px solid var(--green); }
@@ -70,28 +55,14 @@
   .o-color .family-card:hover { border-color: var(--orange); }
   .u-color .family-card { border-top: 5px solid var(--purple); }
   .u-color .family-card:hover { border-color: var(--purple); }
-
-  /* Coming soon cards */
-  .family-card.soon {
-    opacity: 0.4 !important;
-    pointer-events: none;
-    cursor: default;
-    position: relative;
-  }
-  .family-card.soon .family-name::after {
-    content: '🔜';
-    font-size: 10px;
-    display: block;
-    margin-top: 4px;
-  }
-
+  .family-card.soon { opacity: 0.4 !important; pointer-events: none; cursor: default; }
+  .family-card.soon .family-name::after { content: '🔜'; font-size: 10px; display: block; margin-top: 4px; }
   .family-name { font-family: 'Fredoka One', cursive; font-size: 28px; text-align: center; }
   .a-color .family-name { color: var(--coral); }
   .e-color .family-name { color: #3a9e46; }
   .i-color .family-name { color: var(--blue); }
   .o-color .family-name { color: #d47200; }
   .u-color .family-name { color: #9a3de0; }
-
   footer { position: relative; z-index: 1; text-align: center; padding: 20px; font-size: 13px; color: #aaa; font-weight: 600; }
 </style>
 </head>
@@ -104,77 +75,56 @@
   <h1><span>C</span><span>V</span><span>C</span></h1>
   <p class="subtitle">Short vowel word families for early readers! 📖</p>
 </header>
-
 <section class="grid-section">
 
-  <!-- SHORT A — _at and _an ready -->
   <div class="vowel-group a-color">
-    <div class="vowel-title">
-      <div class="vowel-badge">A</div>
-      <span class="vowel-title-text">Short A families</span>
-    </div>
+    <div class="vowel-title"><div class="vowel-badge">A</div><span class="vowel-title-text">Short A families</span></div>
     <div class="family-grid">
       <a href="at/index.html" class="family-card"><div class="family-name">_at</div></a>
       <a href="an/index.html" class="family-card"><div class="family-name">_an</div></a>
-      <div class="family-card soon"><div class="family-name">_ap</div></div>
-      <div class="family-card soon"><div class="family-name">_ag</div></div>
-      <div class="family-card soon"><div class="family-name">_ad</div></div>
-      <div class="family-card soon"><div class="family-name">_am</div></div>
+      <a href="ap/index.html" class="family-card"><div class="family-name">_ap</div></a>
+      <a href="ag/index.html" class="family-card"><div class="family-name">_ag</div></a>
+      <a href="ad/index.html" class="family-card"><div class="family-name">_ad</div></a>
+      <a href="am/index.html" class="family-card"><div class="family-name">_am</div></a>
     </div>
   </div>
 
-  <!-- SHORT E — _en and _ed ready -->
   <div class="vowel-group e-color">
-    <div class="vowel-title">
-      <div class="vowel-badge">E</div>
-      <span class="vowel-title-text">Short E families</span>
-    </div>
+    <div class="vowel-title"><div class="vowel-badge">E</div><span class="vowel-title-text">Short E families</span></div>
     <div class="family-grid">
       <a href="en/index.html" class="family-card"><div class="family-name">_en</div></a>
       <a href="ed/index.html" class="family-card"><div class="family-name">_ed</div></a>
-      <div class="family-card soon"><div class="family-name">_eg</div></div>
+      <a href="eg/index.html" class="family-card"><div class="family-name">_eg</div></a>
       <div class="family-card soon"><div class="family-name">_et</div></div>
     </div>
   </div>
 
-  <!-- SHORT I — _it, _in, _ig ready -->
   <div class="vowel-group i-color">
-    <div class="vowel-title">
-      <div class="vowel-badge">I</div>
-      <span class="vowel-title-text">Short I families</span>
-    </div>
+    <div class="vowel-title"><div class="vowel-badge">I</div><span class="vowel-title-text">Short I families</span></div>
     <div class="family-grid">
       <a href="in/index.html" class="family-card"><div class="family-name">_in</div></a>
       <a href="it/index.html" class="family-card"><div class="family-name">_it</div></a>
       <a href="ig/index.html" class="family-card"><div class="family-name">_ig</div></a>
-      <div class="family-card soon"><div class="family-name">_ip</div></div>
-      <div class="family-card soon"><div class="family-name">_id</div></div>
+      <a href="ip/index.html" class="family-card"><div class="family-name">_ip</div></a>
+      <a href="id/index.html" class="family-card"><div class="family-name">_id</div></a>
     </div>
   </div>
 
-  <!-- SHORT O — all coming soon -->
   <div class="vowel-group o-color">
-    <div class="vowel-title">
-      <div class="vowel-badge">O</div>
-      <span class="vowel-title-text">Short O families</span>
-    </div>
+    <div class="vowel-title"><div class="vowel-badge">O</div><span class="vowel-title-text">Short O families</span></div>
     <div class="family-grid">
-      <div class="family-card soon"><div class="family-name">_op</div></div>
-      <div class="family-card soon"><div class="family-name">_ot</div></div>
+      <a href="op/index.html" class="family-card"><div class="family-name">_op</div></a>
+      <a href="ot/index.html" class="family-card"><div class="family-name">_ot</div></a>
       <div class="family-card soon"><div class="family-name">_og</div></div>
       <div class="family-card soon"><div class="family-name">_ob</div></div>
     </div>
   </div>
 
-  <!-- SHORT U — all coming soon -->
   <div class="vowel-group u-color">
-    <div class="vowel-title">
-      <div class="vowel-badge">U</div>
-      <span class="vowel-title-text">Short U families</span>
-    </div>
+    <div class="vowel-title"><div class="vowel-badge">U</div><span class="vowel-title-text">Short U families</span></div>
     <div class="family-grid">
-      <div class="family-card soon"><div class="family-name">_un</div></div>
-      <div class="family-card soon"><div class="family-name">_ut</div></div>
+      <a href="un/index.html" class="family-card"><div class="family-name">_un</div></a>
+      <a href="ut/index.html" class="family-card"><div class="family-name">_ut</div></a>
       <div class="family-card soon"><div class="family-name">_ug</div></div>
       <div class="family-card soon"><div class="family-name">_ub</div></div>
       <div class="family-card soon"><div class="family-name">_um</div></div>
