@@ -14,11 +14,9 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
 .screen{display:none;position:fixed;inset:0;flex-direction:column;align-items:center;justify-content:center;padding:14px 14px 86px;overflow-y:auto;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
 .screen.active{display:flex;}
 @keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
-/* ══ BOTTOM TAB BAR ══ */
 #tab-bar{position:fixed;bottom:0;left:0;width:100%;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-top:2px solid #EDE8E0;z-index:998;display:flex;align-items:stretch;justify-content:space-around;padding:6px 4px 10px;gap:2px;}
 .tab{border:none;background:none;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 2px 4px;border-radius:14px;cursor:pointer;transition:background .18s,transform .13s;font-family:'Nunito',sans-serif;font-weight:900;}
-.tab:hover{background:rgba(0,0,0,.05);}
-.tab:active{transform:scale(.92);}
+.tab:hover{background:rgba(0,0,0,.05);}.tab:active{transform:scale(.92);}
 .tab-icon{font-size:clamp(1.2rem,3.5vw,1.6rem);line-height:1;}
 .tab-label{font-size:clamp(.5rem,1.4vw,.72rem);color:#999;letter-spacing:.3px;white-space:nowrap;}
 .tab.active-tab .tab-icon{filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
@@ -28,8 +26,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
 .tab.active-tab .tab-pip{background:var(--orange);}
 .big-title{font-size:clamp(1.7rem,5.5vw,3rem);color:var(--text);text-align:center;line-height:1.2;}
 .sub{font-size:clamp(.82rem,2vw,1.15rem);color:var(--muted);text-align:center;margin-top:5px;}
-/* ══ HOME ══ */
-#s-home{background:linear-gradient(145deg,#2BAE66,#1A78C2,#FB5607,#FFD93D);padding:14px 14px 86px;}
+#s-home{background:linear-gradient(145deg,#5C6BC0,#42A5F5,#26C6DA,#66BB6A);padding:14px 14px 86px;}
 .home-family{font-size:clamp(4rem,14vw,9rem);color:#fff;font-weight:900;text-shadow:0 8px 0 rgba(0,0,0,.12);animation:ibounce 1.8s ease-in-out infinite alternate;line-height:1;}
 @keyframes ibounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-20px) rotate(2deg)}}
 .home-words{font-size:clamp(.9rem,2.5vw,1.5rem);color:rgba(255,255,255,.92);letter-spacing:5px;text-align:center;margin:8px 0 20px;}
@@ -37,7 +34,6 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
 @keyframes ipulse{from{opacity:.5;transform:scale(.97)}to{opacity:1;transform:scale(1.03)}}
 .home-nav-hint{margin-top:14px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);border-radius:50px;padding:10px 20px;}
 .home-nav-hint span{font-size:.85rem;color:rgba(255,255,255,.88);font-weight:800;letter-spacing:.5px;}
-/* ══ PHONICS ══ */
 #s-phonics{background:var(--bg);}
 .ph-grid{display:flex;flex-wrap:wrap;gap:clamp(8px,1.8vw,14px);justify-content:center;max-width:560px;margin-top:16px;}
 .ph-tile{border:none;border-radius:18px;width:clamp(68px,12vw,104px);height:clamp(68px,12vw,104px);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;box-shadow:var(--shadow);transition:transform .13s,box-shadow .13s;font-family:'Nunito',sans-serif;font-weight:900;}
@@ -50,18 +46,16 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
 @keyframes zoomPop{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
 #zoom-ex{font-size:clamp(1.3rem,4vw,2.4rem);color:rgba(255,255,255,.78);font-family:'Nunito',sans-serif;font-weight:800;letter-spacing:3px;}
 #zoom-tap{font-size:clamp(.75rem,1.8vw,1.05rem);color:rgba(255,255,255,.45);font-family:'Nunito',sans-serif;margin-top:4px;}
-/* ══ BLEND ══ */
 #s-blend{background:var(--bg);}
 .b-dots{display:flex;gap:9px;align-items:center;margin-bottom:14px;}
 .b-dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
 .b-dot.cur{background:var(--orange);transform:scale(1.5);}.b-dot.done{background:var(--green);}
 .b-card{background:#fff;border-radius:26px;padding:20px 24px;box-shadow:0 12px 0 rgba(0,0,0,.1);display:flex;flex-direction:column;align-items:center;gap:12px;max-width:430px;width:100%;}
-.b-illo{width:clamp(100px,18vw,170px);height:clamp(100px,18vw,170px);display:flex;align-items:center;justify-content:center;animation:illustPop .5s cubic-bezier(.175,.885,.32,1.275);}
-@keyframes illustPop{0%{transform:scale(0) rotate(-8deg)}80%{transform:scale(1.06) rotate(1deg)}100%{transform:scale(1)}}
-.b-illo svg{width:100%;height:100%;}
+.b-illo{width:clamp(100px,18vw,170px);height:clamp(100px,18vw,170px);display:flex;align-items:center;justify-content:center;border-radius:16px;overflow:hidden;}
+.b-illo img{width:100%;height:100%;object-fit:cover;}
 .b-row{display:flex;align-items:center;gap:8px;font-size:clamp(2rem,6vw,3.8rem);font-weight:900;}
 .b-con{border-radius:12px;padding:3px 13px;transition:all .5s cubic-bezier(.175,.885,.32,1.275);}
-.b-fam{color:#2BAE66;background:#EAFFF5;border-radius:12px;padding:3px 13px;transition:all .5s;}
+.b-fam{color:#5C6BC0;background:#E8EAF6;border-radius:12px;padding:3px 13px;transition:all .5s;}
 .b-plus,.b-arrow{color:#ccc;font-size:clamp(1.1rem,2.8vw,2rem);}
 .b-res{font-size:clamp(2.4rem,7vw,4.5rem);color:var(--text);opacity:0;transform:scale(.5);transition:all .55s cubic-bezier(.175,.885,.32,1.275);}
 .b-res.show{opacity:1;transform:scale(1);}
@@ -69,28 +63,26 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
 .blend-btn{border:none;border-radius:50px;padding:11px 32px;background:linear-gradient(135deg,var(--blue),#5BA3E8);color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.9rem,2vw,1.3rem);cursor:pointer;box-shadow:0 6px 0 #1056a0;transition:transform .13s;}
 .blend-btn:hover{transform:translateY(-3px);}.blend-btn:active{transform:translateY(2px);}
 .blend-skip{border:none;background:none;color:var(--muted);font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;text-decoration:underline;}
-/* ══ MATCH ══ */
 #s-match{background:var(--bg);}
 .match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:500px;margin-top:12px;}
 .match-pics,.match-words{display:flex;flex-direction:column;gap:8px;}
-.m-pic{background:#fff;border-radius:16px;height:clamp(66px,11vw,88px);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:4px;box-shadow:0 5px 0 rgba(0,0,0,.08);border:3px solid transparent;transition:all .15s;}
+.m-pic{background:#fff;border-radius:16px;height:clamp(66px,11vw,88px);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:4px;box-shadow:0 5px 0 rgba(0,0,0,.08);border:3px solid transparent;transition:all .15s;overflow:hidden;}
 .m-pic:hover{transform:translateY(-3px);}
 .m-pic.selected{border-color:var(--blue);box-shadow:0 0 0 5px rgba(26,120,194,.18),0 5px 0 var(--blue);}
 .m-pic.matched{border-color:var(--green);background:#EAFFF5;pointer-events:none;opacity:.6;}
-.m-pic svg{height:100%;width:auto;max-width:100%;}
+.m-pic img{width:100%;height:100%;object-fit:cover;border-radius:12px;}
 .m-word{background:#fff;border-radius:16px;height:clamp(66px,11vw,88px);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 0 rgba(0,0,0,.08);border:3px solid transparent;font-size:clamp(1.6rem,4.2vw,2.4rem);color:var(--text);transition:all .15s;}
 .m-word:hover{transform:translateY(-3px);}
 .m-word.matched{border-color:var(--green);background:#EAFFF5;pointer-events:none;opacity:.6;}
 .m-word.ws,.m-pic.ws{animation:shake .4s ease;}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 .match-score{font-size:clamp(.88rem,2vw,1.25rem);color:var(--muted);margin-top:8px;}
-/* ══ SPELL ══ */
 #s-spell{background:var(--bg);}
 .sp-dots{display:flex;gap:7px;margin-bottom:8px;}
 .sp-dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
 .sp-dot.cur{background:var(--orange);transform:scale(1.4);}.sp-dot.done{background:var(--green);}
-.sp-illo{width:clamp(88px,16vw,145px);height:clamp(88px,16vw,145px);display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
-.sp-illo svg{width:100%;height:100%;}
+.sp-illo{width:clamp(88px,16vw,145px);height:clamp(88px,16vw,145px);display:flex;align-items:center;justify-content:center;margin-bottom:4px;border-radius:14px;overflow:hidden;}
+.sp-illo img{width:100%;height:100%;object-fit:cover;}
 .sp-lbl{font-size:clamp(.95rem,2.2vw,1.3rem);color:var(--muted);letter-spacing:5px;margin-bottom:12px;}
 .sp-boxes{display:flex;gap:clamp(6px,1.5vw,11px);margin-bottom:14px;}
 .sp-box{width:clamp(54px,10.5vw,76px);height:clamp(58px,12vw,80px);background:#fff;border-radius:16px;border:3px solid #DDD;box-shadow:0 5px 0 rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;font-size:clamp(1.8rem,4.8vw,2.8rem);color:var(--text);font-weight:900;transition:all .2s;}
@@ -106,65 +98,53 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
 .sp-fb{font-size:clamp(1rem,2.5vw,1.7rem);min-height:36px;text-align:center;margin-top:4px;}
 .sp-clear{border:none;background:#EEE;border-radius:50px;padding:7px 20px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;color:#888;cursor:pointer;margin-top:4px;}
 .sp-clear:hover{background:#FFE4CC;}
-/* ══ FLASHCARD ══ */
 #s-flash{background:var(--bg);}
-/* Mode toggle */
 .fl-mode-toggle{display:flex;background:#EDE8E0;border-radius:50px;padding:4px;gap:4px;margin-bottom:14px;}
 .fl-mode-btn{border:none;border-radius:46px;padding:8px 18px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.75rem,1.8vw,1rem);cursor:pointer;color:#999;background:transparent;transition:all .22s;white-space:nowrap;}
 .fl-mode-btn.active-mode{background:#fff;color:var(--text);box-shadow:0 3px 8px rgba(0,0,0,.12);}
-/* Progress dots */
 .fl-dots{display:flex;gap:7px;margin-bottom:10px;}
 .fl-dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
 .fl-dot.cur{background:var(--blue);transform:scale(1.4);}.fl-dot.done{background:var(--green);}
-/* Card */
 .flashcard{width:clamp(220px,52vw,330px);height:clamp(230px,44vw,310px);cursor:pointer;perspective:900px;position:relative;}
 .fc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);}
 .fc-inner.flipped{transform:rotateY(180deg);}
 .fc-front,.fc-back{position:absolute;inset:0;border-radius:28px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;box-shadow:0 14px 0 rgba(0,0,0,.1);}
 .fc-front{background:#fff;}.fc-back{background:#fff;transform:rotateY(180deg);}
-.fc-pic{display:flex;align-items:center;justify-content:center;}
-.fc-pic svg{width:clamp(90px,18vw,155px);height:clamp(90px,18vw,155px);}
+.fc-pic{display:flex;align-items:center;justify-content:center;border-radius:16px;overflow:hidden;}
+.fc-pic img{width:clamp(90px,18vw,155px);height:clamp(90px,18vw,155px);object-fit:cover;}
 .fc-tap{font-size:clamp(.7rem,1.5vw,.9rem);color:var(--muted);letter-spacing:.8px;}
 .fc-word{font-size:clamp(3.2rem,10vw,6rem);font-weight:900;letter-spacing:2px;}
 .fc-word-hint{font-size:clamp(.8rem,1.8vw,1.1rem);color:var(--muted);letter-spacing:3px;}
-/* Nav */
 .fl-nav{display:flex;gap:12px;margin-top:12px;align-items:center;}
 .fl-nav-btn{border:none;border-radius:50px;padding:10px 26px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.88rem,2vw,1.15rem);cursor:pointer;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.14);transition:transform .13s;}
 .fl-nav-btn:hover{transform:translateY(-3px);}
 .fl-prev{background:#bbb;box-shadow:0 5px 0 #999;}
 .fl-next{background:linear-gradient(135deg,var(--blue),#5BA3E8);box-shadow:0 5px 0 #1056a0;}
 .fl-count{font-size:clamp(.82rem,1.8vw,1rem);color:var(--muted);font-weight:800;}
-/* ══ LIGHTNING ══ */
 #s-lightning{background:var(--bg);}
 .lr-header{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:460px;margin-bottom:8px;}
 .lr-score-txt{font-size:clamp(1rem,2.5vw,1.4rem);color:var(--text);}
 .lr-timer-wrap{background:#EEE;border-radius:50px;width:120px;height:12px;overflow:hidden;}
 .lr-timer-bar{height:100%;background:linear-gradient(90deg,#6BCB77,#FFD93D,#E63946);border-radius:50px;transition:width .1s linear;width:100%;}
 .lr-card{background:#fff;border-radius:26px;padding:18px 22px;box-shadow:0 12px 0 rgba(0,0,0,.1);display:flex;flex-direction:column;align-items:center;gap:12px;max-width:420px;width:100%;margin-bottom:10px;}
-.lr-illo{width:clamp(85px,17vw,150px);height:clamp(85px,17vw,150px);display:flex;align-items:center;justify-content:center;}
-.lr-illo svg{width:100%;height:100%;}
+.lr-illo{width:clamp(85px,17vw,150px);height:clamp(85px,17vw,150px);display:flex;align-items:center;justify-content:center;border-radius:14px;overflow:hidden;}
+.lr-illo img{width:100%;height:100%;object-fit:cover;}
 .lr-choices{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
 .lr-btn{border:none;border-radius:16px;padding:11px 20px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.2rem,3.2vw,1.9rem);cursor:pointer;background:#fff;border:3px solid #DDD;color:var(--text);box-shadow:0 5px 0 rgba(0,0,0,.08);transition:transform .13s;}
 .lr-btn:hover{transform:translateY(-4px);}
 .lr-btn.correct-lr{border-color:var(--green);background:#EAFFF5;animation:okPop .4s ease;}
 .lr-btn.wrong-lr{border-color:var(--red);background:#FFF0F0;animation:shake .4s ease;}
-@keyframes okPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
 .lr-feedback{font-size:clamp(1.1rem,3vw,1.8rem);min-height:36px;text-align:center;}
-.lr-qnum{font-size:clamp(.8rem,1.8vw,1rem);color:var(--muted);margin-bottom:4px;}
 .lr-result{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;width:100%;max-width:380px;}
-.lr-result-big{font-size:clamp(2.5rem,8vw,5rem);font-weight:900;color:var(--text);}
-.lr-result-msg{font-size:clamp(1rem,2.8vw,1.6rem);color:var(--muted);}
 .lr-play-again{border:none;border-radius:50px;padding:12px 34px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.95rem,2.3vw,1.35rem);color:#fff;background:linear-gradient(135deg,#FF6B6B,#FF8E53);box-shadow:0 6px 0 #c9472e;cursor:pointer;transition:transform .13s;}
 .lr-play-again:hover{transform:translateY(-3px);}
-/* ══ DONE ══ */
-#s-done{background:linear-gradient(145deg,#2BAE66,#1A78C2,#FB5607);}
+#s-done{background:linear-gradient(145deg,#5C6BC0,#42A5F5,#66BB6A);}
 .cel-ico{font-size:clamp(4rem,13vw,8rem);animation:ibounce 1.6s ease-in-out infinite alternate;}
 .cel-title{font-size:clamp(2rem,6.5vw,4.5rem);color:#fff;text-shadow:0 6px 0 rgba(0,0,0,.12);text-align:center;margin-top:8px;}
 .cel-sub{font-size:clamp(1rem,2.6vw,1.6rem);color:rgba(255,255,255,.9);text-align:center;margin-top:6px;}
 .cel-stars{font-size:clamp(1.6rem,4.5vw,3rem);margin-top:8px;letter-spacing:4px;}
 .cel-home{margin-top:24px;border:none;border-radius:50px;padding:14px 44px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.05rem,2.6vw,1.6rem);color:var(--text);background:#fff;box-shadow:0 8px 0 rgba(0,0,0,.12);cursor:pointer;transition:transform .14s;}
 .cel-home:hover{transform:translateY(-4px);}
-/* ══ SHARED ══ */
 .toast{position:fixed;top:22px;left:50%;transform:translateX(-50%) translateY(-18px);background:#FF6B6B;color:#fff;padding:11px 30px;border-radius:50px;font-size:1.1rem;font-family:'Nunito',sans-serif;font-weight:900;z-index:9999;opacity:0;transition:all .28s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:1.8rem;animation:spFly .9s ease forwards;}
@@ -178,29 +158,21 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
 <div id="prog-wrap"><div id="prog-bar"></div></div>
 <div class="toast" id="toast"></div>
 
-<!-- HOME -->
 <div class="screen active" id="s-home">
   <div class="home-family">UT</div>
   <div class="home-words">but · cut · gut · hut · nut · rut</div>
   <div class="home-tap">👆 Tap a section below to start!</div>
   <div class="home-nav-hint">
-    <span>👂 Sounds</span><span>·</span>
-    <span>📖 Read</span><span>·</span>
-    <span>🎯 Match</span><span>·</span>
-    <span>✏️ Spell</span><span>·</span>
-    <span>🃏 Cards</span><span>·</span>
-    <span>⚡ Lightning</span>
+    <span>👂 Sounds</span><span>·</span><span>📖 Read</span><span>·</span><span>🎯 Match</span><span>·</span><span>✏️ Spell</span><span>·</span><span>🃏 Cards</span><span>·</span><span>⚡ Lightning</span>
   </div>
 </div>
 
-<!-- PHONICS (accessed via sequential flow) -->
 <div class="screen" id="s-phonics">
   <div class="big-title">Tap each sound!</div>
   <div class="sub">Tap a letter to see it big — say it aloud!</div>
   <div class="ph-grid" id="ph-grid"></div>
 </div>
 
-<!-- BLEND & READ -->
 <div class="screen" id="s-blend">
   <div class="big-title">Blend &amp; Read!</div>
   <div class="sub">Watch the sounds come together!</div>
@@ -208,19 +180,18 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
   <div class="b-card">
     <div class="b-illo" id="b-illo"></div>
     <div class="b-row">
-      <div class="b-con" id="b-con">p</div>
+      <div class="b-con" id="b-con">h</div>
       <div class="b-plus">+</div>
-      <div class="b-fam" id="b-fam">an</div>
+      <div class="b-fam" id="b-fam">ot</div>
       <div class="b-arrow">→</div>
-      <div class="b-res" id="b-res">pan</div>
+      <div class="b-res" id="b-res">hot</div>
     </div>
-    <div class="b-lbl" id="b-lbl">p + an = ?</div>
+    <div class="b-lbl" id="b-lbl">h + ot = ?</div>
     <button class="blend-btn" id="blend-btn" onclick="doBlend()">Blend it!</button>
     <button class="blend-skip" id="blend-skip" onclick="nextBlend()">Next word ▶</button>
   </div>
 </div>
 
-<!-- MATCH -->
 <div class="screen" id="s-match">
   <div class="big-title">Match it!</div>
   <div class="sub">Tap a picture · then tap its word</div>
@@ -228,7 +199,6 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
   <div class="match-score" id="match-score">0 / 6 matched</div>
 </div>
 
-<!-- SPELL -->
 <div class="screen" id="s-spell">
   <div class="big-title">Spell it!</div>
   <div class="sub">Tap the letters in order!</div>
@@ -241,29 +211,20 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
   <button class="sp-clear" onclick="clearSpell()">Clear</button>
 </div>
 
-<!-- FLASHCARD -->
 <div class="screen" id="s-flash">
   <div class="big-title">Flash Cards!</div>
   <div class="sub">Tap the card to flip and reveal the answer!</div>
-  <!-- Mode toggle -->
   <div class="fl-mode-toggle">
     <button class="fl-mode-btn active-mode" id="fl-btn-pic" onclick="setFlashMode('pic')">🖼️ Picture → Word</button>
     <button class="fl-mode-btn" id="fl-btn-word" onclick="setFlashMode('word')">🔤 Word → Picture</button>
   </div>
-  <!-- Progress dots -->
   <div class="fl-dots" id="fl-dots"></div>
-  <!-- Card -->
   <div class="flashcard" id="flashcard" onclick="flipCard()">
     <div class="fc-inner" id="fc-inner">
-      <div class="fc-front" id="fc-front">
-        <!-- filled by JS -->
-      </div>
-      <div class="fc-back" id="fc-back">
-        <!-- filled by JS -->
-      </div>
+      <div class="fc-front" id="fc-front"></div>
+      <div class="fc-back" id="fc-back"></div>
     </div>
   </div>
-  <!-- Nav -->
   <div class="fl-nav">
     <button class="fl-nav-btn fl-prev" onclick="flashPrev()">◀</button>
     <div class="fl-count" id="fl-count">1 / 6</div>
@@ -271,7 +232,6 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
   </div>
 </div>
 
-<!-- LIGHTNING ROUND -->
 <div class="screen" id="s-lightning">
   <div class="big-title">⚡ Lightning Round!</div>
   <div class="sub">Read the picture — tap the right word fast!</div>
@@ -287,7 +247,6 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
   <div class="lr-feedback" id="lr-feedback"></div>
 </div>
 
-<!-- DONE -->
 <div class="screen" id="s-done">
   <div class="cel-ico">🏆</div>
   <div class="cel-title">You're a star!</div>
@@ -296,382 +255,65 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
   <button class="cel-home" onclick="goHome()">🏠 Home</button>
 </div>
 
-<!-- BOTTOM TAB BAR -->
 <div id="tab-bar">
-  <button class="tab" id="tab-home" onclick="jumpTo('s-home')">
-    <div class="tab-icon">🏠</div>
-    <div class="tab-label">Home</div>
-    <div class="tab-pip"></div>
-  </button>
-  <button class="tab" id="tab-sounds" onclick="jumpTo('s-phonics')">
-    <div class="tab-icon">👂</div>
-    <div class="tab-label">Sounds</div>
-    <div class="tab-pip"></div>
-  </button>
-  <button class="tab" id="tab-blend" onclick="jumpTo('s-blend')">
-    <div class="tab-icon">📖</div>
-    <div class="tab-label">Read</div>
-    <div class="tab-pip"></div>
-  </button>
-  <button class="tab" id="tab-match" onclick="jumpTo('s-match')">
-    <div class="tab-icon">🎯</div>
-    <div class="tab-label">Match</div>
-    <div class="tab-pip"></div>
-  </button>
-  <button class="tab" id="tab-spell" onclick="jumpTo('s-spell')">
-    <div class="tab-icon">✏️</div>
-    <div class="tab-label">Spell</div>
-    <div class="tab-pip"></div>
-  </button>
-  <button class="tab" id="tab-flash" onclick="jumpTo('s-flash')">
-    <div class="tab-icon">🃏</div>
-    <div class="tab-label">Cards</div>
-    <div class="tab-pip"></div>
-  </button>
-  <button class="tab" id="tab-lightning" onclick="jumpTo('s-lightning')">
-    <div class="tab-icon">⚡</div>
-    <div class="tab-label">Lightning</div>
-    <div class="tab-pip"></div>
-  </button>
+  <button class="tab" id="tab-home" onclick="jumpTo('s-home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div><div class="tab-pip"></div></button>
+  <button class="tab" id="tab-sounds" onclick="jumpTo('s-phonics')"><div class="tab-icon">👂</div><div class="tab-label">Sounds</div><div class="tab-pip"></div></button>
+  <button class="tab" id="tab-blend" onclick="jumpTo('s-blend')"><div class="tab-icon">📖</div><div class="tab-label">Read</div><div class="tab-pip"></div></button>
+  <button class="tab" id="tab-match" onclick="jumpTo('s-match')"><div class="tab-icon">🎯</div><div class="tab-label">Match</div><div class="tab-pip"></div></button>
+  <button class="tab" id="tab-spell" onclick="jumpTo('s-spell')"><div class="tab-icon">✏️</div><div class="tab-label">Spell</div><div class="tab-pip"></div></button>
+  <button class="tab" id="tab-flash" onclick="jumpTo('s-flash')"><div class="tab-icon">🃏</div><div class="tab-label">Cards</div><div class="tab-pip"></div></button>
+  <button class="tab" id="tab-lightning" onclick="jumpTo('s-lightning')"><div class="tab-icon">⚡</div><div class="tab-label">Lightning</div><div class="tab-pip"></div></button>
 </div>
 
 <script>
-// ═══════════════════════════ DATA ═══════════════════════════
-const FAMILY = 'ut';
-const FAMILY_COLOR = '#2BAE66';
-const FAMILY_BG   = '#EAFFF5';
+const FAMILY='ut';
+const FAMILY_COLOR='#5C6BC0';
+const FAMILY_BG='#E8EAF6';
+const BASE='https://raw.githubusercontent.com/ponrathsop-arch/Online-English-for-kids/main/cvc/';
 
-const SVG = {
-  but:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
-<!-- background panels -->
-<rect x="4" y="4" width="108" height="192" rx="14" fill="#FFFDE7"/>
-<rect x="128" y="4" width="108" height="192" rx="14" fill="#E8F4FD"/>
-<!-- LEFT — happy sunny face -->
-<!-- sun rays -->
-<line x1="58" y1="22" x2="58" y2="12" stroke="#FFB300" stroke-width="4" stroke-linecap="round"/>
-<line x1="58" y1="126" x2="58" y2="136" stroke="#FFB300" stroke-width="4" stroke-linecap="round"/>
-<line x1="10" y1="74" x2="0" y2="74" stroke="#FFB300" stroke-width="4" stroke-linecap="round"/>
-<line x1="24" y1="38" x2="16" y2="30" stroke="#FFB300" stroke-width="3" stroke-linecap="round"/>
-<line x1="92" y1="38" x2="100" y2="30" stroke="#FFB300" stroke-width="3" stroke-linecap="round"/>
-<line x1="24" y1="110" x2="16" y2="118" stroke="#FFB300" stroke-width="3" stroke-linecap="round"/>
-<line x1="92" y1="110" x2="100" y2="118" stroke="#FFB300" stroke-width="3" stroke-linecap="round"/>
-<line x1="106" y1="74" x2="116" y2="74" stroke="#FFB300" stroke-width="4" stroke-linecap="round"/>
-<!-- happy sun face -->
-<circle cx="58" cy="74" r="44" fill="#FFD600"/>
-<circle cx="58" cy="74" r="38" fill="#FFE033"/>
-<!-- happy eyes -->
-<!-- left eye (happy arc) -->
-<path d="M40 62 Q44 54 48 62" fill="none" stroke="#7B5200" stroke-width="3.5" stroke-linecap="round"/>
-<!-- right eye (happy arc) -->
-<path d="M68 62 Q72 54 76 62" fill="none" stroke="#7B5200" stroke-width="3.5" stroke-linecap="round"/>
-<!-- big happy smile -->
-<path d="M36 82 Q58 104 80 82" fill="none" stroke="#7B5200" stroke-width="4" stroke-linecap="round"/>
-<!-- cheeks -->
-<ellipse cx="34" cy="86" rx="10" ry="7" fill="#FF8A65" opacity=".5"/>
-<ellipse cx="82" cy="86" rx="10" ry="7" fill="#FF8A65" opacity=".5"/>
-<!-- shine on sun -->
-<ellipse cx="38" cy="54" rx="10" ry="18" fill="rgba(255,255,255,.25)" transform="rotate(-20 38 54)"/>
-<!-- tick / check below -->
-<circle cx="58" cy="160" r="20" fill="#2BAE66"/>
-<path d="M46 160 L54 170 L72 148" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-
-<!-- DIVIDER BAR in centre -->
-<rect x="108" y="4" width="24" height="192" rx="0" fill="#555"/>
-<rect x="112" y="4" width="16" height="192" fill="#666"/>
-<!-- BUT text on divider -->
-<text x="120" y="88" text-anchor="middle" font-family="Nunito,sans-serif" font-size="13" font-weight="900" fill="white" transform="rotate(90 120 100)">BUT</text>
-
-<!-- RIGHT — sad rainy cloud face -->
-<!-- rain drops -->
-<line x1="152" y1="140" x2="146" y2="162" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
-<line x1="170" y1="144" x2="164" y2="166" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
-<line x1="188" y1="140" x2="182" y2="162" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
-<line x1="158" y1="152" x2="152" y2="174" stroke="#90CAF9" stroke-width="2.5" stroke-linecap="round"/>
-<line x1="178" y1="154" x2="172" y2="176" stroke="#90CAF9" stroke-width="2.5" stroke-linecap="round"/>
-<!-- sad cloud face -->
-<ellipse cx="150" cy="72" rx="26" ry="22" fill="#B0BEC5"/>
-<ellipse cx="176" cy="68" rx="28" ry="24" fill="#CFD8DC"/>
-<ellipse cx="196" cy="76" rx="20" ry="18" fill="#B0BEC5"/>
-<ellipse cx="170" cy="82" rx="48" ry="26" fill="#CFD8DC"/>
-<!-- sad eyes (downward arcs) -->
-<path d="M152 68 Q156 76 160 68" fill="none" stroke="#546E7A" stroke-width="3.5" stroke-linecap="round"/>
-<path d="M178 64 Q182 72 186 64" fill="none" stroke="#546E7A" stroke-width="3.5" stroke-linecap="round"/>
-<!-- sad frown -->
-<path d="M150 82 Q170 70 190 82" fill="none" stroke="#546E7A" stroke-width="4" stroke-linecap="round"/>
-<!-- tears -->
-<path d="M156 74 Q154 80 158 82" fill="none" stroke="#90CAF9" stroke-width="2.5" stroke-linecap="round"/>
-<path d="M182 70 Q180 76 184 78" fill="none" stroke="#90CAF9" stroke-width="2.5" stroke-linecap="round"/>
-<!-- cross / X below -->
-<circle cx="182" cy="160" r="20" fill="#E53935"/>
-<line x1="170" y1="148" x2="194" y2="172" stroke="white" stroke-width="5" stroke-linecap="round"/>
-<line x1="194" y1="148" x2="170" y2="172" stroke="white" stroke-width="5" stroke-linecap="round"/>
-</svg>`,
-  cut:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
-<ellipse cx="120" cy="194" rx="80" ry="6" fill="rgba(0,0,0,.08)"/>
-<!-- PAPER being cut -->
-<rect x="20" y="80" width="200" height="70" rx="6" fill="white" stroke="#E0E0E0" stroke-width="2"/>
-<!-- cut line through paper (gap) -->
-<rect x="108" y="80" width="8" height="70" rx="0" fill="#FEF9F0"/>
-<!-- paper left side cut edge (jagged slightly) -->
-<path d="M108 80 L108 150" fill="none" stroke="#E0E0E0" stroke-width="1" stroke-dasharray="4,3"/>
-<!-- paper right side cut edge -->
-<path d="M116 80 L116 150" fill="none" stroke="#E0E0E0" stroke-width="1" stroke-dasharray="4,3"/>
-<!-- SCISSORS (large, diagonal, blades open) -->
-<!-- pivot screw -->
-<circle cx="112" cy="115" r="9" fill="#9E9E9E"/>
-<circle cx="112" cy="115" r="5" fill="#BDBDBD"/>
-<circle cx="112" cy="115" r="2" fill="#757575"/>
-<!-- BLADE 1 (upper, going top-right to bottom-left) -->
-<!-- handle ring 1 -->
-<ellipse cx="62" cy="50" rx="28" ry="22" fill="none" stroke="#E91E8C" stroke-width="10"/>
-<ellipse cx="62" cy="50" rx="18" ry="14" fill="#FEF9F0"/>
-<!-- blade 1 shaft -->
-<rect x="80" y="54" width="56" height="10" rx="5" fill="#E91E8C" transform="rotate(-28 80 54)"/>
-<!-- blade 1 cutting edge -->
-<path d="M88 46 L168 88 L166 96 L86 56 Z" fill="#E91E8C"/>
-<path d="M90 48 L168 90" fill="none" stroke="#C2185B" stroke-width="2"/>
-<!-- BLADE 2 (lower, going top-right to bottom-left) -->
-<!-- handle ring 2 -->
-<ellipse cx="62" cy="178" rx="28" ry="22" fill="none" stroke="#E91E8C" stroke-width="10"/>
-<ellipse cx="62" cy="178" rx="18" ry="14" fill="#FEF9F0"/>
-<!-- blade 2 shaft -->
-<rect x="80" y="166" width="56" height="10" rx="5" fill="#E91E8C" transform="rotate(28 80 166)"/>
-<!-- blade 2 cutting edge -->
-<path d="M88 174 L168 132 L166 124 L86 164 Z" fill="#E91E8C"/>
-<path d="M90 172 L168 130" fill="none" stroke="#C2185B" stroke-width="2"/>
-<!-- shine on blades -->
-<line x1="96" y1="50" x2="148" y2="76" stroke="rgba(255,255,255,.4)" stroke-width="3" stroke-linecap="round"/>
-<line x1="96" y1="170" x2="148" y2="144" stroke="rgba(255,255,255,.4)" stroke-width="3" stroke-linecap="round"/>
-</svg>`,
-  gut:`<svg viewBox="0 0 220 240" xmlns="http://www.w3.org/2000/svg">
-<!-- X-ray dark background -->
-<rect x="10" y="10" width="200" height="220" rx="16" fill="#0D1B2A"/>
-<!-- body silhouette (light blue X-ray glow) -->
-<ellipse cx="110" cy="72" rx="34" ry="38" fill="none" stroke="#90CAF9" stroke-width="2" opacity=".5"/>
-<!-- neck -->
-<rect x="100" y="108" width="20" height="16" rx="4" fill="none" stroke="#90CAF9" stroke-width="1.5" opacity=".4"/>
-<!-- ribcage -->
-<ellipse cx="110" cy="142" rx="52" ry="44" fill="none" stroke="#90CAF9" stroke-width="1.5" opacity=".4"/>
-<!-- rib lines left -->
-<path d="M62 128 Q80 122 96 130" fill="none" stroke="#90CAF9" stroke-width="2" stroke-linecap="round" opacity=".5"/>
-<path d="M60 140 Q78 134 96 142" fill="none" stroke="#90CAF9" stroke-width="2" stroke-linecap="round" opacity=".5"/>
-<path d="M62 152 Q80 146 96 154" fill="none" stroke="#90CAF9" stroke-width="2" stroke-linecap="round" opacity=".5"/>
-<!-- rib lines right -->
-<path d="M158 128 Q140 122 124 130" fill="none" stroke="#90CAF9" stroke-width="2" stroke-linecap="round" opacity=".5"/>
-<path d="M160 140 Q142 134 124 142" fill="none" stroke="#90CAF9" stroke-width="2" stroke-linecap="round" opacity=".5"/>
-<path d="M158 152 Q140 146 124 154" fill="none" stroke="#90CAF9" stroke-width="2" stroke-linecap="round" opacity=".5"/>
-<!-- spine -->
-<rect x="106" y="116" width="8" height="82" rx="4" fill="none" stroke="#90CAF9" stroke-width="1.5" opacity=".35"/>
-<!-- STOMACH (bright glowing organ — the GUT) -->
-<path d="M88 148 Q82 138 86 128 Q92 118 104 120 Q116 118 120 128 Q130 138 128 152 Q126 168 116 176 Q104 182 94 174 Q84 166 88 148Z" fill="#4CAF50" opacity=".85"/>
-<path d="M88 148 Q82 138 86 128 Q92 118 104 120 Q116 118 120 128 Q130 138 128 152 Q126 168 116 176 Q104 182 94 174 Q84 166 88 148Z" fill="none" stroke="#81C784" stroke-width="2"/>
-<!-- stomach shine -->
-<path d="M90 132 Q94 124 102 126" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="3" stroke-linecap="round"/>
-<!-- intestines below stomach -->
-<path d="M96 174 Q80 180 78 194 Q78 208 92 210 Q106 212 110 200 Q114 188 128 186 Q142 184 144 198 Q144 212 130 214" fill="none" stroke="#66BB6A" stroke-width="6" stroke-linecap="round" opacity=".8"/>
-<!-- glow effect around stomach -->
-<ellipse cx="108" cy="150" rx="28" ry="30" fill="#4CAF50" opacity=".08"/>
-<!-- label arrow pointing to stomach -->
-<line x1="164" y1="148" x2="134" y2="148" stroke="#81C784" stroke-width="2.5" stroke-linecap="round"/>
-<polygon points="134,142 122,148 134,154" fill="#81C784"/>
-<!-- X-ray frame corner marks -->
-<path d="M10 30 L10 10 L30 10" fill="none" stroke="#90CAF9" stroke-width="2" opacity=".4"/>
-<path d="M210 30 L210 10 L190 10" fill="none" stroke="#90CAF9" stroke-width="2" opacity=".4"/>
-<path d="M10 200 L10 220 L30 220" fill="none" stroke="#90CAF9" stroke-width="2" opacity=".4"/>
-<path d="M210 200 L210 220 L190 220" fill="none" stroke="#90CAF9" stroke-width="2" opacity=".4"/>
-</svg>`,
-  hut:`<svg viewBox="0 0 240 210" xmlns="http://www.w3.org/2000/svg">
-<ellipse cx="120" cy="204" rx="100" ry="6" fill="rgba(0,0,0,.08)"/>
-<!-- sky -->
-<rect x="0" y="0" width="240" height="210" fill="#87CEEB" opacity=".25"/>
-<!-- ground / grass -->
-<rect x="0" y="156" width="240" height="54" fill="#5D9E40"/>
-<rect x="0" y="150" width="240" height="14" rx="0" fill="#4CAF50"/>
-<!-- grass blades -->
-<path d="M14 150 Q10 134 18 132 Q22 134 14 150" fill="#388E3C"/>
-<path d="M36 148 Q32 130 40 128 Q44 130 36 148" fill="#388E3C"/>
-<path d="M196 148 Q192 130 200 128 Q204 130 196 148" fill="#388E3C"/>
-<path d="M218 150 Q214 134 222 132 Q226 134 218 150" fill="#388E3C"/>
-<!-- HUT WALL -->
-<rect x="46" y="102" width="148" height="58" rx="6" fill="#D4A017"/>
-<rect x="46" y="102" width="148" height="58" rx="6" fill="none" stroke="#A07820" stroke-width="2"/>
-<!-- wall texture (horizontal planks) -->
-<line x1="46" y1="122" x2="194" y2="122" stroke="#A07820" stroke-width="2"/>
-<line x1="46" y1="140" x2="194" y2="140" stroke="#A07820" stroke-width="2"/>
-<!-- THATCHED ROOF (layered straw) -->
-<path d="M28 108 L120 32 L212 108Z" fill="#8B6914"/>
-<!-- thatch layers (darker at bottom, lighter at top) -->
-<path d="M28 108 L120 32 L212 108 L200 108 L120 44 L40 108Z" fill="#A07820"/>
-<path d="M40 108 L120 44 L200 108 L188 108 L120 54 L52 108Z" fill="#C8860A"/>
-<path d="M52 108 L120 54 L188 108 L176 108 L120 64 L64 108Z" fill="#D4A017"/>
-<path d="M64 108 L120 64 L176 108 L164 108 L120 74 L76 108Z" fill="#E8B820"/>
-<!-- thatch texture lines -->
-<line x1="68" y1="72" x2="48" y2="104" stroke="#A07820" stroke-width="1.5" opacity=".5"/>
-<line x1="84" y1="60" x2="60" y2="102" stroke="#A07820" stroke-width="1.5" opacity=".5"/>
-<line x1="100" y1="50" x2="76" y2="100" stroke="#A07820" stroke-width="1.5" opacity=".5"/>
-<line x1="120" y1="44" x2="100" y2="100" stroke="#A07820" stroke-width="1.5" opacity=".5"/>
-<line x1="140" y1="50" x2="164" y2="100" stroke="#A07820" stroke-width="1.5" opacity=".5"/>
-<line x1="156" y1="60" x2="184" y2="100" stroke="#A07820" stroke-width="1.5" opacity=".5"/>
-<line x1="172" y1="72" x2="196" y2="104" stroke="#A07820" stroke-width="1.5" opacity=".5"/>
-<!-- DOOR -->
-<rect x="98" y="118" width="44" height="42" rx="6" fill="#8B6914"/>
-<rect x="102" y="122" width="36" height="34" rx="4" fill="#A07820"/>
-<!-- door handle -->
-<circle cx="132" cy="140" r="4" fill="#FFD600"/>
-<!-- WINDOW -->
-<rect x="58" y="114" width="28" height="24" rx="4" fill="#90CAF9"/>
-<line x1="72" y1="114" x2="72" y2="138" stroke="#A07820" stroke-width="2"/>
-<line x1="58" y1="126" x2="86" y2="126" stroke="#A07820" stroke-width="2"/>
-<!-- palm tree (right) -->
-<rect x="200" y="80" width="10" height="76" rx="5" fill="#8B6914"/>
-<path d="M205 82 Q185 68 172 74 Q180 86 196 84Z" fill="#2BAE66"/>
-<path d="M205 82 Q220 64 232 72 Q226 84 210 82Z" fill="#2BAE66"/>
-<path d="M205 80 Q210 58 218 56 Q220 68 210 78Z" fill="#33C472"/>
-</svg>`,
-  nut:`<svg viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
-<ellipse cx="110" cy="194" rx="80" ry="6" fill="rgba(0,0,0,.08)"/>
-<!-- WHOLE WALNUT (left) -->
-<!-- shell -->
-<ellipse cx="68" cy="120" rx="52" ry="44" fill="#795548"/>
-<ellipse cx="68" cy="116" rx="48" ry="40" fill="#8D6E63"/>
-<!-- walnut texture lines -->
-<path d="M28 104 Q68 96 108 104" fill="none" stroke="#6D4C1A" stroke-width="2.5"/>
-<path d="M24 120 Q68 112 112 120" fill="none" stroke="#6D4C1A" stroke-width="2.5"/>
-<path d="M28 136 Q68 128 108 136" fill="none" stroke="#6D4C1A" stroke-width="2.5"/>
-<path d="M68 76 Q56 96 52 120 Q54 140 68 156" fill="none" stroke="#6D4C1A" stroke-width="2"/>
-<path d="M68 76 Q80 96 84 120 Q82 140 68 156" fill="none" stroke="#6D4C1A" stroke-width="2"/>
-<!-- seam line -->
-<path d="M20 116 Q68 108 116 116" fill="none" stroke="#5D4037" stroke-width="3" stroke-linecap="round"/>
-<!-- shine -->
-<ellipse cx="48" cy="102" rx="10" ry="18" fill="rgba(255,255,255,.18)" transform="rotate(-20 48 102)"/>
-<!-- CRACKED HALF (right, showing inside) -->
-<!-- shell half -->
-<path d="M128 120 Q128 78 164 72 Q200 78 200 120 Q200 152 164 162 Q128 152 128 120Z" fill="#795548"/>
-<path d="M132 120 Q132 82 164 76 Q196 82 196 120 Q196 148 164 158 Q132 148 132 120Z" fill="#8D6E63"/>
-<!-- walnut brain inside -->
-<ellipse cx="164" cy="118" rx="32" ry="28" fill="#D4A017"/>
-<!-- brain lobes pattern -->
-<path d="M140 108 Q148 96 164 100 Q180 96 188 108" fill="none" stroke="#A07820" stroke-width="3" stroke-linecap="round"/>
-<path d="M136 120 Q140 108 150 112 Q158 116 164 112 Q170 116 178 112 Q188 108 192 120" fill="none" stroke="#A07820" stroke-width="2.5" stroke-linecap="round"/>
-<path d="M138 130 Q148 122 164 126 Q180 122 190 130" fill="none" stroke="#A07820" stroke-width="2.5" stroke-linecap="round"/>
-<path d="M148 140 Q156 132 164 136 Q172 132 180 140" fill="none" stroke="#A07820" stroke-width="2" stroke-linecap="round"/>
-<!-- inner shine -->
-<ellipse cx="150" cy="106" rx="8" ry="14" fill="rgba(255,255,255,.2)" transform="rotate(-15 150 106)"/>
-</svg>`,
-  rut:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
-<ellipse cx="120" cy="194" rx="100" ry="6" fill="rgba(0,0,0,.08)"/>
-<!-- sky -->
-<rect x="0" y="0" width="240" height="96" fill="#87CEEB" opacity=".35"/>
-<!-- ground surface (muddy brown) -->
-<rect x="0" y="96" width="240" height="104" fill="#6D4C1A"/>
-<!-- grass strip at top of ground -->
-<rect x="0" y="90" width="240" height="14" rx="0" fill="#5D9E40"/>
-<!-- grass blades -->
-<path d="M14 90 Q10 74 18 72 Q22 74 14 90" fill="#4CAF50"/>
-<path d="M38 88 Q34 70 42 68 Q46 70 38 88" fill="#4CAF50"/>
-<path d="M198 88 Q194 70 202 68 Q206 70 198 88" fill="#4CAF50"/>
-<path d="M222 90 Q218 74 226 72 Q230 74 222 90" fill="#4CAF50"/>
-<!-- mud texture patches -->
-<ellipse cx="40" cy="130" rx="18" ry="7" fill="#5D4037" opacity=".5"/>
-<ellipse cx="188" cy="148" rx="14" ry="6" fill="#5D4037" opacity=".5"/>
-<ellipse cx="80" cy="168" rx="12" ry="5" fill="#5D4037" opacity=".4"/>
-<ellipse cx="160" cy="120" rx="16" ry="6" fill="#5D4037" opacity=".4"/>
-<!-- LEFT WHEEL RUT — deep groove going into distance -->
-<path d="M48 196 Q52 140 72 96" fill="none" stroke="#3E2008" stroke-width="18" stroke-linecap="round"/>
-<path d="M48 196 Q52 140 72 96" fill="none" stroke="#2a1505" stroke-width="10" stroke-linecap="round"/>
-<!-- LEFT rut inner shadow -->
-<path d="M50 196 Q54 142 72 98" fill="none" stroke="#1a0a00" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-<!-- RIGHT WHEEL RUT — parallel groove -->
-<path d="M162 196 Q158 140 138 96" fill="none" stroke="#3E2008" stroke-width="18" stroke-linecap="round"/>
-<path d="M162 196 Q158 140 138 96" fill="none" stroke="#2a1505" stroke-width="10" stroke-linecap="round"/>
-<!-- RIGHT rut inner shadow -->
-<path d="M160 196 Q156 142 138 98" fill="none" stroke="#1a0a00" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-<!-- mud pushed up on sides of ruts -->
-<path d="M36 180 Q44 170 52 180 Q48 186 40 186 Z" fill="#5D4037"/>
-<path d="M34 158 Q42 148 50 158 Q46 164 38 164 Z" fill="#5D4037"/>
-<path d="M174 180 Q166 170 158 180 Q162 186 170 186 Z" fill="#5D4037"/>
-<path d="M176 156 Q168 146 160 156 Q164 162 172 162 Z" fill="#5D4037"/>
-<!-- tyre track tread marks inside ruts -->
-<line x1="50" y1="188" x2="54" y2="180" stroke="#1a0a00" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
-<line x1="52" y1="172" x2="56" y2="164" stroke="#1a0a00" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
-<line x1="55" y1="156" x2="59" y2="148" stroke="#1a0a00" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
-<line x1="59" y1="140" x2="63" y2="132" stroke="#1a0a00" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
-<line x1="160" y1="188" x2="156" y2="180" stroke="#1a0a00" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
-<line x1="158" y1="172" x2="154" y2="164" stroke="#1a0a00" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
-<line x1="155" y1="156" x2="151" y2="148" stroke="#1a0a00" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
-<line x1="151" y1="140" x2="147" y2="132" stroke="#1a0a00" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
-<!-- tractor/vehicle in distance (small, top of ruts) -->
-<rect x="80" y="74" width="80" height="28" rx="6" fill="#8B6914"/>
-<rect x="86" y="68" width="48" height="18" rx="5" fill="#A07820"/>
-<!-- cab window -->
-<rect x="92" y="70" width="20" height="14" rx="3" fill="#90CAF9"/>
-<!-- tractor wheels (small in distance) -->
-<circle cx="88" cy="102" r="10" fill="#5D4037"/>
-<circle cx="88" cy="102" r="6" fill="#6D4C1A"/>
-<circle cx="152" cy="102" r="12" fill="#5D4037"/>
-<circle cx="152" cy="102" r="7" fill="#6D4C1A"/>
-<!-- exhaust puff -->
-<circle cx="156" cy="62" r="8" fill="#9E9E9E" opacity=".5"/>
-<circle cx="162" cy="52" r="6" fill="#9E9E9E" opacity=".35"/>
-<circle cx="158" cy="42" r="4" fill="#9E9E9E" opacity=".2"/>
-</svg>`,
-};
-
-const WORDS = [
-  {word:'but',consonant:'b',color:'#E63946'},
-  {word:'cut',consonant:'c',color:'#E91E8C'},
-  {word:'gut',consonant:'g',color:'#FB5607'},
-  {word:'hut',consonant:'h',color:'#8B6914'},
+const WORDS=[
+  {word:'but',consonant:'b',color:'#E53935'},
+  {word:'cut',consonant:'c',color:'#1A78C2'},
+  {word:'gut',consonant:'g',color:'#2BAE66'},
+  {word:'hut',consonant:'h',color:'#FB5607'},
   {word:'nut',consonant:'n',color:'#8338EC'},
-  {word:'rut',consonant:'r',color:'#1A78C2'},
+  {word:'rut',consonant:'r',color:'#5C6BC0'},
 ];
 
 const PHONICS=[
-  {letter:'b',hint:'but',bg:'#E63946',dark:false,example:'b — but'},
-  {letter:'c',hint:'cut',bg:'#E91E8C',dark:false,example:'c — cut'},
-  {letter:'g',hint:'gut',bg:'#FB5607',dark:false,example:'g — gut'},
-  {letter:'h',hint:'hut',bg:'#8B6914',dark:false,example:'h — hut'},
+  {letter:'b',hint:'but',bg:'#E53935',dark:false,example:'b — but'},
+  {letter:'c',hint:'cut',bg:'#1A78C2',dark:false,example:'c — cut'},
+  {letter:'g',hint:'gut',bg:'#2BAE66',dark:false,example:'g — gut'},
+  {letter:'h',hint:'hut',bg:'#FB5607',dark:false,example:'h — hut'},
   {letter:'n',hint:'nut',bg:'#8338EC',dark:false,example:'n — nut'},
-  {letter:'r',hint:'rut',bg:'#1A78C2',dark:false,example:'r — rut'},
-  {letter:'u',hint:'vowel',bg:'#F5C800',dark:true,example:'u — short u sound'},
+  {letter:'r',hint:'rut',bg:'#5C6BC0',dark:false,example:'r — rut'},
+  {letter:'u',hint:'vowel',bg:'#42A5F5',dark:false,example:'u — short u sound'},
   {letter:'t',hint:'ending',bg:'#555',dark:false,example:'t — end sound'},
-  {letter:'ut',hint:'family',bg:'linear-gradient(135deg,#F5C800,#2BAE66)',dark:false,example:'__ut — the family!'},
+  {letter:'ut',hint:'family',bg:'linear-gradient(135deg,#5C6BC0,#26C6DA)',dark:false,example:'__ut — the family!'},
 ];
-const DISTRACTORS=['a', 'd', 'e', 'f', 'i', 'j', 'k', 'l', 'm', 'o', 'r', 's', 'v', 'w'];
+const DISTRACTORS=['a','b','e','f','i','k','m','r','s','u','v','w','x'];
 
-// ═══════════════════════════ SCREEN ENGINE ═══════════════════════════
 const SCREEN_ORDER=['s-home','s-phonics','s-blend','s-match','s-spell','s-flash','s-lightning','s-done'];
 let curIdx=0;
 
+function img(word){return `<img src="${BASE}${word}.jpg" alt="${word}" onerror="this.style.background='#eee';this.alt='${word}'">`;}
+
 function showScreen(id){
-  const idx=SCREEN_ORDER.indexOf(id);
-  if(idx>=0) curIdx=idx;
+  const idx=SCREEN_ORDER.indexOf(id);if(idx>=0)curIdx=idx;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.getElementById('prog-bar').style.width=(curIdx/(SCREEN_ORDER.length-1)*100)+'%';
-  // Update tab bar active state
-  const tabMap={
-    's-home':'tab-home','s-phonics':'tab-sounds','s-blend':'tab-blend',
-    's-match':'tab-match','s-spell':'tab-spell','s-flash':'tab-flash',
-    's-lightning':'tab-lightning','s-done':'tab-lightning'
-  };
+  const tabMap={'s-home':'tab-home','s-phonics':'tab-sounds','s-blend':'tab-blend','s-match':'tab-match','s-spell':'tab-spell','s-flash':'tab-flash','s-lightning':'tab-lightning','s-done':'tab-lightning'};
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active-tab'));
-  const activeTab=tabMap[id];
-  if(activeTab) document.getElementById(activeTab)?.classList.add('active-tab');
-  if(id==='s-phonics') initPhonics();
-  if(id==='s-blend') initBlend();
-  if(id==='s-match') initMatch();
-  if(id==='s-spell') initSpell();
-  if(id==='s-flash') initFlash();
-  if(id==='s-lightning') initLightning();
-  if(id==='s-done') bigConfetti();
+  const at=tabMap[id];if(at)document.getElementById(at)?.classList.add('active-tab');
+  if(id==='s-phonics')initPhonics();if(id==='s-blend')initBlend();if(id==='s-match')initMatch();
+  if(id==='s-spell')initSpell();if(id==='s-flash')initFlash();if(id==='s-lightning')initLightning();
+  if(id==='s-done')bigConfetti();
 }
-function goNext(){if(curIdx<SCREEN_ORDER.length-1) showScreen(SCREEN_ORDER[curIdx+1]);}
-function goPrev(){if(curIdx>0) showScreen(SCREEN_ORDER[curIdx-1]);}
+function goNext(){if(curIdx<SCREEN_ORDER.length-1)showScreen(SCREEN_ORDER[curIdx+1]);}
 function goHome(){showScreen('s-home');}
 function jumpTo(id){showScreen(id);}
 
-// ═══════════════════════════ PHONICS ═══════════════════════════
 function initPhonics(){
   const g=document.getElementById('ph-grid');g.innerHTML='';
   PHONICS.forEach(ph=>{
@@ -690,14 +332,13 @@ function initPhonics(){
 }
 function closeZoom(){document.getElementById('zoom-ov').classList.remove('show');}
 
-// ═══════════════════════════ BLEND ═══════════════════════════
 let blendIdx=0,blended=false;
 function initBlend(){blendIdx=0;blended=false;buildBDots();renderBlend();}
 function buildBDots(){document.getElementById('b-dots').innerHTML=WORDS.map((_,i)=>`<div class="b-dot${i===0?' cur':''}" id="bd-${i}"></div>`).join('');}
 function renderBlend(){
   blended=false;const w=WORDS[blendIdx];
   WORDS.forEach((_,i)=>{const d=document.getElementById(`bd-${i}`);if(d)d.className='b-dot'+(i<blendIdx?' done':i===blendIdx?' cur':'');});
-  document.getElementById('b-illo').innerHTML=SVG[w.word];
+  document.getElementById('b-illo').innerHTML=img(w.word);
   const bC=document.getElementById('b-con'),bR=document.getElementById('b-res'),bL=document.getElementById('b-lbl'),bFam=document.getElementById('b-fam');
   bC.textContent=w.consonant;bC.style.color=w.color;bC.style.background=w.color+'22';bC.style.opacity='1';bC.style.transform='scale(1)';
   bFam.textContent=FAMILY;bFam.style.color=FAMILY_COLOR;bFam.style.background=FAMILY_BG;bFam.style.opacity='1';bFam.style.transform='scale(1)';
@@ -716,14 +357,13 @@ function doBlend(){
 }
 function nextBlend(){if(blendIdx<WORDS.length-1){blendIdx++;renderBlend();}else goNext();}
 
-// ═══════════════════════════ MATCH ═══════════════════════════
 let matchSel=null,matchDone=0;
 function initMatch(){
   matchSel=null;matchDone=0;document.getElementById('match-score').textContent='0 / 6 matched';
   const sP=shuffle([...WORDS]),sW=shuffle([...WORDS]);
   const pE=document.getElementById('match-pics'),wE=document.getElementById('match-words');
   pE.innerHTML='';wE.innerHTML='';
-  sP.forEach(w=>{const c=document.createElement('div');c.className='m-pic';c.dataset.word=w.word;c.innerHTML=SVG[w.word];c.addEventListener('click',()=>handleMatchPic(c,w.word));pE.appendChild(c);});
+  sP.forEach(w=>{const c=document.createElement('div');c.className='m-pic';c.dataset.word=w.word;c.innerHTML=img(w.word);c.addEventListener('click',()=>handleMatchPic(c,w.word));pE.appendChild(c);});
   sW.forEach(w=>{const c=document.createElement('div');c.className='m-word';c.dataset.word=w.word;c.style.color=w.color;c.textContent=w.word;c.addEventListener('click',()=>handleMatchWord(c,w.word));wE.appendChild(c);});
 }
 function handleMatchPic(card,word){if(card.classList.contains('matched'))return;document.querySelectorAll('.m-pic.selected').forEach(c=>c.classList.remove('selected'));card.classList.add('selected');matchSel={word,el:card};}
@@ -734,14 +374,13 @@ function handleMatchWord(card,word){
   else{[matchSel.el,card].forEach(el=>{el.classList.add('ws');setTimeout(()=>el.classList.remove('ws'),450);});matchSel.el.classList.remove('selected');matchSel=null;showToast('Try again!');}
 }
 
-// ═══════════════════════════ SPELL ═══════════════════════════
 let spellIdx=0,spellInput=[];
 function initSpell(){spellIdx=0;spellInput=[];buildSpDots();renderSpell();}
 function buildSpDots(){document.getElementById('sp-dots').innerHTML=WORDS.map((_,i)=>`<div class="sp-dot${i===0?' cur':''}" id="snd-${i}"></div>`).join('');}
 function renderSpell(){
   spellInput=[];const w=WORDS[spellIdx];
   WORDS.forEach((_,i)=>{const d=document.getElementById(`snd-${i}`);if(d)d.className='sp-dot'+(i<spellIdx?' done':i===spellIdx?' cur':'');});
-  document.getElementById('sp-illo').innerHTML=SVG[w.word];
+  document.getElementById('sp-illo').innerHTML=img(w.word);
   document.getElementById('sp-lbl').textContent=w.word.split('').map(()=>'_').join('  ');
   document.getElementById('sp-fb').textContent='';
   document.getElementById('sp-boxes').innerHTML=w.word.split('').map((_,i)=>`<div class="sp-box${i===0?' ab':''}" id="spb-${i}"></div>`).join('');
@@ -768,138 +407,64 @@ function clearSpell(){
   document.getElementById('sp-fb').textContent='';
 }
 
-// ═══════════════════════════ FLASHCARD ═══════════════════════════
-let flashIdx=0,flashFlipped=false,flashMode='pic'; // 'pic' = picture first, 'word' = word first
-
-function initFlash(){
-  flashIdx=0;flashFlipped=false;
-  // reset toggle to pic mode visually
-  setFlashMode(flashMode,true);
-  buildFlDots();renderFlash();
-}
-
-function setFlashMode(mode, silent){
+let flashIdx=0,flashFlipped=false,flashMode='pic';
+function initFlash(){flashIdx=0;flashFlipped=false;setFlashMode(flashMode,true);buildFlDots();renderFlash();}
+function setFlashMode(mode,silent){
   flashMode=mode;
   document.getElementById('fl-btn-pic').classList.toggle('active-mode',mode==='pic');
   document.getElementById('fl-btn-word').classList.toggle('active-mode',mode==='word');
   if(!silent){flashIdx=0;flashFlipped=false;buildFlDots();renderFlash();}
 }
-
-function buildFlDots(){
-  document.getElementById('fl-dots').innerHTML=WORDS.map((_,i)=>
-    `<div class="fl-dot${i===0?' cur':''}" id="fld-${i}"></div>`
-  ).join('');
-}
-
+function buildFlDots(){document.getElementById('fl-dots').innerHTML=WORDS.map((_,i)=>`<div class="fl-dot${i===0?' cur':''}" id="fld-${i}"></div>`).join('');}
 function renderFlash(){
-  flashFlipped=false;
-  const w=WORDS[flashIdx];
+  flashFlipped=false;const w=WORDS[flashIdx];
   WORDS.forEach((_,i)=>{const d=document.getElementById(`fld-${i}`);if(d)d.className='fl-dot'+(i<flashIdx?' done':i===flashIdx?' cur':'');});
   document.getElementById('fc-inner').classList.remove('flipped');
   document.getElementById('fl-count').textContent=`${flashIdx+1} / ${WORDS.length}`;
-
-  const picHTML=`<div class="fc-pic"><div style="width:clamp(90px,18vw,155px);height:clamp(90px,18vw,155px);display:flex;align-items:center;justify-content:center">${SVG[w.word]}</div></div>
-    <div class="fc-tap">👆 Tap to flip</div>`;
-
-  const wordHTML=`<div class="fc-word" style="color:${w.color}">${w.word}</div>
-    <div class="fc-word-hint" style="color:${w.color}">${w.consonant.toUpperCase()} + ${FAMILY.toUpperCase()}</div>
-    <div class="fc-tap">👆 Tap to flip</div>`;
-
-  if(flashMode==='pic'){
-    // Front = picture, Back = word
-    document.getElementById('fc-front').innerHTML=picHTML;
-    document.getElementById('fc-back').innerHTML=wordHTML.replace('Tap to flip','Tap for next ▶');
-  } else {
-    // Front = word, Back = picture
-    document.getElementById('fc-front').innerHTML=wordHTML;
-    document.getElementById('fc-back').innerHTML=picHTML.replace('Tap to flip','Tap for next ▶');
-  }
+  const picHTML=`<div class="fc-pic">${img(w.word)}</div><div class="fc-tap">👆 Tap to flip</div>`;
+  const wordHTML=`<div class="fc-word" style="color:${w.color}">${w.word}</div><div class="fc-word-hint" style="color:${w.color}">${w.consonant.toUpperCase()} + ${FAMILY.toUpperCase()}</div><div class="fc-tap">👆 Tap to flip</div>`;
+  if(flashMode==='pic'){document.getElementById('fc-front').innerHTML=picHTML;document.getElementById('fc-back').innerHTML=wordHTML.replace('Tap to flip','Tap for next ▶');}
+  else{document.getElementById('fc-front').innerHTML=wordHTML;document.getElementById('fc-back').innerHTML=picHTML.replace('Tap to flip','Tap for next ▶');}
 }
-
-function flipCard(){
-  flashFlipped=!flashFlipped;
-  document.getElementById('fc-inner').classList.toggle('flipped',flashFlipped);
-  if(flashFlipped) spawnSparkle(window.innerWidth/2, window.innerHeight*.42);
-}
-
-function flashNext(){
-  if(flashIdx<WORDS.length-1){flashIdx++;renderFlash();}
-  else{bigConfetti();setTimeout(goNext,800);}
-}
+function flipCard(){flashFlipped=!flashFlipped;document.getElementById('fc-inner').classList.toggle('flipped',flashFlipped);if(flashFlipped)spawnSparkle(window.innerWidth/2,window.innerHeight*.42);}
+function flashNext(){if(flashIdx<WORDS.length-1){flashIdx++;renderFlash();}else{bigConfetti();setTimeout(goNext,800);}}
 function flashPrev(){if(flashIdx>0){flashIdx--;renderFlash();}}
 
-// ═══════════════════════════ LIGHTNING ROUND ═══════════════════════════
 let lrScore=0,lrQ=0,lrAnswered=false,lrQueue=[],lrTimerInterval=null,lrTimeLeft=0,lrTotalTime=7;
-function initLightning(){
-  lrScore=0;lrQ=0;lrAnswered=false;
-  lrQueue=shuffle([...WORDS]);
-  document.getElementById('lr-score').textContent='0';
-  document.getElementById('lr-feedback').textContent='';
-  nextLR();
-}
+function initLightning(){lrScore=0;lrQ=0;lrAnswered=false;lrQueue=shuffle([...WORDS]);document.getElementById('lr-score').textContent='0';document.getElementById('lr-feedback').textContent='';document.getElementById('lr-card').innerHTML=`<div class="lr-illo" id="lr-illo"></div><div class="lr-choices" id="lr-choices"></div>`;nextLR();}
 function nextLR(){
   if(lrQ>=WORDS.length){endLR();return;}
-  lrAnswered=false;
-  const w=lrQueue[lrQ];
+  lrAnswered=false;const w=lrQueue[lrQ];
   document.getElementById('lr-qnum').textContent=`Q ${lrQ+1}/${WORDS.length}`;
-  document.getElementById('lr-illo').innerHTML=SVG[w.word];
+  document.getElementById('lr-illo').innerHTML=img(w.word);
   document.getElementById('lr-feedback').textContent='';
-  // choices: correct + 2 wrong
   const wrongs=shuffle(WORDS.filter(x=>x.word!==w.word)).slice(0,2);
   const choices=shuffle([w,...wrongs]);
-  document.getElementById('lr-choices').innerHTML=choices.map(c=>`
-    <button class="lr-btn" onclick="answerLR('${c.word}','${w.word}')">${c.word}</button>
-  `).join('');
-  // timer
-  clearInterval(lrTimerInterval);
-  lrTimeLeft=lrTotalTime;
-  updateTimerBar();
-  lrTimerInterval=setInterval(()=>{
-    lrTimeLeft-=0.1;
-    if(lrTimeLeft<=0){clearInterval(lrTimerInterval);if(!lrAnswered)timeOutLR(w.word);}
-    else updateTimerBar();
-  },100);
+  document.getElementById('lr-choices').innerHTML=choices.map(c=>`<button class="lr-btn" onclick="answerLR('${c.word}','${w.word}')">${c.word}</button>`).join('');
+  clearInterval(lrTimerInterval);lrTimeLeft=lrTotalTime;updateTimerBar();
+  lrTimerInterval=setInterval(()=>{lrTimeLeft-=0.1;if(lrTimeLeft<=0){clearInterval(lrTimerInterval);if(!lrAnswered)timeOutLR(w.word);}else updateTimerBar();},100);
 }
-function updateTimerBar(){
-  const pct=Math.max(0,lrTimeLeft/lrTotalTime*100);
-  document.getElementById('lr-bar').style.width=pct+'%';
-}
+function updateTimerBar(){document.getElementById('lr-bar').style.width=Math.max(0,lrTimeLeft/lrTotalTime*100)+'%';}
 function answerLR(chosen,correct){
   if(lrAnswered)return;lrAnswered=true;clearInterval(lrTimerInterval);
-  const btns=document.querySelectorAll('.lr-btn');
-  btns.forEach(b=>{if(b.textContent===correct)b.classList.add('correct-lr');else if(b.textContent===chosen&&chosen!==correct)b.classList.add('wrong-lr');});
+  document.querySelectorAll('.lr-btn').forEach(b=>{if(b.textContent===correct)b.classList.add('correct-lr');else if(b.textContent===chosen&&chosen!==correct)b.classList.add('wrong-lr');});
   if(chosen===correct){lrScore++;document.getElementById('lr-score').textContent=lrScore;document.getElementById('lr-feedback').textContent='✅ Yes!';spawnSparkle(window.innerWidth/2,window.innerHeight*.6);}
   else{document.getElementById('lr-feedback').textContent='❌ That was: '+correct;}
   lrQ++;setTimeout(nextLR,1100);
 }
-function timeOutLR(correct){
-  lrAnswered=true;
-  document.getElementById('lr-feedback').textContent='⏰ Too slow! It was: '+correct;
-  document.querySelectorAll('.lr-btn').forEach(b=>{if(b.textContent===correct)b.classList.add('correct-lr');});
-  lrQ++;setTimeout(nextLR,1200);
-}
+function timeOutLR(correct){lrAnswered=true;document.getElementById('lr-feedback').textContent='⏰ Too slow! It was: '+correct;document.querySelectorAll('.lr-btn').forEach(b=>{if(b.textContent===correct)b.classList.add('correct-lr');});lrQ++;setTimeout(nextLR,1200);}
 function endLR(){
-  clearInterval(lrTimerInterval);
-  const pct=Math.round(lrScore/WORDS.length*100);
+  clearInterval(lrTimerInterval);const pct=Math.round(lrScore/WORDS.length*100);
   const msg=pct===100?'🏆 Perfect score!':pct>=67?'🌟 Great job!':'💪 Keep practising!';
-  document.getElementById('lr-card').innerHTML=`
-    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;width:100%">
-      <div style="font-size:clamp(2.5rem,8vw,5rem);font-weight:900;color:var(--text)">${lrScore} / ${WORDS.length}</div>
-      <div style="font-size:clamp(1rem,2.8vw,1.6rem);color:var(--muted)">${msg}</div>
-      <button class="lr-play-again" onclick="initLightning()" style="border:none;border-radius:50px;padding:12px 34px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.95rem,2.3vw,1.35rem);color:#fff;background:linear-gradient(135deg,#FF6B6B,#FF8E53);box-shadow:0 6px 0 #c9472e;cursor:pointer;">Play again ⚡</button>
-      <button onclick="goNext()" style="border:none;background:none;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;color:var(--muted);cursor:pointer;text-decoration:underline;margin-top:4px;">Finish →</button>
-    </div>`;
-  document.getElementById('lr-feedback').textContent='';
-  if(pct===100)bigConfetti();
+  document.getElementById('lr-card').innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;width:100%"><div style="font-size:clamp(2.5rem,8vw,5rem);font-weight:900;color:var(--text)">${lrScore} / ${WORDS.length}</div><div style="font-size:clamp(1rem,2.8vw,1.6rem);color:var(--muted)">${msg}</div><button class="lr-play-again" onclick="initLightning()">Play again ⚡</button><button onclick="goNext()" style="border:none;background:none;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;color:var(--muted);cursor:pointer;text-decoration:underline;margin-top:4px;">Finish →</button></div>`;
+  document.getElementById('lr-feedback').textContent='';if(pct===100)bigConfetti();
 }
 
-// ═══════════════════════════ EFFECTS ═══════════════════════════
 const SPARKS=['✨','⭐','🌟','💫','🎉'];
 function spawnSparkle(x,y){for(let i=0;i<4;i++){const el=document.createElement('div');el.className='sparkle';el.textContent=SPARKS[Math.floor(Math.random()*SPARKS.length)];el.style.cssText=`left:${x-18+(Math.random()-.5)*65}px;top:${y-18+(Math.random()-.5)*48}px;animation-delay:${i*.1}s`;document.body.appendChild(el);setTimeout(()=>el.remove(),1000);}}
 function bigConfetti(){const cols=['#E63946','#F5C800','#2BAE66','#1A78C2','#FB5607','#8338EC','#fff','#E91E8C'];for(let i=0;i<38;i++){const el=document.createElement('div');el.className='conf-p';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*28}vh;background:${cols[i%cols.length]};animation-delay:${Math.random()*.55}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),2100);}}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1400);}
 function shuffle(a){return a.sort(()=>Math.random()-.5);}
-
 showScreen('s-home');
 </script>
 </body>
