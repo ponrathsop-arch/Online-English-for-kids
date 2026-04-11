@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Irregular Verbs – V1 → V2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#FEF9F0;--text:#2C2C54;--muted:#999;
+  --p1:#FF6B6B;--p1d:#C94040;--p1l:#FFF0F0;
+  --p2:#4D96FF;--p2d:#1A5CBF;--p2l:#EEF4FF;
+  --p3:#6BCB77;--p3d:#2BAE60;--p3l:#EAFFF5;
+  --p4:#C77DFF;--p4d:#8338EC;--p4l:#F5EEFF;
+}
+html,body{height:100%;font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:800;background:var(--bg);touch-action:manipulation;overflow-x:hidden;}
+
+#balloon-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+
+#prog-wrap{position:fixed;top:0;left:0;width:100%;height:6px;background:rgba(0,0,0,.08);z-index:9999;}
+#prog-bar{height:100%;background:linear-gradient(90deg,var(--p1),var(--p2),var(--p3),var(--p4));transition:width .5s;}
+
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:28px 16px 40px;position:relative;z-index:1;}
+.screen.active{display:flex;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes ibounce{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-18px) rotate(3deg)}}
+@keyframes pulse{from{opacity:.4}to{opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+/* HOME */
+#s-home{background:linear-gradient(145deg,rgba(255,107,107,.82),rgba(255,159,67,.82),rgba(77,150,255,.82),rgba(199,125,255,.82));}
+.home-emoji{font-size:clamp(3.5rem,12vw,7rem);animation:ibounce 2s ease-in-out infinite alternate;}
+.home-title{font-size:clamp(2rem,6.5vw,4.5rem);color:#fff;text-shadow:0 5px 0 rgba(0,0,0,.15);text-align:center;line-height:1.15;margin-top:8px;}
+.home-sub{font-size:clamp(.95rem,2.5vw,1.5rem);color:rgba(255,255,255,.9);text-align:center;margin-top:6px;}
+.home-parts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:20px;}
+.part-btn{border:none;border-radius:20px;padding:13px 24px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.9rem,2.2vw,1.2rem);color:#fff;cursor:pointer;transition:transform .13s;text-align:center;line-height:1.45;}
+.part-btn:hover{transform:translateY(-4px);}
+.part-btn.p1{background:var(--p1);box-shadow:0 6px 0 var(--p1d);}
+.part-btn.p2{background:var(--p2);box-shadow:0 6px 0 var(--p2d);}
+.part-btn.p3{background:var(--p3);box-shadow:0 6px 0 var(--p3d);}
+.part-btn.p4{background:var(--p4);box-shadow:0 6px 0 var(--p4d);}
+.tap-hint{color:rgba(255,255,255,.85);font-size:clamp(.85rem,2vw,1.1rem);margin-top:16px;animation:pulse 1.5s ease-in-out infinite alternate;}
+
+/* PART INTRO */
+.part-intro{gap:14px;}
+.pi-icon{font-size:clamp(3rem,10vw,6rem);}
+.pi-title{font-size:clamp(2rem,6vw,4.5rem);color:#fff;text-shadow:0 5px 0 rgba(0,0,0,.13);text-align:center;}
+.pi-list{background:rgba(255,255,255,.22);border-radius:20px;padding:12px 22px;color:#fff;font-size:clamp(.88rem,2vw,1.15rem);text-align:center;line-height:1.9;border:2px solid rgba(255,255,255,.35);max-width:480px;}
+.pi-start{margin-top:8px;border:none;border-radius:50px;padding:13px 44px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1rem,2.8vw,1.5rem);background:#fff;cursor:pointer;box-shadow:0 7px 0 rgba(0,0,0,.12);transition:transform .14s;}
+.pi-start:hover{transform:translateY(-4px);}
+
+/* LEARN – FULL SCREEN */
+#s-learn{padding:0;background:transparent;}
+.learn-wrap{display:flex;flex-direction:column;width:100%;min-height:100vh;}
+.learn-top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 6px;flex-shrink:0;}
+.ls-badge{padding:5px 18px;border-radius:50px;color:#fff;font-size:.88rem;}
+.ls-counter{font-size:clamp(.85rem,2vw,1.05rem);color:var(--muted);}
+.learn-card{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 18px;gap:clamp(10px,2.2vw,18px);}
+.verb-row{display:flex;align-items:center;gap:clamp(10px,2.5vw,20px);flex-wrap:wrap;justify-content:center;}
+.v1-pill{padding:10px 26px;border-radius:50px;font-size:clamp(1.5rem,5vw,2.8rem);color:#888;background:#fff;border:3px solid #EEE;box-shadow:0 4px 0 rgba(0,0,0,.06);}
+.arrow-big{font-size:clamp(1.3rem,3.5vw,2.2rem);color:#CCC;}
+.v2-pill{padding:10px 28px;border-radius:50px;font-size:clamp(1.5rem,5vw,2.8rem);font-weight:900;color:#fff;}
+.meaning{font-size:clamp(.9rem,2vw,1.25rem);color:var(--muted);font-style:italic;text-align:center;}
+.examples-block{display:flex;flex-direction:column;gap:9px;width:100%;max-width:640px;}
+.ex-box{background:#fff;border-radius:16px;padding:clamp(10px,2vw,16px) clamp(12px,2.5vw,22px);box-shadow:0 4px 0 rgba(0,0,0,.07);border-left:5px solid #CCC;font-size:clamp(.98rem,2.3vw,1.4rem);color:var(--text);line-height:1.55;}
+.ex-label{font-size:.72rem;letter-spacing:1.5px;opacity:.5;margin-bottom:3px;text-transform:uppercase;}
+.v-hl{font-weight:900;padding:1px 8px;border-radius:7px;}
+.ls-dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:580px;padding:6px 16px 8px;flex-shrink:0;}
+.ls-dot{width:10px;height:10px;border-radius:50%;background:#DDD;transition:all .3s;flex-shrink:0;}
+.ls-dot.done{background:var(--p3);}
+.ls-dot.cur{transform:scale(1.5);}
+.learn-bottom{display:flex;gap:10px;padding:10px 18px 18px;justify-content:center;flex-shrink:0;}
+.cnav-btn{border:none;border-radius:50px;padding:10px 28px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.88rem,2vw,1.15rem);cursor:pointer;color:#fff;transition:transform .13s;}
+.cnav-btn:hover{transform:translateY(-3px);}
+.cnav-prev{background:#bbb;box-shadow:0 5px 0 #999;}
+
+/* MATCH */
+.match-screen{background:var(--bg);gap:10px;justify-content:flex-start;padding-top:22px;}
+.mx-title{font-size:clamp(1.3rem,4vw,2.2rem);color:var(--text);text-align:center;}
+.mx-sub{font-size:clamp(.82rem,1.8vw,1rem);color:var(--muted);text-align:center;margin-top:3px;}
+.mx-score{font-size:clamp(.85rem,1.8vw,1.05rem);color:var(--muted);text-align:center;margin-top:2px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:520px;margin-top:4px;}
+.match-col{display:flex;flex-direction:column;gap:7px;}
+.m-item{background:#fff;border-radius:14px;padding:clamp(9px,2vw,13px) clamp(8px,2vw,16px);box-shadow:0 4px 0 rgba(0,0,0,.08);border:3px solid transparent;cursor:pointer;font-size:clamp(1.05rem,2.8vw,1.6rem);color:var(--text);text-align:center;transition:all .15s;user-select:none;}
+.m-item:hover{transform:translateY(-2px);}
+.m-item.selected{box-shadow:0 0 0 5px rgba(77,150,255,.22),0 4px 0 var(--p2);border-color:var(--p2);}
+.m-item.matched{border-color:var(--p3);background:var(--p3l);pointer-events:none;opacity:.6;}
+.m-item.wrong{animation:shake .4s ease;border-color:var(--p1);}
+.mx-next-btn{border:none;border-radius:50px;padding:12px 36px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1rem,2.5vw,1.35rem);color:#fff;cursor:pointer;transition:transform .13s;display:none;margin-top:4px;}
+.mx-next-btn:hover{transform:translateY(-3px);}
+
+/* PRACTICE */
+.practice-screen{background:var(--bg);gap:9px;justify-content:flex-start;padding-top:20px;}
+.pr-title{font-size:clamp(1.3rem,3.8vw,2.1rem);color:var(--text);text-align:center;}
+.pr-sub{font-size:clamp(.82rem,1.8vw,.98rem);color:var(--muted);text-align:center;margin-top:2px;}
+.pr-dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:500px;}
+.pr-dot{width:11px;height:11px;border-radius:50%;background:#DDD;transition:all .3s;flex-shrink:0;}
+.pr-dot.done{background:var(--p3);}
+.pr-dot.cur{transform:scale(1.4);}
+.pr-card{background:#fff;border-radius:22px;padding:16px 20px;box-shadow:0 8px 0 rgba(0,0,0,.08);width:100%;max-width:460px;display:flex;flex-direction:column;align-items:center;gap:7px;}
+.pr-prompt{font-size:clamp(.82rem,1.8vw,1rem);color:var(--muted);}
+.pr-v1{font-size:clamp(2rem,7vw,3.8rem);color:var(--text);font-weight:900;}
+.pr-meaning{font-size:clamp(.8rem,1.7vw,1rem);color:var(--muted);font-style:italic;}
+.pr-typed{font-weight:900;min-width:110px;padding:6px 18px;border-radius:14px;border:3px solid #DDD;background:#F8F8F8;text-align:center;font-size:clamp(1.4rem,4vw,2.1rem);transition:all .2s;font-family:'Nunito',sans-serif;color:var(--text);margin-top:4px;}
+.pr-typed.ok{border-color:var(--p3);background:var(--p3l);color:var(--p3d);}
+.pr-typed.err{border-color:var(--p1);animation:shake .4s ease;color:var(--p1d);}
+.pr-feedback{font-size:clamp(.95rem,2.5vw,1.35rem);min-height:28px;text-align:center;}
+
+/* KEYBOARD */
+.osk{display:flex;flex-direction:column;gap:5px;width:100%;max-width:460px;padding:0 2px;}
+.osk-row{display:flex;gap:4px;justify-content:center;}
+.osk-key{border:none;border-radius:10px;height:clamp(40px,9.5vw,54px);font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.9rem,2.3vw,1.18rem);background:#fff;color:var(--text);box-shadow:0 4px 0 rgba(0,0,0,.13);cursor:pointer;transition:transform .1s,background .1s;flex:1;min-width:0;}
+.osk-key:hover{background:#F0F0F0;}
+.osk-key:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.13);}
+.osk-del{flex:1.6;background:#FFE4CC !important;color:#D45500 !important;box-shadow:0 4px 0 #C08050 !important;}
+.osk-space{flex:4;background:#EFEFEF !important;font-size:clamp(.72rem,1.6vw,.92rem) !important;}
+.osk-enter{flex:2.2;font-size:clamp(.78rem,1.7vw,.95rem) !important;}
+
+/* SECTION DONE */
+.sec-done{flex-direction:column;gap:14px;}
+.sd-icon{font-size:clamp(3.5rem,12vw,7rem);animation:ibounce 1.6s ease-in-out infinite alternate;}
+.sd-title{font-size:clamp(2rem,6vw,4.5rem);color:#fff;text-shadow:0 5px 0 rgba(0,0,0,.13);text-align:center;}
+.sd-stars{font-size:clamp(1.8rem,5vw,3.5rem);letter-spacing:4px;}
+.sd-btn{border:none;border-radius:50px;padding:12px 38px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.95rem,2.6vw,1.45rem);background:#fff;cursor:pointer;box-shadow:0 7px 0 rgba(0,0,0,.12);transition:transform .14s;margin-top:6px;}
+.sd-btn:hover{transform:translateY(-4px);}
+.sd-home{background:rgba(255,255,255,.18);color:#fff;border:3px solid rgba(255,255,255,.45);box-shadow:none;}
+
+/* FINALE */
+#s-finale{background:linear-gradient(145deg,rgba(255,107,107,.88),rgba(199,125,255,.88),rgba(77,150,255,.88));}
+.finale-icon{font-size:clamp(4rem,14vw,9rem);animation:ibounce 1.8s ease-in-out infinite alternate;}
+.finale-title{font-size:clamp(2.4rem,8vw,5.5rem);color:#fff;text-shadow:0 7px 0 rgba(0,0,0,.14);text-align:center;}
+.finale-sub{font-size:clamp(1rem,3vw,1.8rem);color:rgba(255,255,255,.9);text-align:center;}
+.finale-home{border:none;border-radius:50px;padding:14px 48px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1rem,2.8vw,1.5rem);background:#fff;color:var(--p1);cursor:pointer;box-shadow:0 8px 0 rgba(0,0,0,.12);transition:transform .14s;margin-top:12px;}
+.finale-home:hover{transform:translateY(-4px);}
+
+/* TAB BAR */
+#tab-bar{position:fixed;bottom:0;left:0;width:100%;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-top:2px solid #EDE8E0;z-index:9998;display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:none;padding:5px 4px 8px;gap:2px;}
+#tab-bar::-webkit-scrollbar{display:none;}
+.tab-group{display:flex;align-items:stretch;gap:2px;flex-shrink:0;}
+.tab-div{width:2px;background:#EDE8E0;border-radius:2px;margin:4px 2px;flex-shrink:0;}
+.tab{border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:5px 10px 3px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:900;white-space:nowrap;transition:background .15s,transform .12s;flex-shrink:0;}
+.tab:hover{background:rgba(0,0,0,.05);}
+.tab:active{transform:scale(.93);}
+.tab-icon{font-size:clamp(1rem,3vw,1.25rem);line-height:1;}
+.tab-label{font-size:clamp(.52rem,1.3vw,.68rem);color:#aaa;letter-spacing:.2px;}
+.tab.active-tab{background:rgba(0,0,0,.06);}
+.tab.active-tab .tab-label{color:var(--text);}
+.tab-pip{width:5px;height:5px;border-radius:50%;background:transparent;transition:background .2s;}
+.tab.active-tab .tab-pip{background:currentColor;}
+.screen{padding-bottom:72px;}
+#s-learn{padding-bottom:0;}
+.learn-wrap{padding-bottom:72px;}
+
+/* FX */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-20px);background:#FF6B6B;color:#fff;padding:10px 28px;border-radius:50px;font-size:1rem;z-index:99999;opacity:0;transition:all .25s;pointer-events:none;font-weight:900;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:1.8rem;animation:spFly .9s ease forwards;}
+@keyframes spFly{0%{opacity:1;transform:scale(.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-80px)}}
+.conf-p{position:fixed;width:11px;height:11px;border-radius:3px;opacity:0;pointer-events:none;z-index:9999;animation:confFall 1.4s ease forwards;}
+@keyframes confFall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+<canvas id="balloon-canvas"></canvas>
+<div id="prog-wrap"><div id="prog-bar" style="width:0%"></div></div>
+<div class="toast" id="toast"></div>
+
+<!-- HOME -->
+<div class="screen active" id="s-home">
+  <div class="home-emoji">📚</div>
+  <div class="home-title">Irregular Verbs<br>V1 → V2</div>
+  <div class="home-sub">64 verbs · 4 parts · Learn, Match &amp; Type!</div>
+  <div class="home-parts">
+    <button class="part-btn p1" onclick="startPart(0)">Part 1<br><small style="font-size:.72em;opacity:.88">drive · fall · do · choose…</small></button>
+    <button class="part-btn p2" onclick="startPart(1)">Part 2<br><small style="font-size:.72em;opacity:.88">fly · forget · get · give…</small></button>
+    <button class="part-btn p3" onclick="startPart(2)">Part 3<br><small style="font-size:.72em;opacity:.88">say · see · sell · send…</small></button>
+    <button class="part-btn p4" onclick="startPart(3)">Part 4<br><small style="font-size:.72em;opacity:.88">win · write · grow · shake…</small></button>
+  </div>
+  <div class="tap-hint">👆 Choose a part to begin!</div>
+</div>
+
+<!-- PART INTROS -->
+<div class="screen part-intro" id="s-pi0" style="background:linear-gradient(145deg,rgba(255,107,107,.88),rgba(255,159,67,.88));">
+  <div class="pi-icon">🚗</div><div class="pi-title">Part 1</div>
+  <div class="pi-list">drive · fall · do · choose · begin · bring<br>buy · wear · break · build · catch · come<br>drink · eat · feel · find</div>
+  <button class="pi-start" style="color:var(--p1)" onclick="startLearn(0)">Start Learning →</button>
+</div>
+<div class="screen part-intro" id="s-pi1" style="background:linear-gradient(145deg,rgba(77,150,255,.88),rgba(0,180,216,.88));">
+  <div class="pi-icon">✈️</div><div class="pi-title">Part 2</div>
+  <div class="pi-list">fly · forget · get · give · go · have<br>hear · keep · know · leave · lose · make<br>meet · pay · read · run</div>
+  <button class="pi-start" style="color:var(--p2)" onclick="startLearn(1)">Start Learning →</button>
+</div>
+<div class="screen part-intro" id="s-pi2" style="background:linear-gradient(145deg,rgba(107,203,119,.88),rgba(12,190,120,.88));">
+  <div class="pi-icon">🗣️</div><div class="pi-title">Part 3</div>
+  <div class="pi-list">say · see · sell · send · sing · sit<br>sleep · speak · spend · stand · swim · take<br>teach · tell · think · understand</div>
+  <button class="pi-start" style="color:var(--p3d)" onclick="startLearn(2)">Start Learning →</button>
+</div>
+<div class="screen part-intro" id="s-pi3" style="background:linear-gradient(145deg,rgba(199,125,255,.88),rgba(255,107,107,.88));">
+  <div class="pi-icon">🏆</div><div class="pi-title">Part 4</div>
+  <div class="pi-list">win · write · grow · shake · hold · hit<br>cut · bite · ride · wake · throw · ring<br>shine · light · rise · steal</div>
+  <button class="pi-start" style="color:var(--p4d)" onclick="startLearn(3)">Start Learning →</button>
+</div>
+
+<!-- LEARN FULL SCREEN -->
+<div class="screen" id="s-learn">
+  <div class="learn-wrap">
+    <div class="learn-top">
+      <div class="ls-badge" id="ls-badge">Part 1</div>
+      <div class="ls-counter" id="ls-counter">1 / 16</div>
+    </div>
+    <div class="learn-card" id="ls-card"></div>
+    <div class="ls-dots" id="ls-dots"></div>
+    <div class="learn-bottom">
+      <button class="cnav-btn cnav-prev" id="ls-prev" onclick="lsNav(-1)">◀ Back</button>
+      <button class="cnav-btn" id="ls-next" onclick="lsNav(1)">Next ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- MATCH -->
+<div class="screen match-screen" id="s-match">
+  <div class="mx-title">🎯 Match V1 → V2!</div>
+  <div class="mx-sub">Tap a base form on the left, then its past form on the right.</div>
+  <div class="mx-score" id="mx-score">0 / 8 matched</div>
+  <div class="match-grid">
+    <div class="match-col" id="mx-left"></div>
+    <div class="match-col" id="mx-right"></div>
+  </div>
+  <button class="mx-next-btn" id="mx-next" onclick="startPractice(curPart)">✏️ Now Type Them! →</button>
+</div>
+
+<!-- PRACTICE -->
+<div class="screen practice-screen" id="s-practice">
+  <div class="pr-title">⌨️ Type the Past Form!</div>
+  <div class="pr-sub" id="pr-sub">Complete all 16 to continue!</div>
+  <div class="pr-dots" id="pr-dots"></div>
+  <div class="pr-card">
+    <div class="pr-prompt">What is the past form of…</div>
+    <div class="pr-v1" id="pr-v1">begin</div>
+    <div class="pr-meaning" id="pr-meaning">to start</div>
+    <div class="pr-typed" id="pr-typed">_</div>
+    <div class="pr-feedback" id="pr-feedback"></div>
+  </div>
+  <div class="osk" id="osk">
+    <div class="osk-row" id="osk-r1"></div>
+    <div class="osk-row" id="osk-r2"></div>
+    <div class="osk-row" id="osk-r3"></div>
+    <div class="osk-row" id="osk-r4"></div>
+  </div>
+</div>
+
+<!-- SECTION DONES -->
+<div class="screen sec-done" id="s-done0" style="background:linear-gradient(145deg,rgba(255,107,107,.9),rgba(255,159,67,.9));">
+  <div class="sd-icon">🎉</div><div class="sd-title">Part 1 Done!</div>
+  <div class="sd-stars">⭐⭐⭐⭐⭐</div>
+  <button class="sd-btn" style="color:var(--p1)" onclick="startPart(1)">Part 2 →</button>
+  <button class="sd-btn sd-home" onclick="goHome()">🏠 Home</button>
+</div>
+<div class="screen sec-done" id="s-done1" style="background:linear-gradient(145deg,rgba(77,150,255,.9),rgba(0,180,216,.9));">
+  <div class="sd-icon">🎊</div><div class="sd-title">Part 2 Done!</div>
+  <div class="sd-stars">⭐⭐⭐⭐⭐</div>
+  <button class="sd-btn" style="color:var(--p2)" onclick="startPart(2)">Part 3 →</button>
+  <button class="sd-btn sd-home" onclick="goHome()">🏠 Home</button>
+</div>
+<div class="screen sec-done" id="s-done2" style="background:linear-gradient(145deg,rgba(107,203,119,.9),rgba(12,190,120,.9));">
+  <div class="sd-icon">🌟</div><div class="sd-title">Part 3 Done!</div>
+  <div class="sd-stars">⭐⭐⭐⭐⭐</div>
+  <button class="sd-btn" style="color:var(--p3d)" onclick="startPart(3)">Part 4 →</button>
+  <button class="sd-btn sd-home" onclick="goHome()">🏠 Home</button>
+</div>
+
+<!-- FINALE -->
+<div class="screen" id="s-finale">
+  <div class="finale-icon">🏆</div>
+  <div class="finale-title">You did it!</div>
+  <div class="finale-sub">All 64 irregular verbs mastered! 🎉</div>
+  <div style="font-size:clamp(2rem,6vw,4rem);margin-top:8px">⭐⭐⭐⭐⭐⭐⭐⭐</div>
+  <button class="finale-home" onclick="goHome()">🏠 Home</button>
+</div>
+
+<!-- TAB BAR -->
+<div id="tab-bar">
+  <button class="tab" id="tab-home" onclick="goHome()" style="color:#888"><div class="tab-icon">🏠</div><div class="tab-label">Home</div><div class="tab-pip"></div></button>
+  <div class="tab-div"></div>
+  <div class="tab-group">
+    <button class="tab" id="tab-l0" onclick="startLearn(0)" style="color:var(--p1)"><div class="tab-icon">📖</div><div class="tab-label">P1 Learn</div><div class="tab-pip"></div></button>
+    <button class="tab" id="tab-m0" onclick="startMatch(0)" style="color:var(--p1)"><div class="tab-icon">🎯</div><div class="tab-label">P1 Match</div><div class="tab-pip"></div></button>
+    <button class="tab" id="tab-p0" onclick="startPractice(0)" style="color:var(--p1)"><div class="tab-icon">✏️</div><div class="tab-label">P1 Type</div><div class="tab-pip"></div></button>
+  </div>
+  <div class="tab-div"></div>
+  <div class="tab-group">
+    <button class="tab" id="tab-l1" onclick="startLearn(1)" style="color:var(--p2)"><div class="tab-icon">📖</div><div class="tab-label">P2 Learn</div><div class="tab-pip"></div></button>
+    <button class="tab" id="tab-m1" onclick="startMatch(1)" style="color:var(--p2)"><div class="tab-icon">🎯</div><div class="tab-label">P2 Match</div><div class="tab-pip"></div></button>
+    <button class="tab" id="tab-p1" onclick="startPractice(1)" style="color:var(--p2)"><div class="tab-icon">✏️</div><div class="tab-label">P2 Type</div><div class="tab-pip"></div></button>
+  </div>
+  <div class="tab-div"></div>
+  <div class="tab-group">
+    <button class="tab" id="tab-l2" onclick="startLearn(2)" style="color:var(--p3)"><div class="tab-icon">📖</div><div class="tab-label">P3 Learn</div><div class="tab-pip"></div></button>
+    <button class="tab" id="tab-m2" onclick="startMatch(2)" style="color:var(--p3)"><div class="tab-icon">🎯</div><div class="tab-label">P3 Match</div><div class="tab-pip"></div></button>
+    <button class="tab" id="tab-p2" onclick="startPractice(2)" style="color:var(--p3)"><div class="tab-icon">✏️</div><div class="tab-label">P3 Type</div><div class="tab-pip"></div></button>
+  </div>
+  <div class="tab-div"></div>
+  <div class="tab-group">
+    <button class="tab" id="tab-l3" onclick="startLearn(3)" style="color:var(--p4)"><div class="tab-icon">📖</div><div class="tab-label">P4 Learn</div><div class="tab-pip"></div></button>
+    <button class="tab" id="tab-m3" onclick="startMatch(3)" style="color:var(--p4)"><div class="tab-icon">🎯</div><div class="tab-label">P4 Match</div><div class="tab-pip"></div></button>
+    <button class="tab" id="tab-p3" onclick="startPractice(3)" style="color:var(--p4)"><div class="tab-icon">✏️</div><div class="tab-label">P4 Type</div><div class="tab-pip"></div></button>
+  </div>
+</div>
+
+<script>
+// ══ DATA ══
+const PARTS=[
+  {name:'Part 1',col:'var(--p1)',dark:'var(--p1d)',light:'var(--p1l)',tc:'#C94040',
+   verbs:[
+    {v1:'drive',  v2:'drove',   m:'to control a vehicle',
+     e1:'They <A>drive</A> to work together.',           e2:'We <B>drove</B> to the beach last Sunday.'},
+    {v1:'fall',   v2:'fell',    m:'to drop down suddenly',
+     e1:'Leaves <A>fall</A> in autumn.',                 e2:'The boy <B>fell</B> off his bike yesterday.'},
+    {v1:'do',     v2:'did',     m:'to perform an action',
+     e1:'I <A>do</A> my exercise every day.',            e2:'I <B>did</B> all my chores three hours ago.'},
+    {v1:'choose', v2:'chose',   m:'to pick or select',
+     e1:'Please <A>choose</A> a colour.',                e2:'I <B>chose</B> the red dress for the party.'},
+    {v1:'begin',  v2:'began',   m:'to start',
+     e1:'I usually <A>begin</A> my work at 8:00.',       e2:'I <B>began</B> this book last night.'},
+    {v1:'bring',  v2:'brought', m:'to carry something here',
+     e1:'Please <A>bring</A> your books to class.',      e2:'She <B>brought</B> cake for everyone yesterday.'},
+    {v1:'buy',    v2:'bought',  m:'to get by paying money',
+     e1:'I <A>buy</A> fresh bread every morning.',       e2:'I <B>bought</B> a new phone last week.'},
+    {v1:'wear',   v2:'wore',    m:'to have clothes on your body',
+     e1:'I <A>wear</A> a uniform to school.',            e2:'He <B>wore</B> his best suit to the wedding.'},
+    {v1:'break',  v2:'broke',   m:'to damage into pieces',
+     e1:"Be careful, don't <A>break</A> the glass!",    e2:'He <B>broke</B> his leg two months ago.'},
+    {v1:'build',  v2:'built',   m:'to construct something',
+     e1:'They <A>build</A> new houses every year.',      e2:'My grandpa <B>built</B> this house in 1990.'},
+    {v1:'catch',  v2:'caught',  m:'to grab something moving',
+     e1:'Our cat likes to <A>catch</A> mice.',           e2:'The police <B>caught</B> the thief yesterday.'},
+    {v1:'come',   v2:'came',    m:'to move toward here',
+     e1:'My friends <A>come</A> here often.',            e2:'My brother <B>came</B> home very late last night.'},
+    {v1:'drink',  v2:'drank',   m:'to swallow liquid',
+     e1:'I <A>drink</A> tea every morning.',             e2:'He <B>drank</B> a cold soda after the game.'},
+    {v1:'eat',    v2:'ate',     m:'to put food in your mouth',
+     e1:'I always <A>eat</A> breakfast.',                e2:'We <B>ate</B> a delicious dinner last night.'},
+    {v1:'feel',   v2:'felt',    m:'to experience an emotion',
+     e1:'I <A>feel</A> happy today!',                    e2:'I <B>felt</B> very tired after the long walk.'},
+    {v1:'find',   v2:'found',   m:'to discover something',
+     e1:'Can you <A>find</A> my keys?',                  e2:'She <B>found</B> a lost puppy in the park.'},
+  ]},
+  {name:'Part 2',col:'var(--p2)',dark:'var(--p2d)',light:'var(--p2l)',tc:'#1A5CBF',
+   verbs:[
+    {v1:'fly',    v2:'flew',   m:'to move through the air',
+     e1:'Pilots <A>fly</A> planes.',                     e2:'The bird <B>flew</B> away when I opened the door.'},
+    {v1:'forget', v2:'forgot', m:'to not remember',
+     e1:"Don't <A>forget</A> your umbrella!",            e2:'I <B>forgot</B> my password this morning.'},
+    {v1:'get',    v2:'got',    m:'to receive something',
+     e1:'I <A>get</A> mail every day.',                  e2:'She <B>got</B> a beautiful gift for her birthday.'},
+    {v1:'give',   v2:'gave',   m:'to hand something to someone',
+     e1:'Please <A>give</A> me a pen.',                  e2:'My teacher <B>gave</B> us a lot of homework.'},
+    {v1:'go',     v2:'went',   m:'to move to a place',
+     e1:'I <A>go</A> to the gym on Mondays.',            e2:'We <B>went</B> to the cinema last night.'},
+    {v1:'have',   v2:'had',    m:'to own or experience',
+     e1:'I <A>have</A> a cat.',                          e2:'We <B>had</B> a big party for my birthday.'},
+    {v1:'hear',   v2:'heard',  m:'to notice sound with ears',
+     e1:'Do you <A>hear</A> that music?',                e2:'I <B>heard</B> a loud noise outside last night.'},
+    {v1:'keep',   v2:'kept',   m:'to hold or maintain',
+     e1:'I <A>keep</A> my room clean.',                  e2:'He <B>kept</B> the secret for a long time.'},
+    {v1:'know',   v2:'knew',   m:'to have information',
+     e1:'I <A>know</A> the answer.',                     e2:'I <B>knew</B> him when we were children.'},
+    {v1:'leave',  v2:'left',   m:'to go away from a place',
+     e1:'I <A>leave</A> for school at 7:00.',            e2:'The train <B>left</B> the station five minutes ago.'},
+    {v1:'lose',   v2:'lost',   m:'to not be able to find',
+     e1:"Don't <A>lose</A> your money!",                 e2:'I <B>lost</B> my keys at the park yesterday.'},
+    {v1:'make',   v2:'made',   m:'to create something',
+     e1:'I <A>make</A> my bed every day.',               e2:'My mom <B>made</B> pizza for dinner.'},
+    {v1:'meet',   v2:'met',    m:'to see someone for the first time',
+     e1:'I <A>meet</A> my friends on Saturdays.',        e2:'I <B>met</B> my neighbor two years ago.'},
+    {v1:'pay',    v2:'paid',   m:'to give money for something',
+     e1:'I <A>pay</A> my bills online.',                 e2:'He <B>paid</B> for the coffee this morning.'},
+    {v1:'read',   v2:'read',   m:'to look at and understand words',
+     e1:'I <A>read</A> the news every day.',             e2:'I <B>read</B> a great book last month.'},
+    {v1:'run',    v2:'ran',    m:'to move fast on your feet',
+     e1:'I <A>run</A> in the park often.',               e2:'The cat <B>ran</B> under the bed a moment ago.'},
+  ]},
+  {name:'Part 3',col:'var(--p3)',dark:'var(--p3d)',light:'var(--p3l)',tc:'#2BAE60',
+   verbs:[
+    {v1:'say',        v2:'said',       m:'to speak words',
+     e1:'What do you <A>say</A>?',                             e2:'He <B>said</B> "Goodbye" and walked away.'},
+    {v1:'see',        v2:'saw',        m:'to notice with your eyes',
+     e1:'I <A>see</A> the mountains from here.',               e2:'We <B>saw</B> a famous actor at the mall.'},
+    {v1:'sell',       v2:'sold',       m:'to give in exchange for money',
+     e1:'They <A>sell</A> fruit at the market.',               e2:'He <B>sold</B> his old car last week.'},
+    {v1:'send',       v2:'sent',       m:'to cause something to go to someone',
+     e1:'I <A>send</A> many emails.',                          e2:'My sister <B>sent</B> me a postcard from Paris.'},
+    {v1:'sing',       v2:'sang',       m:'to make music with your voice',
+     e1:'She likes to <A>sing</A> pop songs.',                 e2:'They <B>sang</B> "Happy Birthday" to me.'},
+    {v1:'sit',        v2:'sat',        m:'to rest on a seat',
+     e1:'Please <A>sit</A> down.',                             e2:'We <B>sat</B> on the bench for an hour.'},
+    {v1:'sleep',      v2:'slept',      m:'to rest with eyes closed',
+     e1:'I <A>sleep</A> eight hours a night.',                 e2:'The baby <B>slept</B> all afternoon.'},
+    {v1:'speak',      v2:'spoke',      m:'to talk or say words',
+     e1:'I <A>speak</A> English and Spanish.',                 e2:'She <B>spoke</B> to me about the test.'},
+    {v1:'spend',      v2:'spent',      m:'to use time or money',
+     e1:'I <A>spend</A> time with my family.',                 e2:'I <B>spent</B> twenty dollars on this book.'},
+    {v1:'stand',      v2:'stood',      m:'to be upright on your feet',
+     e1:'I usually <A>stand</A> on the bus.',                  e2:'We <B>stood</B> in the rain for ten minutes.'},
+    {v1:'swim',       v2:'swam',       m:'to move through water',
+     e1:'I <A>swim</A> in the lake during summer.',            e2:'He <B>swam</B> across the river yesterday.'},
+    {v1:'take',       v2:'took',       m:'to carry something with you',
+     e1:'I <A>take</A> the bus to school.',                    e2:'I <B>took</B> some photos of the sunset.'},
+    {v1:'teach',      v2:'taught',     m:'to help someone learn',
+     e1:'I <A>teach</A> English to students.',                 e2:'My father <B>taught</B> me how to drive.'},
+    {v1:'tell',       v2:'told',       m:'to share information with someone',
+     e1:"Don't <A>tell</A> anyone!",                           e2:'My friend <B>told</B> me a secret yesterday.'},
+    {v1:'think',      v2:'thought',    m:'to use your mind',
+     e1:'I <A>think</A> it will rain.',                        e2:'I <B>thought</B> about your idea all day.'},
+    {v1:'understand', v2:'understood', m:'to know the meaning of something',
+     e1:'I <A>understand</A> the lesson now.',                 e2:'I <B>understood</B> the movie perfectly.'},
+  ]},
+  {name:'Part 4',col:'var(--p4)',dark:'var(--p4d)',light:'var(--p4l)',tc:'#8338EC',
+   verbs:[
+    {v1:'win',   v2:'won',   m:'to be first or best',
+     e1:'I hope we <A>win</A> the game.',               e2:'Our team <B>won</B> the trophy last year.'},
+    {v1:'write', v2:'wrote', m:'to put words on paper',
+     e1:'I <A>write</A> in my diary daily.',             e2:'She <B>wrote</B> a poem for her mother.'},
+    {v1:'grow',  v2:'grew',  m:'to get bigger',
+     e1:'Flowers <A>grow</A> in the spring.',            e2:'That tree <B>grew</B> very fast this year.'},
+    {v1:'shake', v2:'shook', m:'to move quickly back and forth',
+     e1:'<A>Shake</A> the bottle before opening.',       e2:'We <B>shook</B> hands when we met.'},
+    {v1:'hold',  v2:'held',  m:'to keep something in your hand',
+     e1:'Can you <A>hold</A> my bag?',                   e2:'He <B>held</B> the umbrella for me.'},
+    {v1:'hit',   v2:'hit',   m:'to strike something',
+     e1:"Don't <A>hit</A> the table.",                   e2:'The ball <B>hit</B> the window yesterday.'},
+    {v1:'cut',   v2:'cut',   m:'to divide with a sharp tool',
+     e1:'I <A>cut</A> the vegetables for soup.',         e2:'I <B>cut</B> my finger while cooking.'},
+    {v1:'bite',  v2:'bit',   m:'to use teeth on something',
+     e1:'Does your dog <A>bite</A>?',                    e2:'A bug <B>bit</B> my leg last night.'},
+    {v1:'ride',  v2:'rode',  m:'to travel on something',
+     e1:'I <A>ride</A> my horse on weekends.',           e2:'We <B>rode</B> our bikes to the lake.'},
+    {v1:'wake',  v2:'woke',  m:'to stop sleeping',
+     e1:'I <A>wake</A> up at 7:00 every day.',           e2:'I <B>woke</B> up late this morning.'},
+    {v1:'throw', v2:'threw', m:'to send something through the air',
+     e1:'<A>Throw</A> the trash in the bin.',            e2:'He <B>threw</B> the ball to me.'},
+    {v1:'ring',  v2:'rang',  m:'to make a bell sound',
+     e1:'The bells <A>ring</A> at noon.',                e2:'The phone <B>rang</B> three times.'},
+    {v1:'shine', v2:'shone', m:'to give out bright light',
+     e1:'The stars <A>shine</A> at night.',              e2:'The sun <B>shone</B> all day yesterday.'},
+    {v1:'light', v2:'lit',   m:'to make something start burning',
+     e1:"I <A>light</A> a candle when it's dark.",       e2:'He <B>lit</B> the fire an hour ago.'},
+    {v1:'rise',  v2:'rose',  m:'to go upward',
+     e1:'Prices <A>rise</A> every year.',                e2:'The sun <B>rose</B> at 6:00 AM today.'},
+    {v1:'steal', v2:'stole', m:"to take something that isn't yours",
+     e1:'Thieves <A>steal</A> money.',                   e2:'Someone <B>stole</B> my lunch yesterday!'},
+  ]},
+];
+
+// STATE
+let curPart=0,lsIdx=0,prIdx=0,prTyped='';
+let prDone=[false,false,false,false];
+let mxSel=null,mxDone=0;
+
+// BALLOONS
+const canvas=document.getElementById('balloon-canvas');
+const ctx=canvas.getContext('2d');
+const BCOLS=['#FF6B6B','#FF9F43','#FFD93D','#6BCB77','#4D96FF','#C77DFF','#FF85A1','#70E0FF','#98F5A0'];
+const bals=[];
+function initBals(){
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  bals.length=0;
+  const n=Math.max(8,Math.floor(window.innerWidth/75));
+  for(let i=0;i<n;i++) bals.push(mkBal(true));
+}
+function mkBal(init){
+  const r=16+Math.random()*20;
+  return{x:Math.random()*canvas.width,y:init?Math.random()*canvas.height:canvas.height+r*3,
+    r,vy:-(0.22+Math.random()*0.4),vx:(Math.random()-.5)*0.28,
+    col:BCOLS[Math.floor(Math.random()*BCOLS.length)],
+    sw:Math.random()*Math.PI*2,ss:0.007+Math.random()*0.008,
+    a:0.15+Math.random()*0.18};
+}
+function drawBal(b){
+  ctx.save();ctx.globalAlpha=b.a;
+  ctx.beginPath();ctx.ellipse(b.x,b.y,b.r,b.r*1.22,0,0,Math.PI*2);
+  ctx.fillStyle=b.col;ctx.fill();
+  ctx.beginPath();ctx.ellipse(b.x-b.r*.27,b.y-b.r*.3,b.r*.2,b.r*.3,-.5,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,.32)';ctx.fill();
+  ctx.beginPath();ctx.moveTo(b.x,b.y+b.r*1.22);
+  ctx.quadraticCurveTo(b.x+7,b.y+b.r*2.2,b.x+2,b.y+b.r*3.4);
+  ctx.strokeStyle=b.col;ctx.lineWidth=1.1;ctx.globalAlpha=b.a*.65;ctx.stroke();
+  ctx.restore();
+}
+function animBals(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  bals.forEach((b,i)=>{
+    b.sw+=b.ss;b.x+=b.vx+Math.sin(b.sw)*0.22;b.y+=b.vy;
+    drawBal(b);
+    if(b.y<-b.r*5) bals[i]=mkBal(false);
+  });
+  requestAnimationFrame(animBals);
+}
+window.addEventListener('resize',initBals);
+initBals();animBals();
+
+// SCREENS
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);updateProg();
+  // tab highlight
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active-tab'));
+  const map={'s-home':'tab-home','s-learn':'tab-l'+curPart,'s-match':'tab-m'+curPart,'s-practice':'tab-p'+curPart};
+  const tid=map[id]||(id.startsWith('s-pi')?'tab-l'+id.slice(-1):null);
+  if(tid)document.getElementById(tid)?.classList.add('active-tab');
+}
+function updateProg(){document.getElementById('prog-bar').style.width=(prDone.filter(Boolean).length/4*100)+'%';}
+function goHome(){show('s-home');}
+function startPart(p){curPart=p;show('s-pi'+p);}
+
+// LEARN
+function startLearn(p){curPart=p;lsIdx=0;renderLearn();show('s-learn');}
+function fmtEx(txt,p){
+  const col=PARTS[p].tc, bg=PARTS[p].light;
+  return txt
+    .replace('<A>',`<span class="v-hl" style="background:#EBEBEB;color:#555">`).replace('</A>','</span>')
+    .replace('<B>',`<span class="v-hl" style="background:${bg};color:${col}">`).replace('</B>','</span>');
+}
+function renderLearn(){
+  const p=PARTS[curPart],v=p.verbs[lsIdx];
+  const b=document.getElementById('ls-badge');
+  b.textContent=p.name;b.style.background=p.col;b.style.color='#fff';
+  document.getElementById('ls-counter').textContent=`${lsIdx+1} / ${p.verbs.length}`;
+  document.getElementById('ls-card').innerHTML=`
+    <div class="verb-row">
+      <span class="v1-pill">${v.v1}</span>
+      <span class="arrow-big">→</span>
+      <span class="v2-pill" style="background:${p.col};box-shadow:0 6px 0 ${p.dark}">${v.v2}</span>
+    </div>
+    <div class="meaning">${v.m}</div>
+    <div class="examples-block">
+      <div class="ex-box" style="border-color:#CCC;background:#FAFAFA">
+        <div class="ex-label">Present (V1)</div>${fmtEx(v.e1,curPart)}
+      </div>
+      <div class="ex-box" style="border-color:${p.col};background:${p.light}">
+        <div class="ex-label">Past (V2)</div>${fmtEx(v.e2,curPart)}
+      </div>
+    </div>`;
+  const dots=document.getElementById('ls-dots');
+  dots.innerHTML=p.verbs.map((_,i)=>`<div class="ls-dot${i===lsIdx?' cur':i<lsIdx?' done':''}"></div>`).join('');
+  dots.querySelectorAll('.ls-dot.cur').forEach(d=>d.style.background=p.col);
+  const nb=document.getElementById('ls-next');
+  nb.style.background=p.col;nb.style.boxShadow=`0 5px 0 ${p.dark}`;
+  nb.textContent=lsIdx===p.verbs.length-1?'Match Game 🎯':'Next ▶';
+  document.getElementById('ls-prev').style.display=lsIdx===0?'none':'';
+}
+function lsNav(d){
+  if(d===1&&lsIdx===PARTS[curPart].verbs.length-1){startMatch(curPart);return;}
+  lsIdx=Math.max(0,Math.min(PARTS[curPart].verbs.length-1,lsIdx+d));renderLearn();
+}
+
+// MATCH
+function startMatch(p){
+  curPart=p;mxSel=null;mxDone=0;
+  const part=PARTS[p];
+  const pick=shuffle([...part.verbs]).slice(0,8);
+  const lft=shuffle([...pick]),rgt=shuffle([...pick]);
+  document.getElementById('mx-score').textContent='0 / 8 matched';
+  const nx=document.getElementById('mx-next');
+  nx.style.display='none';nx.style.background=part.col;nx.style.boxShadow=`0 5px 0 ${part.dark}`;
+  const lEl=document.getElementById('mx-left'),rEl=document.getElementById('mx-right');
+  lEl.innerHTML='';rEl.innerHTML='';
+  lft.forEach(v=>{
+    const d=document.createElement('div');
+    d.className='m-item';d.textContent=v.v1;d.dataset.key=v.v1;
+    d.addEventListener('click',()=>mxTap(d,'L',v.v1));lEl.appendChild(d);
+  });
+  rgt.forEach(v=>{
+    const d=document.createElement('div');
+    d.className='m-item';d.textContent=v.v2;d.dataset.key=v.v1;
+    d.addEventListener('click',()=>mxTap(d,'R',v.v1));rEl.appendChild(d);
+  });
+  show('s-match');
+}
+function mxTap(el,side,key){
+  if(el.classList.contains('matched'))return;
+  if(!mxSel){
+    if(side!=='L'){showToast('Tap a base form (left) first!');return;}
+    mxSel={el,key};el.classList.add('selected');return;
+  }
+  if(side==='L'){mxSel.el.classList.remove('selected');mxSel={el,key};el.classList.add('selected');return;}
+  if(mxSel.key===key){
+    const c=PARTS[curPart].col;
+    [mxSel.el,el].forEach(e=>{e.classList.remove('selected');e.classList.add('matched');e.style.borderColor=c;});
+    mxSel=null;mxDone++;
+    document.getElementById('mx-score').textContent=`${mxDone} / 8 matched`;
+    spawnSparkle(el.getBoundingClientRect().left+el.offsetWidth/2,el.getBoundingClientRect().top+20);
+    if(mxDone===8){bigConfetti();setTimeout(()=>{document.getElementById('mx-next').style.display='block';},400);}
+  } else {
+    [mxSel.el,el].forEach(e=>{e.classList.add('wrong');setTimeout(()=>e.classList.remove('wrong'),450);});
+    mxSel.el.classList.remove('selected');mxSel=null;showToast('Try again! ❌');
+  }
+}
+
+// PRACTICE
+function startPractice(p){curPart=p;prIdx=0;prTyped='';renderPractice();show('s-practice');}
+function renderPractice(){
+  const p=PARTS[curPart],v=p.verbs[prIdx];
+  document.getElementById('pr-sub').textContent=`${p.name} — get all 16 correct to continue!`;
+  const dots=document.getElementById('pr-dots');
+  dots.innerHTML=p.verbs.map((_,i)=>`<div class="pr-dot${i===prIdx?' cur':i<prIdx?' done':''}"></div>`).join('');
+  dots.querySelectorAll('.pr-dot.cur').forEach(d=>d.style.background=p.col);
+  document.getElementById('pr-v1').textContent=v.v1;
+  document.getElementById('pr-meaning').textContent=v.m;
+  prTyped='';updateTyped();document.getElementById('pr-feedback').textContent='';
+  buildOSK(p.col,p.dark);
+}
+function updateTyped(){const el=document.getElementById('pr-typed');el.textContent=prTyped||'_';el.className='pr-typed';}
+
+function buildOSK(col,dark){
+  const rows=[
+    ['q','w','e','r','t','y','u','i','o','p'],
+    ['a','s','d','f','g','h','j','k','l'],
+    ['z','x','c','v','b','n','m'],
+    ['⌫','SPACE','✓']
+  ];
+  rows.forEach((row,ri)=>{
+    const el=document.getElementById('osk-r'+(ri+1));el.innerHTML='';
+    row.forEach(k=>{
+      const btn=document.createElement('button');btn.className='osk-key';
+      if(k==='⌫'){btn.className+=' osk-del';btn.textContent='⌫';}
+      else if(k==='SPACE'){btn.className+=' osk-space';btn.textContent='SPACE';}
+      else if(k==='✓'){btn.className+=' osk-enter';btn.textContent='✓ Enter';
+        btn.style.background=col;btn.style.boxShadow=`0 4px 0 ${dark}`;btn.style.color='#fff';}
+      else{btn.textContent=k;}
+      btn.addEventListener('pointerdown',e=>{e.preventDefault();oskTap(k);});
+      el.appendChild(btn);
+    });
+  });
+}
+function oskTap(k){
+  if(k==='⌫'){prTyped=prTyped.slice(0,-1);updateTyped();}
+  else if(k==='SPACE'){prTyped+=' ';updateTyped();}
+  else if(k==='✓'){checkAnswer();}
+  else{prTyped+=k;updateTyped();}
+}
+function checkAnswer(){
+  const v=PARTS[curPart].verbs[prIdx];
+  const el=document.getElementById('pr-typed');
+  if(prTyped.toLowerCase().trim()===v.v2.toLowerCase()){
+    el.classList.add('ok');
+    document.getElementById('pr-feedback').innerHTML=`<span style="color:var(--p3d)">✅ ${v.v2}! Well done!</span>`;
+    spawnSparkle(window.innerWidth/2,window.innerHeight*.44);bigConfetti();
+    setTimeout(()=>{
+      prIdx++;
+      if(prIdx>=PARTS[curPart].verbs.length){
+        prDone[curPart]=true;updateProg();bigConfetti();
+        setTimeout(()=>show(curPart===3?'s-finale':'s-done'+curPart),700);
+      } else renderPractice();
+    },950);
+  } else {
+    el.classList.add('err');
+    document.getElementById('pr-feedback').innerHTML=`<span style="color:var(--p1d)">❌ Try again!</span>`;
+    setTimeout(()=>{el.classList.remove('err');document.getElementById('pr-feedback').textContent='';},650);
+    prTyped='';updateTyped();
+  }
+}
+
+// FX
+const SPS=['✨','⭐','🌟','💫','🎉'];
+function spawnSparkle(x,y){for(let i=0;i<4;i++){const el=document.createElement('div');el.className='sparkle';el.textContent=SPS[Math.floor(Math.random()*SPS.length)];el.style.cssText=`left:${x-18+(Math.random()-.5)*65}px;top:${y-18+(Math.random()-.5)*48}px;animation-delay:${i*.1}s`;document.body.appendChild(el);setTimeout(()=>el.remove(),1000);}}
+function bigConfetti(){const cols=['#E63946','#F5C800','#2BAE66','#1A78C2','#FB5607','#8338EC','#fff','#E91E8C'];for(let i=0;i<32;i++){const el=document.createElement('div');el.className='conf-p';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*22}vh;background:${cols[i%cols.length]};animation-delay:${Math.random()*.5}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),2000);}}
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500);}
+function shuffle(a){return a.sort(()=>Math.random()-.5);}
+
+document.addEventListener('keydown',e=>{
+  const s=document.querySelector('.screen.active');
+  if(!s||s.id!=='s-practice')return;
+  if(e.key==='Backspace'){e.preventDefault();prTyped=prTyped.slice(0,-1);updateTyped();}
+  else if(e.key==='Enter'){checkAnswer();}
+  else if(e.key===' '){e.preventDefault();prTyped+=' ';updateTyped();}
+  else if(e.key.length===1&&/[a-zA-Z]/.test(e.key)){prTyped+=e.key.toLowerCase();updateTyped();}
+});
+</script>
+</body>
+</html>
