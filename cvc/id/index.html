@@ -160,7 +160,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
 
 <div class="screen active" id="s-home">
   <div class="home-family">ID</div>
-  <div class="home-words">lid · kid · hid · bid · did · rid</div>
+  <div class="home-words">lid · kid · hid · bid</div>
   <div class="home-tap">👆 Tap a section below to start!</div>
   <div class="home-nav-hint">
     <span>👂 Sounds</span><span>·</span><span>📖 Read</span><span>·</span><span>🎯 Match</span><span>·</span><span>✏️ Spell</span><span>·</span><span>🃏 Cards</span><span>·</span><span>⚡ Lightning</span>
@@ -196,7 +196,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
   <div class="big-title">Match it!</div>
   <div class="sub">Tap a picture · then tap its word</div>
   <div class="match-wrap"><div class="match-pics" id="match-pics"></div><div class="match-words" id="match-words"></div></div>
-  <div class="match-score" id="match-score">0 / 6 matched</div>
+  <div class="match-score" id="match-score">0 / 4 matched</div>
 </div>
 
 <div class="screen" id="s-spell">
@@ -227,7 +227,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
   </div>
   <div class="fl-nav">
     <button class="fl-nav-btn fl-prev" onclick="flashPrev()">◀</button>
-    <div class="fl-count" id="fl-count">1 / 6</div>
+    <div class="fl-count" id="fl-count">1 / 4</div>
     <button class="fl-nav-btn fl-next" onclick="flashNext()">▶</button>
   </div>
 </div>
@@ -238,7 +238,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
   <div class="lr-header">
     <div class="lr-score-txt">Score: <strong id="lr-score">0</strong></div>
     <div class="lr-timer-wrap"><div class="lr-timer-bar" id="lr-bar"></div></div>
-    <div class="lr-score-txt" id="lr-qnum">Q 1/6</div>
+    <div class="lr-score-txt" id="lr-qnum">Q 1/4</div>
   </div>
   <div class="lr-card" id="lr-card">
     <div class="lr-illo" id="lr-illo"></div>
@@ -250,7 +250,7 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:8
 <div class="screen" id="s-done">
   <div class="cel-ico">🏆</div>
   <div class="cel-title">You're a star!</div>
-  <div class="cel-stars">⭐⭐⭐⭐⭐⭐</div>
+  <div class="cel-stars">⭐⭐⭐⭐</div>
   <div class="cel-sub">Amazing — you know all the ID words!</div>
   <button class="cel-home" onclick="goHome()">🏠 Home</button>
 </div>
@@ -271,13 +271,12 @@ const FAMILY_COLOR='#1A78C2';
 const FAMILY_BG='#E3F2FD';
 const BASE='https://raw.githubusercontent.com/ponrathsop-arch/Online-English-for-kids/main/cvc/';
 
+// did, rid, zip removed — keeping true -id family words only
 const WORDS=[
   {word:'lid',consonant:'l',color:'#E53935'},
   {word:'kid',consonant:'k',color:'#FB5607'},
   {word:'hid',consonant:'h',color:'#2BAE66'},
   {word:'bid',consonant:'b',color:'#1A78C2'},
-  {word:'zip',consonant:'z',color:'#8338EC'},
-  {word:'did',consonant:'d',color:'#E91E8C'},
 ];
 
 const PHONICS=[
@@ -285,8 +284,6 @@ const PHONICS=[
   {letter:'k',hint:'kid',bg:'#FB5607',dark:false,example:'k — kid'},
   {letter:'h',hint:'hid',bg:'#2BAE66',dark:false,example:'h — hid'},
   {letter:'b',hint:'bid',bg:'#1A78C2',dark:false,example:'b — bid'},
-  {letter:'z',hint:'zip',bg:'#8338EC',dark:false,example:'z — zip'},
-  {letter:'d',hint:'did',bg:'#E91E8C',dark:false,example:'d — did'},
   {letter:'i',hint:'vowel',bg:'#42A5F5',dark:false,example:'i — short i sound'},
   {letter:'d',hint:'ending',bg:'#555',dark:false,example:'d — end sound'},
   {letter:'id',hint:'family',bg:'linear-gradient(135deg,#1A78C2,#5C6BC0)',dark:false,example:'__id — the family!'},
@@ -359,7 +356,7 @@ function nextBlend(){if(blendIdx<WORDS.length-1){blendIdx++;renderBlend();}else 
 
 let matchSel=null,matchDone=0;
 function initMatch(){
-  matchSel=null;matchDone=0;document.getElementById('match-score').textContent='0 / 6 matched';
+  matchSel=null;matchDone=0;document.getElementById('match-score').textContent=`0 / ${WORDS.length} matched`;
   const sP=shuffle([...WORDS]),sW=shuffle([...WORDS]);
   const pE=document.getElementById('match-pics'),wE=document.getElementById('match-words');
   pE.innerHTML='';wE.innerHTML='';
@@ -370,7 +367,7 @@ function handleMatchPic(card,word){if(card.classList.contains('matched'))return;
 function handleMatchWord(card,word){
   if(card.classList.contains('matched'))return;
   if(!matchSel){showToast('Tap a picture first!');return;}
-  if(matchSel.word===word){matchSel.el.classList.remove('selected');matchSel.el.classList.add('matched');card.classList.add('matched');matchSel=null;matchDone++;spawnSparkle(card.getBoundingClientRect().left+card.offsetWidth/2,card.getBoundingClientRect().top+card.offsetHeight/2);document.getElementById('match-score').textContent=`${matchDone} / 6 matched`;if(matchDone===6)setTimeout(()=>{bigConfetti();setTimeout(goNext,900);},350);}
+  if(matchSel.word===word){matchSel.el.classList.remove('selected');matchSel.el.classList.add('matched');card.classList.add('matched');matchSel=null;matchDone++;spawnSparkle(card.getBoundingClientRect().left+card.offsetWidth/2,card.getBoundingClientRect().top+card.offsetHeight/2);document.getElementById('match-score').textContent=`${matchDone} / ${WORDS.length} matched`;if(matchDone===WORDS.length)setTimeout(()=>{bigConfetti();setTimeout(goNext,900);},350);}
   else{[matchSel.el,card].forEach(el=>{el.classList.add('ws');setTimeout(()=>el.classList.remove('ws'),450);});matchSel.el.classList.remove('selected');matchSel=null;showToast('Try again!');}
 }
 
