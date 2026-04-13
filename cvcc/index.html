@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CVCC Words – English with Pang</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sky: #e8f4ff;
+    --dark: #2d2d2d;
+    --nd: #3D5A80;
+    --st: #E07A5F;
+    --mp: #81B29A;
+    --nt: #D4A017;
+    --ck: #9B5DE5;
+    --ft: #F15BB5;
+    --sk: #00BBF9;
+  }
+  body { font-family: 'Nunito', sans-serif; background-color: var(--sky); min-height: 100vh; overflow-x: hidden; }
+
+  .bg-shapes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .shape { position: absolute; border-radius: 50%; opacity: 0.13; animation: float linear infinite; }
+  .shape:nth-child(1) { width: 140px; height: 140px; background: var(--nd); top: 8%; left: 3%; animation-duration: 14s; }
+  .shape:nth-child(2) { width: 90px; height: 90px; background: var(--st); top: 25%; right: 6%; animation-duration: 10s; animation-delay: -3s; }
+  .shape:nth-child(3) { width: 70px; height: 70px; background: var(--mp); bottom: 22%; left: 10%; animation-duration: 12s; animation-delay: -6s; }
+  .shape:nth-child(4) { width: 110px; height: 110px; background: var(--ck); bottom: 8%; right: 12%; animation-duration: 16s; animation-delay: -2s; }
+  .shape:nth-child(5) { width: 60px; height: 60px; background: var(--sk); top: 55%; left: 50%; animation-duration: 18s; animation-delay: -9s; }
+  @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-22px) rotate(120deg); } 66% { transform: translateY(12px) rotate(240deg); } }
+
+  .back-btn { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; margin: 28px 0 0 28px; padding: 8px 18px; background: white; border-radius: 999px; font-size: 14px; font-weight: 700; color: #555; text-decoration: none; box-shadow: 0 4px 0 rgba(0,0,0,0.08); transition: transform 0.15s, box-shadow 0.15s; }
+  .back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.08); }
+
+  header { position: relative; z-index: 1; text-align: center; padding: 36px 20px 28px; }
+  .star-row { font-size: 22px; letter-spacing: 6px; margin-bottom: 12px; animation: twinkle 2s ease-in-out infinite alternate; }
+  @keyframes twinkle { from { opacity: 0.6; transform: scale(1); } to { opacity: 1; transform: scale(1.05); } }
+  .page-label { font-family: 'Fredoka One', cursive; font-size: clamp(16px, 3vw, 22px); color: #888; margin-bottom: 8px; letter-spacing: 1px; }
+  h1 { font-family: 'Fredoka One', cursive; font-size: clamp(44px, 9vw, 72px); line-height: 1; display: inline-flex; gap: 4px; }
+  h1 span { display: inline-block; animation: bounce-letter 1.5s ease-in-out infinite alternate; }
+  h1 span:nth-child(1){color:#3D5A80;animation-delay:0s}
+  h1 span:nth-child(2){color:#E07A5F;animation-delay:.1s}
+  h1 span:nth-child(3){color:#81B29A;animation-delay:.2s}
+  h1 span:nth-child(4){color:#9B5DE5;animation-delay:.3s}
+  @keyframes bounce-letter { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+  .subtitle { margin-top: 12px; font-size: 17px; color: #555; font-weight: 600; }
+  .cvcc-explain { display: inline-block; margin-top: 10px; background: white; border-radius: 50px; padding: 7px 20px; font-size: 14px; color: #777; font-weight: 700; box-shadow: 0 3px 0 rgba(0,0,0,0.06); }
+  .cvcc-explain span { font-weight: 900; color: #444; }
+
+  /* ── GRID ── */
+  .grid-section { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 20px 24px 80px; }
+
+  .ending-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+  }
+
+  .ending-card {
+    background: white;
+    border-radius: 22px;
+    padding: 28px 18px 22px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.09);
+    border: 3px solid transparent;
+    border-top-width: 6px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: card-in 0.4s ease forwards;
+  }
+  .ending-card:hover { transform: translateY(-5px); box-shadow: 0 10px 0 rgba(0,0,0,0.09); }
+  @keyframes card-in { to { opacity: 1; transform: translateY(0); } }
+
+  .nd-card { border-top-color: var(--nd); } .nd-card:hover { border-color: var(--nd); }
+  .st-card { border-top-color: var(--st); } .st-card:hover { border-color: var(--st); }
+  .mp-card { border-top-color: var(--mp); } .mp-card:hover { border-color: var(--mp); }
+  .nt-card { border-top-color: var(--nt); } .nt-card:hover { border-color: var(--nt); }
+  .ck-card { border-top-color: var(--ck); } .ck-card:hover { border-color: var(--ck); }
+  .ft-card { border-top-color: var(--ft); } .ft-card:hover { border-color: var(--ft); }
+  .sk-card { border-top-color: var(--sk); } .sk-card:hover { border-color: var(--sk); }
+
+  .ending-pill {
+    font-family: 'Fredoka One', cursive;
+    font-size: 26px;
+    padding: 6px 22px;
+    border-radius: 50px;
+    color: white;
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+  .nd-card .ending-pill { background: var(--nd); }
+  .st-card .ending-pill { background: var(--st); }
+  .mp-card .ending-pill { background: var(--mp); }
+  .nt-card .ending-pill { background: var(--nt); }
+  .ck-card .ending-pill { background: var(--ck); }
+  .ft-card .ending-pill { background: var(--ft); }
+  .sk-card .ending-pill { background: var(--sk); }
+
+  .ending-examples {
+    font-size: 12px;
+    font-weight: 700;
+    color: #aaa;
+    text-align: center;
+    letter-spacing: 0.5px;
+    line-height: 1.9;
+  }
+
+  .ending-count {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 12px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .nd-card .ending-count { background: #dce6f5; color: var(--nd); }
+  .st-card .ending-count { background: #fde4da; color: #b04020; }
+  .mp-card .ending-count { background: #d4ede4; color: #4a7c64; }
+  .nt-card .ending-count { background: #fdefc0; color: #8a6000; }
+  .ck-card .ending-count { background: #e8d4fc; color: #7a3cb8; }
+  .ft-card .ending-count { background: #fdd4ee; color: #c2007b; }
+  .sk-card .ending-count { background: #c2f0fe; color: #0070a0; }
+
+  footer { position: relative; z-index: 1; text-align: center; padding: 20px; font-size: 13px; color: #aaa; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="bg-shapes"><div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div></div>
+<a href="../index.html" class="back-btn">← Back to Home</a>
+
+<header>
+  <div class="star-row">🔤 ⭐ 🔤 ⭐ 🔤</div>
+  <p class="page-label">Phonics</p>
+  <h1><span>C</span><span>V</span><span>C</span><span>C</span></h1>
+  <p class="subtitle">Words that end with TWO consonants! 📖</p>
+  <div class="cvcc-explain">
+    <span>C</span>onsonant · <span>V</span>owel · <span>C</span>onsonant · <span>C</span>onsonant
+  </div>
+</header>
+
+<section class="grid-section">
+  <div class="ending-grid">
+
+    <a href="nd/index.html" class="ending-card nd-card" style="animation-delay:0.05s">
+      <div class="ending-pill">-nd</div>
+      <div class="ending-examples">band · land<br>wind · sand</div>
+      <div class="ending-count">4 words</div>
+    </a>
+
+    <a href="st/index.html" class="ending-card st-card" style="animation-delay:0.10s">
+      <div class="ending-pill">-st</div>
+      <div class="ending-examples">list · nest<br>just · must</div>
+      <div class="ending-count">4 words</div>
+    </a>
+
+    <a href="mp/index.html" class="ending-card mp-card" style="animation-delay:0.15s">
+      <div class="ending-pill">-mp</div>
+      <div class="ending-examples">jump · lump<br>camp · damp</div>
+      <div class="ending-count">4 words</div>
+    </a>
+
+    <a href="nt/index.html" class="ending-card nt-card" style="animation-delay:0.20s">
+      <div class="ending-pill">-nt</div>
+      <div class="ending-examples">went · sent<br>bent · dent</div>
+      <div class="ending-count">4 words</div>
+    </a>
+
+    <a href="ck/index.html" class="ending-card ck-card" style="animation-delay:0.25s">
+      <div class="ending-pill">-ck</div>
+      <div class="ending-examples">duck · rock<br>lock · pack</div>
+      <div class="ending-count">4 words</div>
+    </a>
+
+    <a href="ft/index.html" class="ending-card ft-card" style="animation-delay:0.30s">
+      <div class="ending-pill">-ft</div>
+      <div class="ending-examples">gift · lift · soft</div>
+      <div class="ending-count">3 words</div>
+    </a>
+
+    <a href="sk/index.html" class="ending-card sk-card" style="animation-delay:0.35s">
+      <div class="ending-pill">-sk</div>
+      <div class="ending-examples">mask · risk · dusk</div>
+      <div class="ending-count">3 words</div>
+    </a>
+
+  </div>
+</section>
+
+<footer>Pang made with ❤️ for kids learning English</footer>
+</body>
+</html>
