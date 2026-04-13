@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Present Perfect – Quiz Time!</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito',Arial,sans-serif;height:100vh;width:100vw;overflow:hidden;background:#FEF9F0;touch-action:manipulation;font-weight:800;}
+#progress-bar-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,0.07);z-index:998;}
+#progress-bar{height:100%;background:linear-gradient(90deg,#00B4D8,#6BCB77,#FF6B6B,#FFD93D);transition:width .4s ease;width:0%;}
+#tab-nav{position:fixed;bottom:0;left:0;width:100%;height:70px;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border-top:2px solid #F0EAE0;z-index:997;padding:8px 8px 10px;display:flex;align-items:center;gap:5px;overflow-x:auto;scrollbar-width:none;}
+#tab-nav::-webkit-scrollbar{display:none;}
+.tab-btn{flex-shrink:0;border:none;border-radius:14px;padding:8px 14px;font-family:inherit;font-weight:800;font-size:clamp(0.65rem,1.4vw,0.95rem);cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,0.15);color:white;text-shadow:0 1px 3px rgba(0,0,0,0.2);opacity:0.7;transition:transform .15s,box-shadow .15s;}
+.tab-btn.active{opacity:1;transform:translateY(-3px);box-shadow:0 6px 0 rgba(0,0,0,0.15);outline:3px solid rgba(255,255,255,0.6);}
+.tab-btn .score-badge{display:inline-block;background:rgba(255,255,255,0.3);border-radius:20px;padding:1px 8px;font-size:0.8em;margin-left:4px;}
+.section{display:none;width:100vw;height:calc(100vh - 7px - 70px);position:absolute;top:7px;left:0;flex-direction:column;align-items:center;overflow:hidden;}
+.section.active{display:flex;}
+.cover{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;}
+.cover-title{font-size:clamp(3rem,10vw,8rem);color:white;text-shadow:0 8px 0 rgba(0,0,0,0.12);animation:titleBounce 1.8s ease-in-out infinite alternate;text-align:center;line-height:1;}
+@keyframes titleBounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-16px) rotate(2deg)}}
+.cover-sub{font-size:clamp(1.1rem,2.8vw,2rem);color:rgba(255,255,255,0.9);text-align:center;}
+.start-btn{border:none;border-radius:50px;padding:14px 48px;font-family:inherit;font-size:clamp(1.1rem,2.8vw,1.8rem);font-weight:900;background:white;box-shadow:0 6px 0 rgba(0,0,0,0.12);cursor:pointer;transition:transform .15s;}
+.start-btn:hover{transform:translateY(-4px);}
+.quiz-area{width:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 16px;gap:6px;overflow:hidden;}
+.pip-row{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;max-width:500px;}
+.pip{width:14px;height:14px;border-radius:50%;background:#DDD;transition:background .3s;}
+.pip.correct{background:#6BCB77;}.pip.wrong{background:#FF6B6B;}.pip.current{background:#00B4D8;transform:scale(1.3);}
+.quiz-counter{font-size:clamp(0.95rem,2vw,1.5rem);color:#bbb;}
+.quiz-char-wrap{width:clamp(90px,14vw,140px);height:clamp(90px,14vw,140px);animation:charFloat 2.5s ease-in-out infinite alternate;}
+@keyframes charFloat{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+.quiz-subject-badge{font-size:clamp(1.1rem,2.8vw,2rem);padding:7px 22px;border-radius:50px;color:white;display:inline-block;text-shadow:0 2px 4px rgba(0,0,0,0.15);}
+.quiz-sentence{font-size:clamp(1.1rem,3vw,2.2rem);color:#333;text-align:center;line-height:1.5;max-width:700px;}
+.quiz-blank{display:inline-block;min-width:clamp(120px,18vw,180px);height:clamp(34px,5.5vw,50px);border-bottom:6px solid #DDD;vertical-align:middle;margin:0 5px;}
+.quiz-choices{display:flex;gap:clamp(8px,2vw,14px);justify-content:center;margin-top:10px;flex-wrap:wrap;}
+.quiz-btn{border:none;border-radius:20px;padding:clamp(10px,1.8vw,18px) clamp(12px,2.5vw,28px);cursor:pointer;font-family:inherit;font-weight:900;font-size:clamp(1rem,2.4vw,1.8rem);box-shadow:0 7px 0 #4A6FA0;transition:transform .15s,box-shadow .15s;background:#6C9BD2;color:white;text-shadow:0 2px 5px rgba(0,0,0,0.2);}
+.quiz-btn:hover{transform:translateY(-4px);box-shadow:0 11px 0 #4A6FA0;}
+.quiz-btn.correct{animation:correctBounce .55s ease;background:#6BCB77!important;box-shadow:0 7px 0 #3DAD8E!important;outline:5px solid #A8F0C0;}
+.quiz-btn.wrong{animation:wrongShake .4s ease;background:#FF6B6B!important;box-shadow:0 7px 0 #D94040!important;}
+.quiz-feedback{font-size:clamp(0.9rem,2.3vw,1.7rem);min-height:40px;margin-top:4px;text-align:center;color:#333;}
+@keyframes correctBounce{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-5deg)}70%{transform:scale(0.93) rotate(3deg)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-12px)}75%{transform:translateX(12px)}}
+.score-screen{width:100%;height:100%;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;background:#FEF9F0;}
+.score-screen.visible{display:flex;}
+.score-emoji{font-size:clamp(3rem,8vw,6rem);}
+.score-title{font-size:clamp(2rem,6vw,4.5rem);color:#333;text-align:center;}
+.score-val{font-size:clamp(2.5rem,8vw,6rem);font-weight:900;text-align:center;}
+.score-msg{font-size:clamp(1rem,2.5vw,1.8rem);color:#666;text-align:center;max-width:500px;}
+.score-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:8px;}
+.score-btn{border:none;border-radius:50px;padding:12px 32px;font-family:inherit;font-size:clamp(1rem,2.2vw,1.5rem);font-weight:900;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,0.12);transition:transform .15s;color:white;}
+.score-btn:hover{transform:translateY(-3px);}
+.final-screen{width:100%;height:100%;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;background:linear-gradient(145deg,#00B4D8,#6BCB77,#FFD93D);}
+.final-screen.visible{display:flex;}
+.final-title{font-size:clamp(2.2rem,7vw,5.5rem);color:white;text-shadow:0 7px 0 rgba(0,0,0,0.12);text-align:center;}
+.final-scores{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:560px;width:100%;}
+.final-card{background:rgba(255,255,255,0.2);border-radius:16px;padding:12px;text-align:center;color:white;}
+.final-card-label{font-size:clamp(0.7rem,1.5vw,1rem);opacity:0.85;margin-bottom:4px;}
+.final-card-score{font-size:clamp(1.3rem,3.5vw,2.5rem);}
+.final-total{font-size:clamp(1.5rem,4vw,3rem);color:white;text-align:center;}
+.replay-btn{border:none;border-radius:50px;padding:14px 48px;font-family:inherit;font-size:clamp(1.1rem,2.8vw,1.8rem);font-weight:900;color:#00B4D8;background:white;box-shadow:0 6px 0 rgba(0,0,0,0.12);cursor:pointer;transition:transform .15s;}
+.replay-btn:hover{transform:translateY(-4px);}
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:2rem;animation:sparkleFly .9s ease forwards;}
+@keyframes sparkleFly{0%{opacity:1;transform:scale(0.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-90px)}}
+.confetti-piece{position:fixed;width:13px;height:13px;border-radius:4px;opacity:0;pointer-events:none;z-index:9999;animation:confettiFall 1.3s ease forwards;}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(800deg)}}
+</style>
+</head>
+<body>
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<div id="tab-nav">
+  <button class="tab-btn active" style="background:#00B4D8" onclick="switchTab(0)">✅ Normal</button>
+  <button class="tab-btn" style="background:#FF6B6B" onclick="switchTab(1)">❌ Negative</button>
+  <button class="tab-btn" style="background:#6BCB77" onclick="switchTab(2)">❓ Question</button>
+  <button class="tab-btn" style="background:#FFD93D;color:#7A3000" onclick="switchTab(3)">🏆 Mix</button>
+</div>
+
+<div class="section active" id="sec-0">
+  <div class="cover" style="background:linear-gradient(145deg,#00B4D8,#6BCB77)">
+    <div class="cover-title">✅ Normal</div>
+    <div class="cover-sub">have / has + past participle — 20 questions!</div>
+    <button class="start-btn" style="color:#00B4D8" onclick="startSection(0)">Let's go! 🚀</button>
+  </div>
+  <div class="quiz-area" id="qa-0" style="display:none"></div>
+  <div class="score-screen" id="ss-0">
+    <div class="score-emoji" id="se-0">🎉</div><div class="score-title">Section done!</div>
+    <div class="score-val" id="sv-0" style="color:#00B4D8"></div><div class="score-msg" id="sm-0"></div>
+    <div class="score-btns">
+      <button class="score-btn" style="background:#888;box-shadow:0 5px 0 #555" onclick="restartSection(0)">Try Again</button>
+      <button class="score-btn" style="background:#FF6B6B;box-shadow:0 5px 0 #C0392B" onclick="switchTab(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="sec-1">
+  <div class="cover" style="background:linear-gradient(145deg,#FF6B6B,#00B4D8)">
+    <div class="cover-title">❌ Negative</div>
+    <div class="cover-sub">haven't / hasn't — 20 questions!</div>
+    <button class="start-btn" style="color:#FF6B6B" onclick="startSection(1)">Let's go! 🚀</button>
+  </div>
+  <div class="quiz-area" id="qa-1" style="display:none"></div>
+  <div class="score-screen" id="ss-1">
+    <div class="score-emoji" id="se-1">🎉</div><div class="score-title">Section done!</div>
+    <div class="score-val" id="sv-1" style="color:#FF6B6B"></div><div class="score-msg" id="sm-1"></div>
+    <div class="score-btns">
+      <button class="score-btn" style="background:#888;box-shadow:0 5px 0 #555" onclick="restartSection(1)">Try Again</button>
+      <button class="score-btn" style="background:#6BCB77;box-shadow:0 5px 0 #3a9e46" onclick="switchTab(2)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="sec-2">
+  <div class="cover" style="background:linear-gradient(145deg,#6BCB77,#C77DFF)">
+    <div class="cover-title">❓ Question</div>
+    <div class="cover-sub">Have/Has...? — 20 questions!</div>
+    <button class="start-btn" style="color:#6BCB77" onclick="startSection(2)">Let's go! 🚀</button>
+  </div>
+  <div class="quiz-area" id="qa-2" style="display:none"></div>
+  <div class="score-screen" id="ss-2">
+    <div class="score-emoji" id="se-2">🎉</div><div class="score-title">Section done!</div>
+    <div class="score-val" id="sv-2" style="color:#6BCB77"></div><div class="score-msg" id="sm-2"></div>
+    <div class="score-btns">
+      <button class="score-btn" style="background:#888;box-shadow:0 5px 0 #555" onclick="restartSection(2)">Try Again</button>
+      <button class="score-btn" style="background:#FFD93D;color:#7A3000;box-shadow:0 5px 0 #C49B00" onclick="switchTab(3)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="sec-3">
+  <div class="cover" style="background:linear-gradient(145deg,#FFD93D,#FF9F43)">
+    <div class="cover-title" style="color:#7A3000">🏆 Mix!</div>
+    <div class="cover-sub" style="color:rgba(100,50,0,0.8)">All forms — 20 mixed questions!</div>
+    <button class="start-btn" style="color:#FF9F43" onclick="startSection(3)">Final challenge! 🔥</button>
+  </div>
+  <div class="quiz-area" id="qa-3" style="display:none"></div>
+  <div class="score-screen" id="ss-3">
+    <div class="score-emoji" id="se-3">🏆</div><div class="score-title">All done!</div>
+    <div class="score-val" id="sv-3" style="color:#FF9F43"></div><div class="score-msg" id="sm-3"></div>
+    <div class="score-btns">
+      <button class="score-btn" style="background:#888;box-shadow:0 5px 0 #555" onclick="restartSection(3)">Try Again</button>
+      <button class="score-btn" style="background:#00B4D8;box-shadow:0 5px 0 #008FA0" onclick="showFinal()">See Total 🏆</button>
+    </div>
+  </div>
+</div>
+
+<div class="final-screen" id="final-screen">
+  <div class="final-title">💎 Amazing!</div>
+  <div class="final-scores">
+    <div class="final-card"><div class="final-card-label">✅ Normal</div><div class="final-card-score" id="fs-0">—</div></div>
+    <div class="final-card"><div class="final-card-label">❌ Negative</div><div class="final-card-score" id="fs-1">—</div></div>
+    <div class="final-card"><div class="final-card-label">❓ Question</div><div class="final-card-score" id="fs-2">—</div></div>
+  </div>
+  <div class="final-total" id="final-total"></div>
+  <div style="color:rgba(255,255,255,0.9);font-size:clamp(1rem,2.2vw,1.5rem);text-align:center">You are a Present Perfect champion! 🌟</div>
+  <button class="replay-btn" onclick="resetAll()">Play Again</button>
+</div>
+
+<script>
+function mkChar(skin,shirt,hair,acc){const h=hair==='boy'?`<ellipse cx="60" cy="20" rx="30" ry="15" fill="#5C3D11"/>`:hair==='dark'?`<ellipse cx="60" cy="20" rx="30" ry="15" fill="#1A1A2E"/>`:`<path d="M28 22 Q60 6 92 22 Q86 46 60 48 Q34 46 28 22Z" fill="${hair}"/><ellipse cx="60" cy="15" rx="32" ry="16" fill="${hair}"/>`;return `<svg viewBox="0 0 120 130">${h}<circle cx="60" cy="42" r="28" fill="${skin}"/><rect x="26" y="68" width="68" height="52" rx="18" fill="${shirt}"/>${acc?`<rect x="26" y="68" width="68" height="14" rx="9" fill="${acc}"/>`:''}
+<circle cx="44" cy="38" r="5.5" fill="#333"/><circle cx="76" cy="38" r="5.5" fill="#333"/><circle cx="45" cy="36" r="2" fill="white"/><circle cx="77" cy="36" r="2" fill="white"/>
+<path d="M48 54 Q60 62 72 54" fill="none" stroke="${skin==='#C8A882'?'#8B6040':'#B07840'}" stroke-width="3.5" stroke-linecap="round"/>
+<ellipse cx="44" cy="50" rx="7" ry="4" fill="${skin==='#C8A882'?'#D4906A':'#F5A882'}" opacity="0.5"/>
+<ellipse cx="76" cy="50" rx="7" ry="4" fill="${skin==='#C8A882'?'#D4906A':'#F5A882'}" opacity="0.5"/></svg>`;}
+const C={
+  BOY:mkChar('#FFDBA4','#4D96FF','boy','#3580C0'),GIRL:mkChar('#FFDBA4','#FF6B6B','#C0392B',null),
+  MIKE:mkChar('#FFDBA4','#FF9F43','boy','#E67E00'),SARA:mkChar('#FFDBA4','#C77DFF','#8338EC',null),
+  LISA:mkChar('#C8A882','#6BCB77','#2BAE66',null),TOM:mkChar('#C8A882','#1A3A6E','dark','#112850'),
+  GROUP:`<svg viewBox="0 0 130 110"><ellipse cx="36" cy="36" rx="22" ry="22" fill="#FFDBA4"/><ellipse cx="36" cy="23" rx="23" ry="12" fill="#5C3D11"/><rect x="16" y="56" width="40" height="38" rx="12" fill="#6BCB77"/><ellipse cx="90" cy="36" rx="22" ry="22" fill="#C8A882"/><path d="M66 20 Q90 8 114 20 Q108 38 90 40 Q72 38 66 20Z" fill="#C0392B"/><rect x="70" y="56" width="40" height="38" rx="12" fill="#FF9F43"/></svg>`,
+  CROWD:`<svg viewBox="0 0 150 110"><ellipse cx="22" cy="36" rx="18" ry="18" fill="#FFDBA4"/><ellipse cx="22" cy="24" rx="19" ry="10" fill="#5C3D11"/><rect x="6" y="52" width="32" height="34" rx="10" fill="#C77DFF"/><ellipse cx="75" cy="32" rx="20" ry="20" fill="#C8A882"/><path d="M53 18 Q75 6 97 18 Q91 38 75 40 Q59 38 53 18Z" fill="#2BAE66"/><rect x="57" y="50" width="36" height="38" rx="12" fill="#FF6B6B"/><ellipse cx="128" cy="36" rx="18" ry="18" fill="#FFDBA4"/><ellipse cx="128" cy="24" rx="19" ry="10" fill="#1A1A2E"/><rect x="112" y="52" width="32" height="34" rx="10" fill="#4D96FF"/></svg>`,
+};
+
+const BANK={
+  normal:[
+    {ch:'BOY',sc:'#00B4D8',s:'I _______ eaten sushi before.',c:['has','have','had'],a:'have',f:'I have eaten — I/You/We/They use have!'},
+    {ch:'GIRL',sc:'#FF9F43',s:'She _______ visited five countries.',c:['have','has','had'],a:'has',f:'She has visited — He/She/It use has!'},
+    {ch:'CROWD',sc:'#6BCB77',s:'They have _______ the film.',c:['see','saw','seen'],a:'seen',f:'have + past participle — seen!'},
+    {ch:'MIKE',sc:'#FF9F43',s:'He has _______ three gold medals.',c:['win','winning','won'],a:'won',f:'has + past participle — won!'},
+    {ch:'GROUP',sc:'#6BCB77',s:'We _______ finished the project.',c:['has','have','had'],a:'have',f:'We have finished — We use have!'},
+    {ch:'SARA',sc:'#C77DFF',s:'Sara has _______ five languages.',c:['learn','learning','learned'],a:'learned',f:'has + past participle — learned!'},
+    {ch:'BOY',sc:'#00B4D8',s:'I have _______ to Japan before.',c:['go','went','been'],a:'been',f:'have + past participle — been (go→been)!'},
+    {ch:'TOM',sc:'#1A3A6E',s:'Tom has _______ all the Harry Potter books.',c:['read','reads','reading'],a:'read',f:'has + past participle — read!'},
+    {ch:'LISA',sc:'#6BCB77',s:'Lisa _______ traveled to France.',c:['have','has','had'],a:'has',f:'Lisa = she, so has!'},
+    {ch:'CROWD',sc:'#6BCB77',s:'They have _______ this before.',c:['do','did','done'],a:'done',f:'have + past participle — done!'},
+    {ch:'GIRL',sc:'#FF9F43',s:'She has _______ the letter.',c:['write','wrote','written'],a:'written',f:'has + past participle — written!'},
+    {ch:'BOY',sc:'#00B4D8',s:'You _______ done a great job!',c:['has','have','had'],a:'have',f:'You have done — You use have!'},
+    {ch:'MIKE',sc:'#FF9F43',s:'He has _______ his homework.',c:['finish','finished','finishing'],a:'finished',f:'has + past participle — finished!'},
+    {ch:'GROUP',sc:'#6BCB77',s:'We have _______ each other for years.',c:['know','knew','known'],a:'known',f:'have + past participle — known!'},
+    {ch:'SARA',sc:'#C77DFF',s:'Sara has _______ a new recipe.',c:['try','tried','trying'],a:'tried',f:'has + past participle — tried!'},
+    {ch:'BOY',sc:'#00B4D8',s:'I have already _______ breakfast.',c:['eat','ate','eaten'],a:'eaten',f:'have + past participle — eaten!'},
+    {ch:'TOM',sc:'#1A3A6E',s:'Tom has _______ to many concerts.',c:['go','went','been'],a:'been',f:'has + past participle — been!'},
+    {ch:'CROWD',sc:'#6BCB77',s:'They have _______ a lot this year.',c:['grow','grew','grown'],a:'grown',f:'have + past participle — grown!'},
+    {ch:'LISA',sc:'#6BCB77',s:'Lisa has _______ many friends.',c:['make','made','making'],a:'made',f:'has + past participle — made!'},
+    {ch:'GROUP',sc:'#6BCB77',s:'We have _______ the test!',c:['pass','passing','passed'],a:'passed',f:'have + past participle — passed!'},
+  ],
+  negative:[
+    {ch:'BOY',sc:'#FF6B6B',s:'I _______ eaten durian before.',c:["haven't","hasn't","have no"],a:"haven't",f:"I haven't eaten — I/You/We/They use haven't!"},
+    {ch:'GIRL',sc:'#00B4D8',s:'She _______ visited London.',c:["haven't","hasn't","has no"],a:"hasn't",f:"She hasn't visited — He/She/It use hasn't!"},
+    {ch:'CROWD',sc:'#FF6B6B',s:'They have not _______ the match.',c:['see','saw','seen'],a:'seen',f:'have not + past participle — seen!'},
+    {ch:'MIKE',sc:'#00B4D8',s:'He _______ done his homework.',c:["haven't","hasn't","has no"],a:"hasn't",f:"He hasn't done — He uses hasn't!"},
+    {ch:'GROUP',sc:'#FF6B6B',s:'We _______ finished yet.',c:["hasn't","haven't","have no"],a:"haven't",f:"We haven't finished — We use haven't!"},
+    {ch:'SARA',sc:'#00B4D8',s:'Sara has not _______ the book.',c:['read','reads','reading'],a:'read',f:'has not + past participle — read!'},
+    {ch:'BOY',sc:'#FF6B6B',s:'I have not _______ to Japan.',c:['go','went','been'],a:'been',f:'have not + past participle — been!'},
+    {ch:'TOM',sc:'#00B4D8',s:'Tom _______ eaten breakfast.',c:["haven't","hasn't","has no"],a:"hasn't",f:"Tom = he, so hasn't!"},
+    {ch:'LISA',sc:'#FF6B6B',s:'Lisa _______ tried Thai food.',c:["hasn't","haven't","have no"],a:"hasn't",f:"Lisa = she, so hasn't!"},
+    {ch:'CROWD',sc:'#FF6B6B',s:'They have not _______ yet.',c:['decide','deciding','decided'],a:'decided',f:'have not + past participle — decided!'},
+    {ch:'GIRL',sc:'#00B4D8',s:'She has not _______ the letter.',c:['write','writing','written'],a:'written',f:'has not + past participle — written!'},
+    {ch:'BOY',sc:'#FF6B6B',s:'You _______ seen this film.',c:["hasn't","haven't","have no"],a:"haven't",f:"You haven't seen — You use haven't!"},
+    {ch:'MIKE',sc:'#00B4D8',s:'He _______ finished the project.',c:["haven't","hasn't","has no"],a:"hasn't",f:"He hasn't finished — He uses hasn't!"},
+    {ch:'GROUP',sc:'#FF6B6B',s:'We have not _______ each other.',c:['meet','met','meeting'],a:'met',f:'have not + past participle — met!'},
+    {ch:'SARA',sc:'#00B4D8',s:'Sara _______ called me today.',c:["haven't","hasn't","has no"],a:"hasn't",f:"Sara hasn't called — She uses hasn't!"},
+    {ch:'BOY',sc:'#FF6B6B',s:'I have not _______ the homework.',c:['do','did','done'],a:'done',f:'have not + past participle — done!'},
+    {ch:'TOM',sc:'#00B4D8',s:'Tom has not _______ up yet.',c:['wake','woke','woken'],a:'woken',f:'has not + past participle — woken!'},
+    {ch:'CROWD',sc:'#FF6B6B',s:'They _______ won a single game.',c:["hasn't","haven't","have no"],a:"haven't",f:"They haven't won — They use haven't!"},
+    {ch:'LISA',sc:'#00B4D8',s:'Lisa has not _______ anyone.',c:['tell','told','telling'],a:'told',f:'has not + past participle — told!'},
+    {ch:'GROUP',sc:'#FF6B6B',s:'We _______ had lunch yet.',c:["hasn't","haven't","have no"],a:"haven't",f:"We haven't had — We use haven't!"},
+  ],
+  question:[
+    {ch:'BOY',sc:'#6BCB77',s:'_______ you ever eaten Thai food?',c:['Have','Has','Did'],a:'Have',f:'Have + I/You/We/They — Have goes first!'},
+    {ch:'GIRL',sc:'#C77DFF',s:'_______ she finished her homework?',c:['Have','Has','Did'],a:'Has',f:'Has + He/She/It — Has goes first!'},
+    {ch:'CROWD',sc:'#6BCB77',s:'Have they _______ the game yet?',c:['see','saw','seen'],a:'seen',f:'Have + past participle — seen!'},
+    {ch:'MIKE',sc:'#C77DFF',s:'Has he _______ to Japan?',c:['went','go','been'],a:'been',f:'Has + past participle — been!'},
+    {ch:'GROUP',sc:'#6BCB77',s:'Have we _______ before?',c:['meet','met','meeting'],a:'met',f:'Have + past participle — met!'},
+    {ch:'BOY',sc:'#6BCB77',s:'Have you eaten? — Yes, I _______.',c:["haven't",'have','did'],a:'have',f:'Short answer: Yes, I have!'},
+    {ch:'SARA',sc:'#C77DFF',s:'Has Sara won? — No, she _______.',c:["hasn't",'has','did'],a:"hasn't",f:"Short answer: No, she hasn't!"},
+    {ch:'TOM',sc:'#C77DFF',s:'_______ Tom read the book?',c:['Have','Has','Did'],a:'Has',f:'Has + Tom (= he) — Has goes first!'},
+    {ch:'LISA',sc:'#C77DFF',s:'Has Lisa traveled? — No, she _______.',c:['have',"hasn't",'did'],a:"hasn't",f:"Short answer: No, she hasn't!"},
+    {ch:'CROWD',sc:'#6BCB77',s:'_______ they ever tried durian?',c:['Has','Have','Did'],a:'Have',f:'Have + They — Have goes first!'},
+    {ch:'GIRL',sc:'#C77DFF',s:'_______ she called you today?',c:['Have','Has','Did'],a:'Has',f:'Has + She — Has goes first!'},
+    {ch:'BOY',sc:'#6BCB77',s:'Have you seen the film? — No, I _______.',c:['have',"haven't",'did'],a:"haven't",f:"Short answer: No, I haven't!"},
+    {ch:'GROUP',sc:'#6BCB77',s:'_______ we met before?',c:['Has','Have','Did'],a:'Have',f:'Have + We — Have goes first!'},
+    {ch:'MIKE',sc:'#C77DFF',s:'Has Mike _______ his dinner?',c:['eat','ate','eaten'],a:'eaten',f:'Has + past participle — eaten!'},
+    {ch:'CROWD',sc:'#6BCB77',s:'_______ they finished yet?',c:['Has','Have','Did'],a:'Have',f:'Have + They — Have goes first!'},
+    {ch:'SARA',sc:'#6BCB77',s:'Have they arrived? — Yes, they _______.',c:["haven't",'have','did'],a:'have',f:'Short answer: Yes, they have!'},
+    {ch:'TOM',sc:'#C77DFF',s:'Has Tom _______ the test?',c:['pass','passing','passed'],a:'passed',f:'Has + past participle — passed!'},
+    {ch:'LISA',sc:'#C77DFF',s:'_______ Lisa won the prize?',c:['Have','Has','Did'],a:'Has',f:'Has + Lisa (= she) — Has goes first!'},
+    {ch:'BOY',sc:'#6BCB77',s:'Have you studied? — Yes, I _______.',c:["haven't",'have','had'],a:'have',f:'Short answer: Yes, I have!'},
+    {ch:'GROUP',sc:'#6BCB77',s:'_______ we ever been to Paris?',c:['Has','Have','Did'],a:'Have',f:'Have + We — Have goes first!'},
+  ],
+};
+
+function buildMix(){return [...BANK.normal,...BANK.negative,...BANK.question].sort(()=>Math.random()-.5).slice(0,20);}
+const POOLS=[null,null,null,null];
+const STATE=[{q:0,score:0,pips:[]},{q:0,score:0,pips:[]},{q:0,score:0,pips:[]},{q:0,score:0,pips:[]}];
+const SCORES=[null,null,null,null];
+let curTab=0;
+
+function getPool(i){if(!POOLS[i]){const k=['normal','negative','question'];POOLS[i]=i<3?[...BANK[k[i]]].sort(()=>Math.random()-.5):buildMix();}return POOLS[i];}
+function switchTab(i){curTab=i;document.querySelectorAll('.section').forEach((s,j)=>s.classList.toggle('active',j===i));document.querySelectorAll('.tab-btn').forEach((b,j)=>b.classList.toggle('active',j===i));updatePB();}
+function updatePB(){const s=STATE[curTab];const p=getPool(curTab);document.getElementById('progress-bar').style.width=(s.q/p.length*100)+'%';}
+function startSection(i){const sec=document.getElementById(`sec-${i}`);sec.querySelector('.cover').style.display='none';sec.querySelector(`#qa-${i}`).style.display='flex';sec.querySelector(`#ss-${i}`).classList.remove('visible');renderQ(i);}
+function renderQ(i){
+  const pool=getPool(i);const s=STATE[i];const qa=document.getElementById(`qa-${i}`);
+  if(s.q>=pool.length){showScore(i);return;}
+  const q=pool[s.q];updatePB();
+  qa.innerHTML=`<div class="pip-row">${pool.map((_,pi)=>`<div class="pip ${pi<s.q?(s.pips[pi]?'correct':'wrong'):(pi===s.q?'current':'')}"></div>`).join('')}</div>
+  <div class="quiz-counter">Question ${s.q+1} / ${pool.length}</div>
+  <div class="quiz-char-wrap">${C[q.ch]||C.BOY}</div>
+  <div class="quiz-subject-badge" style="background:${q.sc}">${q.ch}</div>
+  <div class="quiz-sentence">${q.s.replace('_______','<span class="quiz-blank"></span>')}</div>
+  <div class="quiz-choices" id="ch-${i}"></div><div class="quiz-feedback" id="fb-${i}"></div>`;
+  const wrap=document.getElementById(`ch-${i}`);
+  [...q.c].sort(()=>Math.random()-.5).forEach(choice=>{const btn=document.createElement('button');btn.className='quiz-btn';btn.textContent=choice;btn.onclick=()=>ans(i,choice===q.a,btn,q.f,q.a);wrap.appendChild(btn);});
+}
+function ans(i,correct,btn,feedback,ca){
+  const pool=getPool(i);const s=STATE[i];
+  document.getElementById(`ch-${i}`).querySelectorAll('.quiz-btn').forEach(b=>b.disabled=true);
+  if(correct){btn.classList.add('correct');s.pips[s.q]=true;s.score++;document.getElementById(`fb-${i}`).textContent=feedback;spawnSparkle(btn.getBoundingClientRect().left+btn.offsetWidth/2,btn.getBoundingClientRect().top);confetti();s.q++;setTimeout(()=>renderQ(i),1500);}
+  else{btn.classList.add('wrong');s.pips[s.q]=false;document.getElementById(`fb-${i}`).textContent='Try again next time! Correct: '+ca;setTimeout(()=>{s.q++;renderQ(i);},1400);}
+}
+function showScore(i){
+  const pool=getPool(i);const s=STATE[i];SCORES[i]=s.score;
+  const pct=s.score/pool.length;
+  const msgs=['Keep practising! 💪','Good effort! 😊','Almost there! 🌟','Well done! 🎉','Perfect! 🏆'];
+  document.getElementById(`se-${i}`).textContent=pct===1?'🏆':pct>=0.8?'🎉':pct>=0.6?'🌟':'💪';
+  document.getElementById(`sv-${i}`).textContent=`${s.score} / ${pool.length}`;
+  document.getElementById(`sm-${i}`).textContent=msgs[Math.floor(pct*4.99)];
+  document.getElementById(`qa-${i}`).style.display='none';
+  document.getElementById(`ss-${i}`).classList.add('visible');
+  if(pct===1)confetti();
+}
+function restartSection(i){POOLS[i]=null;STATE[i]={q:0,score:0,pips:[]};SCORES[i]=null;const sec=document.getElementById(`sec-${i}`);sec.querySelector('.cover').style.display='flex';document.getElementById(`qa-${i}`).style.display='none';document.getElementById(`ss-${i}`).classList.remove('visible');}
+function showFinal(){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById('final-screen').classList.add('visible');[0,1,2].forEach(i=>{document.getElementById(`fs-${i}`).textContent=SCORES[i]!=null?`${SCORES[i]}/20`:'—';});const total=[0,1,2].reduce((a,i)=>a+(SCORES[i]||0),0);document.getElementById('final-total').textContent=`Total: ${total} / 60 🏆`;confetti();}
+function resetAll(){[0,1,2,3].forEach(i=>restartSection(i));document.getElementById('final-screen').classList.remove('visible');switchTab(0);}
+function spawnSparkle(x,y){const sp=['✨','⭐','🌟','💫'];for(let i=0;i<3;i++){const el=document.createElement('div');el.className='sparkle';el.textContent=sp[Math.floor(Math.random()*sp.length)];el.style.cssText=`left:${x-20+(Math.random()-.5)*60}px;top:${y-20+(Math.random()-.5)*40}px;animation-delay:${i*.12}s`;document.body.appendChild(el);setTimeout(()=>el.remove(),950);}}
+function confetti(){const cols=['#00B4D8','#6BCB77','#FFD93D','#FF6B6B','#C77DFF','#FF9F43','#fff'];for(let i=0;i<28;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*30}vh;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.5}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),1900);}}
+</script>
+
+</body>
+</html>
