@@ -39,26 +39,30 @@
   .section-label { font-family: 'Fredoka One', cursive; font-size: 22px; color: #777; text-align: center; margin-bottom: 32px; letter-spacing: 1px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
   .card { background: white; border-radius: 24px; padding: 32px 24px 28px; text-align: center; cursor: pointer; text-decoration: none; display: block; position: relative; overflow: hidden; border: 3px solid transparent; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; box-shadow: 0 6px 0 rgba(0,0,0,0.08); opacity: 0; transform: translateY(30px); animation: card-in 0.5s ease forwards; }
-  .card:nth-child(1) { animation-delay: 0.05s; } .card:nth-child(2) { animation-delay: 0.10s; } .card:nth-child(3) { animation-delay: 0.15s; } .card:nth-child(4) { animation-delay: 0.20s; } .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(1) { animation-delay: 0.05s; } .card:nth-child(2) { animation-delay: 0.10s; } .card:nth-child(3) { animation-delay: 0.15s; } .card:nth-child(4) { animation-delay: 0.20s; } .card:nth-child(5) { animation-delay: 0.25s; } .card:nth-child(6) { animation-delay: 0.30s; }
   @keyframes card-in { to { opacity: 1; transform: translateY(0); } }
   .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; border-radius: 24px 24px 0 0; }
   .card:hover { transform: translateY(-6px); box-shadow: 0 14px 0 rgba(0,0,0,0.08); }
-  .card-1::before { background: var(--orange); } .card:hover.card-1 { border-color: var(--orange); }
-  .card-2::before { background: var(--blue); } .card:hover.card-2 { border-color: var(--blue); }
-  .card-3::before { background: var(--green); } .card:hover.card-3 { border-color: var(--green); }
-  .card-4::before { background: var(--coral); } .card:hover.card-4 { border-color: var(--coral); }
-  .card-5::before { background: var(--purple); } .card:hover.card-5 { border-color: var(--purple); }
+  .card-1::before { background: var(--teal); } .card:hover.card-1 { border-color: var(--teal); }
+  .card-2::before { background: var(--orange); } .card:hover.card-2 { border-color: var(--orange); }
+  .card-3::before { background: var(--blue); } .card:hover.card-3 { border-color: var(--blue); }
+  .card-4::before { background: var(--green); } .card:hover.card-4 { border-color: var(--green); }
+  .card-5::before { background: var(--coral); } .card:hover.card-5 { border-color: var(--coral); }
+  .card-6::before { background: var(--purple); } .card:hover.card-6 { border-color: var(--purple); }
   .card-emoji { font-size: 48px; display: block; margin-bottom: 14px; line-height: 1; }
   .card-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--dark); margin-bottom: 8px; }
   .card-desc { font-size: 13px; color: #888; font-weight: 600; line-height: 1.5; }
   .card-badge { display: inline-block; margin-top: 14px; padding: 4px 14px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
-  .card-1 .card-badge { background: #fff4e8; color: #d47200; }
-  .card-2 .card-badge { background: #eef4ff; color: var(--blue); }
-  .card-3 .card-badge { background: #eefbf0; color: #3a9e46; }
-  .card-4 .card-badge { background: #fff0ee; color: var(--coral); }
-  .card-5 .card-badge { background: #f7eeff; color: #9a3de0; }
+  .card-1 .card-badge { background: #e0faf8; color: #1a9e95; }
+  .card-2 .card-badge { background: #fff4e8; color: #d47200; }
+  .card-3 .card-badge { background: #eef4ff; color: var(--blue); }
+  .card-4 .card-badge { background: #eefbf0; color: #3a9e46; }
+  .card-5 .card-badge { background: #fff0ee; color: var(--coral); }
+  .card-6 .card-badge { background: #f7eeff; color: #9a3de0; }
   .card-soon { opacity: 0.45 !important; cursor: default; pointer-events: none; }
   .card-soon::after { content: 'Coming Soon'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); font-family: 'Fredoka One', cursive; font-size: 20px; color: #aaa; border: 3px dashed #ccc; padding: 6px 16px; border-radius: 8px; white-space: nowrap; }
+  /* NEW badge on prepositions card */
+  .card-new-ribbon { position: absolute; top: 14px; right: -1px; background: var(--coral); color: white; font-family: 'Fredoka One', cursive; font-size: 12px; padding: 3px 12px 3px 10px; border-radius: 4px 0 0 4px; letter-spacing: .5px; box-shadow: -2px 2px 6px rgba(0,0,0,.12); }
   footer { position: relative; z-index: 1; text-align: center; padding: 20px; font-size: 13px; color: #aaa; font-weight: 600; }
 </style>
 </head>
@@ -75,35 +79,45 @@
   <p class="section-label">📦 Word Collections</p>
   <div class="grid">
 
-    <a href="around-the-house/index.html" class="card card-1">
+    <!-- PREPOSITIONS — active -->
+    <a href="prepositions/index.html" class="card card-1">
+      <span class="card-new-ribbon">✨ New</span>
+      <span class="card-emoji">📍</span>
+      <div class="card-title">Prepositions</div>
+      <div class="card-desc">in, on, under, behind & more!</div>
+      <span class="card-badge">Location</span>
+    </a>
+
+    <!-- AROUND THE HOUSE — coming soon -->
+    <div class="card card-2 card-soon">
       <span class="card-emoji">🏠</span>
       <div class="card-title">Around the House</div>
       <div class="card-desc">Furniture, rooms & everyday objects</div>
       <span class="card-badge">Places</span>
-    </a>
+    </div>
 
-    <div class="card card-2 card-soon">
+    <div class="card card-3 card-soon">
       <span class="card-emoji">🚌</span>
       <div class="card-title">Getting Around</div>
       <div class="card-desc">Vehicles & transportation</div>
       <span class="card-badge">Transport</span>
     </div>
 
-    <div class="card card-3 card-soon">
+    <div class="card card-4 card-soon">
       <span class="card-emoji">🏙️</span>
       <div class="card-title">Places in Town</div>
       <div class="card-desc">School, park, hospital & more</div>
       <span class="card-badge">Places</span>
     </div>
 
-    <div class="card card-4 card-soon">
+    <div class="card card-5 card-soon">
       <span class="card-emoji">🍎</span>
       <div class="card-title">Food & Drinks</div>
       <div class="card-desc">Yummy words for little foodies</div>
       <span class="card-badge">Food</span>
     </div>
 
-    <div class="card card-5 card-soon">
+    <div class="card card-6 card-soon">
       <span class="card-emoji">🐘</span>
       <div class="card-title">Animals</div>
       <div class="card-desc">Wild, farm & ocean creatures</div>
