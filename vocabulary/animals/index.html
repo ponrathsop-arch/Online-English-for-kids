@@ -126,16 +126,16 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 
 /* ── MATCH ── */
 #match-screen{padding-top:14px;max-width:100%!important;}
-.match-layout{display:flex;gap:16px;justify-content:center;align-items:flex-start;padding:0 16px;max-width:900px;margin:0 auto;}
-.match-img-col{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex:1;}
-.match-word-col{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex:1;}
-.match-img-card{background:rgba(255,255,255,.9);border-radius:14px;padding:6px;cursor:pointer;border:3px solid transparent;transition:all .22s;box-shadow:0 3px 12px rgba(0,0,0,.08);aspect-ratio:1;display:flex;align-items:center;justify-content:center;}
-.match-img-card img{width:100%;height:100%;object-fit:cover;border-radius:9px;display:block;}
-.match-img-card .m-ph{font-size:2rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
+.match-layout{display:flex;gap:20px;justify-content:center;align-items:flex-start;padding:0 10px;max-width:98vw;margin:0 auto;}
+.match-img-col{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex:1;}
+.match-word-col{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex:1;}
+.match-img-card{background:rgba(255,255,255,.9);border-radius:16px;padding:8px;cursor:pointer;border:3px solid transparent;transition:all .22s;box-shadow:0 3px 12px rgba(0,0,0,.08);aspect-ratio:1;display:flex;align-items:center;justify-content:center;}
+.match-img-card img{width:100%;height:100%;object-fit:cover;border-radius:10px;display:block;}
+.match-img-card .m-ph{font-size:2.4rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
 .match-img-card.selected{border-color:var(--blue);transform:scale(1.05);}
 .match-img-card.correct{border-color:var(--green);opacity:.5;pointer-events:none;}
 .match-img-card.wrong{animation:shake .4s;}
-.match-word-pill{border:2px solid transparent;border-radius:14px;padding:0;font-family:'Fredoka One',cursive;font-size:1rem;background:rgba(255,255,255,.9);box-shadow:0 3px 10px rgba(0,0,0,.09);cursor:pointer;color:var(--text);transition:all .2s;aspect-ratio:1;display:flex;align-items:center;justify-content:center;text-align:center;width:100%;}
+.match-word-pill{border:2px solid transparent;border-radius:16px;padding:0;font-family:'Fredoka One',cursive;font-size:1.1rem;background:rgba(255,255,255,.9);box-shadow:0 3px 10px rgba(0,0,0,.09);cursor:pointer;color:var(--text);transition:all .2s;aspect-ratio:1;display:flex;align-items:center;justify-content:center;text-align:center;width:100%;}
 .match-word-pill.selected{border-color:var(--blue);background:rgba(59,130,246,.1);}
 .match-word-pill.correct{background:var(--green);color:#fff;pointer-events:none;}
 .match-word-pill.wrong{animation:shake .4s;border-color:var(--coral);}
@@ -165,8 +165,8 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 /* ── MEMORY ── */
 #memory-screen{padding-top:14px;max-width:100%!important;}
 .mem-status{text-align:center;font-size:1rem;color:var(--muted);margin-bottom:10px;font-weight:900;}
-.mem-two-col{display:flex;gap:20px;justify-content:center;align-items:flex-start;padding:0 20px;}
-.mem-col{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;max-width:46vw;}
+.mem-two-col{display:flex;gap:24px;justify-content:center;align-items:flex-start;padding:0 10px;}
+.mem-col{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;flex:1;max-width:48vw;}
 .mem-col-title{font-family:'Fredoka One',cursive;font-size:1rem;text-align:center;margin-bottom:8px;color:var(--purple);}
 .mem-card{width:100%;aspect-ratio:1;perspective:600px;cursor:pointer;min-height:100px;}
 .mem-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .4s cubic-bezier(.34,1.2,.64,1);border-radius:16px;}
@@ -224,6 +224,22 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .voca-comp{display:none;flex-direction:column;align-items:center;gap:14px;text-align:center;padding:20px;}
 .voca-comp.on{display:flex;animation:fadeUp .5s ease;}
 
+/* ── SPELLING ── */
+#spell-screen{padding-top:14px;}
+.spell-card{background:rgba(255,255,255,.92);border-radius:22px;box-shadow:0 5px 22px rgba(0,0,0,.09);padding:28px 20px;text-align:center;border-top:5px solid var(--purple);margin-bottom:14px;}
+.spell-img{width:180px;height:180px;object-fit:cover;border-radius:16px;margin:0 auto 20px;display:block;box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.spell-img-ph{width:180px;height:180px;border-radius:16px;margin:0 auto 20px;display:none;align-items:center;justify-content:center;font-size:5rem;background:rgba(0,0,0,.05);}
+.spell-prompt{font-size:.9rem;color:var(--muted);margin-bottom:14px;font-weight:800;}
+.spell-choices{display:flex;flex-direction:column;gap:10px;max-width:340px;margin:0 auto 12px;}
+.spell-choice{border:2px solid #e5e7eb;border-radius:16px;padding:14px 20px;font-family:'Fredoka One',cursive;font-size:1.3rem;cursor:pointer;transition:all .2s;background:#fff;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.07);letter-spacing:.5px;}
+.spell-choice:hover:not(:disabled){border-color:var(--purple);background:rgba(124,58,237,.05);}
+.spell-choice.correct-spell{background:var(--green);color:#fff;border-color:var(--green);}
+.spell-choice.wrong-spell{animation:shake .4s;border-color:var(--coral);background:rgba(255,107,107,.08);}
+.spell-choice:disabled{cursor:default;opacity:.7;}
+.spell-next-btn{display:none;background:var(--purple);color:#fff;border:none;border-radius:50px;padding:13px 36px;font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;transition:transform .15s;margin-top:4px;}
+.spell-next-btn.show{display:inline-block;}
+.spell-next-btn:hover{transform:scale(1.05);}
+
 #footer{text-align:center;padding:22px 16px 10px;font-size:.76rem;color:var(--muted);position:relative;z-index:1;}
 </style>
 </head>
@@ -262,6 +278,12 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
       <span><span class="hsb-name">Vocabinder</span><span class="hsb-desc">Swipe &amp; guess the animal!</span></span>
     </button>
   </div>
+  <div class="home-sec-btns" style="margin-top:-16px;">
+    <button class="home-sec-btn" onclick="startActivity('spell')" style="background:var(--coral);">
+      <span class="hsb-icon">🔤</span>
+      <span><span class="hsb-name">Spelling</span><span class="hsb-desc">Pick the correct spelling!</span></span>
+    </button>
+  </div>
   <div id="footer">Pang made with ❤️ for kids learning English</div>
 </div>
 
@@ -274,6 +296,7 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   <button class="bnav-btn match-btn" id="bn-match" onclick="bnActivity('match')"><span class="bn-icon">🎯</span>Match</button>
   <button class="bnav-btn" id="bn-mem" onclick="bnActivity('memory')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;color:var(--muted);padding:4px 2px;transition:all .18s;"><span class="bn-icon" style="font-size:17px;line-height:1;">🧠</span>Memory</button>
   <button class="bnav-btn fill-btn"  id="bn-fill"  onclick="bnActivity('fill')"><span class="bn-icon">✏️</span>Fill</button>
+  <button class="bnav-btn" id="bn-spell" onclick="bnActivity('spell')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;color:var(--muted);padding:4px 2px;transition:all .18s;"><span class="bn-icon" style="font-size:17px;line-height:1;">🔤</span>Spell</button>
   <button class="bnav-btn" id="bn-sum" onclick="bnActivity('summary')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;color:var(--muted);padding:4px 2px;transition:all .18s;"><span class="bn-icon" style="font-size:17px;line-height:1;">📋</span>All</button>
 </div>
 
@@ -452,16 +475,38 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   </div>
 </div>
 
+<!-- ═══ SPELLING ═══ -->
+<div id="spell-screen" class="screen">
+  <div class="fc-topbar">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--coral);">🔤 Spelling</div>
+    <div class="fc-progress" id="spell-progress"></div>
+  </div>
+  <div id="spell-main"></div>
+  <div id="spell-finish" style="display:none;">
+    <div class="finish-card">
+      <div class="trophy">🏆</div>
+      <div class="finish-title">Great Spelling!</div>
+      <div class="finish-sub" id="spell-finish-sub"></div>
+      <div class="btn-row">
+        <button class="pill-btn btn-orange" onclick="initSpell()">Play Again</button>
+        <button class="pill-btn btn-purple" onclick="goHome()">Menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div><!-- #app -->
 
 <script>
 // ══════════════════════════════════════
 // DATA
 // ══════════════════════════════════════
-const EMOJIS={cat:'🐱',dog:'🐶',fish:'🐟',bird:'🐦',elephant:'🐘',giraffe:'🦒',tiger:'🐯',zebra:'🦓',monkey:'🐒',crocodile:'🐊',spider:'🕷️',snake:'🐍',frog:'🐸',cow:'🐄',goat:'🐐',sheep:'🐑',horse:'🐴','polar bear':'🐻‍❄️',hippo:'🦛',parrot:'🦜',rhino:'🦏',donkey:'🫏'};
+const EMOJIS={cat:'🐱',dog:'🐶',fish:'🐟',bird:'🐦',elephant:'🐘',giraffe:'🦒',tiger:'🐯',zebra:'🦓',monkey:'🐒',crocodile:'🐊',spider:'🕷️',donkey:'🫏',lizard:'🦎',snake:'🐍',frog:'🐸',cow:'🐄',goat:'🐐',sheep:'🐑',horse:'🐴','polar bear':'🐻‍❄️',hippo:'🦛',parrot:'🦜',rhino:'🦏',mouse:'🐭',chicken:'🐔'};
 const ACCENTS=['#7C3AED','#FF6B6B','#3B82F6','#6BCB77','#FF9F43','#FFD93D','#7C3AED','#FF6B6B','#3B82F6','#6BCB77'];
 
 const ANIMALS=[
+  // ── SET 0 (13) ──
   {id:'cat',      word:'Cat',        set:0, sentences:['This is a cat.','The cat is small and soft.','The cat likes milk.'],                                       fillQ:'The {blank} is drinking milk.'},
   {id:'dog',      word:'Dog',        set:0, sentences:['This is a dog.','The dog likes to run.','The dog is a good friend.'],                                      fillQ:'The {blank} is running in the park.'},
   {id:'fish',     word:'Fish',       set:0, sentences:['This is a fish.','The fish swims in water.','The fish has fins.'],                                         fillQ:'The {blank} is swimming in the water.'},
@@ -473,6 +518,9 @@ const ANIMALS=[
   {id:'monkey',   word:'Monkey',     set:0, sentences:['This is a monkey.','The monkey likes bananas.','The monkey can climb trees.'],                             fillQ:'The {blank} is eating a banana.'},
   {id:'crocodile',word:'Crocodile',  set:0, sentences:['This is a crocodile.','The crocodile lives in water.','The crocodile has big teeth.'],                     fillQ:'The {blank} is swimming in the river.'},
   {id:'spider',   word:'Spider',     set:0, sentences:['This is a spider.','The spider has eight legs.','The spider makes a web.'],                                fillQ:'The {blank} is making a web.'},
+  {id:'donkey',   word:'Donkey',     set:0, sentences:['This is a donkey.','The donkey is gray or brown.','The donkey eats grass.'],                               fillQ:'The {blank} is eating grass.'},
+  {id:'lizard',   word:'Lizard',     set:0, sentences:['This is a lizard.','The lizard is small.','The lizard sits on a rock.'],                                   fillQ:'The {blank} is sitting on a rock.'},
+  // ── SET 1 (13) ──
   {id:'snake',    word:'Snake',      set:1, sentences:['This is a snake.','The snake is long.','The snake has no legs.'],                                          fillQ:'The {blank} is moving on the ground.'},
   {id:'frog',     word:'Frog',       set:1, sentences:['This is a frog.','The frog can jump.','The frog is green.'],                                              fillQ:'The {blank} is jumping.'},
   {id:'cow',      word:'Cow',        set:1, sentences:['This is a cow.','The cow gives milk.','The cow eats grass.'],                                              fillQ:'The {blank} is eating grass.'},
@@ -483,7 +531,8 @@ const ANIMALS=[
   {id:'hippo',    word:'Hippo',      set:1, sentences:['This is a hippo.','The hippo is big and lives in water.','The hippo has a big mouth.'],                    fillQ:'The {blank} is sitting in the water.'},
   {id:'parrot',   word:'Parrot',     set:1, sentences:['This is a parrot.','The parrot has many colors.','The parrot can talk.'],                                  fillQ:'The {blank} is talking.'},
   {id:'rhino',    word:'Rhino',      set:1, sentences:['This is a rhino.','The rhino has a big horn.','The rhino is very strong.'],                                fillQ:'The {blank} is walking in the grass.'},
-  {id:'donkey',   word:'Donkey',     set:1, sentences:['This is a donkey.','The donkey is gray or brown.','The donkey eats grass.'],                               fillQ:'The {blank} is eating grass.'},
+  {id:'mouse',    word:'Mouse',      set:1, sentences:['This is a mouse.','The mouse is small.','The mouse eats cheese.'],                                         fillQ:'The {blank} is eating cheese.'},
+  {id:'chicken',  word:'Chicken',    set:1, sentences:['This is a chicken.','The chicken lives on a farm.','The chicken lays eggs.'],                              fillQ:'The {blank} is laying eggs.'},
 ];
 
 // ══════════════════════════════════════
@@ -549,6 +598,10 @@ function updateBnavActivity(act){
   sumBtn.classList.toggle('active', act==='summary');
   if(act==='summary'){sumBtn.style.background='var(--green)';sumBtn.style.color='#fff';}
   else{sumBtn.style.background='';sumBtn.style.color='';}
+  const spellBtn=document.getElementById('bn-spell');
+  spellBtn.classList.toggle('active', act==='spell');
+  if(act==='spell'){spellBtn.style.background='var(--coral)';spellBtn.style.color='#fff';}
+  else{spellBtn.style.background='';spellBtn.style.color='';}
   // memory btn active colour
   const memBtn=document.getElementById('bn-mem');
   if(act==='memory'){memBtn.style.background='var(--purple)';memBtn.style.color='#fff';}
@@ -597,6 +650,11 @@ function startActivity(act){
     document.getElementById('fill-finish').style.display='none';
     document.getElementById('fill-main').style.display='block';
     renderFill();
+  } else if(act==='spell'){
+    showScreen('spell-screen');
+    document.getElementById('spell-finish').style.display='none';
+    document.getElementById('spell-main').style.display='block';
+    initSpell();
   }
 }
 
@@ -1168,6 +1226,98 @@ function vcStartDrag(x){
   document.addEventListener('mouseup',mu);
   document.addEventListener('touchmove',tm,{passive:false});
   document.addEventListener('touchend',tu);
+}
+
+// ══════════════════════════════════════
+// SPELLING GAME
+// ══════════════════════════════════════
+let spellList=[], spellIdx=0, spellAnswered=false;
+
+// Generate plausible misspellings of a word
+function makeMisspellings(word, count){
+  const w=word.toLowerCase();
+  const variants=new Set();
+  const ops=[
+    // double a random vowel
+    s=>{ const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0); if(!vs.length)return null; const i=vs[Math.floor(Math.random()*vs.length)]; return s.slice(0,i)+s[i]+s.slice(i); },
+    // swap two adjacent letters
+    s=>{ if(s.length<3)return null; const i=Math.floor(Math.random()*(s.length-1)); const a=[...s]; [a[i],a[i+1]]=[a[i+1],a[i]]; return a.join(''); },
+    // drop a letter
+    s=>{ if(s.length<4)return null; const i=1+Math.floor(Math.random()*(s.length-2)); return s.slice(0,i)+s.slice(i+1); },
+    // replace a vowel with another vowel
+    s=>{ const vowels='aeiou'; const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0); if(!vs.length)return null; const i=vs[Math.floor(Math.random()*vs.length)]; const v=vowels[Math.floor(Math.random()*5)]; return s.slice(0,i)+v+s.slice(i+1); },
+    // add extra letter at random interior position
+    s=>{ const i=1+Math.floor(Math.random()*(s.length-1)); const c='aeioulnrst'[Math.floor(Math.random()*10)]; return s.slice(0,i)+c+s.slice(i); },
+  ];
+  let attempts=0;
+  while(variants.size<count && attempts<80){
+    attempts++;
+    const op=ops[Math.floor(Math.random()*ops.length)];
+    const v=op(w);
+    if(v && v!==w && v.length>1) variants.add(v);
+  }
+  // fallback: if not enough, pad with simple variants
+  const fallbacks=['phant','fant','fent','ant','ent','ont','unt'].map(s=>w.slice(0,-2)+s).filter(s=>s!==w);
+  for(const f of fallbacks){ if(variants.size>=count)break; if(f!==w) variants.add(f); }
+  return [...variants].slice(0,count);
+}
+
+function initSpell(){
+  spellList=shuffle([...setAnimals()]);
+  spellIdx=0;
+  document.getElementById('spell-finish').style.display='none';
+  document.getElementById('spell-main').style.display='block';
+  renderSpell();
+}
+
+function renderSpell(){
+  const total=spellList.length;
+  document.getElementById('spell-progress').textContent=(spellIdx+1)+' / '+total;
+  const a=spellList[spellIdx];
+  spellAnswered=false;
+
+  const misspellings=makeMisspellings(a.word, 2);
+  // capitalise first letter of each choice
+  const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+  const choices=shuffle([a.word, ...misspellings.map(cap)]);
+
+  const spellEmoji=EMOJIS[a.id]||'❓';
+  const main=document.getElementById('spell-main');
+  main.innerHTML=`
+    <div class="spell-card">
+      <img class="spell-img" src="${imgSrc(a.id,'2')}" alt="${a.word}"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="spell-img-ph">${spellEmoji}</div>
+      <div class="spell-prompt">Which spelling is correct?</div>
+      <div class="spell-choices">
+        ${choices.map(c=>`<button class="spell-choice" onclick="spellCheck(this,'${c.replace(/'/g,"\\'")}','${a.word.replace(/'/g,"\\'")}')">${c}</button>`).join('')}
+      </div>
+      <button class="spell-next-btn" id="spell-next-btn" onclick="spellNext()">Next →</button>
+    </div>`;
+}
+
+function spellCheck(btn, chosen, correct){
+  if(spellAnswered) return;
+  if(chosen===correct){
+    spellAnswered=true;
+    btn.classList.add('correct-spell');
+    document.querySelectorAll('.spell-choice').forEach(b=>b.disabled=true);
+    document.getElementById('spell-next-btn').classList.add('show');
+  } else {
+    btn.classList.add('wrong-spell');
+    setTimeout(()=>btn.classList.remove('wrong-spell'), 500);
+  }
+}
+
+function spellNext(){
+  spellIdx++;
+  if(spellIdx>=spellList.length){
+    document.getElementById('spell-main').style.display='none';
+    document.getElementById('spell-finish-sub').textContent='You spelled all '+spellList.length+' animals! 🎉';
+    document.getElementById('spell-finish').style.display='block';
+  } else {
+    renderSpell();
+  }
 }
 
 // ══════════════════════════════════════
