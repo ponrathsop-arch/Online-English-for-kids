@@ -54,8 +54,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .bnav-btn.set4-btn.active{background:var(--orange);}
 .bnav-btn.wf-btn.active{background:var(--purple);}
 .bnav-btn.pf-btn.active{background:var(--blue);}
-.bnav-btn.match-btn.active{background:var(--orange);}
-.bnav-btn.fill-btn.active{background:var(--yellow);color:var(--text)!important;}
 .bnav-btn.mem-btn.active{background:var(--purple);color:#fff;}
 .bnav-btn.sum-btn.active{background:var(--green);color:#fff;}
 
@@ -122,43 +120,7 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .btn-orange{background:var(--orange);}
 .btn-purple{background:var(--purple);}
 
-/* ── MATCH ── */
-#match-screen{padding-top:14px;max-width:100%!important;}
-.match-layout{display:flex;gap:16px;justify-content:center;align-items:flex-start;padding:0 16px;max-width:900px;margin:0 auto;}
-.match-img-col{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex:1;}
-.match-word-col{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex:1;}
-.match-img-card{background:rgba(255,255,255,.9);border-radius:14px;padding:6px;cursor:pointer;border:3px solid transparent;transition:all .22s;box-shadow:0 3px 12px rgba(0,0,0,.08);aspect-ratio:1;display:flex;align-items:center;justify-content:center;}
-.match-img-card img{width:100%;height:100%;object-fit:cover;border-radius:9px;display:block;}
-.match-img-card .m-ph{font-size:2rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
-.match-img-card.selected{border-color:var(--blue);transform:scale(1.05);}
-.match-img-card.correct{border-color:var(--green);opacity:.5;pointer-events:none;}
-.match-img-card.wrong{animation:shake .4s;}
-.match-word-pill{border:2px solid transparent;border-radius:14px;padding:0;font-family:'Fredoka One',cursive;font-size:.9rem;background:rgba(255,255,255,.9);box-shadow:0 3px 10px rgba(0,0,0,.09);cursor:pointer;color:var(--text);transition:all .2s;aspect-ratio:1;display:flex;align-items:center;justify-content:center;text-align:center;width:100%;}
-.match-word-pill.selected{border-color:var(--blue);background:rgba(59,130,246,.1);}
-.match-word-pill.correct{background:var(--green);color:#fff;pointer-events:none;}
-.match-word-pill.wrong{animation:shake .4s;border-color:var(--coral);}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-7px);}75%{transform:translateX(7px);}}
-
-/* ── FILL ── */
-#fill-screen{padding-top:14px;}
-.fill-card{background:rgba(255,255,255,.92);border-radius:22px;box-shadow:0 5px 22px rgba(0,0,0,.09);padding:24px 18px;text-align:center;border-top:5px solid var(--orange);}
-.fill-img{width:155px;height:155px;object-fit:cover;border-radius:14px;margin:0 auto 14px;display:block;box-shadow:0 4px 16px rgba(0,0,0,.1);}
-.fill-img-ph{width:155px;height:155px;border-radius:14px;margin:0 auto 14px;display:none;align-items:center;justify-content:center;font-size:3.8rem;background:rgba(0,0,0,.05);}
-.fill-sentence{font-size:1.12rem;line-height:1.7;margin-bottom:18px;}
-.fill-blank{display:inline-block;border-bottom:3px solid var(--blue);min-width:88px;padding:0 8px;font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--blue);transition:all .3s;}
-.fill-blank.correct{color:var(--green);border-color:var(--green);}
-.fill-choices{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-bottom:10px;}
-.fill-choice{border:2px solid transparent;border-radius:50px;padding:10px 20px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.94rem;background:rgba(255,255,255,.9);box-shadow:0 3px 12px rgba(0,0,0,.09);cursor:pointer;color:var(--text);transition:all .2s;}
-.fill-choice:hover:not(:disabled){border-color:var(--blue);}
-.fill-choice.correct-choice{background:var(--green);color:#fff;border-color:var(--green);}
-.fill-choice.wrong-choice{animation:shake .4s;border-color:var(--coral);}
-.fill-choice:disabled{opacity:.6;cursor:default;}
-.fill-feedback{min-height:20px;font-size:.88rem;margin-bottom:8px;}
-.fill-feedback.ok{color:var(--green);}
-.fill-feedback.no{color:var(--coral);}
-.fill-next-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:50px;padding:12px 32px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.97rem;cursor:pointer;transition:transform .15s;margin-top:2px;}
-.fill-next-btn.show{display:inline-block;}
-.fill-next-btn:hover{transform:scale(1.05);}
 
 /* ── MEMORY ── */
 #memory-screen{padding-top:14px;max-width:100%!important;}
@@ -219,6 +181,23 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .voca-comp.on{display:flex;animation:fadeUp .5s ease;}
 
 #footer{text-align:center;padding:22px 16px 10px;font-size:.76rem;color:var(--muted);position:relative;z-index:1;}
+
+/* ── SPELLING GAME ── */
+#spell-screen{padding-top:14px;}
+.spell-card{background:rgba(255,255,255,.92);border-radius:22px;box-shadow:0 5px 22px rgba(0,0,0,.09);padding:24px 18px;text-align:center;border-top:5px solid var(--purple);}
+.spell-img{width:180px;height:180px;object-fit:cover;border-radius:16px;margin:0 auto 14px;display:block;box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.spell-img-ph{width:180px;height:180px;border-radius:16px;margin:0 auto 14px;display:none;align-items:center;justify-content:center;font-size:4rem;background:rgba(0,0,0,.05);}
+.spell-prompt{font-size:.88rem;color:var(--muted);margin-bottom:16px;font-weight:900;}
+.spell-choices{display:flex;flex-direction:column;gap:10px;max-width:340px;margin:0 auto 10px;}
+.spell-choice{border:2px solid transparent;border-radius:50px;padding:13px 20px;font-family:'Fredoka One',cursive;font-size:1.3rem;background:rgba(255,255,255,.9);box-shadow:0 3px 12px rgba(0,0,0,.09);cursor:pointer;color:var(--text);transition:all .2s;}
+.spell-choice:hover:not(:disabled){border-color:var(--purple);}
+.spell-choice.correct-spell{background:var(--green);color:#fff;border-color:var(--green);}
+.spell-choice.wrong-spell{animation:shake .4s;border-color:var(--coral);}
+.spell-choice:disabled{opacity:.6;cursor:default;}
+.spell-next-btn{display:none;background:var(--purple);color:#fff;border:none;border-radius:50px;padding:12px 32px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.97rem;cursor:pointer;transition:transform .15s;margin-top:8px;}
+.spell-next-btn.show{display:inline-block;}
+.spell-next-btn:hover{transform:scale(1.05);}
+.bnav-btn.spell-btn.active{background:var(--coral);color:#fff;}
 </style>
 </head>
 <body>
@@ -256,6 +235,12 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
       <span><span class="hsb-name">Vocabinder</span><span class="hsb-desc">Swipe &amp; guess the person!</span></span>
     </button>
   </div>
+  <div class="home-sec-btns" style="max-width:340px;margin:-16px auto 28px;">
+    <button class="home-sec-btn" style="background:var(--coral);flex:none;width:100%;" onclick="startActivity('spell')">
+      <span class="hsb-icon">🔤</span>
+      <span><span class="hsb-name">Spelling</span><span class="hsb-desc">Pick the correct spelling!</span></span>
+    </button>
+  </div>
   <div id="footer">Pang made with ❤️ for kids learning English</div>
 </div>
 
@@ -267,9 +252,8 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   <button class="bnav-btn set4-btn" id="bn-s4" onclick="bnSwitch(3)"><span class="bn-icon">🤝</span>Set 4</button>
   <button class="bnav-btn wf-btn"   id="bn-wf"   onclick="bnActivity('learn11')"><span class="bn-icon">📖</span>Word</button>
   <button class="bnav-btn pf-btn"   id="bn-pf"   onclick="bnActivity('learn12')"><span class="bn-icon">🖼️</span>Pic</button>
-  <button class="bnav-btn match-btn" id="bn-match" onclick="bnActivity('match')"><span class="bn-icon">🎯</span>Match</button>
   <button class="bnav-btn mem-btn"  id="bn-mem"  onclick="bnActivity('memory')"><span class="bn-icon">🧠</span>Mem</button>
-  <button class="bnav-btn fill-btn" id="bn-fill" onclick="bnActivity('fill')"><span class="bn-icon">✏️</span>Fill</button>
+  <button class="bnav-btn spell-btn" id="bn-spell" onclick="bnActivity('spell')"><span class="bn-icon">🔤</span>Spell</button>
   <button class="bnav-btn sum-btn"  id="bn-sum"  onclick="bnActivity('summary')"><span class="bn-icon">📋</span>All</button>
 </div>
 
@@ -313,32 +297,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   </div>
 </div>
 
-<!-- ═══ MATCH ═══ -->
-<div id="match-screen" class="screen">
-  <div class="fc-topbar">
-    <button class="back-btn" onclick="goHome()">← Back</button>
-    <div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--green);">🎯 Match</div>
-    <div style="font-size:.83rem;color:var(--muted);" id="match-score-top">0 matched</div>
-  </div>
-  <div id="match-main">
-    <div class="match-layout">
-      <div class="match-img-col" id="match-grid"></div>
-      <div class="match-word-col" id="match-words"></div>
-    </div>
-  </div>
-  <div id="match-finish" style="display:none;">
-    <div class="finish-card">
-      <div class="trophy">🏆</div>
-      <div class="finish-title">All Matched!</div>
-      <div class="finish-sub" id="match-finish-msg"></div>
-      <div class="btn-row">
-        <button class="pill-btn btn-orange" onclick="initMatch()">Try Again</button>
-        <button class="pill-btn btn-purple" onclick="goHome()">Menu</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ═══ MEMORY ═══ -->
 <div id="memory-screen" class="screen">
   <div class="fc-topbar">
@@ -364,27 +322,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
       <div class="btn-row">
         <button class="pill-btn btn-purple" onclick="initMemory()">Play Again</button>
         <button class="pill-btn btn-orange" onclick="goHome()">Menu</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ FILL ═══ -->
-<div id="fill-screen" class="screen">
-  <div class="fc-topbar">
-    <button class="back-btn" onclick="goHome()">← Back</button>
-    <div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--orange);">✏️ Fill in the Blank</div>
-    <div class="fc-progress" id="fill-progress"></div>
-  </div>
-  <div id="fill-main"></div>
-  <div id="fill-finish" style="display:none;">
-    <div class="finish-card">
-      <div class="trophy">🏆</div>
-      <div class="finish-title">Amazing!</div>
-      <div class="finish-sub">You answered all the questions!</div>
-      <div class="btn-row">
-        <button class="pill-btn btn-orange" onclick="initFill()">Play Again</button>
-        <button class="pill-btn btn-purple" onclick="goHome()">Menu</button>
       </div>
     </div>
   </div>
@@ -440,6 +377,27 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   </div>
 </div>
 
+<!-- ═══ SPELLING ═══ -->
+<div id="spell-screen" class="screen">
+  <div class="fc-topbar">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--coral);">🔤 Spelling</div>
+    <div class="fc-progress" id="spell-progress"></div>
+  </div>
+  <div id="spell-main"></div>
+  <div id="spell-finish" style="display:none;">
+    <div class="finish-card">
+      <div class="trophy">🏆</div>
+      <div class="finish-title">Great Spelling!</div>
+      <div class="finish-sub">You finished all the words!</div>
+      <div class="btn-row">
+        <button class="pill-btn btn-orange" onclick="initSpell()">Play Again</button>
+        <button class="pill-btn btn-purple" onclick="goHome()">Menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div><!-- #app -->
 
 <script>
@@ -460,150 +418,163 @@ const ACCENTS = ['#7C3AED','#FF6B6B','#3B82F6','#6BCB77','#FF9F43','#FFD93D','#7
 const WORDS = [
   // ── SET 0: Basic People ──
   {
-    id:'baby', word:'Baby', set:0,
+    id:'baby', word:'baby', set:0,
     sentences:['The baby is sleeping in the bed.','The baby is very small and quiet.','Everyone loves the baby.'],
     fillQ:'The {blank} is sleeping in the bed.'
   },
   {
-    id:'boy', word:'Boy', set:0,
-    sentences:['The boy is running in the park.','The boy has a blue bag on his back.','The boy likes to play football.'],
+    id:'boy', word:'boy', set:0,
+    sentences:['The boy is running in the park.','The boy is wearing a red shirt.','The boy likes to play football.'],
     fillQ:'The {blank} is running in the park.'
   },
   {
-    id:'girl', word:'Girl', set:0,
+    id:'girl', word:'girl', set:0,
     sentences:['The girl is happy today.','The girl is wearing a nice dress.','The girl likes to read books.'],
     fillQ:'The {blank} is happy today.'
   },
   {
-    id:'child', word:'Child', set:0,
+    id:'child', word:'child', set:0,
     sentences:['The child is playing in the room.','The child is having fun with toys.','Every child loves to play.'],
     fillQ:'The {blank} is playing in the room.'
   },
   {
-    id:'children', word:'Children', set:0,
+    id:'children', word:'children', set:0,
     sentences:['The children are playing in the park.','The children are laughing together.','The children are very happy.'],
     fillQ:'The {blank} are playing in the park.'
   },
   {
-    id:'man', word:'Man', set:0,
-    sentences:['The man is tall and strong.','The man is walking on the street.','The man is wearing a hat.'],
+    id:'man', word:'man', set:0,
+    sentences:['The man is tall and strong.','The man is walking on the street.','The man is wearing blue pants.'],
     fillQ:'The {blank} is walking on the street.'
   },
   {
-    id:'men', word:'Men', set:0,
+    id:'men', word:'men', set:0,
     sentences:['The men are working in the office.','The men are talking together.','The men are very busy today.'],
     fillQ:'The {blank} are working in the office.'
   },
   {
-    id:'woman', word:'Woman', set:0,
-    sentences:['The woman is my teacher.','The woman is smiling in class.','The woman has long hair.'],
-    fillQ:'The {blank} is smiling in class.'
+    id:'woman', word:'woman', set:0,
+    sentences:['The woman is my teacher.','The woman is smiling.','The woman has short hair.'],
+    fillQ:'The {blank} is smiling.'
   },
   {
-    id:'women', word:'Women', set:0,
-    sentences:['The women are talking in the park.','The women are walking together.','The women are very kind.'],
+    id:'women', word:'women', set:0,
+    sentences:['The women are talking in the park.','The women are happy.','The women are very kind.'],
     fillQ:'The {blank} are talking in the park.'
   },
   {
-    id:'person', word:'Person', set:0,
+    id:'person', word:'person', set:0,
     sentences:['There is one person in the room.','The person is sitting on a chair.','The person is reading a book.'],
     fillQ:'There is one {blank} in the room.'
   },
   {
-    id:'people', word:'People', set:0,
-    sentences:['There are many people in the park.','The people are happy and relaxed.','The people are eating together.'],
+    id:'people', word:'people', set:0,
+    sentences:['There are many people in the park.','The people are happy and relaxed.','The people are eating and playing together.'],
     fillQ:'There are many {blank} in the park.'
   },
 
   // ── SET 1: Immediate Family ──
   {
-    id:'family', word:'Family', set:1,
-    sentences:['This is my family at home.','My family is happy together.','I love my family very much.'],
-    fillQ:'This is my {blank} at home.'
+    id:'family', word:'family', set:1,
+    sentences:['This is my family.','My family is happy together.','I love my family very much.'],
+    fillQ:'This is my {blank}.'
   },
   {
-    id:'mother', word:'Mother', set:1,
-    sentences:['This is my mother.','My mother is cooking in the kitchen.','My mother is very kind and loving.'],
+    id:'mother', word:'mother / mum', set:1,
+    spellWords:['mother','mum'],
+    sentences:['This is my mother.','My mum is cooking in the kitchen.','My mother is very kind.'],
     fillQ:'My {blank} is cooking in the kitchen.'
   },
   {
-    id:'father', word:'Father', set:1,
-    sentences:['My father is reading a book.','My father is driving a car.','My father is tall and strong.'],
+    id:'father', word:'father / dad', set:1,
+    spellWords:['father','dad'],
+    sentences:['My father is reading a book.','My dad is driving a car.','My father is tall and strong.'],
     fillQ:'My {blank} is reading a book.'
   },
   {
-    id:'parents', word:'Parents', set:1,
+    id:'parents', word:'parents', set:1,
     sentences:['My parents are at home.','My parents are happy together.','My parents take care of me.'],
     fillQ:'My {blank} are at home.'
   },
   {
-    id:'son', word:'Son', set:1,
+    id:'son', word:'son', set:1,
     sentences:['He is their son.','The son is playing football.','The son helps his father at home.'],
     fillQ:'The {blank} is playing football.'
   },
   {
-    id:'daughter', word:'Daughter', set:1,
+    id:'daughter', word:'daughter', set:1,
     sentences:['She is their daughter.','The daughter is singing a song.','The daughter helps her mother cook.'],
     fillQ:'The {blank} is singing a song.'
   },
   {
-    id:'brother', word:'Brother', set:1,
+    id:'brother', word:'brother', set:1,
     sentences:['My brother likes to run.','My brother is very funny.','My brother plays with me every day.'],
     fillQ:'My {blank} likes to run.'
   },
   {
-    id:'sister', word:'Sister', set:1,
+    id:'sister', word:'sister', set:1,
     sentences:['My sister likes to sing.','My sister is reading a book.','My sister is very kind to me.'],
     fillQ:'My {blank} likes to sing.'
   },
 
   // ── SET 2: Extended Family ──
   {
-    id:'grandmother', word:'Grandmother', set:2,
-    sentences:['My grandmother is very kind.','My grandmother is cooking food.','My grandmother tells me stories at night.'],
-    fillQ:'My {blank} is cooking food.'
+    id:'grandmother', word:'grandmother / grandma', set:2,
+    spellWords:['grandmother','grandma'],
+    sentences:['My grandmother is very kind.','My grandma is cooking food.','My grandmother tells me stories at night.'],
+    fillQ:'My {blank} is cooking food.',
+    noMatchFill:true
   },
   {
-    id:'grandfather', word:'Grandfather', set:2,
-    sentences:['My grandfather is old and wise.','My grandfather is watching TV.','My grandfather tells funny stories.'],
-    fillQ:'My {blank} is watching TV.'
+    id:'grandfather', word:'grandfather / grandad / grandpa', set:2,
+    spellWords:['grandfather','grandad','grandpa'],
+    sentences:['My grandfather is old and wise.','My grandad is watching TV.','My grandfather tells funny stories.'],
+    fillQ:'My {blank} is watching TV.',
+    noMatchFill:true
   },
   {
-    id:'uncle', word:'Uncle', set:2,
+    id:'uncle', word:'uncle', set:2,
     sentences:['This is my uncle.','My uncle is tall and friendly.','My uncle visits us every weekend.'],
-    fillQ:'This is my {blank}.'
+    fillQ:'This is my {blank}.',
+    noMatchFill:true
   },
   {
-    id:'aunt', word:'Aunt', set:2,
+    id:'aunt', word:'aunt', set:2,
     sentences:['This is my aunt.','My aunt is very nice.','My aunt brings me gifts.'],
-    fillQ:'This is my {blank}.'
+    fillQ:'This is my {blank}.',
+    noMatchFill:true
   },
   {
-    id:'cousin', word:'Cousin', set:2,
+    id:'cousin', word:'cousin', set:2,
     sentences:['This is my cousin.','My cousin is playing with me.','My cousin lives near my house.'],
-    fillQ:'This is my {blank}.'
+    fillQ:'This is my {blank}.',
+    noMatchFill:true
   },
 
   // ── SET 3: Other People ──
   {
-    id:'friend', word:'Friend', set:3,
+    id:'friend', word:'friend', set:3,
     sentences:['He is my friend.','We play together after school.','My friend is always kind to me.'],
-    fillQ:'He is my {blank}.'
+    fillQ:'He is my {blank}.',
+    noMatchFill:true
   },
   {
-    id:'classmate', word:'Classmate', set:3,
+    id:'classmate', word:'classmate', set:3,
     sentences:['She is my classmate.','We study in the same classroom.','My classmate sits next to me.'],
-    fillQ:'She is my {blank}.'
+    fillQ:'She is my {blank}.',
+    noMatchFill:true
   },
   {
-    id:'teacher', word:'Teacher', set:3,
+    id:'teacher', word:'teacher', set:3,
     sentences:['She is my teacher.','The teacher is talking in class.','My teacher helps me learn new things.'],
-    fillQ:'She is my {blank}.'
+    fillQ:'She is my {blank}.',
+    noMatchFill:true
   },
   {
-    id:'student', word:'Student', set:3,
-    sentences:['He is a student.','The student is writing in a notebook.','The student is listening to the teacher.'],
-    fillQ:'He is a {blank}.'
+    id:'student', word:'student', set:3,
+    sentences:['She is a student.','The student is writing in a notebook.','The student is listening to the teacher.'],
+    fillQ:'She is a {blank}.',
+    noMatchFill:true
   }
 ];
 
@@ -612,8 +583,6 @@ const WORDS = [
 // ══════════════════════════════════════
 let currentSet = 0;
 let fcMode = '', fcList = [], fcIdx = 0, fcTapState = 0;
-let matchSel = {img:null, word:null}, matchCorrect = 0;
-let fillIdx = 0, fillList = [], fillAnswered = false;
 let sumPage = 0;
 
 // ══════════════════════════════════════
@@ -681,9 +650,7 @@ function updateBnavSets(){
 function updateBnavActivity(act){
   document.getElementById('bn-wf').classList.toggle('active', act==='learn11');
   document.getElementById('bn-pf').classList.toggle('active', act==='learn12');
-  document.getElementById('bn-match').classList.toggle('active', act==='match');
   document.getElementById('bn-mem').classList.toggle('active', act==='memory');
-  document.getElementById('bn-fill').classList.toggle('active', act==='fill');
   const sumBtn = document.getElementById('bn-sum');
   sumBtn.classList.toggle('active', act==='summary');
   const memBtn = document.getElementById('bn-mem');
@@ -691,6 +658,10 @@ function updateBnavActivity(act){
   else { memBtn.style.background=''; memBtn.style.color=''; }
   if(act==='summary'){ sumBtn.style.background='var(--green)'; sumBtn.style.color='#fff'; }
   else { sumBtn.style.background=''; sumBtn.style.color=''; }
+  const spellBtn = document.getElementById('bn-spell');
+  spellBtn.classList.toggle('active', act==='spell');
+  if(act==='spell'){ spellBtn.style.background='var(--coral)'; spellBtn.style.color='#fff'; }
+  else { spellBtn.style.background=''; spellBtn.style.color=''; }
 }
 
 // ══════════════════════════════════════
@@ -711,11 +682,6 @@ function startActivity(act){
     document.getElementById('fc-slide').style.display = 'flex';
     document.querySelector('.fc-nav-row').style.display = 'flex';
     renderFC();
-  } else if(act === 'match'){
-    showScreen('match-screen');
-    document.getElementById('match-finish').style.display = 'none';
-    document.getElementById('match-main').style.display = 'block';
-    initMatch();
   } else if(act === 'memory'){
     showScreen('memory-screen');
     document.getElementById('mem-finish').style.display = 'none';
@@ -724,13 +690,11 @@ function startActivity(act){
     showScreen('summary-screen');
     sumPage = 0;
     renderSummary();
-  } else if(act === 'fill'){
-    fillList = shuffle([...setWords()]);
-    fillIdx = 0;
-    showScreen('fill-screen');
-    document.getElementById('fill-finish').style.display = 'none';
-    document.getElementById('fill-main').style.display = 'block';
-    renderFill();
+  } else if(act === 'spell'){
+    showScreen('spell-screen');
+    document.getElementById('spell-finish').style.display = 'none';
+    document.getElementById('spell-main').style.display = 'block';
+    initSpell();
   }
 }
 
@@ -774,7 +738,9 @@ function renderFC(){
   const a = fcList[fcIdx];
   const accent = ACCENTS[fcIdx % ACCENTS.length];
   document.getElementById('fc-progress').textContent = (fcIdx+1) + ' / ' + fcList.length;
-  document.getElementById('fc-word').textContent = a.word;
+  // display word: capitalise first letter only
+  const displayWord = a.word;
+  document.getElementById('fc-word').textContent = displayWord;
   document.getElementById('fc-word').style.color = accent;
   ['fc-s1','fc-s2','fc-s3'].forEach((id,i) => {
     const el = document.getElementById(id);
@@ -871,166 +837,6 @@ function restartFC(){
   document.getElementById('fc-finish').style.display = 'none';
   document.querySelector('.fc-nav-row').style.display = 'flex';
   renderFC();
-}
-
-// ══════════════════════════════════════
-// MATCH
-// ══════════════════════════════════════
-function initMatch(){
-  const words = setWords();
-  matchSel = {img:null, word:null};
-  matchCorrect = 0;
-  document.getElementById('match-score-top').textContent = '0 matched';
-  const grid = document.getElementById('match-grid');
-  const wordsEl = document.getElementById('match-words');
-  grid.innerHTML = '';
-  wordsEl.innerHTML = '';
-
-  const shuffledImgs = shuffle([...words]);
-  const shuffledWords = shuffle([...words]);
-
-  shuffledImgs.forEach(a => {
-    const card = document.createElement('div');
-    card.className = 'match-img-card';
-    card.dataset.id = a.id;
-    const img = document.createElement('img');
-    img.src = imgSrc(a.id, '');
-    img.alt = a.word;
-    const ph = document.createElement('div');
-    ph.className = 'm-ph';
-    ph.textContent = EMOJIS[a.id] || '❓';
-    ph.style.display = 'none';
-    img.onerror = () => { img.style.display='none'; ph.style.display='flex'; };
-    card.appendChild(img);
-    card.appendChild(ph);
-    card.addEventListener('click', () => matchTapImg(card, a.id));
-    grid.appendChild(card);
-  });
-
-  shuffledWords.forEach(a => {
-    const pill = document.createElement('button');
-    pill.className = 'match-word-pill';
-    pill.dataset.id = a.id;
-    pill.textContent = a.word;
-    pill.addEventListener('click', () => matchTapWord(pill, a.id));
-    wordsEl.appendChild(pill);
-  });
-}
-
-function matchTapImg(card, id){
-  if(card.classList.contains('correct')) return;
-  document.querySelectorAll('.match-img-card.selected').forEach(c => c.classList.remove('selected'));
-  card.classList.add('selected');
-  matchSel.img = id;
-  checkPair();
-}
-
-function matchTapWord(pill, id){
-  if(pill.classList.contains('correct')) return;
-  document.querySelectorAll('.match-word-pill.selected').forEach(p => p.classList.remove('selected'));
-  pill.classList.add('selected');
-  matchSel.word = id;
-  checkPair();
-}
-
-function checkPair(){
-  if(!matchSel.img || !matchSel.word) return;
-  const total = setWords().length;
-  if(matchSel.img === matchSel.word){
-    const imgId = matchSel.img;
-    const wrdId = matchSel.word;
-    document.querySelector('.match-img-card[data-id="'+imgId+'"]').classList.replace('selected','correct');
-    document.querySelector('.match-word-pill[data-id="'+wrdId+'"]').classList.replace('selected','correct');
-    matchCorrect++;
-    document.getElementById('match-score-top').textContent = matchCorrect + ' matched';
-    matchSel = {img:null, word:null};
-    if(matchCorrect === total){
-      setTimeout(() => {
-        document.getElementById('match-main').style.display = 'none';
-        document.getElementById('match-finish-msg').textContent = 'You matched all ' + total + ' words! 🎉';
-        document.getElementById('match-finish').style.display = 'block';
-      }, 500);
-    }
-  } else {
-    const imgId = matchSel.img;
-    const wrdId = matchSel.word;
-    const ic = document.querySelector('.match-img-card[data-id="'+imgId+'"]');
-    const wp = document.querySelector('.match-word-pill[data-id="'+wrdId+'"]');
-    ic.classList.add('wrong');
-    wp.classList.add('wrong');
-    setTimeout(() => {
-      ic.classList.remove('selected','wrong');
-      wp.classList.remove('selected','wrong');
-      matchSel = {img:null, word:null};
-    }, 500);
-  }
-}
-
-// ══════════════════════════════════════
-// FILL IN THE BLANK
-// ══════════════════════════════════════
-function initFill(){
-  fillList = shuffle([...setWords()]);
-  fillIdx = 0;
-  document.getElementById('fill-finish').style.display = 'none';
-  document.getElementById('fill-main').style.display = 'block';
-  renderFill();
-}
-
-function renderFill(){
-  document.getElementById('fill-progress').textContent = (fillIdx+1) + ' / ' + fillList.length;
-  const a = fillList[fillIdx];
-  fillAnswered = false;
-  const others = setWords().filter(x => x.id !== a.id);
-  const choices = shuffle([a.word, ...shuffle(others).slice(0,2).map(x => x.word)]);
-  const sentHTML = a.fillQ.replace('{blank}','<span class="fill-blank" id="fill-blank">?</span>');
-  const aEmoji = EMOJIS[a.id] || '❓';
-  const choicesHTML = choices.map(c => {
-    const safe = c.replace(/'/g,"\\'");
-    const safeCorrect = a.word.replace(/'/g,"\\'");
-    return '<button class="fill-choice" onclick="fillCheck(this,\'' + safe + '\',\'' + safeCorrect + '\')">' + c + '</button>';
-  }).join('');
-  document.getElementById('fill-main').innerHTML =
-    '<div class="fill-card">' +
-    '<img class="fill-img" src="' + imgSrc(a.id,'1') + '" alt="' + a.word + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
-    '<div class="fill-img-ph">' + aEmoji + '</div>' +
-    '<div class="fill-sentence">' + sentHTML + '</div>' +
-    '<div class="fill-choices">' + choicesHTML + '</div>' +
-    '<div class="fill-feedback" id="fill-fb"></div>' +
-    '<button class="fill-next-btn" id="fill-next-btn" onclick="fillNext()">Next →</button>' +
-    '</div>';
-}
-
-function fillCheck(btn, chosen, correct){
-  if(fillAnswered) return;
-  if(chosen === correct){
-    fillAnswered = true;
-    document.getElementById('fill-blank').textContent = correct;
-    document.getElementById('fill-blank').classList.add('correct');
-    document.querySelectorAll('.fill-choice').forEach(b => b.disabled = true);
-    btn.classList.add('correct-choice');
-    document.getElementById('fill-fb').textContent = '✅ Correct!';
-    document.getElementById('fill-fb').className = 'fill-feedback ok';
-    document.getElementById('fill-next-btn').classList.add('show');
-  } else {
-    btn.classList.add('wrong-choice');
-    document.getElementById('fill-fb').textContent = '❌ Try again!';
-    document.getElementById('fill-fb').className = 'fill-feedback no';
-    setTimeout(() => {
-      btn.classList.remove('wrong-choice');
-      document.getElementById('fill-fb').textContent = '';
-    }, 700);
-  }
-}
-
-function fillNext(){
-  fillIdx++;
-  if(fillIdx >= fillList.length){
-    document.getElementById('fill-main').style.display = 'none';
-    document.getElementById('fill-finish').style.display = 'block';
-  } else {
-    renderFill();
-  }
 }
 
 // ══════════════════════════════════════
@@ -1136,10 +942,18 @@ function renderSummary(){
     card.className = 'summary-card';
     card.style.borderLeftColor = ACCENT_BORDERS[globalIdx % ACCENT_BORDERS.length];
     const aEmoji = EMOJIS[a.id] || '❓';
-    card.innerHTML =
-      '<img src="' + imgSrc(a.id,'1') + '" alt="' + a.word + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
-      '<div class="s-ph" style="display:none;">' + aEmoji + '</div>' +
-      '<div class="s-name">' + a.word + '</div>';
+    const dispWord = a.word;
+    if(a.noMatchFill){
+      // word-list style: emoji + word, no picture
+      card.innerHTML =
+        '<div class="s-ph" style="display:flex;">' + aEmoji + '</div>' +
+        '<div class="s-name">' + dispWord + '</div>';
+    } else {
+      card.innerHTML =
+        '<img src="' + imgSrc(a.id,'1') + '" alt="' + a.word + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+        '<div class="s-ph" style="display:none;">' + aEmoji + '</div>' +
+        '<div class="s-name">' + dispWord + '</div>';
+    }
     grid.appendChild(card);
   });
 }
@@ -1347,6 +1161,116 @@ function vcStartDrag(x){
   document.addEventListener('mouseup', mu);
   document.addEventListener('touchmove', tm, {passive:false});
   document.addEventListener('touchend', tu);
+}
+
+// ══════════════════════════════════════
+// SPELLING GAME
+// ══════════════════════════════════════
+let spellList = [], spellIdx = 0, spellAnswered = false;
+
+function genMisspelling(word){
+  const ops = ['swap','drop','doubleVowel','replaceVowel','insert'];
+  const vowels = 'aeiou';
+  const letters = 'abcdefghijklmnoprstw';
+  let result = word;
+  const op = ops[Math.floor(Math.random()*ops.length)];
+  if(op === 'swap' && word.length > 2){
+    const i = 1 + Math.floor(Math.random()*(word.length-2));
+    result = word.slice(0,i) + word[i+1] + word[i] + word.slice(i+2);
+  } else if(op === 'drop' && word.length > 3){
+    const i = 1 + Math.floor(Math.random()*(word.length-2));
+    result = word.slice(0,i) + word.slice(i+1);
+  } else if(op === 'doubleVowel'){
+    const vIdx = [...word].map((c,i)=>vowels.includes(c)?i:-1).filter(i=>i>0);
+    if(vIdx.length){ const i=vIdx[Math.floor(Math.random()*vIdx.length)]; result=word.slice(0,i)+word[i]+word.slice(i); }
+    else result = word.slice(0,1)+word[0]+word.slice(1);
+  } else if(op === 'replaceVowel'){
+    const vIdx = [...word].map((c,i)=>vowels.includes(c)?i:-1).filter(i=>i>=0);
+    if(vIdx.length){ const i=vIdx[Math.floor(Math.random()*vIdx.length)]; const nv=vowels.replace(word[i],''); result=word.slice(0,i)+nv[Math.floor(Math.random()*nv.length)]+word.slice(i+1); }
+    else result = word+'e';
+  } else {
+    const i = 1 + Math.floor(Math.random()*(word.length-1));
+    result = word.slice(0,i) + letters[Math.floor(Math.random()*letters.length)] + word.slice(i);
+  }
+  return result === word ? word.slice(0,-1)+(word.slice(-1)==='e'?'ing':'e') : result;
+}
+
+function genMisspellings(word, count){
+  const results = new Set();
+  let attempts = 0;
+  while(results.size < count && attempts < 50){
+    const m = genMisspelling(word);
+    if(m !== word) results.add(m);
+    attempts++;
+  }
+  while(results.size < count){ results.add(word + 's'); }
+  return [...results].slice(0, count);
+}
+
+function getSpellWords(w){
+  // returns array of {display, correct} — one entry per spelling to test
+  if(w.spellWords) return w.spellWords.map(sw => ({display: sw, correct: sw}));
+  // use base id as the spelling
+  return [{display: w.id, correct: w.id}];
+}
+
+function initSpell(){
+  // expand: words with multiple spellings get one card per spelling
+  const base = setWords();
+  spellList = shuffle(base.flatMap(w => getSpellWords(w).map(sw => ({...w, spellTarget: sw.correct, spellDisplay: sw.display}))));
+  spellIdx = 0;
+  spellAnswered = false;
+  document.getElementById('spell-finish').style.display = 'none';
+  document.getElementById('spell-main').style.display = 'block';
+  renderSpell();
+}
+
+function renderSpell(){
+  if(spellIdx >= spellList.length){
+    document.getElementById('spell-main').style.display = 'none';
+    document.getElementById('spell-finish').style.display = 'block';
+    return;
+  }
+  document.getElementById('spell-progress').textContent = (spellIdx+1) + ' / ' + spellList.length;
+  const a = spellList[spellIdx];
+  spellAnswered = false;
+  const correct = a.spellTarget;
+  const wrong2 = genMisspellings(correct, 2);
+  const choices = shuffle([correct, ...wrong2]);
+  const aEmoji = EMOJIS[a.id] || '❓';
+
+  const choicesHTML = choices.map(c => {
+    const safe = c.replace(/'/g,"\\'");
+    const safeC = correct.replace(/'/g,"\\'");
+    return '<button class="spell-choice" onclick="spellCheck(this,\'' + safe + '\',\'' + safeC + '\')">' + c + '</button>';
+  }).join('');
+
+  document.getElementById('spell-main').innerHTML =
+    '<div class="spell-card">' +
+    '<img class="spell-img" src="' + imgSrc(a.id,'1') + '" alt="' + a.id + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+    '<div class="spell-img-ph">' + aEmoji + '</div>' +
+    '<div class="spell-prompt">Which spelling is correct?</div>' +
+    '<div class="spell-choices">' + choicesHTML + '</div>' +
+    '<button class="spell-next-btn" id="spell-next-btn" onclick="spellNext()">Next →</button>' +
+    '</div>';
+}
+
+function spellCheck(btn, chosen, correct){
+  if(spellAnswered) return;
+  if(chosen === correct){
+    spellAnswered = true;
+    document.querySelectorAll('.spell-choice').forEach(b => b.disabled = true);
+    btn.classList.add('correct-spell');
+    document.getElementById('spell-next-btn').classList.add('show');
+  } else {
+    btn.classList.add('wrong-spell');
+    setTimeout(() => btn.classList.remove('wrong-spell'), 500);
+  }
+}
+
+function spellNext(){
+  spellIdx++;
+  renderSpell();
 }
 
 // ══════════════════════════════════════
