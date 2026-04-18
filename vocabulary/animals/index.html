@@ -17,7 +17,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 #bubble-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
 #app{position:relative;z-index:1;padding-top:14px;min-height:100vh;}
 
-/* SCREENS */
 .screen{display:none;max-width:480px;margin:0 auto;padding:16px 16px 40px;}
 .screen.active{display:block;}
 
@@ -42,7 +41,7 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .home-sec-btn .hsb-name{font-family:'Fredoka One',cursive;font-size:1rem;display:block;}
 .home-sec-btn .hsb-desc{font-size:.72rem;opacity:.85;}
 
-/* ── BOTTOM NAV (inner screens) ── */
+/* ── BOTTOM NAV ── */
 #bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #eee;z-index:500;height:62px;}
 #bottom-nav.visible{display:flex;}
 .bnav-btn{flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;color:var(--muted);padding:4px 2px;transition:all .18s;}
@@ -54,8 +53,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .bnav-btn.pf-btn.active{background:var(--green);}
 .bnav-btn.match-btn.active{background:var(--orange);}
 .bnav-btn.fill-btn.active{background:var(--yellow);color:var(--text)!important;}
-
-/* screens need bottom padding when nav visible */
 .screen.has-nav{padding-bottom:72px;}
 
 /* ── FLASHCARD ── */
@@ -64,53 +61,30 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .back-btn{background:none;border:2px solid #ddd;border-radius:50px;padding:7px 16px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.86rem;color:var(--muted);cursor:pointer;transition:all .15s;}
 .back-btn:hover{border-color:var(--text);color:var(--text);}
 .fc-progress{font-size:.83rem;color:var(--muted);}
-
-/* full-screen tap zone */
 .fc-slide{display:flex;flex-direction:column;align-items:center;padding:6px 0 28px;cursor:pointer;text-align:center;user-select:none;min-height:calc(100vh - 100px);}
 .fc-word-badge{font-family:'Fredoka One',cursive;font-size:3.2rem;margin-bottom:16px;}
-/* word-only state: push down to visual centre */
 .fc-slide.word-only{justify-content:center;}
 .fc-slide.word-only .fc-word-badge{font-size:4rem;margin-bottom:0;}
-
 .fc-img-wrap{width:220px;height:220px;margin:0 auto 16px;}
 .fc-img{width:220px;height:220px;object-fit:cover;border-radius:22px;box-shadow:0 8px 32px rgba(0,0,0,.13);display:block;}
 .fc-img-ph{width:220px;height:220px;border-radius:22px;display:none;align-items:center;justify-content:center;font-size:5.5rem;background:rgba(0,0,0,.05);}
-
-/* sentence box — styled exactly like prepositions app */
 .sentence-box{
-  background:rgba(255,255,255,.92);
-  border-radius:20px;
-  padding:15px 22px;
-  font-size:1.12rem;
-  font-weight:800;
-  box-shadow:0 4px 24px rgba(0,0,0,.11);
-  max-width:340px;
-  width:100%;
-  line-height:1.6;
-  visibility:hidden;
-  opacity:0;
-  transform:translateY(14px);
-  transition:opacity .4s,transform .4s;
-  margin:0 auto 10px;
-  border-top:5px solid var(--purple);
-  text-align:center;
+  background:rgba(255,255,255,.92);border-radius:20px;padding:15px 22px;font-size:1.12rem;
+  font-weight:800;box-shadow:0 4px 24px rgba(0,0,0,.11);max-width:340px;width:100%;line-height:1.6;
+  visibility:hidden;opacity:0;transform:translateY(14px);transition:opacity .4s,transform .4s;
+  margin:0 auto 10px;border-top:5px solid var(--purple);text-align:center;
 }
 .sentence-box.show{visibility:visible;opacity:1;transform:translateY(0);}
-
-/* nav row: ← | → */
 .fc-nav-row{position:fixed;bottom:72px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:24px;z-index:10;}
 .fc-nav-pill{background:rgba(255,255,255,.9);border:2px solid #ddd;border-radius:50px;padding:8px 22px;font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .18s;line-height:1;}
 .fc-nav-pill:hover{border-color:var(--purple);color:var(--purple);}
 .fc-nav-pill.hint{font-size:.78rem;animation:pulse 1.8s infinite;cursor:default;border-color:transparent;background:rgba(255,255,255,.7);}
 .fc-nav-pill.hidden{visibility:hidden;}
 @keyframes pulse{0%,100%{opacity:.35;}50%{opacity:1;}}
-
 .dot-row{display:flex;gap:8px;justify-content:center;margin-top:14px;}
 .dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:all .3s;}
 .dot.active{background:var(--purple);transform:scale(1.3);}
 .dot.done{background:#A78BFA;}
-
-/* finish card */
 .finish-card{background:rgba(255,255,255,.95);border-radius:26px;box-shadow:0 6px 28px rgba(0,0,0,.1);text-align:center;padding:38px 26px;animation:fadeUp .5s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 .trophy{font-size:3.8rem;display:inline-block;animation:bounce 1s infinite alternate;}
@@ -204,23 +178,19 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .vp-b{background:rgba(59,130,246,.18);color:#2563eb;}
 .voca-prog-wrap{width:100%;height:6px;background:rgba(0,0,0,.08);border-radius:8px;margin-bottom:14px;overflow:hidden;}
 .voca-prog-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--blue));border-radius:8px;transition:width .4s ease;}
-/* card area */
 .voca-card-area{position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:14px;height:300px;}
 .voca-card{position:absolute;width:260px;height:280px;background:#fff;border-radius:28px;box-shadow:0 10px 36px rgba(0,0,0,.13);display:flex;flex-direction:column;align-items:center;justify-content:center;touch-action:none;will-change:transform;border:3px solid rgba(0,0,0,.05);font-family:'Fredoka One',cursive;font-size:5rem;cursor:grab;}
 .voca-card.correct-flash{border-color:var(--green)!important;box-shadow:0 0 0 4px rgba(107,203,119,.4),0 10px 36px rgba(0,0,0,.13)!important;}
 .voca-card.wrong-flash{border-color:var(--coral)!important;box-shadow:0 0 0 4px rgba(255,107,107,.35),0 10px 36px rgba(0,0,0,.13)!important;animation:vcShake .45s ease;}
 @keyframes vcShake{0%,100%{transform:translateX(0);}20%{transform:translateX(-10px);}40%{transform:translateX(10px);}60%{transform:translateX(-7px);}80%{transform:translateX(7px);}}
-/* peek labels */
 .voca-peek{position:absolute;top:50%;transform:translateY(-50%);font-family:'Fredoka One',cursive;font-size:1rem;padding:6px 12px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .06s;white-space:nowrap;z-index:10;}
 .voca-peek-left{right:calc(50% + 140px);background:rgba(59,130,246,.12);color:var(--blue);border:2.5px solid var(--blue);}
 .voca-peek-right{left:calc(50% + 140px);background:rgba(59,130,246,.12);color:var(--blue);border:2.5px solid var(--blue);}
-/* choice buttons */
 .voca-choices{display:flex;gap:12px;width:100%;max-width:340px;margin:0 auto 14px;}
 .voca-choice{flex:1;padding:14px 8px;border-radius:20px;border:3px solid rgba(0,0,0,.07);font-family:'Fredoka One',cursive;font-size:1.3rem;cursor:pointer;transition:all .14s;background:#fff;color:var(--text);box-shadow:0 4px 14px rgba(0,0,0,.09);display:flex;align-items:center;justify-content:center;gap:6px;}
 .voca-choice:hover{transform:translateY(-2px);}
 .voca-choice.flash-correct{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important;}
 .voca-choice.flash-wrong{background:var(--coral)!important;color:#fff!important;border-color:var(--coral)!important;animation:vcShake .4s ease;}
-/* completion */
 .voca-comp{display:none;flex-direction:column;align-items:center;gap:14px;text-align:center;padding:20px;}
 .voca-comp.on{display:flex;animation:fadeUp .5s ease;}
 
@@ -309,7 +279,7 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   <div id="footer">Pang made with ❤️ for kids learning English</div>
 </div>
 
-<!-- ═══ BOTTOM NAV (shown inside activities) ═══ -->
+<!-- ═══ BOTTOM NAV ═══ -->
 <div id="bottom-nav">
   <button class="bnav-btn set-btn"  id="bn-s1"    onclick="bnSwitch(0,'learn11')"><span class="bn-icon">🐾</span>Set 1</button>
   <button class="bnav-btn set2-btn" id="bn-s2"    onclick="bnSwitch(1,'learn11')"><span class="bn-icon">🌿</span>Set 2</button>
@@ -331,24 +301,19 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
     <div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--purple);" id="fc-mode-label"></div>
     <div class="fc-progress" id="fc-progress"></div>
   </div>
-
   <div class="fc-slide" id="fc-slide" onclick="fcTap()">
     <div class="fc-word-badge" id="fc-word" style="display:none;"></div>
-
     <div class="fc-img-wrap" id="fc-img1-wrap" style="display:none;">
       <img id="fc-img1" class="fc-img" src="" alt="">
       <div id="fc-img1-ph" class="fc-img-ph"></div>
     </div>
-
     <div class="fc-img-wrap" id="fc-img2-wrap" style="display:none;">
       <img id="fc-img2" class="fc-img" src="" alt="">
       <div id="fc-img2-ph" class="fc-img-ph"></div>
     </div>
-
     <div class="sentence-box" id="fc-s1"></div>
     <div class="sentence-box" id="fc-s2"></div>
     <div class="sentence-box" id="fc-s3"></div>
-
     <div class="dot-row" id="fc-dots"></div>
   </div>
   <div class="fc-nav-row">
@@ -356,7 +321,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
     <div class="fc-nav-pill hint" id="fc-hint">tap to continue</div>
     <button class="fc-nav-pill" id="fc-next-btn" onclick="fcTap()">→</button>
   </div>
-
   <div id="fc-finish" style="display:none;">
     <div class="finish-card">
       <div class="trophy">🏆</div>
@@ -475,7 +439,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
     <div class="voca-pill vp-b">📚 <span id="vc-done">0</span> / <span id="vc-total">0</span></div>
   </div>
   <div class="voca-prog-wrap"><div class="voca-prog-fill" id="vc-prog" style="width:0%"></div></div>
-
   <div id="vc-game">
     <div class="voca-card-area" id="vc-card-area">
       <div class="voca-peek voca-peek-left"  id="vc-peek-l"></div>
@@ -487,7 +450,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
       <button class="voca-choice" id="vc-btn-b" onclick="vcPick(1)"><span id="vc-b-txt"></span><span>👉</span></button>
     </div>
   </div>
-
   <div class="voca-comp" id="vc-comp">
     <div style="font-size:3.5rem">🏆</div>
     <div class="finish-title">Amazing!</div>
@@ -550,34 +512,32 @@ const EMOJIS={cat:'🐱',dog:'🐶',fish:'🐟',bird:'🐦',elephant:'🐘',gira
 const ACCENTS=['#7C3AED','#FF6B6B','#3B82F6','#6BCB77','#FF9F43','#FFD93D','#7C3AED','#FF6B6B','#3B82F6','#6BCB77'];
 
 const ANIMALS=[
-  // ── SET 0 (13) ──
-  {id:'cat',      word:'cat',        set:0, sentences:['This is a cat.','The cat is small and soft.','The cat likes milk.'],                                       fillQ:'The {blank} is drinking milk.'},
-  {id:'dog',      word:'dog',        set:0, sentences:['This is a dog.','The dog likes to run.','The dog is a good friend.'],                                      fillQ:'The {blank} is running in the park.'},
-  {id:'fish',     word:'fish',       set:0, sentences:['This is a fish.','The fish swims in water.','The fish has fins.'],                                         fillQ:'The {blank} is swimming in the water.'},
-  {id:'bird',     word:'bird',       set:0, sentences:['This is a bird.','The bird can fly.','The bird has wings.'],                                               fillQ:'The {blank} is flying in the sky.'},
-  {id:'elephant', word:'elephant',   set:0, sentences:['This is an elephant.','The elephant is big and gray.','The elephant has a long trunk.'],                    fillQ:'The {blank} is walking slowly.'},
-  {id:'giraffe',  word:'giraffe',    set:0, sentences:['This is a giraffe.','The giraffe has a long neck.','The giraffe eats leaves.'],                            fillQ:'The {blank} is eating leaves.'},
-  {id:'tiger',    word:'tiger',      set:0, sentences:['This is a tiger.','The tiger has black stripes.','The tiger is strong.'],                                  fillQ:'The {blank} is looking for food.'},
-  {id:'zebra',    word:'zebra',      set:0, sentences:['This is a zebra.','The zebra is black and white.','The zebra can run fast.'],                              fillQ:'The {blank} is running fast.'},
-  {id:'monkey',   word:'monkey',     set:0, sentences:['This is a monkey.','The monkey likes bananas.','The monkey can climb trees.'],                             fillQ:'The {blank} is eating a banana.'},
-  {id:'crocodile',word:'crocodile',  set:0, sentences:['This is a crocodile.','The crocodile lives in water.','The crocodile has big teeth.'],                     fillQ:'The {blank} is swimming in the river.'},
-  {id:'spider',   word:'spider',     set:0, sentences:['This is a spider.','The spider has eight legs.','The spider makes a web.'],                                fillQ:'The {blank} is making a web.'},
-  {id:'donkey',   word:'donkey',     set:0, sentences:['This is a donkey.','The donkey is gray or brown.','The donkey eats grass.'],                               fillQ:'The {blank} is eating grass.'},
-  {id:'lizard',   word:'lizard',     set:0, sentences:['This is a lizard.','The lizard is small.','The lizard sits on a rock.'],                                   fillQ:'The {blank} is sitting on a rock.'},
-  // ── SET 1 (13) ──
-  {id:'snake',    word:'snake',      set:1, sentences:['This is a snake.','The snake is long.','The snake has no legs.'],                                          fillQ:'The {blank} is moving on the ground.'},
-  {id:'frog',     word:'frog',       set:1, sentences:['This is a frog.','The frog can jump.','The frog is green.'],                                              fillQ:'The {blank} is jumping.'},
-  {id:'cow',      word:'cow',        set:1, sentences:['This is a cow.','The cow gives milk.','The cow eats grass.'],                                              fillQ:'The {blank} is eating grass.'},
-  {id:'goat',     word:'goat',       set:1, sentences:['This is a goat.','The goat eats grass.','The goat can climb.'],                                           fillQ:'The {blank} is climbing a rock.'},
-  {id:'sheep',    word:'sheep',      set:1, sentences:['This is a sheep.','The sheep has white wool.','The sheep lives on a farm.'],                               fillQ:'The {blank} is standing on the farm.'},
-  {id:'horse',    word:'horse',      set:1, sentences:['This is a horse.','The horse can run fast.','The horse is big.'],                                          fillQ:'The {blank} is running fast.'},
-  {id:'polar bear',word:'polar bear',set:1, sentences:['This is a polar bear.','The polar bear is white.','The polar bear lives in cold places.'],                  fillQ:'The {blank} is walking on ice.'},
-  {id:'hippo',    word:'hippo',      set:1, sentences:['This is a hippo.','The hippo is big and lives in water.','The hippo has a big mouth.'],                    fillQ:'The {blank} is sitting in the water.'},
-  {id:'parrot',   word:'parrot',     set:1, sentences:['This is a parrot.','The parrot has many colors.','The parrot can talk.'],                                  fillQ:'The {blank} is talking.'},
-  {id:'rhino',    word:'rhino',      set:1, sentences:['This is a rhino.','The rhino has a big horn.','The rhino is very strong.'],                                fillQ:'The {blank} is walking in the grass.'},
-  {id:'mouse',    word:'mouse',      set:1, sentences:['This is a mouse.','The mouse is small.','The mouse eats cheese.'],                                         fillQ:'The {blank} is eating cheese.'},
-  {id:'chicken',  word:'chicken',    set:1, sentences:['This is a chicken.','The chicken lives on a farm.','The chicken lays eggs.'],                              fillQ:'The {blank} is laying eggs.'},
-  {id:'owl',      word:'owl',        set:1, sentences:['This is an owl.','The owl can fly.','The owl has big eyes.'],                                              fillQ:'The {blank} is flying at night.'},
+  {id:'cat',      word:'cat',        set:0, sentences:['This is a cat.','The cat is small and soft.','The cat likes milk.'],                                    fillQ:'The {blank} is drinking milk.'},
+  {id:'dog',      word:'dog',        set:0, sentences:['This is a dog.','The dog likes to run.','The dog is a good friend.'],                                   fillQ:'The {blank} is running in the park.'},
+  {id:'fish',     word:'fish',       set:0, sentences:['This is a fish.','The fish swims in water.','The fish has fins.'],                                      fillQ:'The {blank} is swimming in the water.'},
+  {id:'bird',     word:'bird',       set:0, sentences:['This is a bird.','The bird can fly.','The bird has wings.'],                                            fillQ:'The {blank} is flying in the sky.'},
+  {id:'elephant', word:'elephant',   set:0, sentences:['This is an elephant.','The elephant is big and gray.','The elephant has a long trunk.'],                 fillQ:'The {blank} is walking slowly.'},
+  {id:'giraffe',  word:'giraffe',    set:0, sentences:['This is a giraffe.','The giraffe has a long neck.','The giraffe eats leaves.'],                         fillQ:'The {blank} is eating leaves.'},
+  {id:'tiger',    word:'tiger',      set:0, sentences:['This is a tiger.','The tiger has black stripes.','The tiger is strong.'],                               fillQ:'The {blank} is looking for food.'},
+  {id:'zebra',    word:'zebra',      set:0, sentences:['This is a zebra.','The zebra is black and white.','The zebra can run fast.'],                           fillQ:'The {blank} is running fast.'},
+  {id:'monkey',   word:'monkey',     set:0, sentences:['This is a monkey.','The monkey likes bananas.','The monkey can climb trees.'],                          fillQ:'The {blank} is eating a banana.'},
+  {id:'crocodile',word:'crocodile',  set:0, sentences:['This is a crocodile.','The crocodile lives in water.','The crocodile has big teeth.'],                  fillQ:'The {blank} is swimming in the river.'},
+  {id:'spider',   word:'spider',     set:0, sentences:['This is a spider.','The spider has eight legs.','The spider makes a web.'],                             fillQ:'The {blank} is making a web.'},
+  {id:'donkey',   word:'donkey',     set:0, sentences:['This is a donkey.','The donkey is gray or brown.','The donkey eats grass.'],                            fillQ:'The {blank} is eating grass.'},
+  {id:'lizard',   word:'lizard',     set:0, sentences:['This is a lizard.','The lizard is small.','The lizard sits on a rock.'],                                fillQ:'The {blank} is sitting on a rock.'},
+  {id:'snake',    word:'snake',      set:1, sentences:['This is a snake.','The snake is long.','The snake has no legs.'],                                       fillQ:'The {blank} is moving on the ground.'},
+  {id:'frog',     word:'frog',       set:1, sentences:['This is a frog.','The frog can jump.','The frog is green.'],                                           fillQ:'The {blank} is jumping.'},
+  {id:'cow',      word:'cow',        set:1, sentences:['This is a cow.','The cow gives milk.','The cow eats grass.'],                                           fillQ:'The {blank} is eating grass.'},
+  {id:'goat',     word:'goat',       set:1, sentences:['This is a goat.','The goat eats grass.','The goat can climb.'],                                        fillQ:'The {blank} is climbing a rock.'},
+  {id:'sheep',    word:'sheep',      set:1, sentences:['This is a sheep.','The sheep has white wool.','The sheep lives on a farm.'],                            fillQ:'The {blank} is standing on the farm.'},
+  {id:'horse',    word:'horse',      set:1, sentences:['This is a horse.','The horse can run fast.','The horse is big.'],                                       fillQ:'The {blank} is running fast.'},
+  {id:'polar bear',word:'polar bear',set:1, sentences:['This is a polar bear.','The polar bear is white.','The polar bear lives in cold places.'],               fillQ:'The {blank} is walking on ice.'},
+  {id:'hippo',    word:'hippo',      set:1, sentences:['This is a hippo.','The hippo is big and lives in water.','The hippo has a big mouth.'],                 fillQ:'The {blank} is sitting in the water.'},
+  {id:'parrot',   word:'parrot',     set:1, sentences:['This is a parrot.','The parrot has many colors.','The parrot can talk.'],                               fillQ:'The {blank} is talking.'},
+  {id:'rhino',    word:'rhino',      set:1, sentences:['This is a rhino.','The rhino has a big horn.','The rhino is very strong.'],                             fillQ:'The {blank} is walking in the grass.'},
+  {id:'mouse',    word:'mouse',      set:1, sentences:['This is a mouse.','The mouse is small.','The mouse eats cheese.'],                                      fillQ:'The {blank} is eating cheese.'},
+  {id:'chicken',  word:'chicken',    set:1, sentences:['This is a chicken.','The chicken lives on a farm.','The chicken lays eggs.'],                           fillQ:'The {blank} is laying eggs.'},
+  {id:'owl',      word:'owl',        set:1, sentences:['This is an owl.','The owl can fly.','The owl has big eyes.'],                                           fillQ:'The {blank} is flying at night.'},
 ];
 
 // ══════════════════════════════════════
@@ -606,7 +566,6 @@ function setImg(imgEl,phEl,id,sfx){
 // NAVIGATION
 // ══════════════════════════════════════
 let currentActivity='';
-
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -616,55 +575,40 @@ function showScreen(id){
   else{nav.classList.add('visible');}
 }
 function goHome(){showScreen('home-screen');}
-
-// Bottom nav: switch set then restart same activity
-function bnSwitch(setIdx, act){
-  currentSet=setIdx;
-  updateBnavSets();
-  // restart current activity with new set
-  const a=currentActivity||act;
-  startActivity(a);
-}
-// Bottom nav: switch activity, keep current set
-function bnActivity(act){
-  startActivity(act);
-}
+function bnSwitch(setIdx,act){currentSet=setIdx;updateBnavSets();startActivity(currentActivity||act);}
+function bnActivity(act){startActivity(act);}
 function updateBnavSets(){
-  document.getElementById('bn-s1').classList.toggle('active', currentSet===0);
-  document.getElementById('bn-s2').classList.toggle('active', currentSet===1);
+  document.getElementById('bn-s1').classList.toggle('active',currentSet===0);
+  document.getElementById('bn-s2').classList.toggle('active',currentSet===1);
 }
 function updateBnavActivity(act){
-  document.getElementById('bn-wf').classList.toggle('active', act==='learn11');
-  document.getElementById('bn-pf').classList.toggle('active', act==='learn12');
-  document.getElementById('bn-match').classList.toggle('active', act==='match');
-  document.getElementById('bn-mem').classList.toggle('active', act==='memory');
-  document.getElementById('bn-fill').classList.toggle('active', act==='fill');
+  document.getElementById('bn-wf').classList.toggle('active',act==='learn11');
+  document.getElementById('bn-pf').classList.toggle('active',act==='learn12');
+  document.getElementById('bn-match').classList.toggle('active',act==='match');
+  document.getElementById('bn-mem').classList.toggle('active',act==='memory');
+  document.getElementById('bn-fill').classList.toggle('active',act==='fill');
   const sumBtn=document.getElementById('bn-sum');
-  sumBtn.classList.toggle('active', act==='summary');
+  sumBtn.classList.toggle('active',act==='summary');
   if(act==='summary'){sumBtn.style.background='var(--green)';sumBtn.style.color='#fff';}
   else{sumBtn.style.background='';sumBtn.style.color='';}
   const spellBtn=document.getElementById('bn-spell');
-  spellBtn.classList.toggle('active', act==='spell');
+  spellBtn.classList.toggle('active',act==='spell');
   if(act==='spell'){spellBtn.style.background='var(--coral)';spellBtn.style.color='#fff';}
   else{spellBtn.style.background='';spellBtn.style.color='';}
   const woBtn=document.getElementById('bn-wo');
-  woBtn.classList.toggle('active', act==='wordsonly');
+  woBtn.classList.toggle('active',act==='wordsonly');
   if(act==='wordsonly'){woBtn.style.background='var(--blue)';woBtn.style.color='#fff';}
   else{woBtn.style.background='';woBtn.style.color='';}
   const poBtn=document.getElementById('bn-po');
-  poBtn.classList.toggle('active', act==='picsonly');
+  poBtn.classList.toggle('active',act==='picsonly');
   if(act==='picsonly'){poBtn.style.background='var(--orange)';poBtn.style.color='#fff';}
   else{poBtn.style.background='';poBtn.style.color='';}
-  // memory btn active colour
   const memBtn=document.getElementById('bn-mem');
   if(act==='memory'){memBtn.style.background='var(--purple)';memBtn.style.color='#fff';}
   else{memBtn.style.background='';memBtn.style.color='';}
 }
 
-// ══════════════════════════════════════
-// HOME — stub (no hero/pills needed)
-// ══════════════════════════════════════
-function switchSet(idx){ currentSet=idx; }
+function switchSet(idx){currentSet=idx;}
 function buildPills(){}
 function updateHero(){}
 
@@ -730,23 +674,17 @@ function updateDots(){
     if(d)d.className='dot'+(i<fcIdx?' done':i===fcIdx?' active':'');
   });
 }
-
 function resetSlide(){
   document.getElementById('fc-slide').classList.remove('word-only');
   document.getElementById('fc-word').style.display='none';
   document.getElementById('fc-img1-wrap').style.display='none';
   document.getElementById('fc-img2-wrap').style.display='none';
-  ['fc-s1','fc-s2','fc-s3'].forEach(id=>{
-    const el=document.getElementById(id);
-    el.classList.remove('show');
-  });
+  ['fc-s1','fc-s2','fc-s3'].forEach(id=>{const el=document.getElementById(id);el.classList.remove('show');});
   document.getElementById('fc-hint').textContent='Tap to continue →';
-  // show prev button only if not first card OR already tapped once
   const prevBtn=document.getElementById('fc-prev-btn');
   if(fcIdx>0) prevBtn.classList.remove('hidden'); else prevBtn.classList.add('hidden');
   fcTapState=0;
 }
-
 function renderFC(){
   const a=fcList[fcIdx];
   const accent=ACCENTS[fcIdx%ACCENTS.length];
@@ -762,13 +700,10 @@ function renderFC(){
   setImg(document.getElementById('fc-img2'),document.getElementById('fc-img2-ph'),a.id,'1');
   resetSlide();
   updateDots();
-  // show initial state
   if(fcMode==='learn11'){
     document.getElementById('fc-word').style.display='block';
     document.getElementById('fc-slide').classList.add('word-only');
-    // ensure word is before images in DOM (already is)
   } else {
-    // picture first: move word AFTER img1 in DOM so it shows below
     const slide=document.getElementById('fc-slide');
     const wordEl=document.getElementById('fc-word');
     const img1wrap=document.getElementById('fc-img1-wrap');
@@ -776,67 +711,32 @@ function renderFC(){
     document.getElementById('fc-img1-wrap').style.display='block';
   }
 }
-
 function fcTap(){
   fcTapState++;
-  // show ← from the second tap (tap 1 means first interaction on card 1)
   if(fcTapState>=1) document.getElementById('fc-prev-btn').classList.remove('hidden');
   if(fcMode==='learn11'){
-    // word → cat.jpg → cat1.jpg+s1 → s2 → s3 → next
-    if(fcTapState===1){
-      document.getElementById('fc-slide').classList.remove('word-only');
-      document.getElementById('fc-img1-wrap').style.display='block';
-    } else if(fcTapState===2){
-      document.getElementById('fc-img1-wrap').style.display='none';
-      document.getElementById('fc-img2-wrap').style.display='block';
-      document.getElementById('fc-s1').classList.add('show');
-    } else if(fcTapState===3){
-      document.getElementById('fc-s2').classList.add('show');
-    } else if(fcTapState===4){
-      document.getElementById('fc-s3').classList.add('show');
-      document.getElementById('fc-hint').textContent='Tap for next animal →';
-    } else {
-      fcAdvance();
-    }
+    if(fcTapState===1){document.getElementById('fc-slide').classList.remove('word-only');document.getElementById('fc-img1-wrap').style.display='block';}
+    else if(fcTapState===2){document.getElementById('fc-img1-wrap').style.display='none';document.getElementById('fc-img2-wrap').style.display='block';document.getElementById('fc-s1').classList.add('show');}
+    else if(fcTapState===3){document.getElementById('fc-s2').classList.add('show');}
+    else if(fcTapState===4){document.getElementById('fc-s3').classList.add('show');document.getElementById('fc-hint').textContent='Tap for next animal →';}
+    else{fcAdvance();}
   } else {
-    // cat.jpg → word (below img) → cat1.jpg+s1 → s2 → s3 → next
-    if(fcTapState===1){
-      document.getElementById('fc-word').style.display='block';
-    } else if(fcTapState===2){
-      // move word back before sentences (above img2)
-      const slide=document.getElementById('fc-slide');
-      const wordEl=document.getElementById('fc-word');
-      const s1=document.getElementById('fc-s1');
-      slide.insertBefore(wordEl,s1);
-      document.getElementById('fc-img1-wrap').style.display='none';
-      document.getElementById('fc-img2-wrap').style.display='block';
-      document.getElementById('fc-s1').classList.add('show');
-    } else if(fcTapState===3){
-      document.getElementById('fc-s2').classList.add('show');
-    } else if(fcTapState===4){
-      document.getElementById('fc-s3').classList.add('show');
-      document.getElementById('fc-hint').textContent='Tap for next animal →';
-    } else {
-      fcAdvance();
-    }
+    if(fcTapState===1){document.getElementById('fc-word').style.display='block';}
+    else if(fcTapState===2){const slide=document.getElementById('fc-slide');const wordEl=document.getElementById('fc-word');const s1=document.getElementById('fc-s1');slide.insertBefore(wordEl,s1);document.getElementById('fc-img1-wrap').style.display='none';document.getElementById('fc-img2-wrap').style.display='block';document.getElementById('fc-s1').classList.add('show');}
+    else if(fcTapState===3){document.getElementById('fc-s2').classList.add('show');}
+    else if(fcTapState===4){document.getElementById('fc-s3').classList.add('show');document.getElementById('fc-hint').textContent='Tap for next animal →';}
+    else{fcAdvance();}
   }
 }
-
 function fcAdvance(){
   fcIdx++;
-  if(fcIdx>=fcList.length){
-    document.getElementById('fc-slide').style.display='none';
-    document.getElementById('fc-finish').style.display='block';
-    document.querySelector('.fc-nav-row').style.display='none';
-  } else {
-    renderFC();
-  }
+  if(fcIdx>=fcList.length){document.getElementById('fc-slide').style.display='none';document.getElementById('fc-finish').style.display='block';document.querySelector('.fc-nav-row').style.display='none';}
+  else{renderFC();}
 }
 function fcPrev(){
-  if(fcIdx<=0) return;
+  if(fcIdx<=0)return;
   fcIdx--;
   renderFC();
-  // immediately reveal full state: show img2 + all 3 sentences
   document.getElementById('fc-slide').classList.remove('word-only');
   document.getElementById('fc-word').style.display='block';
   document.getElementById('fc-img1-wrap').style.display='none';
@@ -865,10 +765,8 @@ function initMatch(){
   const grid=document.getElementById('match-grid');
   const wordsEl=document.getElementById('match-words');
   grid.innerHTML=''; wordsEl.innerHTML='';
-
   const shuffledImgs=shuffle([...animals]);
   const shuffledWords=shuffle([...animals]);
-
   shuffledImgs.forEach(a=>{
     const card=document.createElement('div');
     card.className='match-img-card'; card.dataset.id=a.id;
@@ -881,7 +779,6 @@ function initMatch(){
     card.addEventListener('click',()=>matchTapImg(card,a.id));
     grid.appendChild(card);
   });
-
   shuffledWords.forEach(a=>{
     const pill=document.createElement('button');
     pill.className='match-word-pill'; pill.dataset.id=a.id; pill.textContent=a.word;
@@ -889,7 +786,6 @@ function initMatch(){
     wordsEl.appendChild(pill);
   });
 }
-
 function matchTapImg(card,id){
   if(card.classList.contains('correct'))return;
   document.querySelectorAll('.match-img-card.selected').forEach(c=>c.classList.remove('selected'));
@@ -910,21 +806,13 @@ function checkPair(){
     document.getElementById('match-score-top').textContent=matchCorrect+' matched';
     matchSel={img:null,word:null};
     if(matchCorrect===total){
-      setTimeout(()=>{
-        document.getElementById('match-main').style.display='none';
-        document.getElementById('match-finish-msg').textContent='You matched all '+total+' animals! 🎉';
-        document.getElementById('match-finish').style.display='block';
-      },500);
+      setTimeout(()=>{document.getElementById('match-main').style.display='none';document.getElementById('match-finish-msg').textContent='You matched all '+total+' animals! 🎉';document.getElementById('match-finish').style.display='block';},500);
     }
   } else {
     const ic=document.querySelector(`.match-img-card[data-id="${matchSel.img}"]`);
     const wp=document.querySelector(`.match-word-pill[data-id="${matchSel.word}"]`);
     ic.classList.add('wrong'); wp.classList.add('wrong');
-    setTimeout(()=>{
-      ic.classList.remove('selected','wrong');
-      wp.classList.remove('selected','wrong');
-      matchSel={img:null,word:null};
-    },500);
+    setTimeout(()=>{ic.classList.remove('selected','wrong');wp.classList.remove('selected','wrong');matchSel={img:null,word:null};},500);
   }
 }
 
@@ -937,7 +825,6 @@ function initFill(){
   document.getElementById('fill-main').style.display='block';
   renderFill();
 }
-
 function renderFill(){
   document.getElementById('fill-progress').textContent=(fillIdx+1)+' / '+fillList.length;
   const a=fillList[fillIdx]; fillAnswered=false;
@@ -958,7 +845,6 @@ function renderFill(){
       <button class="fill-next-btn" id="fill-next-btn" onclick="fillNext()">Next →</button>
     </div>`;
 }
-
 function fillCheck(btn,chosen,correct){
   if(fillAnswered)return;
   if(chosen===correct){
@@ -977,13 +863,10 @@ function fillCheck(btn,chosen,correct){
     setTimeout(()=>{btn.classList.remove('wrong-choice');document.getElementById('fill-fb').textContent='';},700);
   }
 }
-
 function fillNext(){
   fillIdx++;
-  if(fillIdx>=fillList.length){
-    document.getElementById('fill-main').style.display='none';
-    document.getElementById('fill-finish').style.display='block';
-  } else { renderFill(); }
+  if(fillIdx>=fillList.length){document.getElementById('fill-main').style.display='none';document.getElementById('fill-finish').style.display='block';}
+  else{renderFill();}
 }
 
 // ══════════════════════════════════════
@@ -997,20 +880,14 @@ function initMemory(){
   leftCol.innerHTML=''; rightCol.innerHTML='';
   document.getElementById('mem-finish').style.display='none';
   status.textContent='Find all the pairs! 🧠';
-
-  // Left = shuffled set, Right = shuffled set (same animals, different order)
   const leftAnimals=shuffle([...animals]);
   const rightAnimals=shuffle([...animals]);
   let flipped=[],matched=0,lock=false;
   const total=animals.length;
-
-  // each card gets a side tag so we can only pair left+right
-  function makeCard(a, num, side){
+  function makeCard(a,num,side){
     const card=document.createElement('div');
-    card.className='mem-card';
-    card.dataset.id=a.id;
-    card.dataset.side=side;
-    const em = EMOJIS[a.id]||'❓';
+    card.className='mem-card'; card.dataset.id=a.id; card.dataset.side=side;
+    const em=EMOJIS[a.id]||'❓';
     card.innerHTML=`<div class="mem-inner">
       <div class="mem-front">${num}</div>
       <div class="mem-back">
@@ -1020,43 +897,25 @@ function initMemory(){
     </div>`;
     card.addEventListener('click',()=>{
       if(lock||card.classList.contains('flipped')||card.classList.contains('matched'))return;
-      // only allow one from each side
-      if(flipped.length===1 && flipped[0].side===side){ 
-        // deselect previous from same side
-        flipped[0].card.classList.remove('flipped');
-        flipped=[];
-      }
+      if(flipped.length===1&&flipped[0].side===side){flipped[0].card.classList.remove('flipped');flipped=[];}
       card.classList.add('flipped');
       flipped.push({card,id:a.id,side});
       if(flipped.length===2){
         lock=true;
         if(flipped[0].id===flipped[1].id){
-          flipped[0].card.classList.add('matched');
-          flipped[1].card.classList.add('matched');
-          matched++; flipped=[]; lock=false;
+          flipped[0].card.classList.add('matched');flipped[1].card.classList.add('matched');
+          matched++;flipped=[];lock=false;
           status.textContent=matched===total?'🎉 All matched!':'✅ '+matched+' / '+total+' found!';
-          if(matched===total){
-            setTimeout(()=>{
-              document.getElementById('mem-finish-msg').textContent='You found all '+total+' pairs! 🎉';
-              document.getElementById('mem-finish').style.display='block';
-            },600);
-          }
+          if(matched===total){setTimeout(()=>{document.getElementById('mem-finish-msg').textContent='You found all '+total+' pairs! 🎉';document.getElementById('mem-finish').style.display='block';},600);}
         } else {
-          setTimeout(()=>{
-            flipped[0].card.classList.remove('flipped');
-            flipped[1].card.classList.remove('flipped');
-            flipped=[]; lock=false;
-          },800);
+          setTimeout(()=>{flipped[0].card.classList.remove('flipped');flipped[1].card.classList.remove('flipped');flipped=[];lock=false;},800);
         }
       }
     });
     return card;
   }
-
   leftAnimals.forEach((a,i)=>leftCol.appendChild(makeCard(a,i+1,'left')));
   rightAnimals.forEach((a,i)=>rightCol.appendChild(makeCard(a,i+1,'right')));
-
-  // 2-second preview
   lock=true;
   document.querySelectorAll('.mem-card').forEach(c=>c.classList.add('flipped'));
   setTimeout(()=>{document.querySelectorAll('.mem-card:not(.matched)').forEach(c=>c.classList.remove('flipped'));lock=false;},2000);
@@ -1068,7 +927,6 @@ function initMemory(){
 const PER_PAGE=5;
 let sumPage=0;
 const ACCENT_BORDERS=['#7C3AED','#FF6B6B','#3B82F6','#6BCB77','#FF9F43','#FFD93D','#7C3AED','#FF6B6B','#3B82F6','#6BCB77','#FF9F43'];
-
 function renderSummary(){
   const animals=setAnimals();
   const totalPages=Math.ceil(animals.length/PER_PAGE);
@@ -1094,11 +952,7 @@ function renderSummary(){
     grid.appendChild(card);
   });
 }
-
-function summaryPage(dir){
-  sumPage+=dir;
-  renderSummary();
-}
+function summaryPage(dir){sumPage+=dir;renderSummary();}
 
 // ══════════════════════════════════════
 // BUBBLES
@@ -1133,17 +987,14 @@ function summaryPage(dir){
 })();
 
 // ══════════════════════════════════════
-// VOCABINDER
+// VOCABINDER — FIX: uses word.jpg (not word2.jpg)
 // ══════════════════════════════════════
-let vcDeck=[], vcIdx=0, vcCorrect=0, vcWrong=0, vcLocked=false, vcChoices=[], vcDragX=0, vcDragging=false, vcStartX=0;
-
+let vcDeck=[],vcIdx=0,vcCorrect=0,vcWrong=0,vcLocked=false,vcChoices=[],vcDragX=0,vcDragging=false,vcStartX=0;
 function showVocabinder(){
   showScreen('voca-screen');
-  // hide bottom nav for vocabinder
   document.getElementById('bottom-nav').classList.remove('visible');
   vcRestart();
 }
-
 function vcRestart(){
   vcDeck=shuffle([...ANIMALS]);
   vcIdx=0; vcCorrect=0; vcWrong=0; vcLocked=false;
@@ -1152,16 +1003,12 @@ function vcRestart(){
   document.getElementById('vc-total').textContent=vcDeck.length;
   vcRender();
 }
-
 function vcRender(){
-  if(vcIdx>=vcDeck.length){ vcShowComp(); return; }
+  if(vcIdx>=vcDeck.length){vcShowComp();return;}
   const item=vcDeck[vcIdx];
-  // wrong choice from full pool
   const pool=ANIMALS.filter(a=>a.id!==item.id);
   const wrong=pool[Math.floor(Math.random()*pool.length)];
   vcChoices=shuffle([item,wrong]);
-
-  // reset card — show cat2.jpg image
   const card=document.getElementById('vc-card');
   card.style.transition='none';
   card.style.transform='translateX(0) rotate(0deg)';
@@ -1169,13 +1016,11 @@ function vcRender(){
   card.classList.remove('correct-flash','wrong-flash');
   card.innerHTML='';
   const vcImg=document.createElement('img');
-  vcImg.src=imgSrc(item.id,'2');
+  vcImg.src=imgSrc(item.id,'');  // ← FIXED: was '2', now '' → uses word.jpg
   vcImg.alt=item.word;
   vcImg.style.cssText='width:200px;height:200px;object-fit:cover;border-radius:18px;';
   vcImg.onerror=()=>{vcImg.remove();const sp=document.createElement('span');sp.style.fontSize='5rem';sp.textContent=EMOJIS[item.id]||'❓';card.appendChild(sp);};
   card.appendChild(vcImg);
-
-  // update buttons
   document.getElementById('vc-a-txt').textContent=vcChoices[0].word;
   document.getElementById('vc-b-txt').textContent=vcChoices[1].word;
   document.getElementById('vc-btn-a').classList.remove('flash-correct','flash-wrong');
@@ -1184,73 +1029,46 @@ function vcRender(){
   document.getElementById('vc-peek-r').textContent=vcChoices[1].word;
   document.getElementById('vc-peek-l').style.opacity=0;
   document.getElementById('vc-peek-r').style.opacity=0;
-
-  vcUpdateHUD();
-  vcLocked=false;
-  vcSetupDrag();
+  vcUpdateHUD(); vcLocked=false; vcSetupDrag();
 }
-
 function vcUpdateHUD(){
   document.getElementById('vc-correct').textContent=vcCorrect;
   document.getElementById('vc-wrong').textContent=vcWrong;
   document.getElementById('vc-done').textContent=vcIdx;
   document.getElementById('vc-prog').style.width=(vcDeck.length?(vcIdx/vcDeck.length)*100:0)+'%';
 }
-
-function vcPick(side){
-  if(vcLocked) return;
-  vcResolve(vcChoices[side].id===vcDeck[vcIdx].id, side);
-}
-
-function vcResolve(isOk, side){
-  if(vcLocked) return;
-  vcLocked=true;
+function vcPick(side){if(vcLocked)return;vcResolve(vcChoices[side].id===vcDeck[vcIdx].id,side);}
+function vcResolve(isOk,side){
+  if(vcLocked)return; vcLocked=true;
   const card=document.getElementById('vc-card');
-  const btnA=document.getElementById('vc-btn-a');
-  const btnB=document.getElementById('vc-btn-b');
-  const chosenBtn=side===0?btnA:btnB;
-
-  if(isOk){
-    vcCorrect++;
-    card.classList.add('correct-flash');
-    chosenBtn.classList.add('flash-correct');
-    setTimeout(()=>vcFlyOut(side===0?'left':'right'), 200);
-  } else {
-    vcWrong++;
-    card.classList.add('wrong-flash');
-    chosenBtn.classList.add('flash-wrong');
-    setTimeout(()=>vcFlyOut(side===0?'left':'right'), 200);
-  }
-  setTimeout(()=>{ vcIdx++; vcRender(); }, isOk ? 700 : 900);
+  const chosenBtn=side===0?document.getElementById('vc-btn-a'):document.getElementById('vc-btn-b');
+  if(isOk){vcCorrect++;card.classList.add('correct-flash');chosenBtn.classList.add('flash-correct');setTimeout(()=>vcFlyOut(side===0?'left':'right'),200);}
+  else{vcWrong++;card.classList.add('wrong-flash');chosenBtn.classList.add('flash-wrong');setTimeout(()=>vcFlyOut(side===0?'left':'right'),200);}
+  setTimeout(()=>{vcIdx++;vcRender();},isOk?700:900);
 }
-
 function vcFlyOut(dir){
   const card=document.getElementById('vc-card');
   card.style.transition='transform .42s ease, opacity .38s';
   card.style.transform=`translateX(${dir==='right'?380:-380}px) rotate(${dir==='right'?15:-15}deg)`;
   card.style.opacity='0';
 }
-
 function vcShowComp(){
   document.getElementById('vc-game').style.display='none';
   const comp=document.getElementById('vc-comp');
   comp.classList.add('on');
   document.getElementById('vc-comp-stats').textContent=`✅ ${vcCorrect} correct  ❌ ${vcWrong} wrong — all ${vcDeck.length} animals done!`;
 }
-
 function vcSetupDrag(){
   const card=document.getElementById('vc-card');
   card.onmousedown=e=>vcStartDrag(e.clientX);
   card.ontouchstart=e=>{e.preventDefault();vcStartDrag(e.touches[0].clientX);};
 }
-
 function vcStartDrag(x){
-  if(vcLocked) return;
+  if(vcLocked)return;
   vcDragging=true; vcStartX=x; vcDragX=0;
   const card=document.getElementById('vc-card');
-
   function onMove(cx){
-    if(!vcDragging) return;
+    if(!vcDragging)return;
     vcDragX=cx-vcStartX;
     card.style.transition='none';
     card.style.transform=`translateX(${vcDragX}px) rotate(${vcDragX*.06}deg)`;
@@ -1258,25 +1076,17 @@ function vcStartDrag(x){
     document.getElementById('vc-peek-l').style.opacity=vcDragX<-t?Math.min((-vcDragX-t)/60,1):0;
     document.getElementById('vc-peek-r').style.opacity=vcDragX>t?Math.min((vcDragX-t)/60,1):0;
   }
-
   function onUp(){
-    if(!vcDragging) return;
-    vcDragging=false;
+    if(!vcDragging)return; vcDragging=false;
     document.removeEventListener('mousemove',mm);
     document.removeEventListener('mouseup',mu);
     document.removeEventListener('touchmove',tm);
     document.removeEventListener('touchend',tu);
-    if(vcDragX>90) vcResolve(vcChoices[1].id===vcDeck[vcIdx].id, 1);
-    else if(vcDragX<-90) vcResolve(vcChoices[0].id===vcDeck[vcIdx].id, 0);
-    else {
-      card.style.transition='transform .3s ease';
-      card.style.transform='translateX(0) rotate(0)';
-      document.getElementById('vc-peek-l').style.opacity=0;
-      document.getElementById('vc-peek-r').style.opacity=0;
-    }
+    if(vcDragX>90) vcResolve(vcChoices[1].id===vcDeck[vcIdx].id,1);
+    else if(vcDragX<-90) vcResolve(vcChoices[0].id===vcDeck[vcIdx].id,0);
+    else{card.style.transition='transform .3s ease';card.style.transform='translateX(0) rotate(0)';document.getElementById('vc-peek-l').style.opacity=0;document.getElementById('vc-peek-r').style.opacity=0;}
     vcDragX=0;
   }
-
   const mm=e=>onMove(e.clientX);
   const mu=()=>onUp();
   const tm=e=>{e.preventDefault();onMove(e.touches[0].clientX);};
@@ -1288,61 +1098,42 @@ function vcStartDrag(x){
 }
 
 // ══════════════════════════════════════
-// SPELLING GAME
+// SPELLING — FIX: uses word.jpg (not word2.jpg)
 // ══════════════════════════════════════
-let spellList=[], spellIdx=0, spellAnswered=false;
-
-// Generate plausible misspellings of a word
-function makeMisspellings(word, count){
+let spellList=[],spellIdx=0,spellAnswered=false;
+function makeMisspellings(word,count){
   const w=word.toLowerCase();
   const variants=new Set();
   const ops=[
-    // double a random vowel
-    s=>{ const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0); if(!vs.length)return null; const i=vs[Math.floor(Math.random()*vs.length)]; return s.slice(0,i)+s[i]+s.slice(i); },
-    // swap two adjacent letters
-    s=>{ if(s.length<3)return null; const i=Math.floor(Math.random()*(s.length-1)); const a=[...s]; [a[i],a[i+1]]=[a[i+1],a[i]]; return a.join(''); },
-    // drop a letter
-    s=>{ if(s.length<4)return null; const i=1+Math.floor(Math.random()*(s.length-2)); return s.slice(0,i)+s.slice(i+1); },
-    // replace a vowel with another vowel
-    s=>{ const vowels='aeiou'; const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0); if(!vs.length)return null; const i=vs[Math.floor(Math.random()*vs.length)]; const v=vowels[Math.floor(Math.random()*5)]; return s.slice(0,i)+v+s.slice(i+1); },
-    // add extra letter at random interior position
-    s=>{ const i=1+Math.floor(Math.random()*(s.length-1)); const c='aeioulnrst'[Math.floor(Math.random()*10)]; return s.slice(0,i)+c+s.slice(i); },
+    s=>{const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];return s.slice(0,i)+s[i]+s.slice(i);},
+    s=>{if(s.length<3)return null;const i=Math.floor(Math.random()*(s.length-1));const a=[...s];[a[i],a[i+1]]=[a[i+1],a[i]];return a.join('');},
+    s=>{if(s.length<4)return null;const i=1+Math.floor(Math.random()*(s.length-2));return s.slice(0,i)+s.slice(i+1);},
+    s=>{const vowels='aeiou';const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];const v=vowels[Math.floor(Math.random()*5)];return s.slice(0,i)+v+s.slice(i+1);},
+    s=>{const i=1+Math.floor(Math.random()*(s.length-1));const c='aeioulnrst'[Math.floor(Math.random()*10)];return s.slice(0,i)+c+s.slice(i);},
   ];
   let attempts=0;
-  while(variants.size<count && attempts<80){
-    attempts++;
-    const op=ops[Math.floor(Math.random()*ops.length)];
-    const v=op(w);
-    if(v && v!==w && v.length>1) variants.add(v);
-  }
-  // fallback: if not enough, pad with simple variants
+  while(variants.size<count&&attempts<80){attempts++;const op=ops[Math.floor(Math.random()*ops.length)];const v=op(w);if(v&&v!==w&&v.length>1)variants.add(v);}
   const fallbacks=['phant','fant','fent','ant','ent','ont','unt'].map(s=>w.slice(0,-2)+s).filter(s=>s!==w);
-  for(const f of fallbacks){ if(variants.size>=count)break; if(f!==w) variants.add(f); }
+  for(const f of fallbacks){if(variants.size>=count)break;if(f!==w)variants.add(f);}
   return [...variants].slice(0,count);
 }
-
 function initSpell(){
-  spellList=shuffle([...setAnimals()]);
-  spellIdx=0;
+  spellList=shuffle([...setAnimals()]); spellIdx=0;
   document.getElementById('spell-finish').style.display='none';
   document.getElementById('spell-main').style.display='block';
   renderSpell();
 }
-
 function renderSpell(){
   const total=spellList.length;
   document.getElementById('spell-progress').textContent=(spellIdx+1)+' / '+total;
-  const a=spellList[spellIdx];
-  spellAnswered=false;
-
-  const misspellings=makeMisspellings(a.word, 2);
-  const choices=shuffle([a.word, ...misspellings]);
-
+  const a=spellList[spellIdx]; spellAnswered=false;
+  const misspellings=makeMisspellings(a.word,2);
+  const choices=shuffle([a.word,...misspellings]);
   const spellEmoji=EMOJIS[a.id]||'❓';
   const main=document.getElementById('spell-main');
   main.innerHTML=`
     <div class="spell-card">
-      <img class="spell-img" src="${imgSrc(a.id,'2')}" alt="${a.word}"
+      <img class="spell-img" src="${imgSrc(a.id,'')}" alt="${a.word}"
         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
       <div class="spell-img-ph">${spellEmoji}</div>
       <div class="spell-prompt">Which spelling is correct?</div>
@@ -1352,29 +1143,15 @@ function renderSpell(){
       <button class="spell-next-btn" id="spell-next-btn" onclick="spellNext()">Next →</button>
     </div>`;
 }
-
-function spellCheck(btn, chosen, correct){
-  if(spellAnswered) return;
-  if(chosen===correct){
-    spellAnswered=true;
-    btn.classList.add('correct-spell');
-    document.querySelectorAll('.spell-choice').forEach(b=>b.disabled=true);
-    document.getElementById('spell-next-btn').classList.add('show');
-  } else {
-    btn.classList.add('wrong-spell');
-    setTimeout(()=>btn.classList.remove('wrong-spell'), 500);
-  }
+function spellCheck(btn,chosen,correct){
+  if(spellAnswered)return;
+  if(chosen===correct){spellAnswered=true;btn.classList.add('correct-spell');document.querySelectorAll('.spell-choice').forEach(b=>b.disabled=true);document.getElementById('spell-next-btn').classList.add('show');}
+  else{btn.classList.add('wrong-spell');setTimeout(()=>btn.classList.remove('wrong-spell'),500);}
 }
-
 function spellNext(){
   spellIdx++;
-  if(spellIdx>=spellList.length){
-    document.getElementById('spell-main').style.display='none';
-    document.getElementById('spell-finish-sub').textContent='You spelled all '+spellList.length+' animals! 🎉';
-    document.getElementById('spell-finish').style.display='block';
-  } else {
-    renderSpell();
-  }
+  if(spellIdx>=spellList.length){document.getElementById('spell-main').style.display='none';document.getElementById('spell-finish-sub').textContent='You spelled all '+spellList.length+' animals! 🎉';document.getElementById('spell-finish').style.display='block';}
+  else{renderSpell();}
 }
 
 // ══════════════════════════════════════
@@ -1406,15 +1183,11 @@ function renderPicsOnly(){
     const card=document.createElement('div');
     card.className='pic-only-card';
     const img=document.createElement('img');
-    img.src=imgSrc(a.id,'');
-    img.alt=a.word;
+    img.src=imgSrc(a.id,''); img.alt=a.word;
     const ph=document.createElement('div');
-    ph.className='p-ph';
-    ph.textContent=EMOJIS[a.id]||'❓';
-    ph.style.display='none';
+    ph.className='p-ph'; ph.textContent=EMOJIS[a.id]||'❓'; ph.style.display='none';
     img.onerror=()=>{img.style.display='none';ph.style.display='flex';};
-    card.appendChild(img);
-    card.appendChild(ph);
+    card.appendChild(img); card.appendChild(ph);
     grid.appendChild(card);
   });
 }
