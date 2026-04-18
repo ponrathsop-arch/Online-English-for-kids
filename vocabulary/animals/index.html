@@ -240,6 +240,18 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .spell-next-btn.show{display:inline-block;}
 .spell-next-btn:hover{transform:scale(1.05);}
 
+/* ── WORDS ONLY ── */
+#words-screen{padding-top:14px;}
+.words-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.word-only-card{background:rgba(255,255,255,.92);border-radius:16px;box-shadow:0 3px 14px rgba(0,0,0,.08);padding:16px 22px;border-left:5px solid var(--purple);font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--text);}
+
+/* ── PICTURES ONLY ── */
+#pics-screen{padding-top:14px;}
+.pics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.pic-only-card{background:rgba(255,255,255,.9);border-radius:14px;padding:6px;box-shadow:0 3px 12px rgba(0,0,0,.08);aspect-ratio:1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.pic-only-card img{width:100%;height:100%;object-fit:cover;border-radius:9px;display:block;}
+.pic-only-card .p-ph{font-size:2.2rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
+
 #footer{text-align:center;padding:22px 16px 10px;font-size:.76rem;color:var(--muted);position:relative;z-index:1;}
 </style>
 </head>
@@ -284,6 +296,16 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
       <span><span class="hsb-name">Spelling</span><span class="hsb-desc">Pick the correct spelling!</span></span>
     </button>
   </div>
+  <div class="home-sec-btns" style="margin-top:-16px;">
+    <button class="home-sec-btn" onclick="startActivity('wordsonly')" style="background:var(--blue);">
+      <span class="hsb-icon">🔠</span>
+      <span><span class="hsb-name">Words Only</span><span class="hsb-desc">Read all words, no pictures</span></span>
+    </button>
+    <button class="home-sec-btn" onclick="startActivity('picsonly')" style="background:var(--orange);">
+      <span class="hsb-icon">🖼️</span>
+      <span><span class="hsb-name">Pictures Only</span><span class="hsb-desc">See all pictures, no words</span></span>
+    </button>
+  </div>
   <div id="footer">Pang made with ❤️ for kids learning English</div>
 </div>
 
@@ -297,6 +319,8 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   <button class="bnav-btn" id="bn-mem" onclick="bnActivity('memory')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;color:var(--muted);padding:4px 2px;transition:all .18s;"><span class="bn-icon" style="font-size:17px;line-height:1;">🧠</span>Memory</button>
   <button class="bnav-btn fill-btn"  id="bn-fill"  onclick="bnActivity('fill')"><span class="bn-icon">✏️</span>Fill</button>
   <button class="bnav-btn" id="bn-spell" onclick="bnActivity('spell')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;color:var(--muted);padding:4px 2px;transition:all .18s;"><span class="bn-icon" style="font-size:17px;line-height:1;">🔤</span>Spell</button>
+  <button class="bnav-btn" id="bn-wo" onclick="bnActivity('wordsonly')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;color:var(--muted);padding:4px 2px;transition:all .18s;"><span class="bn-icon" style="font-size:17px;line-height:1;">🔠</span>Words</button>
+  <button class="bnav-btn" id="bn-po" onclick="bnActivity('picsonly')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;color:var(--muted);padding:4px 2px;transition:all .18s;"><span class="bn-icon" style="font-size:17px;line-height:1;">🖼️</span>Pics</button>
   <button class="bnav-btn" id="bn-sum" onclick="bnActivity('summary')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;color:var(--muted);padding:4px 2px;transition:all .18s;"><span class="bn-icon" style="font-size:17px;line-height:1;">📋</span>All</button>
 </div>
 
@@ -496,6 +520,26 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   </div>
 </div>
 
+<!-- ═══ WORDS ONLY ═══ -->
+<div id="words-screen" class="screen">
+  <div class="fc-topbar">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--blue);">🔠 Words Only</div>
+    <div class="fc-progress" id="words-progress"></div>
+  </div>
+  <div class="words-grid" id="words-grid"></div>
+</div>
+
+<!-- ═══ PICTURES ONLY ═══ -->
+<div id="pics-screen" class="screen">
+  <div class="fc-topbar">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--orange);">🖼️ Pictures Only</div>
+    <div class="fc-progress" id="pics-progress"></div>
+  </div>
+  <div class="pics-grid" id="pics-grid"></div>
+</div>
+
 </div><!-- #app -->
 
 <script>
@@ -603,6 +647,14 @@ function updateBnavActivity(act){
   spellBtn.classList.toggle('active', act==='spell');
   if(act==='spell'){spellBtn.style.background='var(--coral)';spellBtn.style.color='#fff';}
   else{spellBtn.style.background='';spellBtn.style.color='';}
+  const woBtn=document.getElementById('bn-wo');
+  woBtn.classList.toggle('active', act==='wordsonly');
+  if(act==='wordsonly'){woBtn.style.background='var(--blue)';woBtn.style.color='#fff';}
+  else{woBtn.style.background='';woBtn.style.color='';}
+  const poBtn=document.getElementById('bn-po');
+  poBtn.classList.toggle('active', act==='picsonly');
+  if(act==='picsonly'){poBtn.style.background='var(--orange)';poBtn.style.color='#fff';}
+  else{poBtn.style.background='';poBtn.style.color='';}
   // memory btn active colour
   const memBtn=document.getElementById('bn-mem');
   if(act==='memory'){memBtn.style.background='var(--purple)';memBtn.style.color='#fff';}
@@ -656,6 +708,12 @@ function startActivity(act){
     document.getElementById('spell-finish').style.display='none';
     document.getElementById('spell-main').style.display='block';
     initSpell();
+  } else if(act==='wordsonly'){
+    showScreen('words-screen');
+    renderWordsOnly();
+  } else if(act==='picsonly'){
+    showScreen('pics-screen');
+    renderPicsOnly();
   }
 }
 
@@ -1317,6 +1375,48 @@ function spellNext(){
   } else {
     renderSpell();
   }
+}
+
+// ══════════════════════════════════════
+// WORDS ONLY
+// ══════════════════════════════════════
+function renderWordsOnly(){
+  const animals=setAnimals();
+  document.getElementById('words-progress').textContent=animals.length+' words';
+  const grid=document.getElementById('words-grid');
+  grid.innerHTML='';
+  animals.forEach((a,i)=>{
+    const card=document.createElement('div');
+    card.className='word-only-card';
+    card.style.borderLeftColor=ACCENTS[i%ACCENTS.length];
+    card.textContent=a.word;
+    grid.appendChild(card);
+  });
+}
+
+// ══════════════════════════════════════
+// PICTURES ONLY
+// ══════════════════════════════════════
+function renderPicsOnly(){
+  const animals=setAnimals();
+  document.getElementById('pics-progress').textContent=animals.length+' pictures';
+  const grid=document.getElementById('pics-grid');
+  grid.innerHTML='';
+  shuffle([...animals]).forEach(a=>{
+    const card=document.createElement('div');
+    card.className='pic-only-card';
+    const img=document.createElement('img');
+    img.src=imgSrc(a.id,'');
+    img.alt=a.word;
+    const ph=document.createElement('div');
+    ph.className='p-ph';
+    ph.textContent=EMOJIS[a.id]||'❓';
+    ph.style.display='none';
+    img.onerror=()=>{img.style.display='none';ph.style.display='flex';};
+    card.appendChild(img);
+    card.appendChild(ph);
+    grid.appendChild(card);
+  });
 }
 
 // ══════════════════════════════════════
