@@ -888,8 +888,8 @@ function initMemory(){
     const card=document.createElement('div');
     card.className='mem-card'; card.dataset.id=a.id; card.dataset.side=side;
     const em=EMOJIS[a.id]||'❓';
-    card.innerHTML=`<div class="mem-inner">
-      <div class="mem-front">${num}</div>
+  card.innerHTML=`<div class="mem-inner">
+      <div class="mem-front" style="background:${side==='right'?'linear-gradient(135deg,#3B82F6,#1d4ed8)':'linear-gradient(135deg,var(--purple),#5b21b6)'};">${num}</div>
       <div class="mem-back">
         <img src="${imgSrc(a.id,'1')}" alt="${a.word}" onerror="this.style.display='none';this.nextElementSibling.style.fontSize='1.8rem';this.nextElementSibling.textContent='${em}'">
         <div class="mem-name">${a.word}</div>
