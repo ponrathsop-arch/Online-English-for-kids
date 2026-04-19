@@ -133,7 +133,7 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .mem-status{text-align:center;font-size:1rem;color:var(--muted);margin-bottom:10px;font-weight:900;}
 .mem-two-col{display:flex;gap:16px;justify-content:center;align-items:flex-start;padding:0 10px;}
 /* Each column gets half the viewport minus gap; cards fill available space */
-.mem-col{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;flex:1;max-width:44vw;}
+.mem-col{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex:1;max-width:48vw;}
 .mem-col-title{font-family:'Fredoka One',cursive;font-size:1rem;text-align:center;margin-bottom:8px;color:var(--purple);}
 .mem-card{width:100%;aspect-ratio:1;perspective:600px;cursor:pointer;min-height:70px;}
 .mem-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .4s cubic-bezier(.34,1.2,.64,1);border-radius:14px;}
@@ -967,8 +967,8 @@ function initMemory() {
     card.className = 'mem-card';
     card.dataset.id = a.id; card.dataset.side = side;
     const safeEm = em(a.id).replace(/'/g, "\\'");
-    card.innerHTML = `<div class="mem-inner">
-      <div class="mem-front">${num}</div>
+   card.innerHTML = `<div class="mem-inner">
+      <div class="mem-front" style="background:${side==='right'?'linear-gradient(135deg,#3B82F6,#1d4ed8)':'linear-gradient(135deg,var(--purple),#5b21b6)'};">${num}</div>
       <div class="mem-back">
         <img src="${imgSrc(a.id,'')}" alt="${a.word}"
           onerror="this.style.display='none';this.nextElementSibling.style.fontSize='1.8rem';this.nextElementSibling.textContent='${safeEm}'">
