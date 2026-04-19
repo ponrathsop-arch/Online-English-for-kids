@@ -20,8 +20,10 @@
   .shape:nth-child(3) { width: 60px; height: 60px; background: var(--green); bottom: 20%; left: 12%; animation-duration: 12s; animation-delay: -6s; }
   .shape:nth-child(4) { width: 100px; height: 100px; background: var(--purple); bottom: 10%; right: 15%; animation-duration: 16s; animation-delay: -2s; }
   @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-20px) rotate(120deg); } 66% { transform: translateY(10px) rotate(240deg); } }
+
   .back-btn { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; margin: 28px 0 0 28px; padding: 8px 18px; background: white; border-radius: 999px; font-size: 14px; font-weight: 700; color: #555; text-decoration: none; box-shadow: 0 4px 0 rgba(0,0,0,0.08); transition: transform 0.15s, box-shadow 0.15s; }
   .back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.08); }
+
   header { position: relative; z-index: 1; text-align: center; padding: 40px 20px 30px; }
   .star-row { font-size: 22px; letter-spacing: 6px; margin-bottom: 12px; animation: twinkle 2s ease-in-out infinite alternate; }
   @keyframes twinkle { from { opacity: 0.6; transform: scale(1); } to { opacity: 1; transform: scale(1.05); } }
@@ -35,46 +37,236 @@
   h1 span:nth-child(9) { color: var(--orange); animation-delay: 0.8s; } h1 span:nth-child(10) { color: var(--yellow); animation-delay: 0.9s; }
   @keyframes bounce-letter { from { transform: translateY(0); } to { transform: translateY(-8px); } }
   .subtitle { margin-top: 12px; font-size: 17px; color: #555; font-weight: 600; }
-  .grid-section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 20px 24px 80px; }
+
+  /* ══════════════════════════════════
+     EXCLUSIVE GAME BANNER — Odd One Out
+     ══════════════════════════════════ */
+  .exclusive-section {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto;
+    padding: 10px 24px 32px;
+  }
+  .exclusive-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+    color: #fff; background: linear-gradient(90deg, #7C3AED, #F472B6);
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 16px; border-radius: 999px;
+    margin-bottom: 14px; box-shadow: 0 3px 12px rgba(124,58,237,.25);
+  }
+  .exclusive-label::before { content: '✦'; font-size: 10px; }
+  .exclusive-label::after  { content: '✦'; font-size: 10px; }
+
+  .odd-banner {
+    display: block; text-decoration: none;
+    background: linear-gradient(120deg, #1e0a3c 0%, #3b0764 40%, #6d28d9 70%, #db2777 100%);
+    border-radius: 28px;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 12px 0 rgba(0,0,0,0.13), 0 20px 50px rgba(109,40,217,.35);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    animation: banner-in 0.6s ease 0.1s both;
+    border: 2.5px solid rgba(255,255,255,.12);
+  }
+  .odd-banner:hover {
+    transform: translateY(-5px) scale(1.005);
+    box-shadow: 0 18px 0 rgba(0,0,0,0.13), 0 30px 60px rgba(109,40,217,.45);
+  }
+  @keyframes banner-in { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+
+  /* shimmer sweep */
+  .odd-banner::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.07) 50%, transparent 65%);
+    background-size: 200% 100%;
+    animation: shimmer 3.5s infinite linear;
+    border-radius: 28px;
+    pointer-events: none;
+  }
+  @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+  .odd-banner-inner {
+    display: flex; align-items: center;
+    padding: 28px 36px; gap: 28px;
+    position: relative; z-index: 1;
+  }
+
+  /* floating emoji cluster */
+  .odd-emoji-cluster {
+    flex-shrink: 0;
+    width: 110px; height: 110px;
+    position: relative;
+  }
+  .odd-emoji-cluster .oe { position: absolute; font-size: 2.6rem; line-height: 1; }
+  .odd-emoji-cluster .oe:nth-child(1) { top:0; left:0; animation: floatE 3.2s ease-in-out infinite alternate; }
+  .odd-emoji-cluster .oe:nth-child(2) { top:0; right:0; animation: floatE 2.8s ease-in-out infinite alternate-reverse; }
+  .odd-emoji-cluster .oe:nth-child(3) { bottom:4px; left:10px; animation: floatE 3.6s ease-in-out infinite alternate; }
+  .odd-emoji-cluster .oe:nth-child(4) {
+    bottom:2px; right:4px;
+    font-size:3.2rem;
+    animation: floatE 2.4s ease-in-out infinite alternate-reverse;
+    filter: drop-shadow(0 0 10px rgba(255,100,100,.8));
+  }
+  @keyframes floatE { from { transform:translateY(0) rotate(-4deg); } to { transform:translateY(-8px) rotate(4deg); } }
+
+  .odd-text { flex: 1; }
+  .odd-eyebrow {
+    font-family: 'Fredoka One', cursive;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,.55); margin-bottom: 6px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .odd-eyebrow::before { content:''; display:inline-block; width:24px; height:1.5px; background:rgba(255,255,255,.35); }
+
+  .odd-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    color: #fff; line-height: 1.1; margin-bottom: 8px;
+  }
+  .odd-title .highlight {
+    background: linear-gradient(90deg, #FFD93D, #FF9A3C);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .odd-desc {
+    font-size: 14px; font-weight: 700;
+    color: rgba(255,255,255,.65); line-height: 1.55;
+    max-width: 380px; margin-bottom: 16px;
+  }
+
+  .odd-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .odd-tag {
+    border-radius: 999px; padding: 4px 13px;
+    font-size: 11.5px; font-weight: 800; letter-spacing: .4px;
+  }
+  .tag-animals { background: rgba(77,150,255,.22); color: #93c5fd; border: 1px solid rgba(77,150,255,.3); }
+  .tag-fruit   { background: rgba(107,203,119,.22); color: #86efac; border: 1px solid rgba(107,203,119,.3); }
+  .tag-games   { background: rgba(255,132,183,.22); color: #f9a8d4; border: 1px solid rgba(255,132,183,.3); }
+
+  .odd-cta {
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #FFD93D, #FF9A3C);
+    color: #1e0a3c; border: none; border-radius: 50px;
+    padding: 14px 28px; font-family: 'Fredoka One', cursive;
+    font-size: 1.05rem; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(255,154,60,.45);
+    transition: transform .18s, box-shadow .18s;
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .odd-cta:hover { transform: scale(1.06); box-shadow: 0 8px 24px rgba(255,154,60,.55); }
+  .odd-cta .cta-arrow { font-size: 1.1rem; transition: transform .2s; }
+  .odd-banner:hover .cta-arrow { transform: translateX(4px); }
+
+  /* decorative circles */
+  .odd-deco { position: absolute; border-radius: 50%; pointer-events: none; }
+  .odd-deco-1 { width:180px; height:180px; top:-60px; right:160px; background:rgba(255,255,255,.04); }
+  .odd-deco-2 { width:120px; height:120px; bottom:-40px; right:280px; background:rgba(255,255,255,.05); }
+  .odd-deco-3 { width:80px;  height:80px;  top:10px;   right:80px;  background:rgba(255,217,61,.08); }
+
+  /* responsive */
+  @media (max-width: 620px) {
+    .odd-banner-inner { flex-direction: column; align-items: flex-start; padding: 24px 22px; gap: 18px; }
+    .odd-emoji-cluster { width:90px; height:90px; }
+    .odd-emoji-cluster .oe { font-size:2rem; }
+    .odd-emoji-cluster .oe:nth-child(4) { font-size:2.5rem; }
+    .odd-cta { align-self: flex-start; }
+  }
+
+  /* ══════════════════════════════════
+     VOCABULARY GRID (unchanged)
+     ══════════════════════════════════ */
+  .grid-section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 8px 24px 80px; }
   .section-label { font-family: 'Fredoka One', cursive; font-size: 22px; color: #777; text-align: center; margin-bottom: 32px; letter-spacing: 1px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
   .card { background: white; border-radius: 24px; padding: 32px 24px 28px; text-align: center; cursor: pointer; text-decoration: none; display: block; position: relative; overflow: hidden; border: 3px solid transparent; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; box-shadow: 0 6px 0 rgba(0,0,0,0.08); opacity: 0; transform: translateY(30px); animation: card-in 0.5s ease forwards; }
-  .card:nth-child(1) { animation-delay: 0.05s; } .card:nth-child(2) { animation-delay: 0.10s; } .card:nth-child(3) { animation-delay: 0.15s; } .card:nth-child(4) { animation-delay: 0.20s; } .card:nth-child(5) { animation-delay: 0.25s; } .card:nth-child(6) { animation-delay: 0.30s; } .card:nth-child(7) { animation-delay: 0.35s; } .card:nth-child(8) { animation-delay: 0.40s; } .card:nth-child(9) { animation-delay: 0.45s; } .card:nth-child(10) { animation-delay: 0.50s; } .card:nth-child(11) { animation-delay: 0.55s; } .card:nth-child(12) { animation-delay: 0.60s; } .card:nth-child(13) { animation-delay: 0.65s; }
-  @keyframes card-in { to { opacity: 1; transform: translateY(0); } }
-  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; border-radius: 24px 24px 0 0; }
-  .card:hover { transform: translateY(-6px); box-shadow: 0 14px 0 rgba(0,0,0,0.08); }
-  .card-1::before { background: var(--teal); } .card:hover.card-1 { border-color: var(--teal); }
-  .card-2::before { background: var(--orange); } .card:hover.card-2 { border-color: var(--orange); }
-  .card-3::before { background: var(--blue); } .card:hover.card-3 { border-color: var(--blue); }
-  .card-4::before { background: var(--green); } .card:hover.card-4 { border-color: var(--green); }
-  .card-5::before { background: var(--coral); } .card:hover.card-5 { border-color: var(--coral); }
-  .card-6::before { background: var(--purple); } .card:hover.card-6 { border-color: var(--purple); }
-  .card-7::before { background: var(--pink); } .card:hover.card-7 { border-color: var(--pink); }
-  .card-emoji { font-size: 48px; display: block; margin-bottom: 14px; line-height: 1; }
-  .card-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--dark); margin-bottom: 8px; }
-  .card-desc { font-size: 13px; color: #888; font-weight: 600; line-height: 1.5; }
-  .card-badge { display: inline-block; margin-top: 14px; padding: 4px 14px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
-  .card-1 .card-badge { background: #e0faf8; color: #1a9e95; }
-  .card-2 .card-badge { background: #fff4e8; color: #d47200; }
-  .card-3 .card-badge { background: #eef4ff; color: var(--blue); }
-  .card-4 .card-badge { background: #eefbf0; color: #3a9e46; }
-  .card-5 .card-badge { background: #fff0f6; color: #c0006a; }
-  .card-6 .card-badge { background: #f7eeff; color: #9a3de0; }
-  .card-7 .card-badge { background: #fff0f8; color: #c0006a; }
-  /* NEW ribbon */
-  .card-new-ribbon { position: absolute; top: 14px; right: -1px; background: var(--coral); color: white; font-family: 'Fredoka One', cursive; font-size: 12px; padding: 3px 12px 3px 10px; border-radius: 4px 0 0 4px; letter-spacing: .5px; box-shadow: -2px 2px 6px rgba(0,0,0,.12); }
-  footer { position: relative; z-index: 1; text-align: center; padding: 20px; font-size: 13px; color: #aaa; font-weight: 600; }
+  .card:nth-child(1){animation-delay:.05s;} .card:nth-child(2){animation-delay:.10s;} .card:nth-child(3){animation-delay:.15s;} .card:nth-child(4){animation-delay:.20s;} .card:nth-child(5){animation-delay:.25s;} .card:nth-child(6){animation-delay:.30s;} .card:nth-child(7){animation-delay:.35s;} .card:nth-child(8){animation-delay:.40s;} .card:nth-child(9){animation-delay:.45s;} .card:nth-child(10){animation-delay:.50s;} .card:nth-child(11){animation-delay:.55s;} .card:nth-child(12){animation-delay:.60s;} .card:nth-child(13){animation-delay:.65s;}
+  @keyframes card-in { to { opacity:1; transform:translateY(0); } }
+  .card::before { content:''; position:absolute; top:0; left:0; right:0; height:6px; border-radius:24px 24px 0 0; }
+  .card:hover { transform:translateY(-6px); box-shadow:0 14px 0 rgba(0,0,0,0.08); }
+  .card-1::before{background:var(--teal);} .card:hover.card-1{border-color:var(--teal);}
+  .card-2::before{background:var(--orange);} .card:hover.card-2{border-color:var(--orange);}
+  .card-3::before{background:var(--blue);} .card:hover.card-3{border-color:var(--blue);}
+  .card-4::before{background:var(--green);} .card:hover.card-4{border-color:var(--green);}
+  .card-5::before{background:var(--coral);} .card:hover.card-5{border-color:var(--coral);}
+  .card-6::before{background:var(--purple);} .card:hover.card-6{border-color:var(--purple);}
+  .card-7::before{background:var(--pink);} .card:hover.card-7{border-color:var(--pink);}
+  .card-emoji { font-size:48px; display:block; margin-bottom:14px; line-height:1; }
+  .card-title { font-family:'Fredoka One',cursive; font-size:22px; color:var(--dark); margin-bottom:8px; }
+  .card-desc { font-size:13px; color:#888; font-weight:600; line-height:1.5; }
+  .card-badge { display:inline-block; margin-top:14px; padding:4px 14px; border-radius:999px; font-size:11px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; }
+  .card-1 .card-badge{background:#e0faf8;color:#1a9e95;}
+  .card-2 .card-badge{background:#fff4e8;color:#d47200;}
+  .card-3 .card-badge{background:#eef4ff;color:var(--blue);}
+  .card-4 .card-badge{background:#eefbf0;color:#3a9e46;}
+  .card-5 .card-badge{background:#fff0f6;color:#c0006a;}
+  .card-6 .card-badge{background:#f7eeff;color:#9a3de0;}
+  .card-7 .card-badge{background:#fff0f8;color:#c0006a;}
+  .card-new-ribbon { position:absolute; top:14px; right:-1px; background:var(--coral); color:white; font-family:'Fredoka One',cursive; font-size:12px; padding:3px 12px 3px 10px; border-radius:4px 0 0 4px; letter-spacing:.5px; box-shadow:-2px 2px 6px rgba(0,0,0,.12); }
+  footer { position:relative; z-index:1; text-align:center; padding:20px; font-size:13px; color:#aaa; font-weight:600; }
 </style>
 </head>
 <body>
 <div class="bg-shapes"><div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div></div>
 <a href="../index.html" class="back-btn">← Back to Home</a>
+
 <header>
   <div class="star-row">🌟 ⭐ 🌟 ⭐ 🌟</div>
   <p class="age-label">Topic</p>
   <h1><span>V</span><span>o</span><span>c</span><span>a</span><span>b</span><span>u</span><span>l</span><span>a</span><span>r</span><span>y</span></h1>
   <p class="subtitle">Learn words by theme! 🌍</p>
 </header>
+
+<!-- ══ EXCLUSIVE GAME BANNER ══ -->
+<section class="exclusive-section">
+  <div class="exclusive-label">🎮 Featured Game</div>
+
+  <a href="odd-one-out/index.html" class="odd-banner">
+
+    <!-- decorative circles -->
+    <div class="odd-deco odd-deco-1"></div>
+    <div class="odd-deco odd-deco-2"></div>
+    <div class="odd-deco odd-deco-3"></div>
+
+    <div class="odd-banner-inner">
+
+      <!-- floating emoji cluster -->
+      <div class="odd-emoji-cluster">
+        <span class="oe">🐘</span>
+        <span class="oe">🍎</span>
+        <span class="oe">🍌</span>
+        <span class="oe">🐶</span>
+      </div>
+
+      <!-- text -->
+      <div class="odd-text">
+        <div class="odd-eyebrow">New Game</div>
+        <div class="odd-title">
+          <span class="highlight">Odd One Out</span> 🔍
+        </div>
+        <div class="odd-desc">
+          Spot the picture that doesn't belong! Animals vs. Fruit — can you find the odd one out?
+        </div>
+        <div class="odd-tags">
+          <span class="odd-tag tag-animals">🐾 Animals</span>
+          <span class="odd-tag tag-fruit">🍓 Fruit</span>
+          <span class="odd-tag tag-games">🎮 Game</span>
+        </div>
+      </div>
+
+      <!-- CTA button -->
+      <button class="odd-cta">
+        Play Now <span class="cta-arrow">→</span>
+      </button>
+
+    </div>
+  </a>
+</section>
+
+<!-- ══ VOCABULARY GRID ══ -->
 <section class="grid-section">
   <p class="section-label">📦 Word Collections</p>
   <div class="grid">
@@ -96,7 +288,7 @@
       <span class="card-badge">Nature</span>
     </a>
 
-    <!-- PEOPLE — new -->
+    <!-- PEOPLE -->
     <a href="people/index.html" class="card card-5">
       <span class="card-new-ribbon">✨ New</span>
       <span class="card-emoji">👨‍👩‍👧‍👦</span>
@@ -113,7 +305,7 @@
       <span class="card-badge">Objects</span>
     </a>
 
-    <!-- CLOTHES & ACCESSORIES — new -->
+    <!-- CLOTHES & ACCESSORIES -->
     <a href="clothes/index.html" class="card card-7">
       <span class="card-new-ribbon">✨ New</span>
       <span class="card-emoji">🛍️</span>
@@ -121,15 +313,15 @@
       <div class="card-desc">Clothes, shoes, bags & more!</div>
       <span class="card-badge">Fashion</span>
     </a>
-   
-   <!-- FRUIT -->
+
+    <!-- FRUIT -->
     <a href="fruit/index.html" class="card card-4">
       <span class="card-emoji">🍓</span>
       <div class="card-title">Fruit</div>
       <div class="card-desc">Colourful, delicious fruit words</div>
       <span class="card-badge">Food</span>
     </a>
-   
+
     <!-- GETTING AROUND -->
     <a href="transport/index.html" class="card card-3">
       <span class="card-emoji">🚌</span>
@@ -180,6 +372,7 @@
 
   </div>
 </section>
+
 <footer>Pang made with ❤️ for kids learning English</footer>
 </body>
 </html>
