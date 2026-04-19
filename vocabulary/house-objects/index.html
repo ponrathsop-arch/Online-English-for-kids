@@ -129,9 +129,9 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .fill-next-btn:hover{transform:scale(1.05);}
 
 /* ── MEMORY ── */
-#memory-screen{padding-top:14px;max-width:100%!important;padding-left:0;padding-right:0;}
+#memory-screen{padding-top:14px;max-width:100%!important;padding-left:0;padding-right:0;width:100vw;}
 .mem-status{text-align:center;font-size:1rem;color:var(--muted);margin-bottom:10px;font-weight:900;}
-.mem-two-col{display:flex;gap:14px;align-items:flex-start;padding:0 10px;width:98vw;box-sizing:border-box;}
+.mem-two-col{display:flex;gap:14px;align-items:flex-start;padding:0 10px;width:100%;box-sizing:border-box;}
 .mem-col{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex:1;max-width:48vw;}
 /* Each column gets half the viewport minus gap; cards fill available space */
 .mem-col{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex:1;}
@@ -142,12 +142,13 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .mem-front,.mem-back{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.13);}
 .mem-front{background:linear-gradient(135deg,var(--purple),#5b21b6);font-family:'Fredoka One',cursive;font-size:clamp(1.2rem,3.5vw,2rem);color:#fff;}
 .mem-back{background:#fff;transform:rotateY(180deg);overflow:hidden;border:3px solid #fff;}
-.mem-back img{width:100%;height:calc(100% - 28px);object-fit:cover;display:block;}
+.mem-back img{width:100%;height:100%;object-fit:cover;display:block;}
 /* FIXED: bigger word label */
-.mem-back .mem-name{font-family:'Fredoka One',cursive;font-size:clamp(.7rem,1.4vw,.9rem);color:var(--text);height:28px;line-height:28px;display:none;text-align:center;width:100%;padding:0 3px;}
+.mem-back .mem-name{font-family:'Fredoka One',cursive;font-size:clamp(.7rem,1.4vw,.9rem);color:var(--text);height:0;line-height:28px;display:block;text-align:center;width:100%;padding:0 3px;overflow:hidden;transition:height .2s;}
 .mem-card.matched .mem-inner{box-shadow:0 0 0 4px var(--green);}
 .mem-card.matched .mem-front{background:linear-gradient(135deg,var(--green),#15803d);}
-.mem-card.matched .mem-back .mem-name{display:block;}
+.mem-card.matched .mem-back img{height:calc(100% - 28px);}
+.mem-card.matched .mem-back .mem-name{height:28px;}
 
 /* ── SUMMARY ── */
 #summary-screen{padding-top:14px;}
@@ -358,7 +359,7 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 
 <!-- ═══ MEMORY ═══ -->
 <div id="memory-screen" class="screen">
-  <div class="fc-topbar">
+  <div class="fc-topbar" style="padding:0 16px;">
     <button class="back-btn" onclick="goHome()">← Back</button>
     <div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--purple);">🧠 Memory</div>
     <div class="mem-status" id="mem-status" style="margin:0;"></div>
