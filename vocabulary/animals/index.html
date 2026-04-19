@@ -295,6 +295,8 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 <!-- ═══ BOTTOM NAV ═══ -->
 <div id="bottom-nav">
   <button class="bnav-btn" id="bn-home"  onclick="goHome()"           style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🏠</span>Home</button>
+  <button class="bnav-btn" id="bn-s1"    onclick="bnSwitch(0)"        style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🐾</span>Set 1</button>
+  <button class="bnav-btn" id="bn-s2"    onclick="bnSwitch(1)"        style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🌿</span>Set 2</button>
   <button class="bnav-btn" id="bn-wf"    onclick="bnActivity('learn11')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">📖</span>Word</button>
   <button class="bnav-btn" id="bn-pf"    onclick="bnActivity('learn12')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🖼️</span>Pic</button>
   <button class="bnav-btn" id="bn-match" onclick="bnActivity('match')"   style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🎯</span>Match</button>
@@ -612,12 +614,26 @@ function showScreen(id){
 }
 function goHome(){
   showScreen('home-screen');
-  ['bn-home','bn-wf','bn-pf','bn-match','bn-mem','bn-fill','bn-spell','bn-sum'].forEach(id=>{
+  ['bn-home','bn-s1','bn-s2','bn-wf','bn-pf','bn-match','bn-mem','bn-fill','bn-spell','bn-sum'].forEach(id=>{
     const b=document.getElementById(id); if(b){b.style.background='';b.style.color='var(--muted)';}
   });
   const hb=document.getElementById('bn-home'); if(hb){hb.style.background='#2D2D2D';hb.style.color='#fff';}
+  updateBnavSets();
+}
+function bnSwitch(setIdx){
+  currentSet=setIdx;
+  updateBnavSets();
+  if(currentActivity) startActivity(currentActivity);
 }
 function bnActivity(act){startActivity(act);}
+function updateBnavSets(){
+  [0,1].forEach(i=>{
+    const btn=document.getElementById('bn-s'+(i+1)); if(!btn)return;
+    const colors=['var(--blue)','var(--coral)'];
+    btn.style.background=currentSet===i?colors[i]:'';
+    btn.style.color=currentSet===i?'#fff':'var(--muted)';
+  });
+}
 function updateBnavActivity(act){
   ['bn-home','bn-wf','bn-pf','bn-match','bn-mem','bn-fill','bn-spell','bn-sum'].forEach(id=>{
     const b=document.getElementById(id); if(b){b.style.background='';b.style.color='var(--muted)';}
@@ -644,6 +660,7 @@ function updateBnavActivity(act){
 // ══════════════════════════════════════
 function startActivity(act){
   currentActivity=act;
+  updateBnavSets();
   updateBnavActivity(act);
   if(act==='learn11'||act==='learn12'){
     fcMode=act; fcList=[...setAnimals()]; fcIdx=0;
@@ -1221,6 +1238,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('bottom-nav').classList.add('visible');
   const hb=document.getElementById('bn-home');
   if(hb){hb.style.background='#2D2D2D';hb.style.color='#fff';}
+  updateBnavSets();
 });
 </script>
 </body>
