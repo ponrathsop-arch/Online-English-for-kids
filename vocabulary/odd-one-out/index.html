@@ -13,23 +13,10 @@
   --pink:#F472B6;--teal:#2DD4BF;
   --bg:#FEF3FF;--text:#2D2D2D;--muted:#999;
 }
-body{
-  font-family:'Nunito',sans-serif;font-weight:800;
-  background:var(--bg);color:var(--text);
-  min-height:100vh;overflow-x:hidden;
-}
+body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 
-/* ── RAINBOW BAR ── */
-#rainbow-bar{
-  position:fixed;top:0;left:0;right:0;height:8px;
-  background:linear-gradient(90deg,#FF6B6B,#FF9F43,#FFD93D,#6BCB77,#3B82F6,#7C3AED,#F472B6,#FF6B6B);
-  z-index:1000;
-}
-
-/* ── BUBBLE BG ── */
+#rainbow-bar{position:fixed;top:0;left:0;right:0;height:8px;background:linear-gradient(90deg,#FF6B6B,#FF9F43,#FFD93D,#6BCB77,#3B82F6,#7C3AED,#F472B6,#FF6B6B);z-index:1000;}
 #bubble-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
-
-/* ── APP SHELL ── */
 #app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:28px 16px 40px;}
 
 /* ── HEADER ── */
@@ -37,110 +24,112 @@ body{
 .back-btn{background:#fff;border:2.5px solid #e5e7eb;border-radius:50px;padding:8px 20px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;color:var(--muted);cursor:pointer;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
 .back-btn:hover{border-color:var(--purple);color:var(--purple);}
 .game-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--purple);}
-.score-badge{background:var(--purple);color:#fff;border-radius:50px;padding:8px 18px;font-family:'Fredoka One',cursive;font-size:1.1rem;min-width:70px;text-align:center;}
+.score-badge{background:var(--purple);color:#fff;border-radius:50px;padding:8px 18px;font-family:'Fredoka One',cursive;font-size:1.1rem;min-width:70px;text-align:center;transition:transform .2s;}
+.score-badge.pop{animation:scorePop .35s ease;}
+@keyframes scorePop{0%{transform:scale(1);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
 
-/* ── PROGRESS BAR ── */
+/* ── PROGRESS ── */
 .prog-wrap{width:100%;max-width:620px;height:10px;background:rgba(0,0,0,.07);border-radius:10px;margin-bottom:20px;overflow:hidden;}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));border-radius:10px;transition:width .5s ease;}
-
-/* ── ROUND LABEL ── */
 .round-label{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--muted);margin-bottom:14px;letter-spacing:.5px;}
 
-/* ── QUESTION ── */
-.question-box{
-  background:#fff;border-radius:28px;padding:18px 24px;
-  box-shadow:0 6px 28px rgba(124,58,237,.13);
-  text-align:center;max-width:620px;width:100%;margin-bottom:24px;
-  border-top:6px solid var(--purple);
-}
+/* ── QUESTION BOX ── */
+.question-box{background:#fff;border-radius:28px;padding:18px 24px;box-shadow:0 6px 28px rgba(124,58,237,.13);text-align:center;max-width:620px;width:100%;margin-bottom:24px;border-top:6px solid var(--purple);}
 .question-text{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--purple);}
 .question-emoji{font-size:2rem;margin-right:8px;}
 
-/* ── PICTURE GRID — 2×2 ── */
-.pic-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-  max-width:520px;
-  width:100%;
-}
+/* ── PIC GRID ── */
+.pic-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:520px;width:100%;}
+
 .pic-card{
   background:#fff;border-radius:22px;
   box-shadow:0 5px 22px rgba(0,0,0,.10);
   border:4px solid transparent;
   cursor:pointer;
   transition:transform .18s,border-color .18s,box-shadow .18s;
-  overflow:hidden;
+  overflow:visible;  /* allow word bubble to overflow */
   aspect-ratio:1;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   position:relative;
 }
 .pic-card:hover:not(.answered){
-  transform:translateY(-4px) scale(1.02);
-  box-shadow:0 10px 32px rgba(0,0,0,.15);
+  transform:translateY(-4px) scale(1.03);
+  box-shadow:0 12px 36px rgba(0,0,0,.18);
   border-color:var(--purple);
 }
-.pic-card img{
-  width:100%;height:100%;object-fit:cover;display:block;
-  border-radius:18px;
-}
-.pic-card .ph{
-  font-size:4.5rem;display:flex;align-items:center;justify-content:center;
-  width:100%;height:100%;
-}
-
-/* result overlays */
-.pic-card .result-overlay{
-  position:absolute;inset:0;border-radius:18px;
+/* inner clip so image stays inside rounded card */
+.pic-card-inner{
+  width:100%;height:100%;border-radius:18px;overflow:hidden;position:relative;
   display:flex;align-items:center;justify-content:center;
-  font-size:4rem;
-  opacity:0;transition:opacity .25s;
-  pointer-events:none;
 }
-.pic-card.correct-pick{border-color:var(--green);box-shadow:0 0 0 4px rgba(107,203,119,.4);}
+.pic-card img{width:100%;height:100%;object-fit:cover;display:block;}
+.pic-card .ph{font-size:4.5rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
+
+/* result overlay */
+.result-overlay{position:absolute;inset:0;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:4rem;opacity:0;transition:opacity .25s;pointer-events:none;}
+.pic-card.correct-pick{border-color:var(--green);box-shadow:0 0 0 5px rgba(107,203,119,.4);}
 .pic-card.correct-pick .result-overlay{background:rgba(107,203,119,.45);opacity:1;}
 .pic-card.wrong-pick{border-color:var(--coral);animation:shake .4s;}
 .pic-card.wrong-pick .result-overlay{background:rgba(255,107,107,.38);opacity:1;}
-/* after answer — highlight the real odd one */
-.pic-card.reveal-correct{border-color:var(--green);box-shadow:0 0 0 4px rgba(107,203,119,.4);}
+.pic-card.reveal-correct{border-color:var(--green);box-shadow:0 0 0 5px rgba(107,203,119,.4);}
 .pic-card.reveal-correct .result-overlay{background:rgba(107,203,119,.4);opacity:1;}
-.pic-card.dim{opacity:.45;pointer-events:none;}
+.pic-card.dim{opacity:.38;pointer-events:none;transform:scale(.96);}
 .pic-card.answered{cursor:default;}
 
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-10px);}75%{transform:translateX(10px);}}
 
-/* ── CATEGORY CHIPS under grid ── */
-.cat-chips{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
-.cat-chip{border-radius:50px;padding:6px 18px;font-family:'Fredoka One',cursive;font-size:.95rem;color:#fff;}
+/* ── WORD BUBBLE — pops up below tapped card ── */
+.word-bubble{
+  position:absolute;
+  bottom:-44px; left:50%; transform:translateX(-50%) scale(0);
+  background:var(--purple);color:#fff;
+  font-family:'Fredoka One',cursive;font-size:1rem;
+  padding:6px 18px;border-radius:50px;
+  white-space:nowrap;z-index:20;
+  box-shadow:0 4px 16px rgba(124,58,237,.4);
+  transform-origin:top center;
+  transition:transform .28s cubic-bezier(.34,1.56,.64,1), opacity .2s;
+  opacity:0;
+  pointer-events:none;
+}
+.word-bubble::before{
+  content:'';position:absolute;top:-7px;left:50%;transform:translateX(-50%);
+  border:7px solid transparent;border-bottom:8px solid var(--purple);
+  border-top:none;
+}
+.pic-card.show-word .word-bubble{transform:translateX(-50%) scale(1);opacity:1;}
+
+/* colour-code bubble by category */
+.pic-card[data-cat="animals"] .word-bubble{background:var(--blue);box-shadow:0 4px 16px rgba(59,130,246,.4);}
+.pic-card[data-cat="animals"] .word-bubble::before{border-bottom-color:var(--blue);}
+.pic-card[data-cat="fruit"]   .word-bubble{background:var(--green);box-shadow:0 4px 16px rgba(107,203,119,.4);}
+.pic-card[data-cat="fruit"]   .word-bubble::before{border-bottom-color:var(--green);}
+.pic-card[data-cat="clothes"] .word-bubble{background:var(--pink);box-shadow:0 4px 16px rgba(244,114,182,.4);}
+.pic-card[data-cat="clothes"] .word-bubble::before{border-bottom-color:var(--pink);}
+
+/* ── CONFETTI PARTICLE ── */
+.confetti-piece{position:fixed;width:10px;height:10px;border-radius:2px;pointer-events:none;z-index:9999;animation:confettiFall linear forwards;}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0deg);}100%{opacity:0;transform:translateY(100vh) rotate(720deg);}}
+
+/* ── CATEGORY CHIPS ── */
+.cat-chips{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap;}
+.cat-chip{border-radius:50px;padding:6px 18px;font-family:'Fredoka One',cursive;font-size:.95rem;color:#fff;animation:chipIn .3s ease both;}
+@keyframes chipIn{from{opacity:0;transform:translateY(8px) scale(.9);}to{opacity:1;transform:translateY(0) scale(1);}}
 .chip-animal{background:var(--blue);}
 .chip-fruit{background:var(--green);}
+.chip-clothes{background:var(--pink);}
 
 /* ── NEXT BTN ── */
-.next-btn{
-  display:none;margin-top:20px;
-  background:linear-gradient(135deg,var(--purple),var(--pink));
-  color:#fff;border:none;border-radius:50px;
-  padding:16px 44px;font-family:'Fredoka One',cursive;font-size:1.3rem;
-  cursor:pointer;box-shadow:0 6px 22px rgba(124,58,237,.3);
-  transition:transform .18s,box-shadow .18s;
-}
+.next-btn{display:none;margin-top:20px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;border-radius:50px;padding:16px 44px;font-family:'Fredoka One',cursive;font-size:1.3rem;cursor:pointer;box-shadow:0 6px 22px rgba(124,58,237,.3);transition:transform .18s,box-shadow .18s;}
 .next-btn.show{display:inline-block;animation:popIn .35s ease;}
 .next-btn:hover{transform:scale(1.05);box-shadow:0 10px 28px rgba(124,58,237,.4);}
 @keyframes popIn{from{transform:scale(.7);opacity:0;}to{transform:scale(1);opacity:1;}}
 
-/* ── FINISH SCREEN ── */
-#finish-screen{
-  display:none;flex-direction:column;align-items:center;gap:16px;
-  text-align:center;max-width:420px;width:100%;
-  animation:fadeUp .5s ease;
-}
-#finish-screen.show{display:flex;}
+/* ── FINISH ── */
+#finish-screen{display:none;flex-direction:column;align-items:center;gap:16px;text-align:center;max-width:420px;width:100%;}
+#finish-screen.show{display:flex;animation:fadeUp .5s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
-.finish-card{
-  background:#fff;border-radius:28px;padding:40px 28px;
-  box-shadow:0 8px 36px rgba(0,0,0,.1);width:100%;
-  border-top:7px solid var(--purple);
-}
+.finish-card{background:#fff;border-radius:28px;padding:40px 28px;box-shadow:0 8px 36px rgba(0,0,0,.1);width:100%;border-top:7px solid var(--purple);}
 .trophy-big{font-size:5rem;display:inline-block;animation:bounce 1s infinite alternate;}
 @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-14px);}}
 .finish-title{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--purple);margin:10px 0 6px;}
@@ -151,22 +140,17 @@ body{
 .pill-btn:hover{transform:scale(1.06);}
 .btn-purple{background:var(--purple);}
 .btn-orange{background:var(--orange);}
-.btn-green{background:var(--green);}
 
-/* ── CATEGORY SELECT (home) ── */
-#cat-select{display:flex;flex-direction:column;align-items:center;gap:0;width:100%;max-width:440px;}
+/* ── HOME / CATEGORY SELECT ── */
+#cat-select{display:flex;flex-direction:column;align-items:center;gap:0;width:100%;max-width:460px;}
 .cat-title{font-family:'Fredoka One',cursive;font-size:2.4rem;color:var(--purple);margin-bottom:6px;}
 .cat-sub{font-size:.95rem;color:var(--muted);margin-bottom:36px;}
-.cat-btn{
-  width:100%;border:none;border-radius:22px;padding:22px 24px;
-  display:flex;align-items:center;gap:18px;cursor:pointer;
-  box-shadow:0 6px 0 rgba(0,0,0,.18);transition:transform .18s,box-shadow .18s;
-  color:#fff;margin-bottom:16px;text-align:left;
-}
+.cat-btn{width:100%;border:none;border-radius:22px;padding:22px 24px;display:flex;align-items:center;gap:18px;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.18);transition:transform .18s,box-shadow .18s;color:#fff;margin-bottom:16px;text-align:left;}
 .cat-btn:hover{transform:translateY(-3px);box-shadow:0 10px 0 rgba(0,0,0,.18);}
 .cat-btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.14);}
 .cat-btn-animals{background:linear-gradient(135deg,#3B82F6,#1d4ed8);}
 .cat-btn-fruit  {background:linear-gradient(135deg,#6BCB77,#15803d);}
+.cat-btn-clothes{background:linear-gradient(135deg,#F472B6,#be185d);}
 .cat-btn-mixed  {background:linear-gradient(135deg,#7C3AED,#db2777);}
 .cat-btn .cb-icon{font-size:2.4rem;flex-shrink:0;}
 .cat-btn .cb-name{font-family:'Fredoka One',cursive;font-size:1.3rem;display:block;}
@@ -179,49 +163,42 @@ body{
 
 <div id="app">
 
-  <!-- ═══ HOME / CATEGORY SELECT ═══ -->
+  <!-- ═══ HOME ═══ -->
   <div id="cat-select">
     <div class="cat-title">🔍 Odd One Out</div>
     <div class="cat-sub">Which one doesn't belong? Tap it!</div>
 
     <button class="cat-btn cat-btn-animals" onclick="startGame('animals')">
       <span class="cb-icon">🐘</span>
-      <span>
-        <span class="cb-name">Animals</span>
-        <span class="cb-desc">Wild animals, farm animals & more!</span>
-      </span>
+      <span><span class="cb-name">Animals</span><span class="cb-desc">Wild animals, farm animals & more!</span></span>
     </button>
 
     <button class="cat-btn cat-btn-fruit" onclick="startGame('fruit')">
       <span class="cb-icon">🍎</span>
-      <span>
-        <span class="cb-name">Fruit</span>
-        <span class="cb-desc">Colourful, yummy fruit words!</span>
-      </span>
+      <span><span class="cb-name">Fruit</span><span class="cb-desc">Colourful, yummy fruit words!</span></span>
+    </button>
+
+    <button class="cat-btn cat-btn-clothes" onclick="startGame('clothes')">
+      <span class="cb-icon">👕</span>
+      <span><span class="cb-name">Clothes</span><span class="cb-desc">T-shirts, hats, boots & more!</span></span>
     </button>
 
     <button class="cat-btn cat-btn-mixed" onclick="startGame('mixed')">
       <span class="cb-icon">🎲</span>
-      <span>
-        <span class="cb-name">Mixed Challenge</span>
-        <span class="cb-desc">Animals & fruit mixed together!</span>
-      </span>
+      <span><span class="cb-name">Mixed Challenge</span><span class="cb-desc">All categories mixed together!</span></span>
     </button>
   </div>
 
   <!-- ═══ GAME AREA ═══ -->
-  <div id="game-area" style="display:none;width:100%;max-width:620px;display:none;flex-direction:column;align-items:center;">
+  <div id="game-area" style="display:none;width:100%;max-width:620px;flex-direction:column;align-items:center;">
 
     <div class="game-header">
       <button class="back-btn" onclick="goHome()">← Back</button>
       <div class="game-title">🔍 Odd One Out</div>
-      <div class="score-badge">⭐ <span id="score-display">0</span></div>
+      <div class="score-badge" id="score-badge">⭐ <span id="score-display">0</span></div>
     </div>
 
-    <div class="prog-wrap">
-      <div class="prog-fill" id="prog-fill" style="width:0%"></div>
-    </div>
-
+    <div class="prog-wrap"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     <div class="round-label" id="round-label">Round 1 of 10</div>
 
     <div class="question-box">
@@ -229,11 +206,8 @@ body{
     </div>
 
     <div class="pic-grid" id="pic-grid"></div>
-
     <div class="cat-chips" id="cat-chips"></div>
-
     <button class="next-btn" id="next-btn" onclick="nextRound()">Next →</button>
-
   </div>
 
   <!-- ═══ FINISH ═══ -->
@@ -250,40 +224,50 @@ body{
     </div>
   </div>
 
-</div><!-- #app -->
+</div>
 
 <script>
 // ══════════════════════════════════════
-// BASE PATHS — adjust if your folder structure differs
-// This file lives at: vocabulary/odd-one-out/index.html
+// PATHS
+// File lives at: vocabulary/odd-one-out/index.html
 // ══════════════════════════════════════
-const BASE = '../';  // goes up one level to vocabulary/
-
+const BASE = '../';
 const IMG = {
   animals: id => BASE + 'animals/' + id.replace(/ /g,'') + '.jpg',
   fruit:   id => BASE + 'fruit/'   + id + '.jpg',
+  clothes: id => BASE + 'clothes/' + id + '.jpg',   // word.jpg — no suffix
 };
 
 // ══════════════════════════════════════
-// EMOJIS (fallback when image not found)
+// EMOJIS (fallback)
 // ══════════════════════════════════════
 const EMOJIS = {
-  // animals
   cat:'🐱', dog:'🐶', fish:'🐟', bird:'🐦', elephant:'🐘',
   giraffe:'🦒', tiger:'🐯', zebra:'🦓', monkey:'🐒', crocodile:'🐊',
   spider:'🕷️', donkey:'🫏', lizard:'🦎', snake:'🐍', frog:'🐸',
   cow:'🐄', goat:'🐐', sheep:'🐑', horse:'🐴', 'polar bear':'🐻‍❄️',
   hippo:'🦛', parrot:'🦜', rhino:'🦏', mouse:'🐭', chicken:'🐔', owl:'🦉',
-  // fruit
   apple:'🍎', banana:'🍌', orange:'🍊', grapes:'🍇', watermelon:'🍉',
   strawberry:'🍓', mango:'🥭', pineapple:'🍍', pear:'🍐', peach:'🍑',
   cherry:'🍒', kiwi:'🥝', melon:'🍈', coconut:'🥥',
+  tshirt:'👕', shirt:'👔', trousers:'👖', jeans:'👖', shorts:'🩳',
+  skirt:'👗', dress:'👗', jacket:'🧥', coat:'🧥', sweater:'🧶',
+  hoodie:'🧥', socks:'🧦', shoes:'👟', trainers:'👟', boots:'🥾',
+  hat:'🎩', cap:'🧢', bag:'👜', handbag:'👜', backpack:'🎒',
+  belt:'👔', watch:'⌚', glasses:'👓', sunglasses:'🕶️',
+  scarf:'🧣', gloves:'🧤',
 };
-
 const em = id => EMOJIS[id] || '❓';
 
+// Display names for word bubbles (prettier than raw id)
+const NAMES = {
+  tshirt:'T-shirt', clothesshop:'clothes shop', fittingroom:'fitting room',
+  'polar bear':'polar bear',
+};
+const displayName = id => NAMES[id] || id;
+
 // ══════════════════════════════════════
-// DATA — items per category
+// DATA
 // ══════════════════════════════════════
 const ANIMALS = [
   'cat','dog','fish','bird','elephant','giraffe','tiger','zebra',
@@ -291,79 +275,78 @@ const ANIMALS = [
   'cow','goat','sheep','horse','polar bear','hippo','parrot',
   'rhino','mouse','chicken','owl'
 ];
-
 const FRUITS = [
   'apple','banana','orange','grapes','watermelon','strawberry','mango',
   'pineapple','pear','peach','cherry','kiwi','melon','coconut'
 ];
+const CLOTHES_ITEMS = [
+  'tshirt','shirt','trousers','jeans','shorts','skirt','dress',
+  'jacket','coat','sweater','hoodie','socks','shoes','trainers',
+  'boots','hat','cap','bag','handbag','backpack','belt','watch',
+  'glasses','sunglasses','scarf','gloves'
+];
+
+// Category config — label, chip class, colour for bubble
+const CAT_META = {
+  animals: { label:'🐾 Animals', chip:'chip-animal', color:'var(--blue)'   },
+  fruit:   { label:'🍎 Fruit',   chip:'chip-fruit',  color:'var(--green)'  },
+  clothes: { label:'👕 Clothes', chip:'chip-clothes', color:'var(--pink)'  },
+};
 
 // ══════════════════════════════════════
 // GAME STATE
 // ══════════════════════════════════════
-let currentMode = '';   // 'animals' | 'fruit' | 'mixed'
-let rounds = [];        // array of round objects
-let roundIdx = 0;
-let score = 0;
-let answered = false;
+let currentMode = '';
+let rounds = [], roundIdx = 0, score = 0, answered = false;
 const TOTAL_ROUNDS = 10;
 
 // ══════════════════════════════════════
-// SHUFFLE
+// UTILS
 // ══════════════════════════════════════
-const shuffle = a => {
-  const r = [...a];
-  for (let i = r.length-1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [r[i],r[j]] = [r[j],r[i]];
-  }
-  return r;
-};
-const pick = (arr, n) => shuffle([...arr]).slice(0, n);
+const shuffle = a => { const r=[...a]; for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];} return r; };
+const pick    = (arr,n) => shuffle([...arr]).slice(0,n);
+
+// All categories pool for "mixed"
+const ALL_CATS = ['animals','fruit','clothes'];
+const SRC = { animals:ANIMALS, fruit:FRUITS, clothes:CLOTHES_ITEMS };
 
 // ══════════════════════════════════════
 // BUILD ROUNDS
-// Each round: 3 items from catA + 1 item from catB (the odd one)
-// For 'animals': 3 animals + 1 fruit
-// For 'fruit':   3 fruits  + 1 animal
-// For 'mixed':   alternates
 // ══════════════════════════════════════
 function buildRounds(mode) {
   const rs = [];
   for (let i = 0; i < TOTAL_ROUNDS; i++) {
-    let majorCat, minorCat, majorSrc, minorSrc;
+    let majorCat, minorCat;
 
-    if (mode === 'animals') {
-      majorCat = 'animals'; minorCat = 'fruit';
-      majorSrc = ANIMALS;   minorSrc = FRUITS;
-    } else if (mode === 'fruit') {
-      majorCat = 'fruit';   minorCat = 'animals';
-      majorSrc = FRUITS;    minorSrc = ANIMALS;
+    if (mode === 'mixed') {
+      // cycle through all three categories
+      const cycleOrder = [
+        ['animals','fruit'], ['fruit','clothes'], ['clothes','animals'],
+        ['animals','clothes'], ['fruit','animals'], ['clothes','fruit'],
+        ['animals','fruit'], ['fruit','clothes'], ['clothes','animals'],
+        ['animals','clothes']
+      ];
+      [majorCat, minorCat] = cycleOrder[i % cycleOrder.length];
     } else {
-      // mixed: alternate
-      if (i % 2 === 0) {
-        majorCat = 'animals'; minorCat = 'fruit';
-        majorSrc = ANIMALS;   minorSrc = FRUITS;
-      } else {
-        majorCat = 'fruit';   minorCat = 'animals';
-        majorSrc = FRUITS;    minorSrc = ANIMALS;
-      }
+      // 3 from this category, odd from another
+      majorCat = mode;
+      const others = ALL_CATS.filter(c => c !== mode);
+      minorCat = others[i % others.length];
     }
 
-    // make sure we don't repeat same items across rounds
+    const majorSrc = SRC[majorCat];
+    const minorSrc = SRC[minorCat];
+
     const usedMajor = rs.flatMap(r => r.items.filter(x=>x.cat===majorCat).map(x=>x.id));
     const usedMinor = rs.flatMap(r => r.items.filter(x=>x.cat===minorCat).map(x=>x.id));
     const availMajor = majorSrc.filter(x => !usedMajor.includes(x));
     const availMinor = minorSrc.filter(x => !usedMinor.includes(x));
-
-    // fallback: if exhausted, just reshuffle all
     const majorPool = availMajor.length >= 3 ? availMajor : majorSrc;
     const minorPool = availMinor.length >= 1 ? availMinor : minorSrc;
 
-    const three = pick(majorPool, 3).map(id => ({ id, cat: majorCat }));
-    const odd   = { id: pick(minorPool, 1)[0], cat: minorCat };
-    const items = shuffle([...three, odd]);
-
-    rs.push({ items, oddId: odd.id, oddCat: minorCat, majorCat });
+    const three = pick(majorPool,3).map(id => ({ id, cat:majorCat }));
+    const odd   = { id: pick(minorPool,1)[0], cat: minorCat };
+    rs.push({ items: shuffle([...three, odd]), oddId:odd.id, oddCat:minorCat, majorCat });
   }
   return rs;
 }
@@ -374,17 +357,12 @@ function buildRounds(mode) {
 function startGame(mode) {
   currentMode = mode;
   rounds = buildRounds(mode);
-  roundIdx = 0;
-  score = 0;
-  answered = false;
-
+  roundIdx = 0; score = 0; answered = false;
   document.getElementById('cat-select').style.display = 'none';
   document.getElementById('finish-screen').classList.remove('show');
   document.getElementById('finish-screen').style.display = 'none';
-
-  const ga = document.getElementById('game-area');
-  ga.style.display = 'flex';
-
+  document.getElementById('score-display').textContent = '0';
+  document.getElementById('game-area').style.display = 'flex';
   renderRound();
 }
 
@@ -398,23 +376,21 @@ function renderRound() {
   document.getElementById('score-display').textContent = score;
   document.getElementById('prog-fill').style.width = (roundIdx / TOTAL_ROUNDS * 100) + '%';
   document.getElementById('next-btn').classList.remove('show');
+  document.getElementById('cat-chips').innerHTML = '';
+  document.getElementById('cat-chips').style.visibility = 'hidden';
 
-  // category chips — show what the 3 belong to
-  const chips = document.getElementById('cat-chips');
-  chips.innerHTML = '';
-  const majorLabel = r.majorCat === 'animals' ? '🐾 Animals' : '🍎 Fruit';
-  const oddLabel   = r.oddCat   === 'animals' ? '🐾 Animal'  : '🍎 Fruit';
-  // Only show chips AFTER answering — hide during question for challenge
-  chips.style.visibility = 'hidden';
-
-  // build grid
   const grid = document.getElementById('pic-grid');
   grid.innerHTML = '';
+
   r.items.forEach(item => {
     const card = document.createElement('div');
     card.className = 'pic-card';
-    card.dataset.id = item.id;
+    card.dataset.id  = item.id;
     card.dataset.cat = item.cat;
+
+    // inner wrapper for image clipping
+    const inner = document.createElement('div');
+    inner.className = 'pic-card-inner';
 
     const img = document.createElement('img');
     img.src = IMG[item.cat](item.id);
@@ -424,15 +400,34 @@ function renderRound() {
     ph.textContent = em(item.id);
     ph.style.display = 'none';
     img.onerror = () => { img.style.display='none'; ph.style.display='flex'; };
-    card.appendChild(img);
-    card.appendChild(ph);
+    inner.appendChild(img);
+    inner.appendChild(ph);
 
-    // result overlay
+    // result overlay (inside inner)
     const overlay = document.createElement('div');
     overlay.className = 'result-overlay';
-    card.appendChild(overlay);
+    inner.appendChild(overlay);
 
-    card.addEventListener('click', () => handlePick(card, item.id, r.oddId, r.majorCat, r.oddCat));
+    card.appendChild(inner);
+
+    // word bubble (outside inner so it can overflow card)
+    const bubble = document.createElement('div');
+    bubble.className = 'word-bubble';
+    bubble.textContent = displayName(item.id);
+    card.appendChild(bubble);
+
+    // ── TAP HANDLER ──
+    card.addEventListener('click', () => {
+      if (answered) return;
+
+      // show word bubble on any tap (toggle off others first)
+      const allCards = document.querySelectorAll('.pic-card');
+      allCards.forEach(c => { if (c !== card) c.classList.remove('show-word'); });
+      card.classList.toggle('show-word');
+
+      handlePick(card, item.id, r.oddId, r.majorCat, r.oddCat);
+    });
+
     grid.appendChild(card);
   });
 }
@@ -444,68 +439,101 @@ function handlePick(card, pickedId, oddId, majorCat, oddCat) {
   if (answered) return;
   answered = true;
 
+  // lock all cards
   const allCards = document.querySelectorAll('.pic-card');
   allCards.forEach(c => c.classList.add('answered'));
 
+  // show category explanation chips
   const chips = document.getElementById('cat-chips');
   chips.style.visibility = 'visible';
+  const mMeta = CAT_META[majorCat];
+  const oMeta = CAT_META[oddCat];
   chips.innerHTML = `
-    <span class="cat-chip ${majorCat==='animals'?'chip-animal':'chip-fruit'}">${majorCat==='animals'?'🐾 These are Animals':'🍎 These are Fruit'}</span>
-    <span class="cat-chip ${oddCat==='animals'?'chip-animal':'chip-fruit'}">${oddCat==='animals'?'🐾 Odd one: Animal':'🍎 Odd one: Fruit'}</span>
+    <span class="cat-chip ${mMeta.chip}" style="animation-delay:.05s">${mMeta.label} — these 3 belong!</span>
+    <span class="cat-chip ${oMeta.chip}" style="animation-delay:.15s">${oMeta.label} — odd one out! 👆</span>
   `;
 
   if (pickedId === oddId) {
-    // CORRECT
+    // ✅ CORRECT
     score++;
     document.getElementById('score-display').textContent = score;
+    // score badge pop
+    const badge = document.getElementById('score-badge');
+    badge.classList.remove('pop');
+    void badge.offsetWidth; // reflow
+    badge.classList.add('pop');
+
     card.classList.add('correct-pick');
     card.querySelector('.result-overlay').textContent = '✅';
-    // dim the others
-    allCards.forEach(c => { if (c !== card) c.classList.add('dim'); });
-    // auto-advance after 1.4s
-    setTimeout(() => nextRound(), 1400);
+    // show word bubble on correct
+    card.classList.add('show-word');
+    // dim others
+    allCards.forEach(c => { if (c !== card) { c.classList.add('dim'); c.classList.remove('show-word'); } });
+    // confetti!
+    launchConfetti(card);
+    setTimeout(() => nextRound(), 1600);
   } else {
-    // WRONG — shake wrong card, reveal correct one
+    // ❌ WRONG
     card.classList.add('wrong-pick');
     card.querySelector('.result-overlay').textContent = '❌';
-    // find and reveal correct
+    // reveal correct
     allCards.forEach(c => {
       if (c.dataset.id === oddId) {
         c.classList.add('reveal-correct');
         c.querySelector('.result-overlay').textContent = '✅';
+        c.classList.add('show-word'); // show its word too
       } else if (c !== card) {
         c.classList.add('dim');
+        c.classList.remove('show-word');
       }
     });
-    // show Next button (don't auto-advance on wrong so kid sees the answer)
     document.getElementById('next-btn').classList.add('show');
   }
 }
 
 // ══════════════════════════════════════
-// NEXT ROUND
+// CONFETTI 🎉
 // ══════════════════════════════════════
-function nextRound() {
-  roundIdx++;
-  if (roundIdx >= TOTAL_ROUNDS) {
-    showFinish();
-  } else {
-    renderRound();
+function launchConfetti(fromCard) {
+  const rect = fromCard.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const colors = ['#FF6B6B','#FF9F43','#FFD93D','#6BCB77','#3B82F6','#F472B6','#7C3AED','#2DD4BF'];
+  for (let i = 0; i < 22; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    const size = 8 + Math.random() * 10;
+    const angle = Math.random() * 360;
+    const spread = 80 + Math.random() * 120;
+    const dx = Math.cos(angle * Math.PI/180) * spread;
+    const dur = 0.7 + Math.random() * 0.6;
+    piece.style.cssText = `
+      left:${cx + dx - size/2}px; top:${cy - 10}px;
+      width:${size}px; height:${size}px;
+      background:${colors[i%colors.length]};
+      animation-duration:${dur}s;
+      border-radius:${Math.random()>.5?'50%':'2px'};
+    `;
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), dur * 1000 + 100);
   }
 }
 
 // ══════════════════════════════════════
-// FINISH
+// NEXT / FINISH
 // ══════════════════════════════════════
+function nextRound() {
+  roundIdx++;
+  if (roundIdx >= TOTAL_ROUNDS) showFinish();
+  else renderRound();
+}
+
 function showFinish() {
   document.getElementById('game-area').style.display = 'none';
   document.getElementById('prog-fill').style.width = '100%';
-
   const fs = document.getElementById('finish-screen');
   fs.style.display = 'flex';
   fs.classList.add('show');
-
-  // stars based on score
   const pct = score / TOTAL_ROUNDS;
   let stars = '⭐';
   if (pct >= 0.5) stars = '⭐⭐';
@@ -513,14 +541,31 @@ function showFinish() {
   if (pct >= 0.9) stars = '🌟🌟🌟';
   document.getElementById('stars-row').textContent = stars;
   document.getElementById('finish-score').textContent = `${score} out of ${TOTAL_ROUNDS} correct!`;
-
-  // update play-again to use same mode
-  document.getElementById('play-again-btn').onclick = playAgain;
+  if (pct >= 0.9) launchConfettiFinish();
 }
 
-function playAgain() {
-  startGame(currentMode);
+function launchConfettiFinish() {
+  const colors = ['#FF6B6B','#FF9F43','#FFD93D','#6BCB77','#3B82F6','#F472B6','#7C3AED','#2DD4BF'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      const size = 8 + Math.random() * 12;
+      const dur = 1.2 + Math.random() * 1;
+      piece.style.cssText = `
+        left:${Math.random()*100}vw; top:-20px;
+        width:${size}px; height:${size}px;
+        background:${colors[i%colors.length]};
+        animation-duration:${dur}s;
+        border-radius:${Math.random()>.5?'50%':'3px'};
+      `;
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), dur * 1000 + 100);
+    }, i * 40);
+  }
 }
+
+function playAgain() { startGame(currentMode); }
 
 function goHome() {
   document.getElementById('game-area').style.display = 'none';
@@ -530,34 +575,16 @@ function goHome() {
 }
 
 // ══════════════════════════════════════
-// BUBBLES
+// BUBBLES BG
 // ══════════════════════════════════════
 (function(){
-  const cv = document.getElementById('bubble-canvas');
-  const cx = cv.getContext('2d');
-  const cols = ['#7C3AED','#FF6B6B','#3B82F6','#6BCB77','#FF9F43','#FFD93D','#F472B6','#2DD4BF'];
-  let bs = [];
-  function resize(){ cv.width=window.innerWidth; cv.height=window.innerHeight; }
-  resize(); window.addEventListener('resize',resize);
-  for (let i=0; i<16; i++){
-    const r=20+Math.random()*50;
-    bs.push({x:Math.random()*cv.width, y:Math.random()*cv.height, r,
-      dx:(Math.random()-.5)*.5, dy:(Math.random()-.5)*.5, col:cols[i%cols.length]});
-  }
-  function draw(){
-    cx.clearRect(0,0,cv.width,cv.height);
-    bs.forEach(b=>{
-      b.x+=b.dx; b.y+=b.dy;
-      if(b.x<-b.r) b.x=cv.width+b.r; if(b.x>cv.width+b.r) b.x=-b.r;
-      if(b.y<-b.r) b.y=cv.height+b.r; if(b.y>cv.height+b.r) b.y=-b.r;
-      cx.globalAlpha=.10;
-      cx.beginPath(); cx.arc(b.x,b.y,b.r,0,Math.PI*2); cx.fillStyle=b.col; cx.fill();
-      cx.globalAlpha=.25;
-      cx.beginPath(); cx.arc(b.x-b.r*.28,b.y-b.r*.28,b.r*.2,0,Math.PI*2); cx.fillStyle='#fff'; cx.fill();
-      cx.globalAlpha=1;
-    });
-    requestAnimationFrame(draw);
-  }
+  const cv=document.getElementById('bubble-canvas');const cx=cv.getContext('2d');
+  const cols=['#7C3AED','#FF6B6B','#3B82F6','#6BCB77','#FF9F43','#FFD93D','#F472B6','#2DD4BF'];
+  let bs=[];
+  function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<16;i++){const r=20+Math.random()*50;bs.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r,dx:(Math.random()-.5)*.5,dy:(Math.random()-.5)*.5,col:cols[i%cols.length]});}
+  function draw(){cx.clearRect(0,0,cv.width,cv.height);bs.forEach(b=>{b.x+=b.dx;b.y+=b.dy;if(b.x<-b.r)b.x=cv.width+b.r;if(b.x>cv.width+b.r)b.x=-b.r;if(b.y<-b.r)b.y=cv.height+b.r;if(b.y>cv.height+b.r)b.y=-b.r;cx.globalAlpha=.10;cx.beginPath();cx.arc(b.x,b.y,b.r,0,Math.PI*2);cx.fillStyle=b.col;cx.fill();cx.globalAlpha=.25;cx.beginPath();cx.arc(b.x-b.r*.28,b.y-b.r*.28,b.r*.2,0,Math.PI*2);cx.fillStyle='#fff';cx.fill();cx.globalAlpha=1;});requestAnimationFrame(draw);}
   draw();
 })();
 </script>
