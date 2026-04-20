@@ -186,7 +186,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .pic-only-card:hover{transform:scale(1.06);}
 .pic-only-card img{width:100%;height:100%;object-fit:cover;border-radius:9px;display:block;}
 .pic-only-card .p-ph{font-size:2rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
-/* ── LIGHTBOX ── */
 #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:2000;align-items:center;justify-content:center;cursor:pointer;animation:lbIn .18s ease;}
 #lightbox.on{display:flex;}
 @keyframes lbIn{from{opacity:0;}to{opacity:1;}}
@@ -202,7 +201,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 <canvas id="bubble-canvas"></canvas>
 <div id="app">
 
-<!-- ═══ HOME ═══ -->
 <div id="home-screen" class="screen active">
   <div class="home-title">🏠 My Home</div>
   <div class="home-sub">Learn rooms &amp; things in English!</div>
@@ -235,7 +233,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   <div id="footer">Pang made with ❤️ for kids learning English</div>
 </div>
 
-<!-- ═══ BOTTOM NAV ═══ -->
 <div id="bottom-nav">
   <button class="bnav-btn" id="bn-home"  onclick="goHome()"><span class="bn-icon">🏠</span>Home</button>
   <button class="bnav-btn" id="bn-s1"    onclick="bnSwitch(0)"><span class="bn-icon">🏠</span>Easy</button>
@@ -252,7 +249,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   <button class="bnav-btn" id="bn-sum"   onclick="bnActivity('summary')"><span class="bn-icon">📋</span>All</button>
 </div>
 
-<!-- ═══ FLASHCARD ═══ -->
 <div id="flashcard-screen" class="screen">
   <div class="fc-topbar">
     <button class="back-btn" onclick="goHome()">← Back</button>
@@ -275,14 +271,12 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   <div id="fc-finish" style="display:none;"><div class="finish-card"><div class="trophy">🏆</div><div class="finish-title">Great Job!</div><div class="finish-sub">You finished all the cards!</div><div class="btn-row"><button class="pill-btn btn-orange" onclick="restartFC()">Try Again</button><button class="pill-btn btn-purple" onclick="goHome()">Menu</button></div></div></div>
 </div>
 
-<!-- ═══ MATCH ═══ -->
 <div id="match-screen" class="screen">
   <div class="fc-topbar"><button class="back-btn" onclick="goHome()">← Back</button><div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--green);">🎯 Match</div><div style="font-size:.83rem;color:var(--muted);" id="match-score-top">0 matched</div></div>
   <div id="match-main"><div class="match-layout"><div class="match-img-col" id="match-grid"></div><div class="match-word-col" id="match-words"></div></div></div>
   <div id="match-finish" style="display:none;"><div class="finish-card"><div class="trophy">🏆</div><div class="finish-title">All Matched!</div><div class="finish-sub" id="match-finish-msg"></div><div class="btn-row"><button class="pill-btn btn-orange" onclick="initMatch()">Try Again</button><button class="pill-btn btn-purple" onclick="goHome()">Menu</button></div></div></div>
 </div>
 
-<!-- ═══ MEMORY ═══ -->
 <div id="memory-screen" class="screen">
   <div class="fc-topbar" style="padding:0 16px;"><button class="back-btn" onclick="goHome()">← Back</button><div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--purple);">🧠 Memory</div><div class="mem-status" id="mem-status" style="margin:0;"></div></div>
   <div class="mem-two-col">
@@ -292,21 +286,18 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   <div id="mem-finish" style="display:none;"><div class="finish-card"><div class="trophy">🏆</div><div class="finish-title">Amazing!</div><div class="finish-sub" id="mem-finish-msg"></div><div class="btn-row"><button class="pill-btn btn-purple" onclick="initMemory()">Play Again</button><button class="pill-btn btn-orange" onclick="goHome()">Menu</button></div></div></div>
 </div>
 
-<!-- ═══ FILL ═══ -->
 <div id="fill-screen" class="screen">
   <div class="fc-topbar"><button class="back-btn" onclick="goHome()">← Back</button><div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--orange);">✏️ Fill in the Blank</div><div class="fc-progress" id="fill-progress"></div></div>
   <div id="fill-main"></div>
   <div id="fill-finish" style="display:none;"><div class="finish-card"><div class="trophy">🏆</div><div class="finish-title">Amazing!</div><div class="finish-sub">You answered all the questions!</div><div class="btn-row"><button class="pill-btn btn-orange" onclick="initFill()">Play Again</button><button class="pill-btn btn-purple" onclick="goHome()">Menu</button></div></div></div>
 </div>
 
-<!-- ═══ SUMMARY ═══ -->
 <div id="summary-screen" class="screen">
   <div class="fc-topbar"><button class="back-btn" onclick="goHome()">← Back</button><div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--green);">📋 All Words</div><div class="fc-progress" id="summary-progress"></div></div>
   <div class="summary-grid" id="summary-grid"></div>
   <div class="summary-nav"><button id="sum-prev" onclick="summaryPage(-1)">←</button><div class="s-page-info" id="sum-page-info"></div><button id="sum-next" onclick="summaryPage(1)">→</button></div>
 </div>
 
-<!-- ═══ VOCABINDER ═══ -->
 <div id="voca-screen" class="screen">
   <div class="voca-topbar"><button class="back-btn" onclick="goHome()">← Back</button><div style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--purple);">🎴 Vocabinder</div><div></div></div>
   <div class="voca-score-row"><div class="voca-pill vp-g">✅ <span id="vc-correct">0</span></div><div class="voca-pill vp-r">❌ <span id="vc-wrong">0</span></div><div class="voca-pill vp-b">📚 <span id="vc-done">0</span> / <span id="vc-total">0</span></div></div>
@@ -318,26 +309,22 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   <div class="voca-comp" id="vc-comp"><div style="font-size:3.5rem">🏆</div><div class="finish-title">Amazing!</div><div class="finish-sub" id="vc-comp-stats"></div><div class="btn-row"><button class="pill-btn btn-purple" onclick="vcRestart()">Play Again 🎉</button><button class="pill-btn btn-orange" onclick="goHome()">Home</button></div></div>
 </div>
 
-<!-- ═══ SPELLING ═══ -->
 <div id="spell-screen" class="screen">
   <div class="fc-topbar"><button class="back-btn" onclick="goHome()">← Back</button><div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--coral);">🔤 Spelling</div><div class="fc-progress" id="spell-progress"></div></div>
   <div id="spell-main"></div>
   <div id="spell-finish" style="display:none;"><div class="finish-card"><div class="trophy">🏆</div><div class="finish-title">Great Spelling!</div><div class="finish-sub" id="spell-finish-sub"></div><div class="btn-row"><button class="pill-btn btn-orange" onclick="initSpell()">Play Again</button><button class="pill-btn btn-purple" onclick="goHome()">Menu</button></div></div></div>
 </div>
 
-<!-- ═══ WORDS ONLY ═══ -->
 <div id="words-screen" class="screen">
   <div class="fc-topbar"><button class="back-btn" onclick="goHome()">← Back</button><div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--blue);">🔠 Words Only</div><div class="fc-progress" id="words-progress"></div></div>
   <div class="words-grid" id="words-grid"></div>
 </div>
 
-<!-- ═══ PICTURES ONLY ═══ -->
 <div id="pics-screen" class="screen">
   <div class="fc-topbar"><button class="back-btn" onclick="goHome()">← Back</button><div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--orange);">🖼️ Pictures Only</div><div class="fc-progress" id="pics-progress"></div></div>
   <div class="pics-grid" id="pics-grid"></div>
 </div>
 
-<!-- ═══ LIGHTBOX ═══ -->
 <div id="lightbox" onclick="closeLightbox()">
   <div id="lightbox-inner">
     <img id="lightbox-img" src="" alt="" onerror="this.style.display='none';document.getElementById('lightbox-emoji').style.display='block';">
@@ -346,7 +333,7 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   </div>
 </div>
 
-</div><!-- #app -->
+</div>
 
 <script>
 const imgSrc = (id, sfx='') => id.replace(/ /g,'') + sfx + '.jpg';
@@ -403,6 +390,8 @@ let currentSet=0, currentActivity='';
 let fcMode='', fcList=[], fcIdx=0, fcTapState=0;
 let matchSel={img:null,word:null}, matchCorrect=0;
 let fillIdx=0, fillList=[], fillAnswered=false;
+// ── FIX: store correct answers here instead of inline onclick attributes ──
+let currentFillCorrect='', currentSpellCorrect='';
 
 const shuffle=a=>{const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;};
 const setWords=()=>WORDS.filter(w=>w.set===currentSet);
@@ -560,17 +549,29 @@ function checkPair(){
   }
 }
 
+// ══ FILL IN THE BLANK — FIXED ══
+// Uses createElement + addEventListener so apostrophes/spaces in words never break buttons
 function initFill(){fillList=shuffle([...setWords()]);fillIdx=0;document.getElementById('fill-finish').style.display='none';document.getElementById('fill-main').style.display='block';renderFill();}
 function renderFill(){
   document.getElementById('fill-progress').textContent=(fillIdx+1)+' / '+fillList.length;
   const a=fillList[fillIdx]; fillAnswered=false;
   const others=setWords().filter(x=>x.id!==a.id);
   const choices=shuffle([a.word,...shuffle(others).slice(0,2).map(x=>x.word)]);
+  currentFillCorrect=a.word;
   const sentHTML=a.fillQ.replace('{blank}','<span class="fill-blank" id="fill-blank">?</span>');
-  document.getElementById('fill-main').innerHTML=`<div class="fill-card"><img class="fill-img" src="${imgSrc(a.id,'2')}" alt="${a.word}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fill-img-ph">${em(a.id)}</div><div class="fill-sentence">${sentHTML}</div><div class="fill-choices">${choices.map(c=>`<button class="fill-choice" onclick="fillCheck(this,${JSON.stringify(c)},${JSON.stringify(a.word)})">${c}</button>`).join('')}</div><div class="fill-feedback" id="fill-fb"></div><button class="fill-next-btn" id="fill-next-btn" onclick="fillNext()">Next →</button></div>`;
+  document.getElementById('fill-main').innerHTML=`<div class="fill-card"><img class="fill-img" src="${imgSrc(a.id,'2')}" alt="${a.word}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fill-img-ph">${em(a.id)}</div><div class="fill-sentence">${sentHTML}</div><div class="fill-choices" id="fill-choices-div"></div><div class="fill-feedback" id="fill-fb"></div><button class="fill-next-btn" id="fill-next-btn" onclick="fillNext()">Next →</button></div>`;
+  const _fcd=document.getElementById('fill-choices-div');
+  choices.forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='fill-choice';
+    btn.textContent=c;
+    btn.addEventListener('click',()=>fillCheck(btn,c));
+    _fcd.appendChild(btn);
+  });
 }
-function fillCheck(btn,chosen,correct){
+function fillCheck(btn,chosen){
   if(fillAnswered)return;
+  const correct=currentFillCorrect;
   if(chosen===correct){fillAnswered=true;document.getElementById('fill-blank').textContent=correct;document.getElementById('fill-blank').classList.add('correct');document.querySelectorAll('.fill-choice').forEach(b=>b.disabled=true);btn.classList.add('correct-choice');document.getElementById('fill-fb').textContent='✅ Correct!';document.getElementById('fill-fb').className='fill-feedback ok';document.getElementById('fill-next-btn').classList.add('show');}
   else{btn.classList.add('wrong-choice');document.getElementById('fill-fb').textContent='❌ Try again!';document.getElementById('fill-fb').className='fill-feedback no';setTimeout(()=>{btn.classList.remove('wrong-choice');document.getElementById('fill-fb').textContent='';},700);}
 }
@@ -655,16 +656,32 @@ function vcStartDrag(x){
   document.addEventListener('mousemove',mm); document.addEventListener('mouseup',mu); document.addEventListener('touchmove',tm,{passive:false}); document.addEventListener('touchend',tu);
 }
 
+// ══ SPELLING — FIXED ══
+// Uses createElement + addEventListener so special chars in words never break buttons
 let spellList=[],spellIdx=0,spellAnswered=false;
 function makeMisspellings(word,count){const w=word.toLowerCase();const variants=new Set();const ops=[s=>{const vs=[...s].map((c,i)=>'aeiou'.includes(c)?i:-1).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];return s.slice(0,i)+s[i]+s.slice(i);},s=>{if(s.length<3)return null;const i=Math.floor(Math.random()*(s.length-1));const a=[...s];[a[i],a[i+1]]=[a[i+1],a[i]];return a.join('');},s=>{if(s.length<4)return null;const i=1+Math.floor(Math.random()*(s.length-2));return s.slice(0,i)+s.slice(i+1);},s=>{const vowels='aeiou';const vs=[...s].map((c,i)=>'aeiou'.includes(c)?i:-1).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];const v=vowels[Math.floor(Math.random()*5)];return s.slice(0,i)+v+s.slice(i+1);},s=>{const i=1+Math.floor(Math.random()*(s.length-1));const c='aeioulnrst'[Math.floor(Math.random()*10)];return s.slice(0,i)+c+s.slice(i);}];let attempts=0;while(variants.size<count&&attempts<80){attempts++;const v=ops[Math.floor(Math.random()*ops.length)](w);if(v&&v!==w&&v.length>1)variants.add(v);}return[...variants].slice(0,count);}
 function initSpell(){spellList=shuffle([...setWords()]);spellIdx=0;document.getElementById('spell-finish').style.display='none';document.getElementById('spell-main').style.display='block';renderSpell();}
 function renderSpell(){
   document.getElementById('spell-progress').textContent=(spellIdx+1)+' / '+spellList.length;
   const a=spellList[spellIdx]; spellAnswered=false;
+  currentSpellCorrect=a.word;
   const choices=shuffle([a.word,...makeMisspellings(a.word,2)]);
-  document.getElementById('spell-main').innerHTML=`<div class="spell-card"><img class="spell-img" src="${imgSrc(a.id,'')}" alt="${a.word}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="spell-img-ph">${em(a.id)}</div><div class="spell-prompt">Which spelling is correct?</div><div class="spell-choices">${choices.map(c=>`<button class="spell-choice" onclick="spellCheck(this,${JSON.stringify(c)},${JSON.stringify(a.word)})">${c}</button>`).join('')}</div><button class="spell-next-btn" id="spell-next-btn" onclick="spellNext()">Next →</button></div>`;
+  document.getElementById('spell-main').innerHTML=`<div class="spell-card"><img class="spell-img" src="${imgSrc(a.id,'')}" alt="${a.word}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="spell-img-ph">${em(a.id)}</div><div class="spell-prompt">Which spelling is correct?</div><div class="spell-choices" id="spell-choices-div"></div><button class="spell-next-btn" id="spell-next-btn" onclick="spellNext()">Next →</button></div>`;
+  const _scd=document.getElementById('spell-choices-div');
+  choices.forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='spell-choice';
+    btn.textContent=c;
+    btn.addEventListener('click',()=>spellCheck(btn,c));
+    _scd.appendChild(btn);
+  });
 }
-function spellCheck(btn,chosen,correct){if(spellAnswered)return;if(chosen===correct){spellAnswered=true;btn.classList.add('correct-spell');document.querySelectorAll('.spell-choice').forEach(b=>b.disabled=true);document.getElementById('spell-next-btn').classList.add('show');}else{btn.classList.add('wrong-spell');setTimeout(()=>btn.classList.remove('wrong-spell'),500);}}
+function spellCheck(btn,chosen){
+  if(spellAnswered)return;
+  const correct=currentSpellCorrect;
+  if(chosen===correct){spellAnswered=true;btn.classList.add('correct-spell');document.querySelectorAll('.spell-choice').forEach(b=>b.disabled=true);document.getElementById('spell-next-btn').classList.add('show');}
+  else{btn.classList.add('wrong-spell');setTimeout(()=>btn.classList.remove('wrong-spell'),500);}
+}
 function spellNext(){spellIdx++;if(spellIdx>=spellList.length){document.getElementById('spell-main').style.display='none';document.getElementById('spell-finish-sub').textContent='You spelled all '+spellList.length+' words! 🎉';document.getElementById('spell-finish').style.display='block';}else{renderSpell();}}
 
 function renderWordsOnly(){const words=setWords();document.getElementById('words-progress').textContent=words.length+' words';const grid=document.getElementById('words-grid');grid.innerHTML='';words.forEach((a,i)=>{const card=document.createElement('div');card.className='word-only-card';card.style.borderLeftColor=ACCENT_BORDERS[i%ACCENT_BORDERS.length];card.textContent=a.word;grid.appendChild(card);});}
