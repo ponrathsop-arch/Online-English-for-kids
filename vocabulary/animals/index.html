@@ -126,20 +126,21 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .fill-next-btn.show{display:inline-block;}
 .fill-next-btn:hover{transform:scale(1.05);}
 
-/* ── MEMORY ── */
+/* ── MEMORY ── 
+   FIXED: use repeat(3,1fr) so cards are bigger for 13 animals per side */
 #memory-screen{padding-top:14px;max-width:100%!important;}
 .mem-status{text-align:center;font-size:1rem;color:var(--muted);margin-bottom:10px;font-weight:900;}
-.mem-two-col{display:flex;gap:24px;justify-content:center;align-items:flex-start;padding:0 10px;}
-.mem-col{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;flex:1;max-width:48vw;}
+.mem-two-col{display:flex;gap:16px;justify-content:center;align-items:flex-start;padding:0 8px;}
+.mem-col{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:1;max-width:48vw;}
 .mem-col-title{font-family:'Fredoka One',cursive;font-size:1rem;text-align:center;margin-bottom:8px;color:var(--purple);}
-.mem-card{width:100%;aspect-ratio:1;perspective:600px;cursor:pointer;min-height:100px;}
-.mem-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .4s cubic-bezier(.34,1.2,.64,1);border-radius:16px;}
+.mem-card{width:100%;aspect-ratio:1;perspective:600px;cursor:pointer;min-height:70px;}
+.mem-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .4s cubic-bezier(.34,1.2,.64,1);border-radius:14px;}
 .mem-card.flipped .mem-inner{transform:rotateY(180deg);}
-.mem-front,.mem-back{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.13);}
-.mem-front{background:linear-gradient(135deg,var(--purple),#5b21b6);font-family:'Fredoka One',cursive;font-size:2rem;color:#fff;}
+.mem-front,.mem-back{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.13);}
+.mem-front{background:linear-gradient(135deg,var(--purple),#5b21b6);font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,3vw,1.6rem);color:#fff;}
 .mem-back{background:#fff;transform:rotateY(180deg);overflow:hidden;border:3px solid #fff;}
-.mem-back img{width:100%;height:calc(100% - 28px);object-fit:cover;display:block;}
-.mem-back .mem-name{font-family:'Fredoka One',cursive;font-size:.85rem;color:var(--text);height:28px;line-height:28px;display:none;text-align:center;width:100%;}
+.mem-back img{width:100%;height:calc(100% - 24px);object-fit:cover;display:block;}
+.mem-back .mem-name{font-family:'Fredoka One',cursive;font-size:clamp(.6rem,1.2vw,.8rem);color:var(--text);height:24px;line-height:24px;display:none;text-align:center;width:100%;}
 .mem-card.matched .mem-inner{box-shadow:0 0 0 4px var(--green);}
 .mem-card.matched .mem-front{background:linear-gradient(135deg,var(--green),#15803d);}
 .mem-card.matched .mem-back .mem-name{display:block;}
@@ -294,16 +295,16 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 
 <!-- ═══ BOTTOM NAV ═══ -->
 <div id="bottom-nav">
-  <button class="bnav-btn" id="bn-home"  onclick="goHome()"           style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🏠</span>Home</button>
-  <button class="bnav-btn" id="bn-s1"    onclick="bnSwitch(0)"        style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🐾</span>Set 1</button>
-  <button class="bnav-btn" id="bn-s2"    onclick="bnSwitch(1)"        style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🌿</span>Set 2</button>
-  <button class="bnav-btn" id="bn-wf"    onclick="bnActivity('learn11')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">📖</span>Word</button>
-  <button class="bnav-btn" id="bn-pf"    onclick="bnActivity('learn12')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🖼️</span>Pic</button>
-  <button class="bnav-btn" id="bn-match" onclick="bnActivity('match')"   style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🎯</span>Match</button>
-  <button class="bnav-btn" id="bn-mem"   onclick="bnActivity('memory')"  style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🧠</span>Mem</button>
-  <button class="bnav-btn" id="bn-fill"  onclick="bnActivity('fill')"    style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">✏️</span>Fill</button>
-  <button class="bnav-btn" id="bn-spell" onclick="bnActivity('spell')"   style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">🔤</span>Spell</button>
-  <button class="bnav-btn" id="bn-sum"   onclick="bnActivity('summary')" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:900;color:var(--muted);padding:4px 2px;"><span class="bn-icon">📋</span>All</button>
+  <button class="bnav-btn" id="bn-home"  onclick="goHome()"><span class="bn-icon">🏠</span>Home</button>
+  <button class="bnav-btn" id="bn-s1"    onclick="bnSwitch(0)"><span class="bn-icon">🐾</span>Set 1</button>
+  <button class="bnav-btn" id="bn-s2"    onclick="bnSwitch(1)"><span class="bn-icon">🌿</span>Set 2</button>
+  <button class="bnav-btn" id="bn-wf"    onclick="bnActivity('learn11')"><span class="bn-icon">📖</span>Word</button>
+  <button class="bnav-btn" id="bn-pf"    onclick="bnActivity('learn12')"><span class="bn-icon">🖼️</span>Pic</button>
+  <button class="bnav-btn" id="bn-match" onclick="bnActivity('match')"><span class="bn-icon">🎯</span>Match</button>
+  <button class="bnav-btn" id="bn-mem"   onclick="bnActivity('memory')"><span class="bn-icon">🧠</span>Mem</button>
+  <button class="bnav-btn" id="bn-fill"  onclick="bnActivity('fill')"><span class="bn-icon">✏️</span>Fill</button>
+  <button class="bnav-btn" id="bn-spell" onclick="bnActivity('spell')"><span class="bn-icon">🔤</span>Spell</button>
+  <button class="bnav-btn" id="bn-sum"   onclick="bnActivity('summary')"><span class="bn-icon">📋</span>All</button>
 </div>
 
 <!-- ═══ FLASHCARD ═══ -->
@@ -533,32 +534,32 @@ const EMOJIS={cat:'🐱',dog:'🐶',fish:'🐟',bird:'🐦',elephant:'🐘',gira
 const ACCENTS=['#7C3AED','#FF6B6B','#3B82F6','#6BCB77','#FF9F43','#FFD93D','#7C3AED','#FF6B6B','#3B82F6','#6BCB77'];
 
 const ANIMALS=[
-  {id:'cat',      word:'cat',        set:0, sentences:['This is a cat.','The cat is small and soft.','The cat likes milk.'],                                    fillQ:'The {blank} is drinking milk.'},
-  {id:'dog',      word:'dog',        set:0, sentences:['This is a dog.','The dog likes to run.','The dog is a good friend.'],                                   fillQ:'The {blank} is running in the park.'},
-  {id:'fish',     word:'fish',       set:0, sentences:['This is a fish.','The fish swims in water.','The fish has fins.'],                                      fillQ:'The {blank} is swimming in the water.'},
-  {id:'bird',     word:'bird',       set:0, sentences:['This is a bird.','The bird can fly.','The bird has wings.'],                                            fillQ:'The {blank} is flying in the sky.'},
-  {id:'elephant', word:'elephant',   set:0, sentences:['This is an elephant.','The elephant is big and gray.','The elephant has a long trunk.'],                 fillQ:'The {blank} is walking slowly.'},
-  {id:'giraffe',  word:'giraffe',    set:0, sentences:['This is a giraffe.','The giraffe has a long neck.','The giraffe eats leaves.'],                         fillQ:'The {blank} is eating leaves.'},
-  {id:'tiger',    word:'tiger',      set:0, sentences:['This is a tiger.','The tiger has black stripes.','The tiger is strong.'],                               fillQ:'The {blank} is looking for food.'},
-  {id:'zebra',    word:'zebra',      set:0, sentences:['This is a zebra.','The zebra is black and white.','The zebra can run fast.'],                           fillQ:'The {blank} is running fast.'},
-  {id:'monkey',   word:'monkey',     set:0, sentences:['This is a monkey.','The monkey likes bananas.','The monkey can climb trees.'],                          fillQ:'The {blank} is eating a banana.'},
-  {id:'crocodile',word:'crocodile',  set:0, sentences:['This is a crocodile.','The crocodile lives in water.','The crocodile has big teeth.'],                  fillQ:'The {blank} is swimming in the river.'},
-  {id:'spider',   word:'spider',     set:0, sentences:['This is a spider.','The spider has eight legs.','The spider makes a web.'],                             fillQ:'The {blank} is making a web.'},
-  {id:'donkey',   word:'donkey',     set:0, sentences:['This is a donkey.','The donkey is gray or brown.','The donkey eats grass.'],                            fillQ:'The {blank} is eating grass.'},
-  {id:'lizard',   word:'lizard',     set:0, sentences:['This is a lizard.','The lizard is small.','The lizard sits on a rock.'],                                fillQ:'The {blank} is sitting on a rock.'},
-  {id:'snake',    word:'snake',      set:1, sentences:['This is a snake.','The snake is long.','The snake has no legs.'],                                       fillQ:'The {blank} is moving on the ground.'},
-  {id:'frog',     word:'frog',       set:1, sentences:['This is a frog.','The frog can jump.','The frog is green.'],                                           fillQ:'The {blank} is jumping.'},
-  {id:'cow',      word:'cow',        set:1, sentences:['This is a cow.','The cow gives milk.','The cow eats grass.'],                                           fillQ:'The {blank} is eating grass.'},
-  {id:'goat',     word:'goat',       set:1, sentences:['This is a goat.','The goat eats grass.','The goat can climb.'],                                        fillQ:'The {blank} is climbing a rock.'},
-  {id:'sheep',    word:'sheep',      set:1, sentences:['This is a sheep.','The sheep has white wool.','The sheep lives on a farm.'],                            fillQ:'The {blank} is standing on the farm.'},
-  {id:'horse',    word:'horse',      set:1, sentences:['This is a horse.','The horse can run fast.','The horse is big.'],                                       fillQ:'The {blank} is running fast.'},
-  {id:'polar bear',word:'polar bear',set:1, sentences:['This is a polar bear.','The polar bear is white.','The polar bear lives in cold places.'],               fillQ:'The {blank} is walking on ice.'},
-  {id:'hippo',    word:'hippo',      set:1, sentences:['This is a hippo.','The hippo is big and lives in water.','The hippo has a big mouth.'],                 fillQ:'The {blank} is sitting in the water.'},
-  {id:'parrot',   word:'parrot',     set:1, sentences:['This is a parrot.','The parrot has many colors.','The parrot can talk.'],                               fillQ:'The {blank} is talking.'},
-  {id:'rhino',    word:'rhino',      set:1, sentences:['This is a rhino.','The rhino has a big horn.','The rhino is very strong.'],                             fillQ:'The {blank} is walking in the grass.'},
-  {id:'mouse',    word:'mouse',      set:1, sentences:['This is a mouse.','The mouse is small.','The mouse eats cheese.'],                                      fillQ:'The {blank} is eating cheese.'},
-  {id:'chicken',  word:'chicken',    set:1, sentences:['This is a chicken.','The chicken lives on a farm.','The chicken lays eggs.'],                           fillQ:'The {blank} is laying eggs.'},
-  {id:'owl',      word:'owl',        set:1, sentences:['This is an owl.','The owl can fly.','The owl has big eyes.'],                                           fillQ:'The {blank} is flying at night.'},
+  {id:'cat',      word:'cat',        set:0, sentences:['This is a cat.','The cat is small and soft.','The cat likes milk.'],                                    fillQ:'The _____ is drinking milk.'},
+  {id:'dog',      word:'dog',        set:0, sentences:['This is a dog.','The dog likes to run.','The dog is a good friend.'],                                   fillQ:'The _____ is running in the park.'},
+  {id:'fish',     word:'fish',       set:0, sentences:['This is a fish.','The fish swims in water.','The fish has fins.'],                                      fillQ:'The _____ is swimming in the water.'},
+  {id:'bird',     word:'bird',       set:0, sentences:['This is a bird.','The bird can fly.','The bird has wings.'],                                            fillQ:'The _____ is flying in the sky.'},
+  {id:'elephant', word:'elephant',   set:0, sentences:['This is an elephant.','The elephant is big and gray.','The elephant has a long trunk.'],                 fillQ:'The _____ is walking slowly.'},
+  {id:'giraffe',  word:'giraffe',    set:0, sentences:['This is a giraffe.','The giraffe has a long neck.','The giraffe eats leaves.'],                         fillQ:'The _____ is eating leaves.'},
+  {id:'tiger',    word:'tiger',      set:0, sentences:['This is a tiger.','The tiger has black stripes.','The tiger is strong.'],                               fillQ:'The _____ is looking for food.'},
+  {id:'zebra',    word:'zebra',      set:0, sentences:['This is a zebra.','The zebra is black and white.','The zebra can run fast.'],                           fillQ:'The _____ is running fast.'},
+  {id:'monkey',   word:'monkey',     set:0, sentences:['This is a monkey.','The monkey likes bananas.','The monkey can climb trees.'],                          fillQ:'The _____ is eating a banana.'},
+  {id:'crocodile',word:'crocodile',  set:0, sentences:['This is a crocodile.','The crocodile lives in water.','The crocodile has big teeth.'],                  fillQ:'The _____ is swimming in the river.'},
+  {id:'spider',   word:'spider',     set:0, sentences:['This is a spider.','The spider has eight legs.','The spider makes a web.'],                             fillQ:'The _____ is making a web.'},
+  {id:'donkey',   word:'donkey',     set:0, sentences:['This is a donkey.','The donkey is gray or brown.','The donkey eats grass.'],                            fillQ:'The _____ is eating grass.'},
+  {id:'lizard',   word:'lizard',     set:0, sentences:['This is a lizard.','The lizard is small.','The lizard sits on a rock.'],                                fillQ:'The _____ is sitting on a rock.'},
+  {id:'snake',    word:'snake',      set:1, sentences:['This is a snake.','The snake is long.','The snake has no legs.'],                                       fillQ:'The _____ is moving on the ground.'},
+  {id:'frog',     word:'frog',       set:1, sentences:['This is a frog.','The frog can jump.','The frog is green.'],                                           fillQ:'The _____ is jumping.'},
+  {id:'cow',      word:'cow',        set:1, sentences:['This is a cow.','The cow gives milk.','The cow eats grass.'],                                           fillQ:'The _____ is eating grass.'},
+  {id:'goat',     word:'goat',       set:1, sentences:['This is a goat.','The goat eats grass.','The goat can climb.'],                                        fillQ:'The _____ is climbing a rock.'},
+  {id:'sheep',    word:'sheep',      set:1, sentences:['This is a sheep.','The sheep has white wool.','The sheep lives on a farm.'],                            fillQ:'The _____ is standing on the farm.'},
+  {id:'horse',    word:'horse',      set:1, sentences:['This is a horse.','The horse can run fast.','The horse is big.'],                                       fillQ:'The _____ is running fast.'},
+  {id:'polar bear',word:'polar bear',set:1, sentences:['This is a polar bear.','The polar bear is white.','The polar bear lives in cold places.'],               fillQ:'The _____ is walking on ice.'},
+  {id:'hippo',    word:'hippo',      set:1, sentences:['This is a hippo.','The hippo is big and lives in water.','The hippo has a big mouth.'],                 fillQ:'The _____ is sitting in the water.'},
+  {id:'parrot',   word:'parrot',     set:1, sentences:['This is a parrot.','The parrot has many colors.','The parrot can talk.'],                               fillQ:'The _____ is talking.'},
+  {id:'rhino',    word:'rhino',      set:1, sentences:['This is a rhino.','The rhino has a big horn.','The rhino is very strong.'],                             fillQ:'The _____ is walking in the grass.'},
+  {id:'mouse',    word:'mouse',      set:1, sentences:['This is a mouse.','The mouse is small.','The mouse eats cheese.'],                                      fillQ:'The _____ is eating cheese.'},
+  {id:'chicken',  word:'chicken',    set:1, sentences:['This is a chicken.','The chicken lives on a farm.','The chicken lays eggs.'],                           fillQ:'The _____ is laying eggs.'},
+  {id:'owl',      word:'owl',        set:1, sentences:['This is an owl.','The owl can fly.','The owl has big eyes.'],                                           fillQ:'The _____ is flying at night.'},
 ];
 
 // ══════════════════════════════════════
@@ -569,6 +570,9 @@ let fcMode='',fcList=[],fcIdx=0,fcTapState=0;
 let matchSel={img:null,word:null},matchCorrect=0;
 let fillIdx=0,fillList=[],fillAnswered=false;
 let currentActivity='';
+// Store fill/spell correct answer for current question
+let currentFillCorrect='';
+let currentSpellCorrect='';
 
 // ══════════════════════════════════════
 // UTILS
@@ -856,7 +860,7 @@ function checkPair(){
 }
 
 // ══════════════════════════════════════
-// FILL IN THE BLANK
+// FILL IN THE BLANK — FIXED: use data attributes + addEventListener
 // ══════════════════════════════════════
 function initFill(){
   fillList=shuffle([...setAnimals()]); fillIdx=0;
@@ -869,23 +873,44 @@ function renderFill(){
   const a=fillList[fillIdx]; fillAnswered=false;
   const others=setAnimals().filter(x=>x.id!==a.id);
   const choices=shuffle([a.word,...shuffle(others).slice(0,2).map(x=>x.word)]);
-  const sentHTML=a.fillQ.replace('{blank}','<span class="fill-blank" id="fill-blank">?</span>');
+  currentFillCorrect=a.word;
+
+  const sentHTML=a.fillQ.replace('_____','<span class="fill-blank" id="fill-blank">?</span>');
   const aEmoji=EMOJIS[a.id]||'❓';
-  document.getElementById('fill-main').innerHTML=`
+
+  const container=document.getElementById('fill-main');
+  container.innerHTML=`
     <div class="fill-card">
-      <img class="fill-img" src="${imgSrc(a.id,'1')}" alt="${a.word}"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div class="fill-img-ph">${aEmoji}</div>
+      <img class="fill-img" id="fill-img" src="${imgSrc(a.id,'1')}" alt="${a.word}">
+      <div class="fill-img-ph" id="fill-img-ph">${aEmoji}</div>
       <div class="fill-sentence">${sentHTML}</div>
-      <div class="fill-choices">
-        ${choices.map(c=>`<button class="fill-choice" onclick="fillCheck(this,${JSON.stringify(c)},${JSON.stringify(a.word)})">${c}</button>`).join('')}
-      </div>
+      <div class="fill-choices" id="fill-choices"></div>
       <div class="fill-feedback" id="fill-fb"></div>
-      <button class="fill-next-btn" id="fill-next-btn" onclick="fillNext()">Next →</button>
+      <button class="fill-next-btn" id="fill-next-btn">Next →</button>
     </div>`;
+
+  // Image error handler
+  const fillImg=document.getElementById('fill-img');
+  const fillPh=document.getElementById('fill-img-ph');
+  fillImg.onerror=()=>{fillImg.style.display='none';fillPh.style.display='flex';};
+
+  // Build choice buttons with addEventListener (safe for any text including apostrophes)
+  const choicesDiv=document.getElementById('fill-choices');
+  choices.forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='fill-choice';
+    btn.textContent=c;
+    btn.addEventListener('click',()=>fillCheck(btn,c));
+    choicesDiv.appendChild(btn);
+  });
+
+  // Next button
+  document.getElementById('fill-next-btn').addEventListener('click', fillNext);
 }
-function fillCheck(btn,chosen,correct){
+
+function fillCheck(btn, chosen){
   if(fillAnswered)return;
+  const correct=currentFillCorrect;
   if(chosen===correct){
     fillAnswered=true;
     document.getElementById('fill-blank').textContent=correct;
@@ -909,7 +934,7 @@ function fillNext(){
 }
 
 // ══════════════════════════════════════
-// MEMORY GAME
+// MEMORY GAME — FIXED: repeat(3,1fr) for bigger cards
 // ══════════════════════════════════════
 function initMemory(){
   const animals=setAnimals();
@@ -1137,7 +1162,7 @@ function vcStartDrag(x){
 }
 
 // ══════════════════════════════════════
-// SPELLING
+// SPELLING — FIXED: use data attributes + addEventListener
 // ══════════════════════════════════════
 let spellList=[],spellIdx=0,spellAnswered=false;
 function makeMisspellings(word,count){
@@ -1166,24 +1191,49 @@ function renderSpell(){
   const a=spellList[spellIdx]; spellAnswered=false;
   const misspellings=makeMisspellings(a.word,2);
   const choices=shuffle([a.word,...misspellings]);
+  currentSpellCorrect=a.word;
   const spellEmoji=EMOJIS[a.id]||'❓';
+
   const main=document.getElementById('spell-main');
   main.innerHTML=`
     <div class="spell-card">
-      <img class="spell-img" src="${imgSrc(a.id,'')}" alt="${a.word}"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div class="spell-img-ph">${spellEmoji}</div>
+      <img class="spell-img" id="spell-img-el" src="${imgSrc(a.id,'')}" alt="${a.word}">
+      <div class="spell-img-ph" id="spell-ph-el">${spellEmoji}</div>
       <div class="spell-prompt">Which spelling is correct?</div>
-      <div class="spell-choices">
-        ${choices.map(c=>`<button class="spell-choice" onclick="spellCheck(this,${JSON.stringify(c)},${JSON.stringify(a.word)})">${c}</button>`).join('')}
-      </div>
-      <button class="spell-next-btn" id="spell-next-btn" onclick="spellNext()">Next →</button>
+      <div class="spell-choices" id="spell-choices-div"></div>
+      <button class="spell-next-btn" id="spell-next-btn">Next →</button>
     </div>`;
+
+  // Image error handler
+  const spellImg=document.getElementById('spell-img-el');
+  const spellPh=document.getElementById('spell-ph-el');
+  spellImg.onerror=()=>{spellImg.style.display='none';spellPh.style.display='flex';};
+
+  // Build choice buttons with addEventListener
+  const choicesDiv=document.getElementById('spell-choices-div');
+  choices.forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='spell-choice';
+    btn.textContent=c;
+    btn.addEventListener('click',()=>spellCheck(btn,c));
+    choicesDiv.appendChild(btn);
+  });
+
+  // Next button
+  document.getElementById('spell-next-btn').addEventListener('click', spellNext);
 }
-function spellCheck(btn,chosen,correct){
+function spellCheck(btn, chosen){
   if(spellAnswered)return;
-  if(chosen===correct){spellAnswered=true;btn.classList.add('correct-spell');document.querySelectorAll('.spell-choice').forEach(b=>b.disabled=true);document.getElementById('spell-next-btn').classList.add('show');}
-  else{btn.classList.add('wrong-spell');setTimeout(()=>btn.classList.remove('wrong-spell'),500);}
+  const correct=currentSpellCorrect;
+  if(chosen===correct){
+    spellAnswered=true;
+    btn.classList.add('correct-spell');
+    document.querySelectorAll('.spell-choice').forEach(b=>b.disabled=true);
+    document.getElementById('spell-next-btn').classList.add('show');
+  } else {
+    btn.classList.add('wrong-spell');
+    setTimeout(()=>btn.classList.remove('wrong-spell'),500);
+  }
 }
 function spellNext(){
   spellIdx++;
@@ -1232,7 +1282,7 @@ function renderPicsOnly(){
 }
 
 // ══════════════════════════════════════
-// INIT — show nav on home
+// INIT
 // ══════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('bottom-nav').classList.add('visible');
