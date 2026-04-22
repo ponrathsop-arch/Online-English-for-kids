@@ -111,22 +111,26 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .fill-next-btn{display:none;background:var(--green);color:#fff;border:none;border-radius:50px;padding:12px 32px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.97rem;cursor:pointer;transition:transform .15s;margin-top:2px;}
 .fill-next-btn.show{display:inline-block;}
 .fill-next-btn:hover{transform:scale(1.05);}
+
+/* ══ MEMORY GAME — FIXED LAYOUT ══ */
 #memory-screen{padding-top:14px;max-width:100%!important;}
 .mem-status{text-align:center;font-size:1rem;color:var(--muted);margin-bottom:10px;font-weight:900;}
-.mem-two-col{display:flex;gap:20px;justify-content:center;align-items:flex-start;padding:0 8px;}
-.mem-col{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex:1;max-width:48vw;}
-.mem-col-title{font-family:'Fredoka One',cursive;font-size:1rem;text-align:center;margin-bottom:8px;color:var(--purple);}
+.mem-two-col{display:flex;gap:10px;justify-content:center;align-items:flex-start;padding:0 6px;width:100%;}
+.mem-col-wrapper{flex:1;min-width:0;}
+.mem-col-title{font-family:'Fredoka One',cursive;font-size:.95rem;text-align:center;margin-bottom:8px;color:var(--purple);}
+.mem-col{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;}
 .mem-card{width:100%;aspect-ratio:1;perspective:600px;cursor:pointer;}
-.mem-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .4s cubic-bezier(.34,1.2,.64,1);border-radius:12px;}
+.mem-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .4s cubic-bezier(.34,1.2,.64,1);border-radius:10px;}
 .mem-card.flipped .mem-inner{transform:rotateY(180deg);}
-.mem-front,.mem-back{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.13);}
-.mem-front{background:linear-gradient(135deg,var(--purple),#5b21b6);font-family:'Fredoka One',cursive;font-size:1.6rem;color:#fff;}
+.mem-front,.mem-back{position:absolute;inset:0;border-radius:10px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.13);}
+.mem-front{background:linear-gradient(135deg,var(--purple),#5b21b6);font-family:'Fredoka One',cursive;font-size:1.3rem;color:#fff;}
 .mem-back{background:#fff;transform:rotateY(180deg);overflow:hidden;border:3px solid #fff;}
-.mem-back img{width:100%;height:calc(100% - 22px);object-fit:cover;display:block;}
-.mem-back .mem-name{font-family:'Fredoka One',cursive;font-size:.65rem;color:var(--text);height:22px;line-height:22px;display:none;text-align:center;width:100%;padding:0 2px;}
-.mem-card.matched .mem-inner{box-shadow:0 0 0 4px var(--green);}
+.mem-back img{width:100%;height:calc(100% - 20px);object-fit:cover;display:block;}
+.mem-back .mem-name{font-family:'Fredoka One',cursive;font-size:.58rem;color:var(--text);height:20px;line-height:20px;display:none;text-align:center;width:100%;padding:0 2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.mem-card.matched .mem-inner{box-shadow:0 0 0 3px var(--green);}
 .mem-card.matched .mem-front{background:linear-gradient(135deg,var(--green),#15803d);}
 .mem-card.matched .mem-back .mem-name{display:block;}
+
 #summary-screen{padding-top:14px;}
 .summary-grid{display:grid;grid-template-columns:repeat(1,1fr);gap:12px;margin-bottom:20px;}
 .summary-card{background:rgba(255,255,255,.92);border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,.09);padding:12px 16px;border-left:5px solid var(--purple);transition:transform .15s;display:flex;align-items:center;gap:16px;}
@@ -250,11 +254,17 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   <div id="match-main"><div class="match-layout"><div class="match-img-col" id="match-grid"></div><div class="match-word-col" id="match-words"></div></div></div>
   <div id="match-finish" style="display:none;"><div class="finish-card"><div class="trophy">🏆</div><div class="finish-title">All Matched!</div><div class="finish-sub" id="match-finish-msg"></div><div class="btn-row"><button class="pill-btn btn-orange" onclick="initMatch()">Try Again</button><button class="pill-btn btn-purple" onclick="goHome()">Menu</button></div></div></div>
 </div>
+
+<!-- MEMORY SCREEN — fixed layout with wrapper divs -->
 <div id="memory-screen" class="screen">
   <div class="fc-topbar"><button class="back-btn" onclick="goHome()">← Back</button><div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--purple);">🧠 Memory</div><div class="mem-status" id="mem-status" style="margin:0;"></div></div>
-  <div class="mem-two-col"><div><div class="mem-col-title">Group A</div><div class="mem-col" id="mem-col-left"></div></div><div><div class="mem-col-title">Group B</div><div class="mem-col" id="mem-col-right"></div></div></div>
+  <div class="mem-two-col">
+    <div class="mem-col-wrapper"><div class="mem-col-title">Group A</div><div class="mem-col" id="mem-col-left"></div></div>
+    <div class="mem-col-wrapper"><div class="mem-col-title">Group B</div><div class="mem-col" id="mem-col-right"></div></div>
+  </div>
   <div id="mem-finish" style="display:none;"><div class="finish-card"><div class="trophy">🏆</div><div class="finish-title">Amazing!</div><div class="finish-sub" id="mem-finish-msg"></div><div class="btn-row"><button class="pill-btn btn-purple" onclick="initMemory()">Play Again</button><button class="pill-btn btn-orange" onclick="goHome()">Menu</button></div></div></div>
 </div>
+
 <div id="fill-screen" class="screen">
   <div class="fc-topbar"><button class="back-btn" onclick="goHome()">← Back</button><div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--orange);">✏️ Fill in the Blank</div><div class="fc-progress" id="fill-progress"></div></div>
   <div id="fill-main"></div>
@@ -325,17 +335,22 @@ const CLOTHES = [
   { id:'belt',        word:'belt',         set:1, sentences:['I wear a belt.', 'This belt is new.'], fillQ:'I wear a ______.', fillAnswer:'belt' },
   { id:'watch',       word:'watch',        set:1, sentences:['I have a watch.', 'I look at my watch.'], fillQ:'I look at my ______.', fillAnswer:'watch' },
   { id:'glasses',     word:'glasses',      set:1, sentences:['I wear glasses.', 'My glasses are new.'], fillQ:'I wear ______ to see.', fillAnswer:'glasses' },
-  { id:'sunglasses',  word:'sunglasses',   set:1, sentences:['I wear sunglasses.', 'I wear them in the sun.'], fillQ:'I wear ______ in the sun.', fillAnswer:'sunglasses' },
+  // ✅ FIXED: sentence 2 now uses the word "sunglasses"
+  { id:'sunglasses',  word:'sunglasses',   set:1, sentences:['I wear sunglasses.', 'I wear sunglasses in the sun.'], fillQ:'I wear ______ in the sun.', fillAnswer:'sunglasses' },
   { id:'uniform',     word:'uniform',      set:2, sentences:['I wear a uniform.', 'My uniform is clean.'], fillQ:'I wear a ______ at school.', fillAnswer:'uniform' },
   { id:'pyjamas',     word:'pyjamas',      set:2, sentences:['I wear pyjamas.', 'I sleep in pyjamas.'], fillQ:'I sleep in my ______.', fillAnswer:'pyjamas' },
   { id:'swimsuit',    word:'swimsuit',     set:2, sentences:['I wear a swimsuit.', 'I swim in a swimsuit.'], fillQ:'I wear a ______ to swim.', fillAnswer:'swimsuit' },
   { id:'scarf',       word:'scarf',        set:2, sentences:['I wear a scarf.', 'This scarf is warm.'], fillQ:'I wear a ______ in winter.', fillAnswer:'scarf' },
   { id:'gloves',      word:'gloves',       set:2, sentences:['I wear gloves.', 'My gloves are warm.'], fillQ:'I wear ______ on my hands.', fillAnswer:'gloves' },
-  { id:'clothesshop', word:'clothes shop', set:2, sentences:['I go to the clothes shop.', 'I buy clothes there.'], fillQ:'I buy clothes in a clothes ______.', fillAnswer:'shop' },
+  // ✅ FIXED: sentence 2 now uses "clothes shop"
+  { id:'clothesshop', word:'clothes shop', set:2, sentences:['I go to the clothes shop.', 'My sister works at the clothes shop.'], fillQ:'I buy clothes in a clothes ______.', fillAnswer:'shop' },
   { id:'hanger',      word:'hanger',       set:2, sentences:['The shirt is on a hanger.', 'I use a hanger.'], fillQ:'The shirt is on a ______.', fillAnswer:'hanger' },
-  { id:'mirror',      word:'mirror',       set:2, sentences:['I look in the mirror.', 'I see myself.'], fillQ:'I look in the ______.', fillAnswer:'mirror' },
-  { id:'size',        word:'size',         set:2, sentences:['This is my size.', 'It is too big.'], fillQ:'This shirt is too big. What is my ______?', fillAnswer:'size' },
-  { id:'fittingroom', word:'fitting room', set:2, sentences:['I go to the fitting room.', 'I try on clothes there.'], fillQ:'I try on clothes in the fitting ______.', fillAnswer:'room' },
+  // ✅ FIXED: sentence 2 now uses "mirror"
+  { id:'mirror',      word:'mirror',       set:2, sentences:['I look in the mirror.', 'I see myself in the mirror.'], fillQ:'I look in the ______.', fillAnswer:'mirror' },
+  // ✅ FIXED: sentence 2 now uses "size"
+  { id:'size',        word:'size',         set:2, sentences:['This is my size.', 'This size is too big.'], fillQ:'This shirt is too big. What is my ______?', fillAnswer:'size' },
+  // ✅ FIXED: sentence 2 now uses "fitting room"
+  { id:'fittingroom', word:'fitting room', set:2, sentences:['I go to the fitting room.', 'I try on clothes in the fitting room.'], fillQ:'I try on clothes in the fitting ______.', fillAnswer:'room' },
   { id:'money',       word:'money',        set:2, sentences:['I have money.', 'I pay with money.'], fillQ:'I pay with ______.', fillAnswer:'money' },
   { id:'price',       word:'price',        set:2, sentences:['The price is high.', 'The price is low.'], fillQ:'The ______ is high.', fillAnswer:'price' },
 ];
@@ -347,7 +362,6 @@ let currentActivity = '';
 let fcMode = '', fcList = [], fcIdx = 0, fcTapState = 0;
 let matchSel = { img: null, word: null }, matchCorrect = 0;
 let fillIdx = 0, fillList = [], fillAnswered = false;
-// ── FIX: store correct answers in module-level vars, not in inline onclick ──
 let currentFillCorrect = '', currentSpellCorrect = '';
 const shuffle = a => { const r = [...a]; for (let i = r.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [r[i],r[j]]=[r[j],r[i]]; } return r; };
 const setItems = () => CLOTHES.filter(a => a.set === currentSet);
@@ -460,8 +474,6 @@ function checkPair(){
   if(matchSel.img===matchSel.word){document.querySelector('.match-img-card[data-id="'+matchSel.img+'"]').classList.replace('selected','correct');document.querySelector('.match-word-pill[data-id="'+matchSel.word+'"]').classList.replace('selected','correct');matchCorrect++;document.getElementById('match-score-top').textContent=matchCorrect+' matched';matchSel={img:null,word:null};if(matchCorrect===total){setTimeout(()=>{document.getElementById('match-main').style.display='none';document.getElementById('match-finish-msg').textContent='You matched all '+total+' items! 🎉';document.getElementById('match-finish').style.display='block';},500);}}
   else{const ic=document.querySelector('.match-img-card[data-id="'+matchSel.img+'"]');const wp=document.querySelector('.match-word-pill[data-id="'+matchSel.word+'"]');ic.classList.add('wrong');wp.classList.add('wrong');setTimeout(()=>{ic.classList.remove('selected','wrong');wp.classList.remove('selected','wrong');matchSel={img:null,word:null};},500);}
 }
-// ══ FILL IN THE BLANK — FIXED ══
-// Uses createElement + addEventListener so words like "T-shirt", "fitting room" never break buttons
 function initFill() { fillList=shuffle([...setItems()]); fillIdx=0; document.getElementById('fill-finish').style.display='none'; document.getElementById('fill-main').style.display='block'; renderFill(); }
 function renderFill() {
   document.getElementById('fill-progress').textContent = (fillIdx+1) + ' / ' + fillList.length;
@@ -513,6 +525,8 @@ function fillCheck(btn, chosen) {
   }
 }
 function fillNext() { fillIdx++; if(fillIdx>=fillList.length){document.getElementById('fill-main').style.display='none';document.getElementById('fill-finish').style.display='block';}else{renderFill();} }
+
+// ══ MEMORY GAME — FIXED: 3-column grid, wrapper divs, proper sizing ══
 function initMemory() {
   const items=setItems(); const status=document.getElementById('mem-status');
   const leftCol=document.getElementById('mem-col-left'); const rightCol=document.getElementById('mem-col-right');
@@ -523,7 +537,7 @@ function initMemory() {
   function makeCard(a,num,side){
     const card=document.createElement('div'); card.className='mem-card'; card.dataset.id=a.id; card.dataset.side=side;
     const em=EMOJIS[a.id]||'❓';
-    card.innerHTML=`<div class="mem-inner"><div class="mem-front">${num}</div><div class="mem-back"><img src="${imgSrc(a.id)}" alt="${a.word}" onerror="this.style.display='none';this.nextElementSibling.style.fontSize='1.6rem';this.nextElementSibling.textContent='${em}'"><div class="mem-name">${a.word}</div></div></div>`;
+    card.innerHTML=`<div class="mem-inner"><div class="mem-front">${num}</div><div class="mem-back"><img src="${imgSrc(a.id)}" alt="${a.word}" onerror="this.style.display='none';this.nextElementSibling.style.fontSize='1.4rem';this.nextElementSibling.textContent='${em}'"><div class="mem-name">${a.word}</div></div></div>`;
     card.addEventListener('click',()=>{
       if(lock||card.classList.contains('flipped')||card.classList.contains('matched'))return;
       if(flipped.length===1&&flipped[0].side===side){flipped[0].card.classList.remove('flipped');flipped=[];}
@@ -540,6 +554,7 @@ function initMemory() {
   lock=true; document.querySelectorAll('.mem-card').forEach(c=>c.classList.add('flipped'));
   setTimeout(()=>{document.querySelectorAll('.mem-card:not(.matched)').forEach(c=>c.classList.remove('flipped'));lock=false;},2000);
 }
+
 const PER_PAGE=5; let sumPage=0;
 const ACCENT_BORDERS=['#7C3AED','#FF6B6B','#3B82F6','#6BCB77','#FF9F43','#FFD93D','#F472B6','#2DD4BF','#7C3AED','#FF6B6B'];
 function renderSummary(){
@@ -564,8 +579,6 @@ function vcFlyOut(dir){const card=document.getElementById('vc-card');card.style.
 function vcShowComp(){document.getElementById('vc-game').style.display='none';document.getElementById('vc-comp').classList.add('on');document.getElementById('vc-comp-stats').textContent=`✅ ${vcCorrect} correct  ❌ ${vcWrong} wrong — all ${vcDeck.length} words done!`;}
 function vcSetupDrag(){const card=document.getElementById('vc-card');card.onmousedown=e=>vcStartDrag(e.clientX);card.ontouchstart=e=>{e.preventDefault();vcStartDrag(e.touches[0].clientX);};}
 function vcStartDrag(x){if(vcLocked)return;vcDragging=true;vcStartX=x;vcDragX=0;const card=document.getElementById('vc-card');function onMove(cx){if(!vcDragging)return;vcDragX=cx-vcStartX;card.style.transition='none';card.style.transform=`translateX(${vcDragX}px) rotate(${vcDragX*.06}deg)`;const t=40;document.getElementById('vc-peek-l').style.opacity=vcDragX<-t?Math.min((-vcDragX-t)/60,1):0;document.getElementById('vc-peek-r').style.opacity=vcDragX>t?Math.min((vcDragX-t)/60,1):0;}function onUp(){if(!vcDragging)return;vcDragging=false;document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);document.removeEventListener('touchmove',tm);document.removeEventListener('touchend',tu);if(vcDragX>90)vcResolve(vcChoices[1].id===vcDeck[vcIdx].id,1);else if(vcDragX<-90)vcResolve(vcChoices[0].id===vcDeck[vcIdx].id,0);else{card.style.transition='transform .3s ease';card.style.transform='translateX(0) rotate(0)';document.getElementById('vc-peek-l').style.opacity=0;document.getElementById('vc-peek-r').style.opacity=0;}vcDragX=0;}const mm=e=>onMove(e.clientX);const mu=()=>onUp();const tm=e=>{e.preventDefault();onMove(e.touches[0].clientX);};const tu=()=>onUp();document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);document.addEventListener('touchmove',tm,{passive:false});document.addEventListener('touchend',tu);}
-// ══ SPELLING — FIXED ══
-// Uses createElement + addEventListener so words like "T-shirt", "fitting room" never break buttons
 let spellList=[],spellIdx=0,spellAnswered=false;
 function makeMisspellings(word,count){const w=word.toLowerCase();const variants=new Set();const ops=[s=>{const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];return s.slice(0,i)+s[i]+s.slice(i);},s=>{if(s.length<3)return null;const i=Math.floor(Math.random()*(s.length-1));const a=[...s];[a[i],a[i+1]]=[a[i+1],a[i]];return a.join('');},s=>{if(s.length<4)return null;const i=1+Math.floor(Math.random()*(s.length-2));return s.slice(0,i)+s.slice(i+1);},s=>{const vowels='aeiou';const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];const v=vowels[Math.floor(Math.random()*5)];return s.slice(0,i)+v+s.slice(i+1);},s=>{const i=1+Math.floor(Math.random()*(s.length-1));const c='aeioulnrst'[Math.floor(Math.random()*10)];return s.slice(0,i)+c+s.slice(i);}];let attempts=0;while(variants.size<count&&attempts<80){attempts++;const op=ops[Math.floor(Math.random()*ops.length)];const v=op(w);if(v&&v!==w&&v.length>1)variants.add(v);}const fallbacks=['ing','er','ed','es','s'].map(s=>w+s).filter(s=>s!==w);for(const f of fallbacks){if(variants.size>=count)break;if(f!==w)variants.add(f);}return[...variants].slice(0,count);}
 function initSpell(){spellList=shuffle([...setItems()]);spellIdx=0;document.getElementById('spell-finish').style.display='none';document.getElementById('spell-main').style.display='block';renderSpell();}
