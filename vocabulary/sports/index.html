@@ -120,8 +120,8 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .mem-front,.mem-back{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.13);}
 .mem-front{background:linear-gradient(135deg,var(--purple),#5b21b6);font-family:'Fredoka One',cursive;font-size:clamp(1.2rem,3.5vw,2rem);color:#fff;}
 .mem-back{background:#fff;transform:rotateY(180deg);overflow:hidden;border:3px solid #fff;}
-.mem-back img{width:100%;height:100%;object-fit:cover;display:block;}
-.mem-back .mem-name{font-family:'Fredoka One',cursive;font-size:clamp(.7rem,1.4vw,.9rem);color:var(--text);height:0;line-height:28px;display:block;text-align:center;width:100%;padding:0 3px;overflow:hidden;transition:height .2s;}
+.mem-back img{width:100%;height:100%;object-fit:cover;display:block;transition:height .2s;}
+.mem-back .mem-name{font-family:'Fredoka One',cursive;font-size:clamp(.7rem,1.4vw,.9rem);color:var(--text);height:0;overflow:hidden;line-height:28px;display:block;text-align:center;width:100%;padding:0 3px;transition:height .2s;}
 .mem-card.matched .mem-inner{box-shadow:0 0 0 4px var(--green);}
 .mem-card.matched .mem-front{background:linear-gradient(135deg,var(--green),#15803d);}
 .mem-card.matched .mem-back img{height:calc(100% - 28px);}
@@ -205,14 +205,8 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   <div class="home-title">🏀 Sports</div>
   <div class="home-sub">Learn sports &amp; equipment in English!</div>
   <div class="home-learn-btns">
-    <button class="home-learn-btn" onclick="startActivity('learn11')">
-      <span class="hlb-icon">📖</span>
-      <span class="hlb-info"><span class="hlb-name">Word First</span><span class="hlb-desc">See the word → tap to reveal picture &amp; sentences</span></span>
-    </button>
-    <button class="home-learn-btn" onclick="startActivity('learn12')">
-      <span class="hlb-icon">🖼️</span>
-      <span class="hlb-info"><span class="hlb-name">Picture First</span><span class="hlb-desc">See the picture → tap to reveal word &amp; sentences</span></span>
-    </button>
+    <button class="home-learn-btn" onclick="startActivity('learn11')"><span class="hlb-icon">📖</span><span class="hlb-info"><span class="hlb-name">Word First</span><span class="hlb-desc">See the word → tap to reveal picture &amp; sentences</span></span></button>
+    <button class="home-learn-btn" onclick="startActivity('learn12')"><span class="hlb-icon">🖼️</span><span class="hlb-info"><span class="hlb-name">Picture First</span><span class="hlb-desc">See the picture → tap to reveal word &amp; sentences</span></span></button>
   </div>
   <div class="home-sec-btns">
     <button class="home-sec-btn" onclick="startActivity('summary')" style="background:var(--green);"><span class="hsb-icon">📋</span><span><span class="hsb-name">All Words</span><span class="hsb-desc">Review all pictures &amp; names</span></span></button>
@@ -249,11 +243,7 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 </div>
 
 <div id="flashcard-screen" class="screen">
-  <div class="fc-topbar">
-    <button class="back-btn" onclick="goHome()">← Back</button>
-    <div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--purple);" id="fc-mode-label"></div>
-    <div class="fc-progress" id="fc-progress"></div>
-  </div>
+  <div class="fc-topbar"><button class="back-btn" onclick="goHome()">← Back</button><div style="font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--purple);" id="fc-mode-label"></div><div class="fc-progress" id="fc-progress"></div></div>
   <div class="fc-slide" id="fc-slide" onclick="fcTap()">
     <div class="fc-word-badge" id="fc-word" style="display:none;"></div>
     <div class="fc-img-wrap" id="fc-img1-wrap" style="display:none;"><img id="fc-img1" class="fc-img" src="" alt=""><div id="fc-img1-ph" class="fc-img-ph"></div></div>
@@ -331,7 +321,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
     <span id="lightbox-label"></span>
   </div>
 </div>
-
 </div>
 
 <script>
@@ -339,7 +328,7 @@ const imgSrc=(id,sfx='')=>id.replace(/ /g,'')+sfx+'.jpg';
 
 const EMOJIS={
   football:'⚽',basketball:'🏀',tennis:'🎾',badminton:'🏸',baseball:'⚾',
-  'table tennis':'🏓',treadmill:'🏃',bike:'🚲',helmet:'⛑️',trainers:'👟',
+  'table tennis':'🏓',swim:'🏊',treadmill:'🏃',bike:'🚲',helmet:'⛑️',trainers:'👟',
   gym:'🏋️',ball:'🏐',racket:'🏸'
 };
 
@@ -352,8 +341,9 @@ const WORDS=[
   {id:'badminton',word:'badminton',set:0,sentences:['Badminton is fun.','He plays badminton with his friend.'],fillQ:'He plays {blank} with his friend.'},
   {id:'baseball',word:'baseball',set:0,sentences:['Baseball is popular.','We play baseball in the park.'],fillQ:'We play {blank} in the park.'},
   {id:'table tennis',word:'table tennis',set:0,sentences:['Table tennis is fast.','I play table tennis at school.'],fillQ:'I play {blank} at school.'},
+  {id:'swim',word:'swim',set:0,sentences:['Swimming is fun.','My brother swims in the pool.'],fillQ:'My brother {blank} in the pool.'},
   {id:'treadmill',word:'treadmill',set:1,sentences:['The treadmill is in the gym.','I run on the treadmill.'],fillQ:'I run on the {blank}.'},
-  {id:'bike',word:'bike',set:1,sentences:['My bike is new.','I ride my bike every day.'],fillQ:'I ride my {blank} every day.'},
+  {id:'bike',word:'bicycle (bike)',set:1,sentences:['My bicycle is new.','I ride my bicycle every day.'],fillQ:'I ride my {blank} every day.',fillAnswer:'bicycle'},
   {id:'helmet',word:'helmet',set:1,sentences:['The helmet is blue.','I wear a helmet on my bike.'],fillQ:'I wear a {blank} on my bike.'},
   {id:'trainers',word:'trainers',set:1,sentences:['My trainers are white.','I wear trainers for sport.'],fillQ:'I wear {blank} for sport.'},
   {id:'gym',word:'gym',set:1,sentences:['The gym is big.','I go to the gym after school.'],fillQ:'I go to the {blank} after school.'},
@@ -374,16 +364,12 @@ const setWords=()=>WORDS.filter(w=>w.set===currentSet);
 const em=id=>EMOJIS[id]||'🏅';
 
 function attachImg(imgEl,phEl,id,sfx){imgEl.src=imgSrc(id,sfx);imgEl.alt=id;imgEl.style.display='block';phEl.style.display='none';phEl.textContent=em(id);imgEl.onerror=()=>{imgEl.style.display='none';phEl.style.display='flex';};}
-
 function openLightbox(src,emoji,label){const imgEl=document.getElementById('lightbox-img');const emojiEl=document.getElementById('lightbox-emoji');imgEl.style.display='block';emojiEl.style.display='none';imgEl.src=src;imgEl.onerror=()=>{imgEl.style.display='none';emojiEl.style.display='block';emojiEl.textContent=emoji;};document.getElementById('lightbox-label').textContent=label;document.getElementById('lightbox').classList.add('on');}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('on');}
-
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);const nav=document.getElementById('bottom-nav');id==='voca-screen'?nav.classList.remove('visible'):nav.classList.add('visible');}
 function goHome(){showScreen('home-screen');document.querySelectorAll('.bnav-btn').forEach(b=>{b.style.background='';b.style.color='';});const hb=document.getElementById('bn-home');if(hb){hb.style.background='#2D2D2D';hb.style.color='#fff';}}
-
 function bnSwitch(setIdx){currentSet=setIdx;updateBnavSets();if(currentActivity)startActivity(currentActivity);}
 function bnActivity(act){startActivity(act);}
-
 function updateBnavSets(){[0,1].forEach(i=>{const btn=document.getElementById('bn-s'+(i+1));if(!btn)return;btn.style.background=currentSet===i?SET_COLORS[i]:'';btn.style.color=currentSet===i?'#fff':'';});}
 function updateBnavActivity(act){const map={learn11:'bn-wf',learn12:'bn-pf',match:'bn-match',memory:'bn-mem',fill:'bn-fill',spell:'bn-spell',wordsonly:'bn-wo',picsonly:'bn-po',summary:'bn-sum'};const colorMap={'bn-wf':'var(--purple)','bn-pf':'var(--green)','bn-match':'var(--orange)','bn-mem':'var(--purple)','bn-fill':'var(--yellow)','bn-spell':'var(--coral)','bn-wo':'var(--blue)','bn-po':'var(--orange)','bn-sum':'var(--green)'};['bn-wf','bn-pf','bn-match','bn-mem','bn-fill','bn-spell','bn-wo','bn-po','bn-sum'].forEach(id=>{const btn=document.getElementById(id);if(!btn)return;btn.style.background='';btn.style.color='';});const activeId=map[act];if(activeId){const btn=document.getElementById(activeId);if(btn){btn.style.background=colorMap[activeId]||'';btn.style.color='#fff';}}}
 
@@ -414,7 +400,7 @@ function matchTapWord(pill,id){if(pill.classList.contains('correct'))return;docu
 function checkPair(){if(!matchSel.img||!matchSel.word)return;const total=setWords().length;if(matchSel.img===matchSel.word){document.querySelector('.match-img-card[data-id="'+matchSel.img+'"]').classList.replace('selected','correct');document.querySelector('.match-word-pill[data-id="'+matchSel.word+'"]').classList.replace('selected','correct');matchCorrect++;document.getElementById('match-score-top').textContent=matchCorrect+' matched';matchSel={img:null,word:null};if(matchCorrect===total){setTimeout(()=>{document.getElementById('match-main').style.display='none';document.getElementById('match-finish-msg').textContent='You matched all '+total+' words! 🎉';document.getElementById('match-finish').style.display='block';},500);}}else{const ic=document.querySelector('.match-img-card[data-id="'+matchSel.img+'"]');const wp=document.querySelector('.match-word-pill[data-id="'+matchSel.word+'"]');ic.classList.add('wrong');wp.classList.add('wrong');setTimeout(()=>{ic.classList.remove('selected','wrong');wp.classList.remove('selected','wrong');matchSel={img:null,word:null};},500);}}
 
 function initFill(){fillList=shuffle([...setWords()]);fillIdx=0;document.getElementById('fill-finish').style.display='none';document.getElementById('fill-main').style.display='block';renderFill();}
-function renderFill(){document.getElementById('fill-progress').textContent=(fillIdx+1)+' / '+fillList.length;const a=fillList[fillIdx];fillAnswered=false;const others=setWords().filter(x=>x.id!==a.id);const choices=shuffle([a.word,...shuffle(others).slice(0,2).map(x=>x.word)]);currentFillCorrect=a.word;const sentHTML=a.fillQ.replace('{blank}','<span class="fill-blank" id="fill-blank">?</span>');document.getElementById('fill-main').innerHTML=`<div class="fill-card"><img class="fill-img" src="${imgSrc(a.id,'2')}" alt="${a.word}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fill-img-ph">${em(a.id)}</div><div class="fill-sentence">${sentHTML}</div><div class="fill-choices" id="fill-choices-div"></div><div class="fill-feedback" id="fill-fb"></div><button class="fill-next-btn" id="fill-next-btn" onclick="fillNext()">Next →</button></div>`;const _fcd=document.getElementById('fill-choices-div');choices.forEach(c=>{const btn=document.createElement('button');btn.className='fill-choice';btn.textContent=c;btn.addEventListener('click',()=>fillCheck(btn,c));_fcd.appendChild(btn);});}
+function renderFill(){document.getElementById('fill-progress').textContent=(fillIdx+1)+' / '+fillList.length;const a=fillList[fillIdx];fillAnswered=false;const others=setWords().filter(x=>x.id!==a.id);currentFillCorrect=a.fillAnswer||a.word;const choices=shuffle([currentFillCorrect,...shuffle(others).slice(0,2).map(x=>x.fillAnswer||x.word)]);const sentHTML=a.fillQ.replace('{blank}','<span class="fill-blank" id="fill-blank">?</span>');document.getElementById('fill-main').innerHTML=`<div class="fill-card"><img class="fill-img" src="${imgSrc(a.id,'1')}" alt="${a.word}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="fill-img-ph">${em(a.id)}</div><div class="fill-sentence">${sentHTML}</div><div class="fill-choices" id="fill-choices-div"></div><div class="fill-feedback" id="fill-fb"></div><button class="fill-next-btn" id="fill-next-btn" onclick="fillNext()">Next →</button></div>`;const _fcd=document.getElementById('fill-choices-div');choices.forEach(c=>{const btn=document.createElement('button');btn.className='fill-choice';btn.textContent=c;btn.addEventListener('click',()=>fillCheck(btn,c));_fcd.appendChild(btn);});}
 function fillCheck(btn,chosen){if(fillAnswered)return;const correct=currentFillCorrect;if(chosen===correct){fillAnswered=true;document.getElementById('fill-blank').textContent=correct;document.getElementById('fill-blank').classList.add('correct');document.querySelectorAll('.fill-choice').forEach(b=>b.disabled=true);btn.classList.add('correct-choice');document.getElementById('fill-fb').textContent='✅ Correct!';document.getElementById('fill-fb').className='fill-feedback ok';document.getElementById('fill-next-btn').classList.add('show');}else{btn.classList.add('wrong-choice');document.getElementById('fill-fb').textContent='❌ Try again!';document.getElementById('fill-fb').className='fill-feedback no';setTimeout(()=>{btn.classList.remove('wrong-choice');document.getElementById('fill-fb').textContent='';},700);}}
 function fillNext(){fillIdx++;if(fillIdx>=fillList.length){document.getElementById('fill-main').style.display='none';document.getElementById('fill-finish').style.display='block';}else{renderFill();}}
 
@@ -440,12 +426,11 @@ function vcStartDrag(x){if(vcLocked)return;vcDragging=true;vcStartX=x;vcDragX=0;
 let spellList=[],spellIdx=0,spellAnswered=false;
 function makeMisspellings(word,count){const w=word.toLowerCase();const variants=new Set();const ops=[s=>{const vs=[...s].map((c,i)=>'aeiou'.includes(c)?i:-1).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];return s.slice(0,i)+s[i]+s.slice(i);},s=>{if(s.length<3)return null;const i=Math.floor(Math.random()*(s.length-1));const a=[...s];[a[i],a[i+1]]=[a[i+1],a[i]];return a.join('');},s=>{if(s.length<4)return null;const i=1+Math.floor(Math.random()*(s.length-2));return s.slice(0,i)+s.slice(i+1);},s=>{const vowels='aeiou';const vs=[...s].map((c,i)=>'aeiou'.includes(c)?i:-1).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];const v=vowels[Math.floor(Math.random()*5)];return s.slice(0,i)+v+s.slice(i+1);},s=>{const i=1+Math.floor(Math.random()*(s.length-1));const c='aeioulnrst'[Math.floor(Math.random()*10)];return s.slice(0,i)+c+s.slice(i);}];let attempts=0;while(variants.size<count&&attempts<80){attempts++;const v=ops[Math.floor(Math.random()*ops.length)](w);if(v&&v!==w&&v.length>1)variants.add(v);}return[...variants].slice(0,count);}
 function initSpell(){spellList=shuffle([...setWords()]);spellIdx=0;document.getElementById('spell-finish').style.display='none';document.getElementById('spell-main').style.display='block';renderSpell();}
-function renderSpell(){document.getElementById('spell-progress').textContent=(spellIdx+1)+' / '+spellList.length;const a=spellList[spellIdx];spellAnswered=false;currentSpellCorrect=a.word;const choices=shuffle([a.word,...makeMisspellings(a.word,2)]);document.getElementById('spell-main').innerHTML=`<div class="spell-card"><img class="spell-img" src="${imgSrc(a.id,'')}" alt="${a.word}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="spell-img-ph">${em(a.id)}</div><div class="spell-prompt">Which spelling is correct?</div><div class="spell-choices" id="spell-choices-div"></div><button class="spell-next-btn" id="spell-next-btn" onclick="spellNext()">Next →</button></div>`;const _scd=document.getElementById('spell-choices-div');choices.forEach(c=>{const btn=document.createElement('button');btn.className='spell-choice';btn.textContent=c;btn.addEventListener('click',()=>spellCheck(btn,c));_scd.appendChild(btn);});}
+function renderSpell(){document.getElementById('spell-progress').textContent=(spellIdx+1)+' / '+spellList.length;const a=spellList[spellIdx];spellAnswered=false;const spellWord=a.fillAnswer||a.word;currentSpellCorrect=spellWord;const choices=shuffle([spellWord,...makeMisspellings(spellWord,2)]);document.getElementById('spell-main').innerHTML=`<div class="spell-card"><img class="spell-img" src="${imgSrc(a.id,'')}" alt="${a.word}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="spell-img-ph">${em(a.id)}</div><div class="spell-prompt">Which spelling is correct?</div><div class="spell-choices" id="spell-choices-div"></div><button class="spell-next-btn" id="spell-next-btn" onclick="spellNext()">Next →</button></div>`;const _scd=document.getElementById('spell-choices-div');choices.forEach(c=>{const btn=document.createElement('button');btn.className='spell-choice';btn.textContent=c;btn.addEventListener('click',()=>spellCheck(btn,c));_scd.appendChild(btn);});}
 function spellCheck(btn,chosen){if(spellAnswered)return;const correct=currentSpellCorrect;if(chosen===correct){spellAnswered=true;btn.classList.add('correct-spell');document.querySelectorAll('.spell-choice').forEach(b=>b.disabled=true);document.getElementById('spell-next-btn').classList.add('show');}else{btn.classList.add('wrong-spell');setTimeout(()=>btn.classList.remove('wrong-spell'),500);}}
 function spellNext(){spellIdx++;if(spellIdx>=spellList.length){document.getElementById('spell-main').style.display='none';document.getElementById('spell-finish-sub').textContent='You spelled all '+spellList.length+' words! 🎉';document.getElementById('spell-finish').style.display='block';}else{renderSpell();}}
 
 function renderWordsOnly(){const words=setWords();document.getElementById('words-progress').textContent=words.length+' words';const grid=document.getElementById('words-grid');grid.innerHTML='';words.forEach((a,i)=>{const card=document.createElement('div');card.className='word-only-card';card.style.borderLeftColor=ACCENT_BORDERS[i%ACCENT_BORDERS.length];card.textContent=a.word;grid.appendChild(card);});}
-
 function renderPicsOnly(){const words=setWords();document.getElementById('pics-progress').textContent=words.length+' pictures';const grid=document.getElementById('pics-grid');grid.innerHTML='';shuffle([...words]).forEach(a=>{const card=document.createElement('div');card.className='pic-only-card';card.title=a.word;const img=document.createElement('img');img.src=imgSrc(a.id,'');img.alt=a.word;const ph=document.createElement('div');ph.className='p-ph';ph.textContent=em(a.id);ph.style.display='none';img.onerror=()=>{img.style.display='none';ph.style.display='flex';};card.appendChild(img);card.appendChild(ph);card.addEventListener('click',()=>openLightbox(imgSrc(a.id,''),em(a.id),a.word));grid.appendChild(card);});}
 
 (function(){const cv=document.getElementById('bubble-canvas');const cx=cv.getContext('2d');const cols=['#7C3AED','#FF6B6B','#3B82F6','#6BCB77','#FF9F43','#FFD93D'];let bs=[];function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight;}resize();window.addEventListener('resize',resize);for(let i=0;i<14;i++){const r=22+Math.random()*48;bs.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r,dx:(Math.random()-.5)*.55,dy:(Math.random()-.5)*.55,col:cols[i%cols.length]});}function draw(){cx.clearRect(0,0,cv.width,cv.height);bs.forEach(b=>{b.x+=b.dx;b.y+=b.dy;if(b.x<-b.r)b.x=cv.width+b.r;if(b.x>cv.width+b.r)b.x=-b.r;if(b.y<-b.r)b.y=cv.height+b.r;if(b.y>cv.height+b.r)b.y=-b.r;cx.globalAlpha=.12;cx.beginPath();cx.arc(b.x,b.y,b.r,0,Math.PI*2);cx.fillStyle=b.col;cx.fill();cx.globalAlpha=.28;cx.beginPath();cx.arc(b.x-b.r*.28,b.y-b.r*.28,b.r*.2,0,Math.PI*2);cx.fillStyle='#fff';cx.fill();cx.globalAlpha=1;});requestAnimationFrame(draw);}draw();})();
