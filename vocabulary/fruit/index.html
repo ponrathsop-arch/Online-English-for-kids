@@ -466,7 +466,7 @@ function renderFill(){
   const choices=shuffle([answer,...shuffle(others).slice(0,2).map(x=>x.fillAnswer)]);
   const sentHTML=a.fillQ.replace('______','<span class="fill-blank" id="fill-blank">?</span>');
   const container=document.getElementById('fill-main');
-  container.innerHTML=`<div class="fill-card"><img class="fill-img" id="fill-img-el" src="${imgSrc(a.id,'2')}" alt="${a.word}"><div class="fill-img-ph" id="fill-ph-el">${em(a.id)}</div><div class="fill-sentence">${sentHTML}</div><div class="fill-choices" id="fill-choices-div"></div><div class="fill-feedback" id="fill-fb"></div><button class="fill-next-btn" id="fill-next-btn">Next →</button></div>`;
+  container.innerHTML=`<div class="fill-card"><img class="fill-img" id="fill-img-el" src="${imgSrc(a.id,'1')}" alt="${a.word}"><div class="fill-img-ph" id="fill-ph-el">${em(a.id)}</div><div class="fill-sentence">${sentHTML}</div><div class="fill-choices" id="fill-choices-div"></div><div class="fill-feedback" id="fill-fb"></div><button class="fill-next-btn" id="fill-next-btn">Next →</button></div>`;
   document.getElementById('fill-img-el').onerror=()=>{document.getElementById('fill-img-el').style.display='none';document.getElementById('fill-ph-el').style.display='flex';};
   const choicesDiv=document.getElementById('fill-choices-div');
   choices.forEach(c=>{const btn=document.createElement('button');btn.className='fill-choice';btn.textContent=c;btn.addEventListener('click',()=>fillCheck(btn,c));choicesDiv.appendChild(btn);});
