@@ -512,7 +512,7 @@ footer a { color: #bbb; text-decoration: none; }
 /* PAGE DATA */
 var pages = [
   {
-    img:"page1.jpg", alt:"The Lucky Envelope cover",
+    img:"luckyenvelop.jpg", alt:"The Lucky Envelope cover",
     cover:true, paras:[]
   },
   {
@@ -567,19 +567,18 @@ pages.forEach(function(pg) { var img = new Image(); img.src = pg.img; });
 
 /* VOCAB DATA */
 var vocab = [
-  { word:"seaside",    type:"noun",      emoji:"&#x1F3D6;&#xFE0F;", theme:"t-place",   img:"word.seaside.jpg",         sentence:"Dalia hopes the holiday is to the seaside." },
-  { word:"swim",       type:"verb",      emoji:"&#x1F3CA;&#xFE0F;", theme:"t-action",  img:"word.swim.jpg",            sentence:"Dalia can swim in the sea." },
-  { word:"sandcastle", type:"noun",      emoji:"&#x1F3F0;",         theme:"t-place",   img:"word.sandcastle.jpg",      sentence:"Dalia wants to make sandcastles at the beach." },
-  { word:"camping",    type:"noun",      emoji:"&#x1F3D5;&#xFE0F;", theme:"t-place",   img:"word.camping.jpg",         sentence:"Dad hopes it is a camping holiday." },
-  { word:"tent",       type:"noun",      emoji:"&#x26FA;",         theme:"t-place",   img:"word.tent.jpg",            sentence:"Dad can sleep in a tent." },
-  { word:"cruise",     type:"noun",      emoji:"&#x1F6F3;&#xFE0F;", theme:"t-place",   img:"word.cruise.jpg",          sentence:"Ahmed would like to go on a cruise." },
-  { word:"dolphin",    type:"noun",      emoji:"&#x1F42C;",         theme:"t-place",   img:"word.dolphin.jpg",         sentence:"Ahmed can watch the dolphins." },
-  { word:"city",       type:"noun",      emoji:"&#x1F3D9;&#xFE0F;", theme:"t-place",   img:"word.city.jpg",            sentence:"Mum would like to go to a big city." },
-  { word:"theatre",    type:"noun",      emoji:"&#x1F3AD;",         theme:"t-place",   img:"word.theatre.jpg",         sentence:"Mum can go to the theatre." },
-  { word:"argue",      type:"verb",      emoji:"&#x1F5E3;&#xFE0F;", theme:"t-action",  img:"word.argue.jpg",           sentence:"Then they started to argue." },
-  { word:"pack",       type:"verb",      emoji:"&#x1F9F3;",         theme:"t-action",  img:"word.pack a suitcase.jpg", sentence:"They packed their suitcases for the holiday." },
-  { word:"a suitcase", type:"noun phrase",emoji:"&#x1F9F3;",        theme:"t-action",  img:"word.pack a suitcase.jpg", sentence:"A suitcase is a bag for clothes when you travel." },
-  { word:"happy",      type:"adjective", emoji:"&#x1F60A;",         theme:"t-feeling", img:"word.happy.jpg",           sentence:"Everyone was happy at the end of the holiday." }
+  { word:"seaside",        type:"noun",        emoji:"&#x1F3D6;&#xFE0F;", theme:"t-place",   img:"word-seaside.jpg",      sentence:"Dalia hopes the holiday is to the seaside." },
+  { word:"swim",           type:"verb",        emoji:"&#x1F3CA;&#xFE0F;", theme:"t-action",  img:"word.swim.jpg",         sentence:"Dalia can swim in the sea." },
+  { word:"sandcastle",     type:"noun",        emoji:"&#x1F3F0;",         theme:"t-place",   img:"word.sandcastle.jpg",   sentence:"Dalia wants to make sandcastles at the beach." },
+  { word:"camping",        type:"noun",        emoji:"&#x1F3D5;&#xFE0F;", theme:"t-place",   img:"word.camping.jpg",      sentence:"Dad hopes it is a camping holiday." },
+  { word:"tent",           type:"noun",        emoji:"&#x26FA;",          theme:"t-place",   img:"word.tent.jpg",         sentence:"Dad can sleep in a tent." },
+  { word:"cruise",         type:"noun",        emoji:"&#x1F6F3;&#xFE0F;", theme:"t-place",   img:"word.cruise.jpg",       sentence:"Ahmed would like to go on a cruise." },
+  { word:"dolphin",        type:"noun",        emoji:"&#x1F42C;",         theme:"t-place",   img:"word.dolphin.jpg",      sentence:"Ahmed can watch the dolphins." },
+  { word:"city",           type:"noun",        emoji:"&#x1F3D9;&#xFE0F;", theme:"t-place",   img:"word.city.jpg",         sentence:"Mum would like to go to a big city." },
+  { word:"theatre",        type:"noun",        emoji:"&#x1F3AD;",         theme:"t-place",   img:"word.theatre.jpg",      sentence:"Mum can go to the theatre." },
+  { word:"argue",          type:"verb",        emoji:"&#x1F5E3;&#xFE0F;", theme:"t-action",  img:"word.argue.jpg",        sentence:"Then they started to argue." },
+  { word:"pack a suitcase",type:"verb phrase", emoji:"&#x1F9F3;",         theme:"t-action",  img:"packasuitcase.jpg",     sentence:"They packed their suitcases for the holiday." },
+  { word:"happy",          type:"adjective",   emoji:"&#x1F60A;",         theme:"t-feeling", img:"word.happy.jpg",        sentence:"Everyone was happy at the end of the holiday." }
 ];
 
 /* VOCAB LOOKUP */
@@ -588,9 +587,10 @@ vocab.forEach(function(v, i) { vocabMap[v.word.toLowerCase()] = i; });
 var vocabAliases = {
   "sandcastles": "sandcastle",
   "dolphins": "dolphin",
-  "packed": "pack",
-  "suitcase": "a suitcase",
-  "suitcases": "a suitcase",
+  "packed": "pack a suitcase",
+  "pack": "pack a suitcase",
+  "suitcase": "pack a suitcase",
+  "suitcases": "pack a suitcase",
   "argued": "argue",
   "swam": "swim"
 };
@@ -606,7 +606,7 @@ function escapeHTML(str) {
 }
 
 /* HIGHLIGHT vocab words in plain text */
-function highlightText(text) {
+function highlightTokens(text) {
   var tokens = text.match(/[a-zA-Z']+|[^a-zA-Z']+/g) || [];
   var html = '';
   tokens.forEach(function(tok) {
@@ -623,6 +623,21 @@ function highlightText(text) {
       html += escapeHTML(tok);
     }
   });
+  return html;
+}
+
+function highlightText(text) {
+  var packIdx = vocabMap["pack a suitcase"];
+  var phraseRe = /\b(packed their suitcases|pack their suitcase|pack a suitcase|pack suitcases|pack suitcase)\b/gi;
+  var html = '';
+  var last = 0;
+  var match;
+  while ((match = phraseRe.exec(text)) !== null) {
+    html += highlightTokens(text.slice(last, match.index));
+    html += '<span class="key-word" onclick="spOpen(' + packIdx + ')" tabindex="0" role="button">' + escapeHTML(match[0]) + '</span>';
+    last = match.index + match[0].length;
+  }
+  html += highlightTokens(text.slice(last));
   return html;
 }
 
@@ -672,7 +687,7 @@ function buildSpread(idx) {
     div.className = 'page-spread cover-page';
     div.innerHTML =
       '<div class="cover-page-fallback"></div>' +
-      '<img src="page1.jpg" alt="The Lucky Envelope" class="cover-bg-img" ' +
+      '<img src="luckyenvelop.jpg" alt="The Lucky Envelope" class="cover-bg-img" ' +
         'onerror="this.style.display=\'none\'">' +
       '<div class="cover-gradient-top"></div>' +
       '<div class="cover-gradient"></div>' +
