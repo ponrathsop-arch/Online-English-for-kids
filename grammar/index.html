@@ -34,7 +34,7 @@
   .section-label { font-family: 'Fredoka One', cursive; font-size: 22px; color: #777; text-align: center; margin-bottom: 32px; letter-spacing: 1px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
   .card { background: white; border-radius: 24px; padding: 32px 24px 28px; text-align: center; cursor: pointer; text-decoration: none; display: block; position: relative; overflow: hidden; border: 3px solid transparent; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; box-shadow: 0 6px 0 rgba(0,0,0,0.08); opacity: 0; transform: translateY(30px); animation: card-in 0.5s ease forwards; }
-  .card:nth-child(1){animation-delay:.05s} .card:nth-child(2){animation-delay:.10s} .card:nth-child(3){animation-delay:.15s} .card:nth-child(4){animation-delay:.20s} .card:nth-child(5){animation-delay:.25s} .card:nth-child(6){animation-delay:.30s} .card:nth-child(7){animation-delay:.35s} .card:nth-child(8){animation-delay:.40s} .card:nth-child(9){animation-delay:.45s}
+  .card:nth-child(1){animation-delay:.05s} .card:nth-child(2){animation-delay:.10s} .card:nth-child(3){animation-delay:.15s} .card:nth-child(4){animation-delay:.20s} .card:nth-child(5){animation-delay:.25s} .card:nth-child(6){animation-delay:.30s} .card:nth-child(7){animation-delay:.35s} .card:nth-child(8){animation-delay:.40s} .card:nth-child(9){animation-delay:.45s} .card:nth-child(10){animation-delay:.50s}
   @keyframes card-in { to { opacity: 1; transform: translateY(0); } }
   .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; border-radius: 24px 24px 0 0; }
   .card:hover { transform: translateY(-6px); box-shadow: 0 14px 0 rgba(0,0,0,0.08); }
@@ -47,11 +47,12 @@
   .card-7::before{background:var(--yellow)} .card:hover.card-7{border-color:var(--yellow)}
   .card-8::before{background:var(--green)} .card:hover.card-8{border-color:var(--green)}
   .card-9::before{background:var(--coral)} .card:hover.card-9{border-color:var(--coral)}
+  .card-10::before{background:#00C9A7} .card:hover.card-10{border-color:#00C9A7}
   .card-emoji { font-size: 48px; display: block; margin-bottom: 14px; line-height: 1; }
   .card-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--dark); margin-bottom: 8px; }
   .card-desc { font-size: 13px; color: #888; font-weight: 600; line-height: 1.5; }
   .card-badge { display: inline-block; margin-top: 14px; padding: 4px 14px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
-  .card-1 .card-badge{background:#eefbf0;color:#3a9e46} .card-2 .card-badge{background:#f7eeff;color:#9a3de0} .card-3 .card-badge{background:#fff0ee;color:var(--coral)} .card-4 .card-badge{background:#eef4ff;color:var(--blue)} .card-5 .card-badge{background:#fff4e8;color:#d47200} .card-6 .card-badge{background:#fff0f6;color:#d4408a} .card-7 .card-badge{background:#fffbe8;color:#c49b00} .card-8 .card-badge{background:#eefbf0;color:#3a9e46} .card-9 .card-badge{background:#fff0ee;color:var(--coral)}
+  .card-1 .card-badge{background:#eefbf0;color:#3a9e46} .card-2 .card-badge{background:#f7eeff;color:#9a3de0} .card-3 .card-badge{background:#fff0ee;color:var(--coral)} .card-4 .card-badge{background:#eef4ff;color:var(--blue)} .card-5 .card-badge{background:#fff4e8;color:#d47200} .card-6 .card-badge{background:#fff0f6;color:#d4408a} .card-7 .card-badge{background:#fffbe8;color:#c49b00} .card-8 .card-badge{background:#eefbf0;color:#3a9e46} .card-9 .card-badge{background:#fff0ee;color:var(--coral)} .card-10 .card-badge{background:#e0fff4;color:#00A386}
   .card-soon { opacity: 0.45 !important; cursor: default; pointer-events: none; }
   .card-soon::after { content: 'Coming Soon'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-15deg); font-family: 'Fredoka One', cursive; font-size: 20px; color: #aaa; border: 3px dashed #ccc; padding: 6px 16px; border-radius: 8px; white-space: nowrap; }
   footer { position: relative; z-index: 1; text-align: center; padding: 20px; font-size: 13px; color: #aaa; font-weight: 600; }
@@ -106,6 +107,13 @@
       <div class="card-title">Has / Have</div>
       <div class="card-desc">Talking about possession</div>
       <span class="card-badge">Verb</span>
+    </a>
+
+    <a href="can/index.html" class="card card-10">
+      <span class="card-emoji">💪</span>
+      <div class="card-title">Can</div>
+      <div class="card-desc">Talking about ability & skills</div>
+      <span class="card-badge">Modal Verb</span>
     </a>
 
     <a href="contractions/index.html" class="card card-9">
