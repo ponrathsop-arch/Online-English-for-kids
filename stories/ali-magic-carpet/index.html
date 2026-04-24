@@ -747,16 +747,16 @@ var spIdx = 0;
 vocab.forEach(function(v, i) {
   var card = document.createElement('div');
   card.className = 'vocab-card ' + v.theme;
-  card.innerHTML =
-    '<div class="vocab-pic">' +
-      '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\')">' +
-     '<div class="v-ph"></div>'
-    '</div>' +
-    '<div class="vocab-body">' +
-      '<div class="vocab-type">' + v.type + '</div>' +
-      '<div class="vocab-word">' + v.word + '</div>' +
-      '<div class="vocab-sentence">' + v.sentence + '</div>' +
-    '</div>';
+card.innerHTML =
+  '<div class="vocab-pic">' +
+    '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\')">' +
+  '</div>' +
+  '<div class="vocab-body">' +
+    '<div class="vocab-type">' + v.type + '</div>' +
+    '<div class="vocab-word">' + v.word + '</div>' +
+    '<div class="vocab-sentence">' + v.sentence + '</div>' +
+  '</div>';
+  
   card.onclick = function() { spOpenFull(i); };
   grid.appendChild(card);
 });
