@@ -748,7 +748,7 @@ function spOpen(idx) {
     ? 'background:linear-gradient(135deg,#E8FFE8,#C8F5C8)'
     : 'background:linear-gradient(135deg,#E8F4FF,#C8E0FF)');
   picEl.innerHTML =
-    '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\')">' +
+    '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\');this.nextElementSibling.style.display=\'none\';">' +
     '<div class="wp-ph"><div class="wp-ph-emoji">' + v.emoji + '</div></div>';
   document.getElementById('wpType').textContent = v.type;
   document.getElementById('wpWord').textContent = v.word;
@@ -771,7 +771,7 @@ vocab.forEach(function(v, i) {
   card.className = 'vocab-card ' + v.theme;
   card.innerHTML =
     '<div class="vocab-pic">' +
-      '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\')">' +
+      '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\');this.nextElementSibling.style.display=\'none\';">' +
       '<div class="v-ph"><div class="v-ph-emoji">' + v.emoji + '</div>' +
       '<div class="v-ph-file">' + v.img + '</div></div>' +
     '</div>' +
@@ -797,7 +797,7 @@ function spRender() {
     ? 'background:linear-gradient(135deg,#E8FFE8,#C8F5C8)'
     : 'background:linear-gradient(135deg,#E8F4FF,#C8E0FF)');
   picEl.innerHTML =
-    '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\')">' +
+    '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\');this.nextElementSibling.style.display=\'none\';">' +
     '<div class="sp-ph"><div class="sp-ph-emoji">' + v.emoji + '</div></div>';
   document.getElementById('spType').textContent = v.type;
   document.getElementById('spWord').textContent = v.word;
