@@ -34,57 +34,54 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 .tab-panel.active { display: block; }
 
 /* ══════════════════════════════════════════
-   READ TAB — BOOK WITH PAGE FLIP
+   READ TAB — MAGICAL BOOK
 ══════════════════════════════════════════ */
-.read-wrap::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 5px;
-  transform: translateX(-50%);
-  width: 1250px;
-  height: 680px;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.9;
-
-  background:
-    radial-gradient(circle at 12% 45%, rgba(255, 217, 61, 0.75) 0 70px, transparent 160px),
-    radial-gradient(circle at 88% 45%, rgba(255, 217, 61, 0.75) 0 70px, transparent 160px),
-    radial-gradient(circle at 20% 70%, rgba(255, 154, 60, 0.45) 0 40px, transparent 130px),
-    radial-gradient(circle at 80% 70%, rgba(255, 154, 60, 0.45) 0 40px, transparent 130px),
-    radial-gradient(circle at 50% 40%, rgba(255, 245, 190, 0.35), transparent 65%);
-  filter: blur(6px);
-  animation: magicGlow 5s ease-in-out infinite;
-}
-  .read-wrap {
+.read-wrap {
   max-width: 1120px;
   margin: 0 auto;
   padding: 22px 20px 50px;
   position: relative;
 }
 
+/* soft magic glow behind book */
 .read-wrap::before {
   content: "";
   position: absolute;
   left: 50%;
-  top: 20px;
+  top: 30px;
   transform: translateX(-50%);
-  width: 1400px;
-  height: 700px;
+  width: 1250px;
+  height: 620px;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.95;
-
   background:
-    radial-gradient(circle at 15% 35%, rgba(255,255,255,0.95) 0 8px, transparent 9px),
-    radial-gradient(circle at 82% 22%, rgba(255,240,180,0.95) 0 10px, transparent 11px),
-    radial-gradient(circle at 75% 75%, rgba(255,217,61,0.85) 0 7px, transparent 8px),
-    radial-gradient(circle at 25% 80%, rgba(255,154,60,0.75) 0 8px, transparent 9px),
-    radial-gradient(circle at 50% 50%, rgba(255,235,180,0.22), transparent 60%);
+    radial-gradient(circle at 8% 50%, rgba(255,217,61,0.55) 0 80px, transparent 210px),
+    radial-gradient(circle at 92% 50%, rgba(255,217,61,0.55) 0 80px, transparent 210px),
+    radial-gradient(circle at 18% 75%, rgba(255,154,60,0.28) 0 60px, transparent 180px),
+    radial-gradient(circle at 82% 75%, rgba(255,154,60,0.28) 0 60px, transparent 180px);
+  filter: blur(10px);
+  animation: magicGlow 5s ease-in-out infinite;
+}
 
-  filter: blur(1px);
-  animation: magicGlow 4s ease-in-out infinite;
+/* stars behind book */
+.read-wrap::after {
+  content: "★ ✦ ✨  ✦ ★    ✨ ✦ ★";
+  position: absolute;
+  left: 50%;
+  top: 35px;
+  transform: translateX(-50%);
+  width: 1200px;
+  height: 520px;
+  color: rgba(255, 217, 61, 0.9);
+  font-size: 42px;
+  letter-spacing: 42px;
+  line-height: 170px;
+  text-shadow:
+    0 0 12px rgba(255,255,255,0.95),
+    0 0 26px rgba(255,217,61,0.8);
+  pointer-events: none;
+  z-index: 0;
+  animation: starFloat 6s ease-in-out infinite;
 }
 
 .book-viewport,
@@ -94,32 +91,34 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 }
 
 @keyframes magicGlow {
-  0%, 100% {
-    opacity: 0.45;
-    transform: translateX(-50%) scale(0.96);
-  }
-  50% {
-    opacity: 1;
-    transform: translateX(-50%) scale(1.04);
-  }
+  0%, 100% { opacity: 0.55; transform: translateX(-50%) scale(0.98); }
+  50% { opacity: 0.9; transform: translateX(-50%) scale(1.03); }
 }
-/* Viewport that clips the flipping pages */
+
+@keyframes starFloat {
+  0%, 100% { opacity: 0.45; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(-8px); }
+}
+
+/* book cover/backing */
 .book-viewport {
   position: relative;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 26px;
+  background: #7a3b10;
+  padding: 14px 16px 18px;
   box-shadow:
-    0 2px 0 #d4c9b4,
-    0 6px 0 #c9beab,
-    0 10px 30px rgba(0,0,0,0.14);
-  margin-bottom: 32px;
-  /* Subtle stacked-pages bottom edge */
-  border-bottom: 3px solid #d4c9b4;
+    0 10px 0 #9b5a18,
+    0 18px 35px rgba(0,0,0,0.22);
+  margin-bottom: 26px;
 }
+
+/* soft white flash when page changes */
 .page-flash {
   position: absolute;
-  inset: 0;
-  background: rgba(255, 248, 220, 0.45);
+  inset: 14px 16px 18px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.5);
   pointer-events: none;
   z-index: 50;
   opacity: 0;
@@ -130,12 +129,11 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 }
 
 @keyframes flashWink {
-  0%   { opacity: 0; }
-  25%  { opacity: 1; }
-  70%  { opacity: 0.35; }
+  0% { opacity: 0; }
+  25% { opacity: 0.75; }
+  70% { opacity: 0.25; }
   100% { opacity: 0; }
 }
-/* A single page spread: left=image, right=text */
 .page-spread {
   display: flex;
   min-height: 520px;
@@ -201,10 +199,14 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 
 /* Spine (centre divider) */
 .book-spine {
-  width: 12px; flex-shrink: 0;
-  background: linear-gradient(180deg, #FF9A3C, #FFD93D);
-  position: relative; z-index: 5;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.10), -1px 0 4px rgba(0,0,0,0.06);
+  width: 18px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #FF8A00, #FFD93D, #B45A00);
+  position: relative;
+  z-index: 5;
+  box-shadow:
+    4px 0 12px rgba(0,0,0,0.18),
+    -4px 0 12px rgba(0,0,0,0.12);
 }
 
 /* Left half: picture */
@@ -787,7 +789,7 @@ function go(dir) {
     cur = next;
     turning = false;
     updateUI();
-  }, 480);
+  }, 1100);
 }
 
 function updateUI() {
