@@ -101,15 +101,10 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 }
 
 /* book cover/backing */
-.book-viewport {
-  position: relative;
-  overflow: hidden;
-  border-radius: 26px;
-  background: transparent;
-  padding: 14px 16px 18px;
-  box-shadow:
- 0 12px 30px rgba(0,0,0,0.12);
-  margin-bottom: 26px;
+.book-viewport.cover-mode {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0;
 }
 
 /* soft white flash when page changes */
@@ -813,16 +808,19 @@ function buildSpread(idx) {
     textHTML += buildParaHTML(para);
   });
 
-  if (pg.cover) {
-    div.innerHTML =
-      '<div class="cover-single">' +
-        '<img src="' + pg.img + '" alt="' + pg.alt + '" class="cover-img">' +
-        '<div class="cover-title">Ali and the Magic Carpet</div>' +
-        '<div class="cover-subtitle">Tap Next to begin the magical adventure!</div>' +
-      '</div>';
-    return div;
-  }
+if (pg.cover) {
+  viewport.classList.add('cover-mode');
 
+  div.innerHTML =
+    '<div class="cover-single">' +
+      '<img src="' + pg.img + '" alt="' + pg.alt + '" class="cover-img">' +
+      '<div class="cover-title">Ali and the Magic Carpet</div>' +
+      '<div class="cover-subtitle">Tap Next to begin the magical adventure!</div>' +
+    '</div>';
+
+  return div;
+}
+  viewport.classList.remove('cover-mode');
   textHTML += '<span class="pg-num pg-r">' + (idx * 2 + 2) + '</span>';
 
   div.innerHTML =
