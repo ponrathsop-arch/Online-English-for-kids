@@ -37,9 +37,49 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
    READ TAB — BOOK WITH PAGE FLIP
 ══════════════════════════════════════════ */
 .read-wrap {
-  max-width: 1280px;
+ max-width: 1280px;
   margin: 0 auto;
   padding: 24px 20px 60px;
+  position: relative;
+}
+
+.read-wrap::before {
+  content: "✨ ✦ ⭐ ✨ ✧ ⭐ ✨";
+  position: absolute;
+  left: 50%;
+  top: 40px;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 58px;
+  letter-spacing: 35px;
+  color: rgba(255, 217, 61, 0.75);
+  text-shadow:
+    0 0 18px rgba(255, 217, 61, 0.9),
+    0 0 40px rgba(255, 154, 60, 0.65);
+  pointer-events: none;
+  z-index: 0;
+  animation: magicGlow 2.5s ease-in-out infinite;
+}
+
+.book-viewport,
+.nav-row {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes magicGlow {
+  0%, 100% {
+    opacity: 0.45;
+    transform: translateX(-50%) scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.04);
+  }
 }
 /* Viewport that clips the flipping pages */
 .book-viewport {
@@ -191,7 +231,13 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 }
 
 /* story content */
-.story-para { font-family: 'Lora', serif; font-size: 18px; line-height: 40px; color: #3a3030; margin-bottom: 40px; }
+.story-para {
+  font-family: 'Lora', serif;
+  font-size: 24px;
+  line-height: 48px;
+  color: #3a3030;
+  margin-bottom: 44px;
+}
 .speech { color: var(--blue); font-style: italic; font-weight: 600; }
 .key-word { background: #FFF3CD; padding: 2px 7px; border-radius: 5px; font-weight: 700; color: #a06800; cursor: pointer; border-bottom: 2px solid #FFD093; transition: background 0.15s, transform 0.1s; display: inline-block; }
 .key-word:hover { background: #FFE566; transform: scale(1.08); }
