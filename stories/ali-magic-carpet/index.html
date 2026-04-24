@@ -82,18 +82,18 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 }
 /* After animation: slide into place */
 .page-spread.slide-in {
-  animation: slideIn 0.32s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
+  animation: slideIn 0.22s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
 }
 .page-spread.slide-in-left {
-  animation: slideInLeft 0.32s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
+  animation: slideInLeft 0.22s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
 }
 /* Outgoing page — slides away */
 .page-spread.exit-to-left {
-  animation: exitLeft 0.32s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
+  animation: exitLeft 0.22s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
   z-index: 2;
 }
 .page-spread.exit-to-right {
-  animation: exitRight 0.32s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
+  animation: exitRight 0.22s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
   z-index: 2;
 }
 
@@ -483,6 +483,10 @@ var pages = [
     ]
   }
 ];
+pages.forEach(function(pg) {
+  var img = new Image();
+  img.src = pg.img;
+});
 
 /* ───────────────────────────────────────────
    VOCAB DATA
