@@ -199,8 +199,22 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 
 /* Spine (centre divider) */
 .book-spine {
-  width: 34px;
+  width: 42px;
   flex-shrink: 0;
+  position: relative;
+  z-index: 5;
+  background:
+    linear-gradient(
+      90deg,
+      #f7f3ea 0%,
+      #fdfaf3 35%,
+      #f1ece2 50%,
+      #fdfaf3 65%,
+      #f7f3ea 100%
+    );
+  border-left: 1px solid #e6ddd0;
+  border-right: 1px solid #e6ddd0;
+}
   position: relative;
   z-index: 5;
   background: linear-gradient(90deg, #d87a1c, #ffd36a, #d87a1c);
