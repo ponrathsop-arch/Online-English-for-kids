@@ -125,7 +125,7 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 }
 
 .page-flash.show {
-  animation: flashWink 1.1s ease-out;
+  animation: flashWink 0.45s ease-out;
 }
 
 @keyframes flashWink {
@@ -197,56 +197,54 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
   z-index: 10; pointer-events: none;
 }
 
-/* Spine (centre divider) */
+/* Spiral notebook spine */
 .book-spine {
-  width: 42px;
+  width: 46px;
   flex-shrink: 0;
   position: relative;
   z-index: 5;
   background:
-    linear-gradient(
-      90deg,
-      #f7f3ea 0%,
-      #fdfaf3 35%,
-      #f1ece2 50%,
-      #fdfaf3 65%,
-      #f7f3ea 100%
-    );
-  border-left: 1px solid #e6ddd0;
-  border-right: 1px solid #e6ddd0;
-}
-  position: relative;
-  z-index: 5;
-  background: linear-gradient(90deg, #d87a1c, #ffd36a, #d87a1c);
+    linear-gradient(90deg, #f8f5ee 0%, #ffffff 45%, #ece6dc 50%, #ffffff 55%, #f8f5ee 100%);
+  border-left: 1px solid #ddd4c8;
+  border-right: 1px solid #ddd4c8;
   box-shadow:
-    4px 0 12px rgba(0,0,0,0.16),
-    -4px 0 12px rgba(0,0,0,0.12);
+    inset 6px 0 10px rgba(0,0,0,0.06),
+    inset -6px 0 10px rgba(0,0,0,0.06);
 }
 
-/* metal rings */
+/* black spiral rings */
 .book-spine::before {
   content: "";
   position: absolute;
   left: 50%;
-  top: 58px;
+  top: 22px;
   transform: translateX(-50%);
-  width: 24px;
-  height: 360px;
+  width: 30px;
+  height: calc(100% - 44px);
   background:
-    radial-gradient(ellipse at center, transparent 0 38%, #d9d9d9 40% 52%, #8f8f8f 54% 60%, transparent 62%) center 0 / 24px 72px repeat-y;
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 12px,
+      #111 12px,
+      #111 18px,
+      transparent 18px,
+      transparent 34px
+    );
+  border-radius: 20px;
 }
 
-/* ring holes */
+/* white gaps through rings */
 .book-spine::after {
   content: "";
   position: absolute;
   left: 50%;
-  top: 58px;
+  top: 22px;
   transform: translateX(-50%);
   width: 10px;
-  height: 360px;
-  background:
-    radial-gradient(circle, #fff8ee 0 45%, transparent 48%) center 0 / 10px 72px repeat-y;
+  height: calc(100% - 44px);
+  background: #fffdf7;
+  border-radius: 10px;
 }
 
 /* Left half: picture */
@@ -829,7 +827,7 @@ function go(dir) {
     cur = next;
     turning = false;
     updateUI();
-  }, 1100);
+  }, 450);
 }
 
 function updateUI() {
