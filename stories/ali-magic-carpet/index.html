@@ -636,8 +636,9 @@ function buildSpread(idx) {
         '<div class="ph-name">' + pg.img + '</div>' +
         '<div class="ph-size">800 x 600 px recommended</div>' +
       '</div>' +
-      '<img src="' + pg.img + '" alt="' + pg.alt + '" class="page-img" style="display:none" ' +
-      'onload="this.style.display=\'block\';var e=document.getElementById(\'' + phId + '\');if(e)e.style.display=\'none\';">' +
+     '<img src="' + pg.img + '" alt="' + pg.alt + '" class="page-img" ' +
+     'onload="var e=document.getElementById(\'' + phId + '\');if(e)e.style.display=\'none\';">' +
+
       '<span class="pg-num pg-l">' + (idx * 2 + 1) + '</span>' +
     '</div>' +
     '<div class="book-spine"></div>' +
