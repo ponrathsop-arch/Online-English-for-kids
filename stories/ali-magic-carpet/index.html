@@ -82,18 +82,18 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 }
 /* After animation: slide into place */
 .page-spread.slide-in {
-  animation: slideIn 0.50s cubic-bezier(0.33, 0.0, 0.20, 1.0) forwards;
+  animation: slideIn 0.32s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
 }
 .page-spread.slide-in-left {
-  animation: slideInLeft 0.50s cubic-bezier(0.33, 0.0, 0.20, 1.0) forwards;
+  animation: slideInLeft 0.32s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
 }
 /* Outgoing page — slides away */
 .page-spread.exit-to-left {
-  animation: exitLeft 0.50s cubic-bezier(0.33, 0.0, 0.20, 1.0) forwards;
+  animation: exitLeft 0.32s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
   z-index: 2;
 }
 .page-spread.exit-to-right {
-  animation: exitRight 0.50s cubic-bezier(0.33, 0.0, 0.20, 1.0) forwards;
+  animation: exitRight 0.32s cubic-bezier(0.25, 0.0, 0.20, 1.0) forwards;
   z-index: 2;
 }
 
@@ -137,12 +137,13 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 /* Right half: text */
 .page-right {
   flex: 1;
-  padding: 32px 32px 44px 26px;
-  display: flex; flex-direction: column; justify-content: center; gap: 12px;
+  padding: 40px 32px 44px 26px;
+  display: flex; flex-direction: column; justify-content: flex-start;
   background: var(--page);
   position: relative;
-  /* ruled lines */
-  background-image: repeating-linear-gradient(transparent, transparent 33px, #f0e8dc 34px);
+  /* ruled lines — 40px matches line-height of text */
+  background-image: repeating-linear-gradient(transparent, transparent 39px, #f0e8dc 40px);
+  background-position: 0 36px;
 }
 
 /* Page-turn curl in bottom right corner */
@@ -154,12 +155,11 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
   border-radius: 6px 0 0 0;
 }
 
-/* Story content */
-.page-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #ccc; margin-bottom: 6px; }
-.scene-divider { border: none; border-top: 1px dashed #ece3d5; margin: 12px 0; }
-.story-para { font-family: 'Lora', serif; font-size: 17px; line-height: 2; color: #3a3030; }
+/* story content */
+.story-para { font-family: 'Lora', serif; font-size: 18px; line-height: 40px; color: #3a3030; margin-bottom: 40px; }
 .speech { color: var(--blue); font-style: italic; font-weight: 600; }
-.key-word { background: #FFF3CD; padding: 1px 6px; border-radius: 5px; font-weight: 700; color: #a06800; }
+.key-word { background: #FFF3CD; padding: 2px 7px; border-radius: 5px; font-weight: 700; color: #a06800; cursor: pointer; border-bottom: 2px solid #FFD093; transition: background 0.15s, transform 0.1s; display: inline-block; }
+.key-word:hover { background: #FFE566; transform: scale(1.08); }
 
 /* Page numbers */
 .pg-num { position: absolute; bottom: 12px; font-family: 'Fredoka One', cursive; font-size: 13px; color: #d0c4b4; }
@@ -289,7 +289,24 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 .t-place .vocab-pic  { background: linear-gradient(135deg,#E8FFE8,#C8F5C8); }
 .t-weather .vocab-pic { background: linear-gradient(135deg,#E8F4FF,#C8E0FF); }
 
-/* ── SPOTLIGHT MODAL ── */
+/* ── WORD POPUP (from tapping highlighted word in story) ── */
+.word-popup-overlay { display:none; position:fixed; inset:0; z-index:500; background:rgba(20,10,0,0.55); backdrop-filter:blur(5px); align-items:center; justify-content:center; padding:20px; }
+.word-popup-overlay.open { display:flex; }
+.word-popup { background:white; border-radius:24px; width:100%; max-width:340px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,0.28); animation:wp-in 0.28s cubic-bezier(0.175,0.885,0.32,1.275); position:relative; }
+@keyframes wp-in { from{opacity:0;transform:scale(0.78) translateY(24px);}to{opacity:1;transform:scale(1) translateY(0);} }
+.wp-pic { height:180px; display:flex; align-items:center; justify-content:center; flex-direction:column; position:relative; overflow:hidden; }
+.wp-pic img { width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;display:none; }
+.wp-pic img.loaded { display:block; }
+.wp-ph { position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:4px; }
+.wp-ph-emoji { font-size:60px; }
+.wp-body { padding:18px 22px 22px; }
+.wp-type { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#ccc;margin-bottom:3px; }
+.wp-word { font-family:'Fredoka One',cursive;font-size:36px;color:var(--dark);margin-bottom:10px;line-height:1; }
+.wp-sentence { font-family:'Lora',serif;font-size:14px;color:#666;line-height:1.65;font-style:italic;border-left:3px solid var(--orange);padding-left:10px; }
+.wp-close { position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.18);border:none;color:white;font-size:16px;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s; }
+.wp-close:hover { background:rgba(0,0,0,0.35); }
+
+/* ── SPOTLIGHT MODAL (from Words tab) ── */
 .spotlight-overlay { display: none; position: fixed; inset: 0; z-index: 500; background: rgba(20,10,0,0.65); backdrop-filter: blur(7px); align-items: center; justify-content: center; padding: 20px; }
 .spotlight-overlay.open { display: flex; }
 .spotlight-card { background: white; border-radius: 28px; width: 100%; max-width: 420px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.30); animation: sp-in 0.3s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; }
@@ -388,6 +405,19 @@ footer a { color: #bbb; text-decoration: none; }
   </div>
 </div>
 
+<!-- ════════ WORD POPUP (from story tap) ════════ -->
+<div class="word-popup-overlay" id="wpOverlay" onclick="wpClose(event)">
+  <div class="word-popup" id="wpCard">
+    <button class="wp-close" onclick="wpClose()">&#x2715;</button>
+    <div class="wp-pic" id="wpPic"></div>
+    <div class="wp-body">
+      <div class="wp-type" id="wpType"></div>
+      <div class="wp-word" id="wpWord"></div>
+      <div class="wp-sentence" id="wpSentence"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ════════ SPOTLIGHT ════════ -->
 <div class="spotlight-overlay" id="spOverlay" onclick="spClose(event)">
   <div class="spotlight-card" id="spCard">
@@ -413,35 +443,43 @@ footer a { color: #bbb; text-decoration: none; }
 
 <script>
 /* ───────────────────────────────────────────
-   PAGE DATA
+   PAGE DATA  — 5 pages, each split by ————
+   Plain text only; vocab words auto-highlighted
 ─────────────────────────────────────────── */
 var pages = [
   {
     img:"page1.jpg", alt:"Ali finds a carpet in his uncle shop", icon:"&#x1F3EA;",
-    scenes:[
-      [{t:"tx",v:"One very hot day Ali finds a carpet in his uncle's shop. "},{t:"sp",v:"'What's this?'"},{t:"br"},{t:"tx",v:"Suddenly the carpet jumps! It moves and flies off into the air. "},{t:"sp",v:"'Hey! What's happening?'"}],
-      [{t:"tx",v:"A loud booming voice comes from the carpet. "},{t:"sp",v:"'Welcome, O master. I am a magic carpet.'"},{t:"br"},{t:"tx",v:"First they fly high up into the sky and then they land in a "},{t:"kw",v:"jungle"},{t:"tx",v:". It is "},{t:"kw",v:"hot"},{t:"tx",v:" and wet and it's "},{t:"kw",v:"raining"},{t:"tx",v:". "},{t:"sp",v:"'It's raining! Yuck!'"}]
+    paras:[
+      "One very hot day Ali finds a carpet in his uncle's shop. 'What's this?'",
+      "Suddenly the carpet jumps! It moves and flies off into the air. 'Hey! What's happening?'"
     ]
   },
   {
-    img:"page2.jpg", alt:"Ali and the carpet fly to a desert and South Pole", icon:"&#x1F3DC;&#xFE0F;",
-    scenes:[
-      [{t:"tx",v:"Then they fly to the "},{t:"kw",v:"desert"},{t:"tx",v:". It is very, very hot and dry. "},{t:"sp",v:"'It is very, very hot today!'"}],
-      [{t:"tx",v:"After that they fly to the South Pole. There is lots of ice and "},{t:"kw",v:"snow"},{t:"tx",v:". It's "},{t:"kw",v:"freezing"},{t:"tx",v:". "},{t:"sp",v:"'Brrr!'"}]
+    img:"page2.jpg", alt:"Ali on the magic carpet", icon:"&#x1FA84;",
+    paras:[
+      "A loud booming voice comes from the carpet. 'Welcome, O master. I am a magic carpet.'",
+      "First they fly high up into the sky and then they land in a jungle. It is hot and wet and it's raining. 'It's raining! Yuck!'"
     ]
   },
   {
-    img:"page3.jpg", alt:"Ali in foggy mountains and a windy forest", icon:"&#x26F0;&#xFE0F;",
-    scenes:[
-      [{t:"sp",v:"'Where are we now? I can't see!' "},{t:"sp",v:"'In the mountains. Can you see me?' "},{t:"tx",v:"It's very "},{t:"kw",v:"foggy"},{t:"tx",v:" in the "},{t:"kw",v:"mountain"},{t:"tx",v:"."}],
-      [{t:"tx",v:"Then they fly to a "},{t:"kw",v:"forest"},{t:"tx",v:". It's very "},{t:"kw",v:"windy"},{t:"tx",v:" there. "},{t:"sp",v:"'Oh, it's windy in the forest!'"}]
+    img:"page3.jpg", alt:"Ali flies to the desert and South Pole", icon:"&#x1F3DC;&#xFE0F;",
+    paras:[
+      "Then they fly to the desert. It is very, very hot and dry. 'It is very, very hot today!'",
+      "After that they fly to the South Pole. There is lots of ice and snow. It's freezing. 'Brrr!'"
     ]
   },
   {
-    img:"page4.jpg", alt:"Ali on a stormy island flies back home", icon:"&#x1F3DD;&#xFE0F;",
-    scenes:[
-      [{t:"tx",v:"Then they fly to an "},{t:"kw",v:"island"},{t:"tx",v:" in the sea. There is thunder and lightning."},{t:"br"},{t:"sp",v:"'Aaagh! Let's go home!' "},{t:"sp",v:"'What a storm!'"}],
-      [{t:"tx",v:"Finally they fly back home. The carpet lands in the shop and Ali gets off."},{t:"br"},{t:"sp",v:"'Wow! What an adventure!'"}]
+    img:"page4.jpg", alt:"Ali in foggy mountains and a windy forest", icon:"&#x26F0;&#xFE0F;",
+    paras:[
+      "'Where are we now? I can't see!' 'In the mountains. Can you see me?' 'It's very foggy.'",
+      "Then they fly to a forest. It's very windy there. 'Oh, it's windy in the forest!'"
+    ]
+  },
+  {
+    img:"page5.jpg", alt:"Ali on a stormy island then flies home", icon:"&#x1F3DD;&#xFE0F;",
+    paras:[
+      "Then they fly to an island in the sea. There is thunder and lightning. 'Aaagh! Let's go home!' 'What a storm!'",
+      "Finally they fly back home. The carpet lands in the shop and Ali gets off. 'Wow! What an adventure!'"
     ]
   }
 ];
@@ -464,17 +502,115 @@ var vocab = [
 ];
 
 /* ───────────────────────────────────────────
-   BUILD HELPERS
+   AUTO-HIGHLIGHT: scan plain text, wrap vocab
+   words in clickable spans, speech in blue
 ─────────────────────────────────────────── */
-function buildPara(parts) {
-  var h = '';
-  parts.forEach(function(p) {
-    if (p.t === 'tx') h += p.v;
-    if (p.t === 'sp') h += '<span class="speech">' + p.v + '</span>';
-    if (p.t === 'kw') h += '<span class="key-word">' + p.v + '</span>';
-    if (p.t === 'br') h += '<br>';
+
+// Build a lookup: lowercase word -> vocab index
+var vocabMap = {};
+vocab.forEach(function(v, i) {
+  vocabMap[v.word.toLowerCase()] = i;
+});
+
+function highlightText(text) {
+  // 1. Split on word boundaries, preserving punctuation and spaces
+  // We use a regex that tokenises into: words, spaces, punctuation
+  var tokens = text.match(/[a-zA-Z']+|[^a-zA-Z']+/g) || [];
+  var html = '';
+  tokens.forEach(function(tok) {
+    var lower = tok.toLowerCase();
+    // Strip trailing punctuation for lookup (e.g. "jungle." -> "jungle")
+    var stripped = lower.replace(/[^a-z]/g, '');
+    if (vocabMap.hasOwnProperty(stripped)) {
+      var idx = vocabMap[stripped];
+      html += '<span class="key-word" onclick="spOpen(' + idx + ')" tabindex="0" role="button" title="Tap to learn more">' + tok + '</span>';
+    } else {
+      html += tok;
+    }
   });
-  return '<p class="story-para">' + h + '</p>';
+  return html;
+}
+
+function buildParaHTML(text) {
+  // Speech quotes in this story follow this pattern:
+  //   They always START with ' after a space (or at start of string)
+  //   They always END with '  followed by punctuation like ! ? . or end/space
+  //
+  // The tricky part: contractions like it's, What's, can't have ' mid-word.
+  // Solution: a speech quote OPENS only when ' is preceded by whitespace or start,
+  // and CLOSES at the LAST ' before a sentence-ending character (! ? .)
+  //
+  // Simplest reliable approach for this specific story:
+  // Find all ' characters, decide if each is OPEN or CLOSE or CONTRACTION
+  // OPEN:  ' preceded by space or start-of-string, AND next char is uppercase or digit
+  // CLOSE: ' followed by !, ?, ., space+', or end
+
+  var out = '';
+  var i = 0;
+  var inSpeech = false;
+  var speechBuffer = '';
+  var plainBuffer = '';
+
+  function flushPlain() {
+    if (plainBuffer) { out += highlightText(plainBuffer); plainBuffer = ''; }
+  }
+  function flushSpeech() {
+    if (speechBuffer) {
+      out += '<span class="speech">' + highlightText(speechBuffer) + '</span>';
+      speechBuffer = '';
+    }
+  }
+
+  while (i < text.length) {
+    var ch = text[i];
+
+    if (ch === "'") {
+      var prev = i > 0 ? text[i - 1] : ' ';
+      var next = i < text.length - 1 ? text[i + 1] : '';
+
+      if (!inSpeech) {
+        // Is this an OPENING quote?
+        // Criteria: previous char is space or start, next char is uppercase letter
+        var prevIsSpace = (prev === ' ' || i === 0);
+        var nextIsUpper = /[A-Z]/.test(next);
+        if (prevIsSpace && nextIsUpper) {
+          // Start speech
+          flushPlain();
+          inSpeech = true;
+          speechBuffer += ch;
+        } else {
+          // Contraction or possessive — just plain text
+          plainBuffer += ch;
+        }
+      } else {
+        // We are inside speech. Is this a CLOSING quote?
+        // Criteria: next char is space, end of string, or sentence punctuation
+        var nextIsEnd = (next === '' || next === ' ' || next === '!' || next === '?' || next === '.');
+        // Also close if next is another opening quote (two speeches back to back)
+        // Check: after this ' comes space then '
+        if (nextIsEnd) {
+          speechBuffer += ch;
+          flushSpeech();
+          inSpeech = false;
+        } else {
+          // Contraction inside speech (e.g. What's, it's, can't)
+          speechBuffer += ch;
+        }
+      }
+    } else {
+      if (inSpeech) {
+        speechBuffer += ch;
+      } else {
+        plainBuffer += ch;
+      }
+    }
+    i++;
+  }
+
+  // Flush anything remaining
+  if (inSpeech) { flushSpeech(); } else { flushPlain(); }
+
+  return '<p class="story-para">' + out + '</p>';
 }
 
 function buildSpread(idx) {
@@ -482,8 +618,14 @@ function buildSpread(idx) {
   var phId = 'ph' + idx;
   var div = document.createElement('div');
   div.className = 'page-spread';
+
+  var textHTML = '';
+  pg.paras.forEach(function(para, i) {
+    textHTML += buildParaHTML(para);
+  });
+  textHTML += '<span class="pg-num pg-r">' + (idx * 2 + 2) + '</span>';
+
   div.innerHTML =
-    // Left: image
     '<div class="page-left">' +
       '<div class="img-ph" id="' + phId + '">' +
         '<div class="ph-icon">' + pg.icon + '</div>' +
@@ -494,16 +636,8 @@ function buildSpread(idx) {
       'onload="this.style.display=\'block\';var e=document.getElementById(\'' + phId + '\');if(e)e.style.display=\'none\';">' +
       '<span class="pg-num pg-l">' + (idx * 2 + 1) + '</span>' +
     '</div>' +
-    // Spine
     '<div class="book-spine"></div>' +
-    // Right: text
-    '<div class="page-right">' +
-      '<div class="page-label">Page ' + (idx + 1) + ' of ' + pages.length + '</div>' +
-      pg.scenes.map(function(sc, i) {
-        return buildPara(sc) + (i < pg.scenes.length - 1 ? '<hr class="scene-divider">' : '');
-      }).join('') +
-      '<span class="pg-num pg-r">' + (idx * 2 + 2) + '</span>' +
-    '</div>';
+    '<div class="page-right">' + textHTML + '</div>';
   return div;
 }
 
@@ -578,9 +712,38 @@ pages.forEach(function(_, i) {
 updateUI();
 
 /* ───────────────────────────────────────────
-   VOCAB GRID
+   WORD POPUP — tapping a highlighted word
+   in the story opens a compact card
+─────────────────────────────────────────── */
+function spOpen(idx) {
+  var v = vocab[idx];
+  var picEl = document.getElementById('wpPic');
+  var bg = v.theme === 't-place'
+    ? 'background:linear-gradient(135deg,#E8FFE8,#C8F5C8)'
+    : 'background:linear-gradient(135deg,#E8F4FF,#C8E0FF)';
+  picEl.setAttribute('style', bg);
+  picEl.innerHTML =
+    '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\')">' +
+    '<div class="wp-ph"><div class="wp-ph-emoji">' + v.emoji + '</div></div>';
+  document.getElementById('wpType').textContent = v.type;
+  document.getElementById('wpWord').textContent = v.word;
+  document.getElementById('wpSentence').innerHTML = v.sentence;
+  document.getElementById('wpOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function wpClose(e) {
+  if (e && e.target !== document.getElementById('wpOverlay')) return;
+  document.getElementById('wpOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ───────────────────────────────────────────
+   VOCAB GRID — Words tab cards open spotlight
 ─────────────────────────────────────────── */
 var grid = document.getElementById('vocabGrid');
+var spIdx = 0;
+
 vocab.forEach(function(v, i) {
   var card = document.createElement('div');
   card.className = 'vocab-card ' + v.theme;
@@ -595,16 +758,14 @@ vocab.forEach(function(v, i) {
       '<div class="vocab-word">' + v.word + '</div>' +
       '<div class="vocab-sentence">' + v.sentence + '</div>' +
     '</div>';
-  card.onclick = function() { spOpen(i); };
+  card.onclick = function() { spOpenFull(i); };
   grid.appendChild(card);
 });
 
 /* ───────────────────────────────────────────
-   SPOTLIGHT
+   SPOTLIGHT — Words tab full spotlight
 ─────────────────────────────────────────── */
-var spIdx = 0;
-
-function spOpen(idx) {
+function spOpenFull(idx) {
   spIdx = idx;
   spRender();
   document.getElementById('spOverlay').classList.add('open');
@@ -647,10 +808,14 @@ function spClose(e) {
 }
 
 document.addEventListener('keydown', function(e) {
-  var open = document.getElementById('spOverlay').classList.contains('open');
-  if (e.key === 'Escape') { if (open) spClose(); }
-  if (e.key === 'ArrowRight') { if (open) spMove(1); else go(1); }
-  if (e.key === 'ArrowLeft')  { if (open) spMove(-1); else go(-1); }
+  var wpOpen = document.getElementById('wpOverlay').classList.contains('open');
+  var spFullOpen = document.getElementById('spOverlay').classList.contains('open');
+  if (e.key === 'Escape') {
+    if (wpOpen) wpClose();
+    if (spFullOpen) spClose();
+  }
+  if (e.key === 'ArrowRight') { if (spFullOpen) spMove(1); else if (!wpOpen) go(1); }
+  if (e.key === 'ArrowLeft')  { if (spFullOpen) spMove(-1); else if (!wpOpen) go(-1); }
 });
 
 /* ───────────────────────────────────────────
