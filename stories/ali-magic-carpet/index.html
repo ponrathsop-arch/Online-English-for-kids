@@ -51,6 +51,25 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
   /* Subtle stacked-pages bottom edge */
   border-bottom: 3px solid #d4c9b4;
 }
+.page-flash {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0;
+}
+
+.page-flash.show {
+  animation: flashWink 0.45s ease;
+}
+
+@keyframes flashWink {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  60%  { opacity: 0.4; }
+  100% { opacity: 0; }
+}
 
 /* A single page spread: left=image, right=text */
 .page-spread {
@@ -351,9 +370,10 @@ footer a { color: #bbb; text-decoration: none; }
 <!-- ════════ READ ════════ -->
 <div id="tab-read" class="tab-panel active">
   <div class="read-wrap">
-    <div class="book-viewport" id="bookViewport">
-      <!-- spreads injected by JS -->
-    </div>
+<div class="book-viewport" id="bookViewport">
+  <div class="page-flash" id="pageFlash"></div>
+  <!-- spreads injected by JS -->
+</div>
     <div class="nav-row">
       <button class="nav-btn btn-prev" id="btnPrev" onclick="go(-1)" disabled>&#8592; Back</button>
       <div class="page-dots" id="dots"></div>
@@ -670,8 +690,13 @@ function go(dir) {
   newSpread.classList.add('current');
   newSpread.style.opacity = '0';
 
-  viewport.innerHTML = '';
-  viewport.appendChild(newSpread);
+var flash = document.getElementById('pageFlash');
+
+viewport.innerHTML = '<div class="page-flash" id="pageFlash"></div>';
+viewport.appendChild(newSpread);
+
+flash = document.getElementById('pageFlash');
+flash.classList.add('show');
 
   setTimeout(function() {
     newSpread.style.transition = 'opacity 0.18s ease';
