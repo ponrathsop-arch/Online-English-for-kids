@@ -150,6 +150,46 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
   opacity: 1;
   z-index: 2;
 }
+.cover-page {
+  min-height: 520px;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff9a3c, #ffd93d);
+  padding: 36px;
+}
+
+.cover-single {
+  width: min(520px, 90%);
+  background: #fffdf7;
+  border-radius: 28px;
+  padding: 24px;
+  text-align: center;
+  box-shadow:
+    0 8px 0 #b75d12,
+    0 18px 35px rgba(0,0,0,0.22);
+}
+
+.cover-img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 18px;
+  margin-bottom: 22px;
+}
+
+.cover-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 40px;
+  line-height: 1.1;
+  color: #ff7a00;
+  margin-bottom: 14px;
+}
+
+.cover-subtitle {
+  font-size: 20px;
+  font-weight: 800;
+  color: #777;
+}
 /* Incoming page — starts off to the right */
 .page-spread.enter-from-right {
   transform: translateX(100%);
@@ -764,12 +804,23 @@ function buildSpread(idx) {
   var pg = pages[idx];
   var phId = 'ph' + idx;
   var div = document.createElement('div');
-div.className = pg.cover ? 'page-spread cover-page' : 'page-spread';
-  
+  div.className = pg.cover ? 'page-spread cover-page' : 'page-spread';
+
   var textHTML = '';
-  pg.paras.forEach(function(para, i) {
+  pg.paras.forEach(function(para) {
     textHTML += buildParaHTML(para);
   });
+
+  if (pg.cover) {
+    div.innerHTML =
+      '<div class="cover-single">' +
+        '<img src="' + pg.img + '" alt="' + pg.alt + '" class="cover-img">' +
+        '<div class="cover-title">Ali and the Magic Carpet</div>' +
+        '<div class="cover-subtitle">Tap Next to begin the magical adventure!</div>' +
+      '</div>';
+    return div;
+  }
+
   textHTML += '<span class="pg-num pg-r">' + (idx * 2 + 2) + '</span>';
 
   div.innerHTML =
@@ -779,13 +830,13 @@ div.className = pg.cover ? 'page-spread cover-page' : 'page-spread';
         '<div class="ph-name">' + pg.img + '</div>' +
         '<div class="ph-size">800 x 600 px recommended</div>' +
       '</div>' +
-    '<img src="' + pg.img + '" alt="' + pg.alt + '" class="page-img" style="display:none" ' +
-    'onload="this.style.display=\'block\';var e=document.getElementById(\'' + phId + '\');if(e)e.style.display=\'none\';">' +
-
+      '<img src="' + pg.img + '" alt="' + pg.alt + '" class="page-img" style="display:none" ' +
+      'onload="this.style.display=\'block\';var e=document.getElementById(\'' + phId + '\');if(e)e.style.display=\'none\';">' +
       '<span class="pg-num pg-l">' + (idx * 2 + 1) + '</span>' +
     '</div>' +
     '<div class="book-spine"></div>' +
     '<div class="page-right">' + textHTML + '</div>';
+
   return div;
 }
 
