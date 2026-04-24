@@ -660,36 +660,39 @@ viewport.appendChild(firstSpread);
 
 function go(dir) {
   if (turning) return;
+
   var next = cur + dir;
   if (next < 0 || next >= pages.length) return;
+
   turning = true;
 
-  // Build new spread
-  var newSpread = buildSpread(next);
-  var oldSpread = viewport.querySelector('.page-spread.current');
+  var preload = new Image();
+  preload.onload = function() {
+    var newSpread = buildSpread(next);
+    var oldSpread = viewport.querySelector('.page-spread.current');
 
-  // Position new spread off-screen
-  newSpread.classList.add(dir > 0 ? 'enter-from-right' : 'enter-from-left');
-  viewport.appendChild(newSpread);
+    newSpread.classList.add(dir > 0 ? 'enter-from-right' : 'enter-from-left');
+    viewport.appendChild(newSpread);
 
-  // Force reflow
-  void newSpread.offsetWidth;
+    void newSpread.offsetWidth;
 
-  // Slide new in, slide old out
-  newSpread.classList.remove('enter-from-right', 'enter-from-left');
-  newSpread.classList.add(dir > 0 ? 'slide-in' : 'slide-in-left');
-  oldSpread.classList.remove('current');
-  oldSpread.classList.add(dir > 0 ? 'exit-to-left' : 'exit-to-right');
+    newSpread.classList.remove('enter-from-right', 'enter-from-left');
+    newSpread.classList.add(dir > 0 ? 'slide-in' : 'slide-in-left');
 
-  newSpread.addEventListener('animationend', function() {
-    // Clean up
-    viewport.removeChild(oldSpread);
-    newSpread.classList.remove('slide-in', 'slide-in-left');
-    newSpread.classList.add('current');
-    cur = next;
-    turning = false;
-    updateUI();
-  }, { once: true });
+    oldSpread.classList.remove('current');
+    oldSpread.classList.add(dir > 0 ? 'exit-to-left' : 'exit-to-right');
+
+    newSpread.addEventListener('animationend', function() {
+      viewport.removeChild(oldSpread);
+      newSpread.classList.remove('slide-in', 'slide-in-left');
+      newSpread.classList.add('current');
+      cur = next;
+      turning = false;
+      updateUI();
+    }, { once: true });
+  };
+
+  preload.src = pages[next].img;
 }
 
 function updateUI() {
