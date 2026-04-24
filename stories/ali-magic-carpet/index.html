@@ -199,14 +199,40 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 
 /* Spine (centre divider) */
 .book-spine {
-  width: 18px;
+  width: 34px;
   flex-shrink: 0;
-  background: linear-gradient(180deg, #FF8A00, #FFD93D, #B45A00);
   position: relative;
   z-index: 5;
+  background: linear-gradient(90deg, #d87a1c, #ffd36a, #d87a1c);
   box-shadow:
-    4px 0 12px rgba(0,0,0,0.18),
+    4px 0 12px rgba(0,0,0,0.16),
     -4px 0 12px rgba(0,0,0,0.12);
+}
+
+/* metal rings */
+.book-spine::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 58px;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 360px;
+  background:
+    radial-gradient(ellipse at center, transparent 0 38%, #d9d9d9 40% 52%, #8f8f8f 54% 60%, transparent 62%) center 0 / 24px 72px repeat-y;
+}
+
+/* ring holes */
+.book-spine::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 58px;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 360px;
+  background:
+    radial-gradient(circle, #fff8ee 0 45%, transparent 48%) center 0 / 10px 72px repeat-y;
 }
 
 /* Left half: picture */
