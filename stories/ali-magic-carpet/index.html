@@ -724,7 +724,7 @@ function spOpen(idx) {
   picEl.setAttribute('style', bg);
   picEl.innerHTML =
     '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\')">' +
-    '<div class="wp-ph"><div class="wp-ph-emoji">' + v.emoji + '</div></div>';
+'<div class="wp-ph"></div>';
   document.getElementById('wpType').textContent = v.type;
   document.getElementById('wpWord').textContent = v.word;
   document.getElementById('wpSentence').innerHTML = v.sentence;
@@ -750,8 +750,7 @@ vocab.forEach(function(v, i) {
   card.innerHTML =
     '<div class="vocab-pic">' +
       '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\')">' +
-      '<div class="v-ph"><div class="v-ph-emoji">' + v.emoji + '</div>' +
-      '<div class="v-ph-file">' + v.img + '</div></div>' +
+     '<div class="v-ph"></div>'
     '</div>' +
     '<div class="vocab-body">' +
       '<div class="vocab-type">' + v.type + '</div>' +
@@ -781,7 +780,7 @@ function spRender() {
   picEl.setAttribute('style', bg);
   picEl.innerHTML =
     '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\')">' +
-    '<div class="sp-ph"><div class="sp-ph-emoji">' + v.emoji + '</div></div>';
+'<div class="sp-ph"></div>';
   document.getElementById('spType').textContent = v.type;
   document.getElementById('spWord').textContent = v.word;
   document.getElementById('spSentence').innerHTML = v.sentence;
