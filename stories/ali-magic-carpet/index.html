@@ -578,8 +578,15 @@ function highlightText(text) {
   var html = '';
   tokens.forEach(function(tok) {
     var stripped = tok.toLowerCase().replace(/[^a-z]/g, '');
+    // Check exact match first, then try singular (strip trailing s)
+    var idx = -1;
     if (vocabMap.hasOwnProperty(stripped)) {
-      html += '<span class="key-word" onclick="spOpen(' + vocabMap[stripped] + ')" tabindex="0" role="button">' + tok + '</span>';
+      idx = vocabMap[stripped];
+    } else if (stripped.length > 2 && stripped.slice(-1) === 's' && vocabMap.hasOwnProperty(stripped.slice(0, -1))) {
+      idx = vocabMap[stripped.slice(0, -1)];
+    }
+    if (idx >= 0) {
+      html += '<span class="key-word" onclick="spOpen(' + idx + ')" tabindex="0" role="button">' + tok + '</span>';
     } else {
       html += tok;
     }
