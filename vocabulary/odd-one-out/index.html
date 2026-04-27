@@ -47,7 +47,7 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   border:4px solid transparent;
   cursor:pointer;
   transition:transform .18s,border-color .18s,box-shadow .18s;
-  overflow:visible;  /* allow word bubble to overflow */
+  overflow:visible;
   aspect-ratio:1;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   position:relative;
@@ -57,7 +57,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
   box-shadow:0 12px 36px rgba(0,0,0,.18);
   border-color:var(--purple);
 }
-/* inner clip so image stays inside rounded card */
 .pic-card-inner{
   width:100%;height:100%;border-radius:18px;overflow:hidden;position:relative;
   display:flex;align-items:center;justify-content:center;
@@ -65,7 +64,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .pic-card img{width:100%;height:100%;object-fit:cover;display:block;}
 .pic-card .ph{font-size:4.5rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
 
-/* result overlay */
 .result-overlay{position:absolute;inset:0;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:4rem;opacity:0;transition:opacity .25s;pointer-events:none;}
 .pic-card.correct-pick{border-color:var(--green);box-shadow:0 0 0 5px rgba(107,203,119,.4);}
 .pic-card.correct-pick .result-overlay{background:rgba(107,203,119,.45);opacity:1;}
@@ -78,7 +76,7 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-10px);}75%{transform:translateX(10px);}}
 
-/* ── WORD BUBBLE — pops up below tapped card ── */
+/* word bubble */
 .word-bubble{
   position:absolute;
   bottom:-44px; left:50%; transform:translateX(-50%) scale(0);
@@ -99,15 +97,25 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 }
 .pic-card.show-word .word-bubble{transform:translateX(-50%) scale(1);opacity:1;}
 
-/* colour-code bubble by category */
+/* category bubble colours */
 .pic-card[data-cat="animals"] .word-bubble{background:var(--blue);box-shadow:0 4px 16px rgba(59,130,246,.4);}
 .pic-card[data-cat="animals"] .word-bubble::before{border-bottom-color:var(--blue);}
 .pic-card[data-cat="fruit"]   .word-bubble{background:var(--green);box-shadow:0 4px 16px rgba(107,203,119,.4);}
 .pic-card[data-cat="fruit"]   .word-bubble::before{border-bottom-color:var(--green);}
 .pic-card[data-cat="clothes"] .word-bubble{background:var(--pink);box-shadow:0 4px 16px rgba(244,114,182,.4);}
 .pic-card[data-cat="clothes"] .word-bubble::before{border-bottom-color:var(--pink);}
+.pic-card[data-cat="jobs"]    .word-bubble{background:var(--orange);box-shadow:0 4px 16px rgba(255,159,67,.4);}
+.pic-card[data-cat="jobs"]    .word-bubble::before{border-bottom-color:var(--orange);}
+.pic-card[data-cat="house"]   .word-bubble{background:var(--teal);box-shadow:0 4px 16px rgba(45,212,191,.4);}
+.pic-card[data-cat="house"]   .word-bubble::before{border-bottom-color:var(--teal);}
+.pic-card[data-cat="places"]  .word-bubble{background:#0D9488;box-shadow:0 4px 16px rgba(13,148,136,.4);}
+.pic-card[data-cat="places"]  .word-bubble::before{border-bottom-color:#0D9488;}
+.pic-card[data-cat="sports"]  .word-bubble{background:#8B5CF6;box-shadow:0 4px 16px rgba(139,92,246,.4);}
+.pic-card[data-cat="sports"]  .word-bubble::before{border-bottom-color:#8B5CF6;}
+.pic-card[data-cat="transport"].word-bubble{background:#0EA5E9;box-shadow:0 4px 16px rgba(14,165,233,.4);}
+.pic-card[data-cat="transport"].word-bubble::before{border-bottom-color:#0EA5E9;}
 
-/* ── CONFETTI PARTICLE ── */
+/* confetti */
 .confetti-piece{position:fixed;width:10px;height:10px;border-radius:2px;pointer-events:none;z-index:9999;animation:confettiFall linear forwards;}
 @keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0deg);}100%{opacity:0;transform:translateY(100vh) rotate(720deg);}}
 
@@ -115,9 +123,14 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .cat-chips{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap;}
 .cat-chip{border-radius:50px;padding:6px 18px;font-family:'Fredoka One',cursive;font-size:.95rem;color:#fff;animation:chipIn .3s ease both;}
 @keyframes chipIn{from{opacity:0;transform:translateY(8px) scale(.9);}to{opacity:1;transform:translateY(0) scale(1);}}
-.chip-animal{background:var(--blue);}
+.chip-animals{background:var(--blue);}
 .chip-fruit{background:var(--green);}
 .chip-clothes{background:var(--pink);}
+.chip-jobs{background:var(--orange);}
+.chip-house{background:var(--teal);}
+.chip-places{background:#0D9488;}
+.chip-sports{background:#8B5CF6;}
+.chip-transport{background:#0EA5E9;}
 
 /* ── NEXT BTN ── */
 .next-btn{display:none;margin-top:20px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;border-radius:50px;padding:16px 44px;font-family:'Fredoka One',cursive;font-size:1.3rem;cursor:pointer;box-shadow:0 6px 22px rgba(124,58,237,.3);transition:transform .18s,box-shadow .18s;}
@@ -141,20 +154,101 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .btn-purple{background:var(--purple);}
 .btn-orange{background:var(--orange);}
 
-/* ── HOME / CATEGORY SELECT ── */
-#cat-select{display:flex;flex-direction:column;align-items:center;gap:0;width:100%;max-width:460px;}
-.cat-title{font-family:'Fredoka One',cursive;font-size:2.4rem;color:var(--purple);margin-bottom:6px;}
-.cat-sub{font-size:.95rem;color:var(--muted);margin-bottom:36px;}
-.cat-btn{width:100%;border:none;border-radius:22px;padding:22px 24px;display:flex;align-items:center;gap:18px;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.18);transition:transform .18s,box-shadow .18s;color:#fff;margin-bottom:16px;text-align:left;}
-.cat-btn:hover{transform:translateY(-3px);box-shadow:0 10px 0 rgba(0,0,0,.18);}
-.cat-btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.14);}
-.cat-btn-animals{background:linear-gradient(135deg,#3B82F6,#1d4ed8);}
-.cat-btn-fruit  {background:linear-gradient(135deg,#6BCB77,#15803d);}
-.cat-btn-clothes{background:linear-gradient(135deg,#F472B6,#be185d);}
-.cat-btn-mixed  {background:linear-gradient(135deg,#7C3AED,#db2777);}
-.cat-btn .cb-icon{font-size:2.4rem;flex-shrink:0;}
-.cat-btn .cb-name{font-family:'Fredoka One',cursive;font-size:1.3rem;display:block;}
-.cat-btn .cb-desc{font-size:.8rem;opacity:.85;}
+/* ══════════════════════════════════════
+   CATEGORY PICKER SCREEN
+   ══════════════════════════════════════ */
+#picker-screen{
+  display:flex;flex-direction:column;align-items:center;
+  width:100%;max-width:500px;
+  animation:fadeUp .45s ease;
+}
+.picker-title{font-family:'Fredoka One',cursive;font-size:2.2rem;color:var(--purple);margin-bottom:4px;text-align:center;}
+.picker-sub{font-size:.95rem;color:var(--muted);margin-bottom:28px;text-align:center;}
+
+/* category toggle cards */
+.cat-toggle-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;width:100%;
+  margin-bottom:24px;
+}
+.cat-toggle{
+  border:3px solid transparent;
+  border-radius:22px;
+  padding:20px 16px 16px;
+  cursor:pointer;
+  background:#fff;
+  box-shadow:0 5px 18px rgba(0,0,0,.09);
+  transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  position:relative;
+  user-select:none;
+}
+.cat-toggle:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.14);}
+.cat-toggle.selected{box-shadow:0 6px 0 rgba(0,0,0,.14);}
+.cat-toggle .ct-emoji{font-size:2.8rem;line-height:1;}
+.cat-toggle .ct-name{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--text);}
+.cat-toggle .ct-count{font-size:.75rem;color:var(--muted);font-weight:900;}
+.cat-toggle .ct-check{
+  position:absolute;top:10px;right:10px;
+  width:24px;height:24px;border-radius:50%;
+  background:#e5e7eb;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;transition:all .2s;
+}
+.cat-toggle.selected .ct-check{background:#fff;color:#fff;font-size:.85rem;}
+
+/* colour themes per category */
+.cat-toggle[data-cat="animals"].selected{border-color:var(--blue);background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(59,130,246,.02));}
+.cat-toggle[data-cat="animals"].selected .ct-check{background:var(--blue);}
+.cat-toggle[data-cat="fruit"].selected{border-color:var(--green);background:linear-gradient(135deg,rgba(107,203,119,.08),rgba(107,203,119,.02));}
+.cat-toggle[data-cat="fruit"].selected .ct-check{background:var(--green);}
+.cat-toggle[data-cat="clothes"].selected{border-color:var(--pink);background:linear-gradient(135deg,rgba(244,114,182,.08),rgba(244,114,182,.02));}
+.cat-toggle[data-cat="clothes"].selected .ct-check{background:var(--pink);}
+.cat-toggle[data-cat="jobs"].selected{border-color:var(--orange);background:linear-gradient(135deg,rgba(255,159,67,.08),rgba(255,159,67,.02));}
+.cat-toggle[data-cat="jobs"].selected .ct-check{background:var(--orange);}
+.cat-toggle[data-cat="house"].selected{border-color:var(--teal);background:linear-gradient(135deg,rgba(45,212,191,.08),rgba(45,212,191,.02));}
+.cat-toggle[data-cat="house"].selected .ct-check{background:var(--teal);}
+.cat-toggle[data-cat="places"].selected{border-color:#0D9488;background:linear-gradient(135deg,rgba(13,148,136,.08),rgba(13,148,136,.02));}
+.cat-toggle[data-cat="places"].selected .ct-check{background:#0D9488;}
+.cat-toggle[data-cat="sports"].selected{border-color:#8B5CF6;background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(139,92,246,.02));}
+.cat-toggle[data-cat="sports"].selected .ct-check{background:#8B5CF6;}
+.cat-toggle[data-cat="transport"].selected{border-color:#0EA5E9;background:linear-gradient(135deg,rgba(14,165,233,.08),rgba(14,165,233,.02));}
+.cat-toggle[data-cat="transport"].selected .ct-check{background:#0EA5E9;}
+
+/* selected summary pill */
+.selected-summary{
+  font-family:'Fredoka One',cursive;font-size:.95rem;
+  color:var(--muted);min-height:24px;margin-bottom:16px;text-align:center;
+  transition:all .2s;
+}
+.selected-summary.has-selection{color:var(--purple);}
+
+/* start button */
+.start-btn{
+  width:100%;border:none;border-radius:22px;padding:20px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff;font-family:'Fredoka One',cursive;font-size:1.4rem;
+  cursor:pointer;box-shadow:0 6px 0 rgba(109,40,217,.35);
+  transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+}
+.start-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 10px 0 rgba(109,40,217,.35);}
+.start-btn:active:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 rgba(109,40,217,.35);}
+.start-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+.rounds-row{
+  display:flex;gap:10px;justify-content:center;align-items:center;
+  margin-bottom:20px;flex-wrap:wrap;
+}
+.rounds-label{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--muted);}
+.rounds-btn{
+  border:2.5px solid #ddd;background:#fff;border-radius:50px;
+  padding:7px 20px;font-family:'Fredoka One',cursive;font-size:1rem;
+  cursor:pointer;transition:all .18s;color:var(--muted);
+}
+.rounds-btn.active{border-color:var(--purple);background:var(--purple);color:#fff;}
+.rounds-btn:hover:not(.active){border-color:var(--purple);color:var(--purple);}
 </style>
 </head>
 <body>
@@ -163,29 +257,76 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 
 <div id="app">
 
-  <!-- ═══ HOME ═══ -->
-  <div id="cat-select">
-    <div class="cat-title">🔍 Odd One Out</div>
-    <div class="cat-sub">Which one doesn't belong? Tap it!</div>
+  <!-- ═══ CATEGORY PICKER ═══ -->
+  <div id="picker-screen">
+    <div class="picker-title">🔍 Odd One Out</div>
+    <div class="picker-sub">Pick your categories — then find what doesn't belong!</div>
 
-    <button class="cat-btn cat-btn-animals" onclick="startGame('animals')">
-      <span class="cb-icon">🐘</span>
-      <span><span class="cb-name">Animals</span><span class="cb-desc">Wild animals, farm animals & more!</span></span>
-    </button>
+    <!-- category toggle grid -->
+    <div class="cat-toggle-grid">
+      <div class="cat-toggle" data-cat="animals" onclick="toggleCat('animals')">
+        <div class="ct-check">✓</div>
+        <div class="ct-emoji">🐘</div>
+        <div class="ct-name">Animals</div>
+        <div class="ct-count">26 words</div>
+      </div>
+      <div class="cat-toggle" data-cat="fruit" onclick="toggleCat('fruit')">
+        <div class="ct-check">✓</div>
+        <div class="ct-emoji">🍎</div>
+        <div class="ct-name">Fruit</div>
+        <div class="ct-count">14 words</div>
+      </div>
+      <div class="cat-toggle" data-cat="clothes" onclick="toggleCat('clothes')">
+        <div class="ct-check">✓</div>
+        <div class="ct-emoji">👕</div>
+        <div class="ct-name">Clothes</div>
+        <div class="ct-count">26 words</div>
+      </div>
+      <div class="cat-toggle" data-cat="jobs" onclick="toggleCat('jobs')">
+        <div class="ct-check">✓</div>
+        <div class="ct-emoji">👩‍💼</div>
+        <div class="ct-name">Jobs</div>
+        <div class="ct-count">18 words</div>
+      </div>
+      <div class="cat-toggle" data-cat="house" onclick="toggleCat('house')">
+        <div class="ct-check">✓</div>
+        <div class="ct-emoji">🏠</div>
+        <div class="ct-name">House</div>
+        <div class="ct-count">32 words</div>
+      </div>
+      <div class="cat-toggle" data-cat="places" onclick="toggleCat('places')">
+        <div class="ct-check">✓</div>
+        <div class="ct-emoji">🏙️</div>
+        <div class="ct-name">Places</div>
+        <div class="ct-count">14 words</div>
+      </div>
+      <div class="cat-toggle" data-cat="sports" onclick="toggleCat('sports')">
+        <div class="ct-check">✓</div>
+        <div class="ct-emoji">⚽</div>
+        <div class="ct-name">Sports</div>
+        <div class="ct-count">14 words</div>
+      </div>
+      <div class="cat-toggle" data-cat="transport" onclick="toggleCat('transport')">
+        <div class="ct-check">✓</div>
+        <div class="ct-emoji">🚗</div>
+        <div class="ct-name">Transport</div>
+        <div class="ct-count">13 words</div>
+      </div>
+    </div>
 
-    <button class="cat-btn cat-btn-fruit" onclick="startGame('fruit')">
-      <span class="cb-icon">🍎</span>
-      <span><span class="cb-name">Fruit</span><span class="cb-desc">Colourful, yummy fruit words!</span></span>
-    </button>
+    <div class="selected-summary" id="selected-summary">Select at least 2 categories to play</div>
 
-    <button class="cat-btn cat-btn-clothes" onclick="startGame('clothes')">
-      <span class="cb-icon">👕</span>
-      <span><span class="cb-name">Clothes</span><span class="cb-desc">T-shirts, hats, boots & more!</span></span>
-    </button>
+    <!-- rounds selector -->
+    <div class="rounds-row">
+      <span class="rounds-label">Rounds:</span>
+      <button class="rounds-btn" onclick="setRounds(5)">5</button>
+      <button class="rounds-btn active" onclick="setRounds(10)">10</button>
+      <button class="rounds-btn" onclick="setRounds(15)">15</button>
+      <button class="rounds-btn" onclick="setRounds(20)">20</button>
+    </div>
 
-    <button class="cat-btn cat-btn-mixed" onclick="startGame('mixed')">
-      <span class="cb-icon">🎲</span>
-      <span><span class="cb-name">Mixed Challenge</span><span class="cb-desc">All categories mixed together!</span></span>
+    <button class="start-btn" id="start-btn" disabled onclick="startFromPicker()">
+      <span>Let's Play!</span><span>🎮</span>
     </button>
   </div>
 
@@ -218,8 +359,8 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
       <div class="stars-row" id="stars-row"></div>
       <div class="finish-score" id="finish-score"></div>
       <div class="finish-btns">
-        <button class="pill-btn btn-purple" id="play-again-btn" onclick="playAgain()">Play Again 🎉</button>
-        <button class="pill-btn btn-orange" onclick="goHome()">Menu</button>
+        <button class="pill-btn btn-purple" onclick="playAgain()">Play Again 🎉</button>
+        <button class="pill-btn btn-orange" onclick="goHome()">Change Categories</button>
       </div>
     </div>
   </div>
@@ -228,125 +369,190 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 
 <script>
 // ══════════════════════════════════════
-// PATHS
-// File lives at: vocabulary/odd-one-out/index.html
+// PATHS — file lives at vocabulary/odd-one-out/index.html
 // ══════════════════════════════════════
 const BASE = '../';
 const IMG = {
-  animals: id => BASE + 'animals/' + id.replace(/ /g,'') + '.jpg',
-  fruit:   id => BASE + 'fruit/'   + id + '.jpg',
-  clothes: id => BASE + 'clothes/' + id + '.jpg',   // word.jpg — no suffix
+  animals:   id => BASE + 'animals/'      + id.replace(/ /g,'') + '.jpg',
+  fruit:     id => BASE + 'fruit/'        + id + '.jpg',
+  clothes:   id => BASE + 'clothes/'      + id + '.jpg',
+  jobs:      id => BASE + 'jobs/'         + id.replace(/ /g,'') + '.jpg',
+  house:     id => BASE + 'house-objects/'+ id.replace(/ /g,'') + '.jpg',
+  sports:    id => BASE + 'sports/'       + id.replace(/ /g,'') + '.jpg',
+  transport: id => BASE + 'transport/'    + id.replace(/ /g,'') + '.jpg',
+  // places uses emoji only — no image folder
+  places:    id => '',
 };
 
 // ══════════════════════════════════════
 // EMOJIS (fallback)
 // ══════════════════════════════════════
 const EMOJIS = {
-  cat:'🐱', dog:'🐶', fish:'🐟', bird:'🐦', elephant:'🐘',
-  giraffe:'🦒', tiger:'🐯', zebra:'🦓', monkey:'🐒', crocodile:'🐊',
-  spider:'🕷️', donkey:'🫏', lizard:'🦎', snake:'🐍', frog:'🐸',
-  cow:'🐄', goat:'🐐', sheep:'🐑', horse:'🐴', 'polar bear':'🐻‍❄️',
-  hippo:'🦛', parrot:'🦜', rhino:'🦏', mouse:'🐭', chicken:'🐔', owl:'🦉',
-  apple:'🍎', banana:'🍌', orange:'🍊', grapes:'🍇', watermelon:'🍉',
-  strawberry:'🍓', mango:'🥭', pineapple:'🍍', pear:'🍐', peach:'🍑',
-  cherry:'🍒', kiwi:'🥝', melon:'🍈', coconut:'🥥',
-  tshirt:'👕', shirt:'👔', trousers:'👖', jeans:'👖', shorts:'🩳',
-  skirt:'👗', dress:'👗', jacket:'🧥', coat:'🧥', sweater:'🧶',
-  hoodie:'🧥', socks:'🧦', shoes:'👟', trainers:'👟', boots:'🥾',
-  hat:'🎩', cap:'🧢', bag:'👜', handbag:'👜', backpack:'🎒',
-  belt:'👔', watch:'⌚', glasses:'👓', sunglasses:'🕶️',
-  scarf:'🧣', gloves:'🧤',
+  // animals
+  cat:'🐱',dog:'🐶',fish:'🐟',bird:'🐦',elephant:'🐘',giraffe:'🦒',tiger:'🐯',zebra:'🦓',
+  monkey:'🐒',crocodile:'🐊',spider:'🕷️',donkey:'🫏',lizard:'🦎',snake:'🐍',frog:'🐸',
+  cow:'🐄',goat:'🐐',sheep:'🐑',horse:'🐴','polar bear':'🐻‍❄️',hippo:'🦛',parrot:'🦜',
+  rhino:'🦏',mouse:'🐭',chicken:'🐔',owl:'🦉',
+  // fruit
+  apple:'🍎',banana:'🍌',orange:'🍊',grapes:'🍇',watermelon:'🍉',strawberry:'🍓',
+  mango:'🥭',pineapple:'🍍',pear:'🍐',peach:'🍑',cherry:'🍒',kiwi:'🥝',melon:'🍈',coconut:'🥥',
+  // clothes
+  tshirt:'👕',shirt:'👔',trousers:'👖',jeans:'👖',shorts:'🩳',skirt:'👗',dress:'👗',
+  jacket:'🧥',coat:'🧥',sweater:'🧶',hoodie:'🧥',socks:'🧦',shoes:'👟',trainers:'👟',
+  boots:'🥾',hat:'🎩',cap:'🧢',bag:'👜',handbag:'👜',backpack:'🎒',belt:'👔',
+  watch:'⌚',glasses:'👓',sunglasses:'🕶️',scarf:'🧣',gloves:'🧤',
+  // jobs
+  teacher:'👩‍🏫',doctor:'👨‍⚕️',nurse:'👩‍⚕️','police officer':'👮',firefighter:'🧑‍🚒',chef:'👨‍🍳',
+  farmer:'👩‍🌾',driver:'🚗',pilot:'✈️',dentist:'🦷',vet:'🐾',baker:'🥐',
+  artist:'🎨',singer:'🎤',dancer:'💃',shopkeeper:'🏪',postman:'📬',waiter:'🍽️',
+  // house
+  bed:'🛏️',door:'🚪',window:'🪟',chair:'🪑',table:'🍽️',sofa:'🛋️',lamp:'💡',
+  television:'📺',bath:'🛁',phone:'📞',rug:'🟫',kitchen:'🍳',bathroom:'🚿',
+  bedroom:'🛏️','living room':'🏠','dining room':'🍽️',mirror:'🪞',wall:'🧱',
+  hall:'🏠',room:'🚪',house:'🏡',garden:'🌿',box:'📦',clock:'🕐',cupboard:'🗄️',
+  radio:'📻',doll:'🪆',picture:'🖼️',painting:'🎨',armchair:'💺',flower:'🌸',apartment:'🏢',
+  // places
+  museum:'🏛️',bakery:'🥐',hospital:'🏥',library:'📚',supermarket:'🛒',bank:'🏦',
+  'post office':'📮',zoo:'🦁',school:'🏫',park:'🌳',restaurant:'🍽️',
+  'police station':'👮','bus stop':'🚌','train station':'🚉',
+  // sports
+  football:'⚽',basketball:'🏀',tennis:'🎾',badminton:'🏸',baseball:'⚾',
+  'table tennis':'🏓',swim:'🏊',treadmill:'🏃',bike:'🚲',helmet:'⛑️',
+  trainers:'👟',gym:'🏋️',ball:'🏐',racket:'🏸',
+  // transport
+  car:'🚗',bicycle:'🚲',bus:'🚌',motorcycle:'🏍️',truck:'🚚',train:'🚆',
+  van:'🚐',airplane:'✈️',ship:'🚢',helicopter:'🚁',tractor:'🚜',taxi:'🚕',ambulance:'🚑',
 };
 const em = id => EMOJIS[id] || '❓';
 
-// Display names for word bubbles (prettier than raw id)
-const NAMES = {
-  tshirt:'T-shirt', clothesshop:'clothes shop', fittingroom:'fitting room',
-  'polar bear':'polar bear',
+const DISPLAY_NAMES = {
+  tshirt:'T-shirt','police officer':'police officer','polar bear':'polar bear',
+  'living room':'living room','dining room':'dining room',
 };
-const displayName = id => NAMES[id] || id;
+const displayName = id => DISPLAY_NAMES[id] || id;
 
 // ══════════════════════════════════════
-// DATA
+// DATA — all category word lists
 // ══════════════════════════════════════
-const ANIMALS = [
-  'cat','dog','fish','bird','elephant','giraffe','tiger','zebra',
-  'monkey','crocodile','spider','donkey','lizard','snake','frog',
-  'cow','goat','sheep','horse','polar bear','hippo','parrot',
-  'rhino','mouse','chicken','owl'
-];
-const FRUITS = [
-  'apple','banana','orange','grapes','watermelon','strawberry','mango',
-  'pineapple','pear','peach','cherry','kiwi','melon','coconut'
-];
-const CLOTHES_ITEMS = [
-  'tshirt','shirt','trousers','jeans','shorts','skirt','dress',
-  'jacket','coat','sweater','hoodie','socks','shoes','trainers',
-  'boots','hat','cap','bag','handbag','backpack','belt','watch',
-  'glasses','sunglasses','scarf','gloves'
-];
+const SRC = {
+  animals: ['cat','dog','fish','bird','elephant','giraffe','tiger','zebra','monkey','crocodile',
+    'spider','donkey','lizard','snake','frog','cow','goat','sheep','horse','polar bear',
+    'hippo','parrot','rhino','mouse','chicken','owl'],
+  fruit: ['apple','banana','orange','grapes','watermelon','strawberry','mango','pineapple',
+    'pear','peach','cherry','kiwi','melon','coconut'],
+  clothes: ['tshirt','shirt','trousers','jeans','shorts','skirt','dress','jacket','coat',
+    'sweater','hoodie','socks','shoes','trainers','boots','hat','cap','bag','handbag',
+    'backpack','belt','watch','glasses','sunglasses','scarf','gloves'],
+  jobs: ['teacher','doctor','nurse','police officer','firefighter','chef','farmer','driver',
+    'pilot','dentist','vet','baker','artist','singer','dancer','shopkeeper','postman','waiter'],
+  house: ['bed','door','window','chair','table','sofa','lamp','television','bath','phone','rug',
+    'kitchen','bathroom','bedroom','living room','dining room','mirror','wall','hall','room',
+    'house','garden','box','clock','cupboard','radio','doll','picture','painting','armchair',
+    'flower','apartment'],
+  places: ['museum','bakery','hospital','library','supermarket','bank','post office','zoo',
+    'school','park','restaurant','police station','bus stop','train station'],
+  sports: ['football','basketball','tennis','badminton','baseball','table tennis','swim',
+    'treadmill','bike','helmet','trainers','gym','ball','racket'],
+  transport: ['car','bicycle','bus','motorcycle','truck','train','van','airplane','ship',
+    'helicopter','tractor','taxi','ambulance'],
+};
 
-// Category config — label, chip class, colour for bubble
 const CAT_META = {
-  animals: { label:'🐾 Animals', chip:'chip-animal', color:'var(--blue)'   },
-  fruit:   { label:'🍎 Fruit',   chip:'chip-fruit',  color:'var(--green)'  },
-  clothes: { label:'👕 Clothes', chip:'chip-clothes', color:'var(--pink)'  },
+  animals:   { label:'🐾 Animals',   chip:'chip-animals',   color:'var(--blue)'   },
+  fruit:     { label:'🍎 Fruit',     chip:'chip-fruit',     color:'var(--green)'  },
+  clothes:   { label:'👕 Clothes',   chip:'chip-clothes',   color:'var(--pink)'   },
+  jobs:      { label:'👩‍💼 Jobs',      chip:'chip-jobs',      color:'var(--orange)' },
+  house:     { label:'🏠 House',     chip:'chip-house',     color:'var(--teal)'   },
+  places:    { label:'🏙️ Places',    chip:'chip-places',    color:'#0D9488'       },
+  sports:    { label:'⚽ Sports',    chip:'chip-sports',    color:'#8B5CF6'       },
+  transport: { label:'🚗 Transport', chip:'chip-transport', color:'#0EA5E9'       },
 };
+
+// ══════════════════════════════════════
+// PICKER STATE
+// ══════════════════════════════════════
+let selectedCats = new Set();
+let totalRounds = 10;
+
+function toggleCat(cat) {
+  const el = document.querySelector(`.cat-toggle[data-cat="${cat}"]`);
+  if (selectedCats.has(cat)) {
+    selectedCats.delete(cat);
+    el.classList.remove('selected');
+  } else {
+    selectedCats.add(cat);
+    el.classList.add('selected');
+  }
+  updatePickerUI();
+}
+
+function setRounds(n) {
+  totalRounds = n;
+  document.querySelectorAll('.rounds-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.textContent) === n);
+  });
+}
+
+function updatePickerUI() {
+  const n = selectedCats.size;
+  const btn = document.getElementById('start-btn');
+  const summary = document.getElementById('selected-summary');
+  if (n < 2) {
+    btn.disabled = true;
+    summary.textContent = n === 0
+      ? 'Select at least 2 categories to play'
+      : 'Select at least 1 more category';
+    summary.classList.remove('has-selection');
+  } else {
+    btn.disabled = false;
+    const names = [...selectedCats].map(c => CAT_META[c].label);
+    summary.textContent = `Playing: ${names.join(' · ')}`;
+    summary.classList.add('has-selection');
+  }
+}
+
+function startFromPicker() {
+  if (selectedCats.size < 2) return;
+  startGame([...selectedCats]);
+}
 
 // ══════════════════════════════════════
 // GAME STATE
 // ══════════════════════════════════════
-let currentMode = '';
+let currentCats = [];
 let rounds = [], roundIdx = 0, score = 0, answered = false;
-const TOTAL_ROUNDS = 10;
 
-// ══════════════════════════════════════
-// UTILS
-// ══════════════════════════════════════
 const shuffle = a => { const r=[...a]; for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];} return r; };
-const pick    = (arr,n) => shuffle([...arr]).slice(0,n);
-
-// All categories pool for "mixed"
-const ALL_CATS = ['animals','fruit','clothes'];
-const SRC = { animals:ANIMALS, fruit:FRUITS, clothes:CLOTHES_ITEMS };
+const pick    = (arr, n) => shuffle([...arr]).slice(0, n);
 
 // ══════════════════════════════════════
 // BUILD ROUNDS
 // ══════════════════════════════════════
-function buildRounds(mode) {
+function buildRounds(cats) {
   const rs = [];
-  for (let i = 0; i < TOTAL_ROUNDS; i++) {
-    let majorCat, minorCat;
+  const catList = [...cats];
+  // track used ids per cat to avoid repeats
+  const used = {};
+  catList.forEach(c => used[c] = []);
 
-    if (mode === 'mixed') {
-      // cycle through all three categories
-      const cycleOrder = [
-        ['animals','fruit'], ['fruit','clothes'], ['clothes','animals'],
-        ['animals','clothes'], ['fruit','animals'], ['clothes','fruit'],
-        ['animals','fruit'], ['fruit','clothes'], ['clothes','animals'],
-        ['animals','clothes']
-      ];
-      [majorCat, minorCat] = cycleOrder[i % cycleOrder.length];
-    } else {
-      // 3 from this category, odd from another
-      majorCat = mode;
-      const others = ALL_CATS.filter(c => c !== mode);
-      minorCat = others[i % others.length];
-    }
+  for (let i = 0; i < totalRounds; i++) {
+    // pick major category (3 items) and minor (1 odd)
+    const majorCat = catList[i % catList.length];
+    const others = catList.filter(c => c !== majorCat);
+    const minorCat = others[i % others.length];
 
-    const majorSrc = SRC[majorCat];
-    const minorSrc = SRC[minorCat];
+    const majorPool = SRC[majorCat].filter(x => !used[majorCat].includes(x));
+    const minorPool = SRC[minorCat].filter(x => !used[minorCat].includes(x));
+    const mSrc = majorPool.length >= 3 ? majorPool : SRC[majorCat];
+    const oSrc = minorPool.length >= 1 ? minorPool : SRC[minorCat];
 
-    const usedMajor = rs.flatMap(r => r.items.filter(x=>x.cat===majorCat).map(x=>x.id));
-    const usedMinor = rs.flatMap(r => r.items.filter(x=>x.cat===minorCat).map(x=>x.id));
-    const availMajor = majorSrc.filter(x => !usedMajor.includes(x));
-    const availMinor = minorSrc.filter(x => !usedMinor.includes(x));
-    const majorPool = availMajor.length >= 3 ? availMajor : majorSrc;
-    const minorPool = availMinor.length >= 1 ? availMinor : minorSrc;
+    const three = pick(mSrc, 3).map(id => ({ id, cat: majorCat }));
+    const odd   = { id: pick(oSrc, 1)[0], cat: minorCat };
 
-    const three = pick(majorPool,3).map(id => ({ id, cat:majorCat }));
-    const odd   = { id: pick(minorPool,1)[0], cat: minorCat };
-    rs.push({ items: shuffle([...three, odd]), oddId:odd.id, oddCat:minorCat, majorCat });
+    three.forEach(t => used[majorCat].push(t.id));
+    used[minorCat].push(odd.id);
+
+    rs.push({ items: shuffle([...three, odd]), oddId: odd.id, oddCat: minorCat, majorCat });
   }
   return rs;
 }
@@ -354,11 +560,12 @@ function buildRounds(mode) {
 // ══════════════════════════════════════
 // START GAME
 // ══════════════════════════════════════
-function startGame(mode) {
-  currentMode = mode;
-  rounds = buildRounds(mode);
+function startGame(cats) {
+  currentCats = cats;
+  rounds = buildRounds(cats);
   roundIdx = 0; score = 0; answered = false;
-  document.getElementById('cat-select').style.display = 'none';
+
+  document.getElementById('picker-screen').style.display = 'none';
   document.getElementById('finish-screen').classList.remove('show');
   document.getElementById('finish-screen').style.display = 'none';
   document.getElementById('score-display').textContent = '0';
@@ -372,9 +579,9 @@ function startGame(mode) {
 function renderRound() {
   answered = false;
   const r = rounds[roundIdx];
-  document.getElementById('round-label').textContent = `Round ${roundIdx+1} of ${TOTAL_ROUNDS}`;
+  document.getElementById('round-label').textContent = `Round ${roundIdx+1} of ${totalRounds}`;
   document.getElementById('score-display').textContent = score;
-  document.getElementById('prog-fill').style.width = (roundIdx / TOTAL_ROUNDS * 100) + '%';
+  document.getElementById('prog-fill').style.width = (roundIdx / totalRounds * 100) + '%';
   document.getElementById('next-btn').classList.remove('show');
   document.getElementById('cat-chips').innerHTML = '';
   document.getElementById('cat-chips').style.visibility = 'hidden';
@@ -388,43 +595,43 @@ function renderRound() {
     card.dataset.id  = item.id;
     card.dataset.cat = item.cat;
 
-    // inner wrapper for image clipping
     const inner = document.createElement('div');
     inner.className = 'pic-card-inner';
 
+    const imgSrc = IMG[item.cat](item.id);
     const img = document.createElement('img');
-    img.src = IMG[item.cat](item.id);
-    img.alt = item.id;
     const ph = document.createElement('div');
     ph.className = 'ph';
     ph.textContent = em(item.id);
     ph.style.display = 'none';
-    img.onerror = () => { img.style.display='none'; ph.style.display='flex'; };
-    inner.appendChild(img);
+
+    if (!imgSrc) {
+      // emoji-only category (places, sports with no images)
+      ph.style.display = 'flex';
+    } else {
+      img.src = imgSrc;
+      img.alt = item.id;
+      img.onerror = () => { img.style.display='none'; ph.style.display='flex'; };
+      inner.appendChild(img);
+    }
     inner.appendChild(ph);
 
-    // result overlay (inside inner)
     const overlay = document.createElement('div');
     overlay.className = 'result-overlay';
     inner.appendChild(overlay);
 
     card.appendChild(inner);
 
-    // word bubble (outside inner so it can overflow card)
     const bubble = document.createElement('div');
     bubble.className = 'word-bubble';
     bubble.textContent = displayName(item.id);
     card.appendChild(bubble);
 
-    // ── TAP HANDLER ──
     card.addEventListener('click', () => {
       if (answered) return;
-
-      // show word bubble on any tap (toggle off others first)
       const allCards = document.querySelectorAll('.pic-card');
       allCards.forEach(c => { if (c !== card) c.classList.remove('show-word'); });
       card.classList.toggle('show-word');
-
       handlePick(card, item.id, r.oddId, r.majorCat, r.oddCat);
     });
 
@@ -439,11 +646,9 @@ function handlePick(card, pickedId, oddId, majorCat, oddCat) {
   if (answered) return;
   answered = true;
 
-  // lock all cards
   const allCards = document.querySelectorAll('.pic-card');
   allCards.forEach(c => c.classList.add('answered'));
 
-  // show category explanation chips
   const chips = document.getElementById('cat-chips');
   chips.style.visibility = 'visible';
   const mMeta = CAT_META[majorCat];
@@ -454,34 +659,27 @@ function handlePick(card, pickedId, oddId, majorCat, oddCat) {
   `;
 
   if (pickedId === oddId) {
-    // ✅ CORRECT
     score++;
     document.getElementById('score-display').textContent = score;
-    // score badge pop
     const badge = document.getElementById('score-badge');
     badge.classList.remove('pop');
-    void badge.offsetWidth; // reflow
+    void badge.offsetWidth;
     badge.classList.add('pop');
 
     card.classList.add('correct-pick');
     card.querySelector('.result-overlay').textContent = '✅';
-    // show word bubble on correct
     card.classList.add('show-word');
-    // dim others
     allCards.forEach(c => { if (c !== card) { c.classList.add('dim'); c.classList.remove('show-word'); } });
-    // confetti!
     launchConfetti(card);
     setTimeout(() => nextRound(), 1600);
   } else {
-    // ❌ WRONG
     card.classList.add('wrong-pick');
     card.querySelector('.result-overlay').textContent = '❌';
-    // reveal correct
     allCards.forEach(c => {
       if (c.dataset.id === oddId) {
         c.classList.add('reveal-correct');
         c.querySelector('.result-overlay').textContent = '✅';
-        c.classList.add('show-word'); // show its word too
+        c.classList.add('show-word');
       } else if (c !== card) {
         c.classList.add('dim');
         c.classList.remove('show-word');
@@ -507,13 +705,7 @@ function launchConfetti(fromCard) {
     const spread = 80 + Math.random() * 120;
     const dx = Math.cos(angle * Math.PI/180) * spread;
     const dur = 0.7 + Math.random() * 0.6;
-    piece.style.cssText = `
-      left:${cx + dx - size/2}px; top:${cy - 10}px;
-      width:${size}px; height:${size}px;
-      background:${colors[i%colors.length]};
-      animation-duration:${dur}s;
-      border-radius:${Math.random()>.5?'50%':'2px'};
-    `;
+    piece.style.cssText = `left:${cx+dx-size/2}px;top:${cy-10}px;width:${size}px;height:${size}px;background:${colors[i%colors.length]};animation-duration:${dur}s;border-radius:${Math.random()>.5?'50%':'2px'};`;
     document.body.appendChild(piece);
     setTimeout(() => piece.remove(), dur * 1000 + 100);
   }
@@ -524,7 +716,7 @@ function launchConfetti(fromCard) {
 // ══════════════════════════════════════
 function nextRound() {
   roundIdx++;
-  if (roundIdx >= TOTAL_ROUNDS) showFinish();
+  if (roundIdx >= totalRounds) showFinish();
   else renderRound();
 }
 
@@ -534,13 +726,13 @@ function showFinish() {
   const fs = document.getElementById('finish-screen');
   fs.style.display = 'flex';
   fs.classList.add('show');
-  const pct = score / TOTAL_ROUNDS;
+  const pct = score / totalRounds;
   let stars = '⭐';
   if (pct >= 0.5) stars = '⭐⭐';
   if (pct >= 0.7) stars = '⭐⭐⭐';
   if (pct >= 0.9) stars = '🌟🌟🌟';
   document.getElementById('stars-row').textContent = stars;
-  document.getElementById('finish-score').textContent = `${score} out of ${TOTAL_ROUNDS} correct!`;
+  document.getElementById('finish-score').textContent = `${score} out of ${totalRounds} correct!`;
   if (pct >= 0.9) launchConfettiFinish();
 }
 
@@ -552,37 +744,40 @@ function launchConfettiFinish() {
       piece.className = 'confetti-piece';
       const size = 8 + Math.random() * 12;
       const dur = 1.2 + Math.random() * 1;
-      piece.style.cssText = `
-        left:${Math.random()*100}vw; top:-20px;
-        width:${size}px; height:${size}px;
-        background:${colors[i%colors.length]};
-        animation-duration:${dur}s;
-        border-radius:${Math.random()>.5?'50%':'3px'};
-      `;
+      piece.style.cssText = `left:${Math.random()*100}vw;top:-20px;width:${size}px;height:${size}px;background:${colors[i%colors.length]};animation-duration:${dur}s;border-radius:${Math.random()>.5?'50%':'3px'};`;
       document.body.appendChild(piece);
       setTimeout(() => piece.remove(), dur * 1000 + 100);
     }, i * 40);
   }
 }
 
-function playAgain() { startGame(currentMode); }
+function playAgain() {
+  // replay with same categories
+  rounds = buildRounds(currentCats);
+  roundIdx = 0; score = 0; answered = false;
+  document.getElementById('finish-screen').classList.remove('show');
+  document.getElementById('finish-screen').style.display = 'none';
+  document.getElementById('score-display').textContent = '0';
+  document.getElementById('game-area').style.display = 'flex';
+  renderRound();
+}
 
 function goHome() {
   document.getElementById('game-area').style.display = 'none';
   document.getElementById('finish-screen').style.display = 'none';
   document.getElementById('finish-screen').classList.remove('show');
-  document.getElementById('cat-select').style.display = 'flex';
+  document.getElementById('picker-screen').style.display = 'flex';
 }
 
 // ══════════════════════════════════════
 // BUBBLES BG
 // ══════════════════════════════════════
 (function(){
-  const cv=document.getElementById('bubble-canvas');const cx=cv.getContext('2d');
+  const cv=document.getElementById('bubble-canvas'); const cx=cv.getContext('2d');
   const cols=['#7C3AED','#FF6B6B','#3B82F6','#6BCB77','#FF9F43','#FFD93D','#F472B6','#2DD4BF'];
   let bs=[];
   function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
-  resize();window.addEventListener('resize',resize);
+  resize(); window.addEventListener('resize',resize);
   for(let i=0;i<16;i++){const r=20+Math.random()*50;bs.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r,dx:(Math.random()-.5)*.5,dy:(Math.random()-.5)*.5,col:cols[i%cols.length]});}
   function draw(){cx.clearRect(0,0,cv.width,cv.height);bs.forEach(b=>{b.x+=b.dx;b.y+=b.dy;if(b.x<-b.r)b.x=cv.width+b.r;if(b.x>cv.width+b.r)b.x=-b.r;if(b.y<-b.r)b.y=cv.height+b.r;if(b.y>cv.height+b.r)b.y=-b.r;cx.globalAlpha=.10;cx.beginPath();cx.arc(b.x,b.y,b.r,0,Math.PI*2);cx.fillStyle=b.col;cx.fill();cx.globalAlpha=.25;cx.beginPath();cx.arc(b.x-b.r*.28,b.y-b.r*.28,b.r*.2,0,Math.PI*2);cx.fillStyle='#fff';cx.fill();cx.globalAlpha=1;});requestAnimationFrame(draw);}
   draw();
