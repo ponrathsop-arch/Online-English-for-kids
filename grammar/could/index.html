@@ -2,242 +2,154 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Could!</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Could / Couldn't – English with Pang</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;width:100vw;overflow:hidden;background:#FEF9F0;touch-action:manipulation;font-weight:800;}
-.slide{display:none;width:100vw;height:calc(100vh - 7px - 56px - 70px);position:absolute;top:7px;left:0;flex-direction:column;align-items:center;justify-content:center;padding:12px 16px 8px;overflow:hidden;}
-.slide.active{display:flex;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}
-@keyframes popIn{0%{transform:scale(0.85);opacity:0}100%{transform:scale(1);opacity:1}}
-#progress-bar-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,0.07);z-index:998;}
-#progress-bar{height:100%;background:linear-gradient(90deg,#C77DFF,#4D96FF,#FFD93D);transition:width .4s ease;width:0%;}
-#dots{position:fixed;bottom:calc(70px + 28px);left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:999;}
-.dot{width:9px;height:9px;border-radius:50%;background:rgba(0,0,0,0.18);transition:all .3s;}
-.dot.active{background:#555;transform:scale(1.5);}
-.nav-btn{position:fixed;bottom:calc(70px + 14px);background:rgba(80,80,80,0.18);border:none;border-radius:50%;width:52px;height:52px;font-size:1.5rem;cursor:pointer;z-index:999;transition:transform .15s;backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,0.1);}
-.nav-btn:hover{transform:scale(1.15);}
-#prevBtn{left:16px;}#nextBtn{right:16px;}
-#quick-nav{position:fixed;bottom:0;left:0;width:100%;height:70px;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border-top:2px solid #F0EAE0;z-index:997;padding:10px 10px 12px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;}
-#quick-nav::-webkit-scrollbar{display:none;}
-.qn-btn{flex-shrink:0;border:none;border-radius:14px;padding:8px 14px;font-family:inherit;font-weight:800;font-size:clamp(0.7rem,1.5vw,1rem);cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 3px 0 rgba(0,0,0,0.13);color:white;text-shadow:0 1px 3px rgba(0,0,0,0.18);}
-.qn-btn:hover{transform:translateY(-3px);}
-.qn-btn.active-nav{outline:3px solid rgba(0,0,0,0.25);transform:translateY(-2px);}
-.qn-divider{flex-shrink:0;width:2px;height:32px;background:#EDE8E0;border-radius:2px;}
-@keyframes titleBounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-16px) rotate(2deg)}}
-@keyframes pulse{from{opacity:.4;transform:scale(0.97)}to{opacity:1;transform:scale(1.03)}}
-.ex-sentences{display:flex;flex-direction:column;gap:10px;width:100%;max-width:660px;}
-.ex-sentence-box{background:white;border-radius:18px;padding:clamp(10px,2vw,17px) clamp(14px,2.5vw,26px);box-shadow:0 5px 0 rgba(0,0,0,0.07);border-left:7px solid transparent;display:flex;align-items:center;gap:14px;font-size:clamp(1.05rem,2.6vw,1.75rem);color:#333;}
-.ex-icon{font-size:clamp(1.8rem,4vw,2.8rem);flex-shrink:0;width:clamp(36px,5.5vw,54px);text-align:center;}
-.ex-verb{font-weight:900;padding:2px 9px;border-radius:7px;}
-.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:680px;width:100%;}
-.summary-card{background:white;border-radius:18px;padding:clamp(11px,2vw,20px);box-shadow:0 6px 0 rgba(0,0,0,0.09);}
-.summary-card-title{font-size:clamp(0.88rem,2vw,1.4rem);color:#aaa;margin-bottom:8px;}
-.summary-card-content{font-size:clamp(0.92rem,2.1vw,1.45rem);color:#333;line-height:1.9;}
-.hl{font-weight:900;padding:2px 7px;border-radius:6px;}
-.quiz-slide{background:#FEF9F0;gap:6px;}
-.quiz-counter{font-size:clamp(1rem,2.2vw,1.6rem);color:#bbb;}
-.quiz-icon-wrap{font-size:clamp(4rem,10vw,7rem);animation:charFloat 2.5s ease-in-out infinite alternate;line-height:1;}
-@keyframes charFloat{from{transform:translateY(0)}to{transform:translateY(-12px)}}
-.quiz-subject-badge{font-size:clamp(1.2rem,3vw,2.2rem);padding:8px 26px;border-radius:50px;color:white;display:inline-block;text-shadow:0 2px 4px rgba(0,0,0,0.15);}
-.quiz-sentence{font-size:clamp(1.35rem,3.8vw,2.7rem);color:#333;text-align:center;line-height:1.5;max-width:700px;}
-.quiz-blank{display:inline-block;min-width:clamp(80px,13vw,140px);height:clamp(38px,6vw,55px);border-bottom:6px solid #DDD;vertical-align:middle;margin:0 6px;}
-.quiz-choices{display:flex;gap:clamp(8px,2vw,16px);justify-content:center;margin-top:14px;flex-wrap:wrap;}
-.quiz-btn{border:none;border-radius:20px;padding:clamp(12px,2vw,20px) clamp(14px,3vw,32px);cursor:pointer;font-family:inherit;font-weight:900;font-size:clamp(1.05rem,2.6vw,2rem);box-shadow:0 7px 0 #6A3FB5;transition:transform .15s,box-shadow .15s;background:#C77DFF;color:white;text-shadow:0 2px 5px rgba(0,0,0,0.2);}
-.quiz-btn:hover{transform:translateY(-5px);box-shadow:0 12px 0 #6A3FB5;}
-.quiz-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #6A3FB5;}
-.quiz-btn.correct{animation:correctBounce .55s ease;background:#6BCB77 !important;box-shadow:0 7px 0 #3DAD8E !important;outline:5px solid #A8F0C0;}
-.quiz-btn.wrong{animation:wrongShake .4s ease;background:#FF6B6B !important;box-shadow:0 7px 0 #D94040 !important;}
-.quiz-feedback{font-size:clamp(1.2rem,3.2vw,2.3rem);min-height:46px;margin-top:6px;text-align:center;color:#333;}
-@keyframes correctBounce{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-5deg)}70%{transform:scale(0.93) rotate(3deg)}100%{transform:scale(1)}}
-@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-12px)}75%{transform:translateX(12px)}}
-.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:2rem;animation:sparkleFly .9s ease forwards;}
-@keyframes sparkleFly{0%{opacity:1;transform:scale(0.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-90px)}}
-.confetti-piece{position:fixed;width:13px;height:13px;border-radius:4px;opacity:0;pointer-events:none;z-index:9999;animation:confettiFall 1.3s ease forwards;}
-@keyframes confettiFall{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(800deg)}}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --sky: #f3eeff; --yellow: #FFD93D; --coral: #FF6B6B; --green: #6BCB77; --purple: #C77DFF; --blue: #4D96FF; --orange: #FF9A3C; --teal: #00C9A7; --dark: #2d2d2d; }
+  body { font-family: 'Nunito', sans-serif; background-color: var(--sky); min-height: 100vh; overflow-x: hidden; }
+  .bg-shapes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .shape { position: absolute; border-radius: 50%; opacity: 0.15; animation: float linear infinite; }
+  .shape:nth-child(1) { width: 120px; height: 120px; background: var(--purple); top: 10%; left: 5%; animation-duration: 14s; }
+  .shape:nth-child(2) { width: 80px; height: 80px; background: var(--yellow); top: 30%; right: 8%; animation-duration: 10s; animation-delay: -3s; }
+  .shape:nth-child(3) { width: 60px; height: 60px; background: var(--blue); bottom: 20%; left: 12%; animation-duration: 12s; animation-delay: -6s; }
+  .shape:nth-child(4) { width: 100px; height: 100px; background: var(--coral); bottom: 10%; right: 15%; animation-duration: 16s; animation-delay: -2s; }
+  @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-20px) rotate(120deg); } 66% { transform: translateY(10px) rotate(240deg); } }
+  .nav-row { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 28px 28px 0; flex-wrap: wrap; }
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; background: white; border-radius: 999px; font-size: 14px; font-weight: 700; color: #555; text-decoration: none; box-shadow: 0 4px 0 rgba(0,0,0,0.08); transition: transform 0.15s, box-shadow 0.15s; }
+  .back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,0.08); }
+  .nav-sep { color: #bbb; font-weight: 700; font-size: 16px; }
+  .nav-current { font-size: 14px; font-weight: 700; color: var(--purple); }
+  header { position: relative; z-index: 1; text-align: center; padding: 36px 20px 28px; }
+  .star-row { font-size: 22px; letter-spacing: 6px; margin-bottom: 12px; animation: twinkle 2s ease-in-out infinite alternate; }
+  @keyframes twinkle { from { opacity: 0.6; transform: scale(1); } to { opacity: 1; transform: scale(1.05); } }
+  .page-label { font-family: 'Fredoka One', cursive; font-size: clamp(16px, 3vw, 22px); color: #888; margin-bottom: 8px; letter-spacing: 1px; }
+  h1 { font-family: 'Fredoka One', cursive; font-size: clamp(36px, 8vw, 70px); line-height: 1; display: inline-flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+  h1 span { display: inline-block; animation: bounce-letter 1.5s ease-in-out infinite alternate; }
+  h1 span:nth-child(1){color:var(--purple);animation-delay:0s} h1 span:nth-child(2){color:var(--blue);animation-delay:.08s} h1 span:nth-child(3){color:var(--purple);animation-delay:.16s} h1 span:nth-child(4){color:var(--blue);animation-delay:.24s} h1 span:nth-child(5){color:var(--purple);animation-delay:.32s} h1 span:nth-child(6){color:var(--blue);animation-delay:.40s} h1 span:nth-child(7){color:var(--yellow);animation-delay:.48s} h1 span:nth-child(8){color:var(--purple);animation-delay:.56s} h1 span:nth-child(9){color:var(--blue);animation-delay:.64s} h1 span:nth-child(10){color:var(--purple);animation-delay:.72s} h1 span:nth-child(11){color:var(--blue);animation-delay:.80s} h1 span:nth-child(12){color:var(--yellow);animation-delay:.88s} h1 span:nth-child(13){color:var(--purple);animation-delay:.96s}
+  @keyframes bounce-letter { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+  .subtitle { margin-top: 12px; font-size: 17px; color: #555; font-weight: 600; }
+  .tip-banner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto 32px; padding: 0 24px; }
+  .tip-inner { background: white; border-radius: 18px; padding: 16px 22px; border-left: 6px solid var(--purple); box-shadow: 0 4px 0 rgba(0,0,0,0.06); font-size: 14px; color: #555; font-weight: 600; line-height: 1.7; }
+  .tip-inner strong { color: var(--dark); }
+  .grid-section { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+  .section-label { font-family: 'Fredoka One', cursive; font-size: 22px; color: #777; text-align: center; margin-bottom: 32px; letter-spacing: 1px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; }
+  .card { background: white; border-radius: 24px; padding: 32px 24px 28px; text-align: center; text-decoration: none; display: block; position: relative; overflow: hidden; border: 3px solid transparent; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; box-shadow: 0 6px 0 rgba(0,0,0,0.08); opacity: 0; transform: translateY(30px); animation: card-in 0.5s ease forwards; }
+  .card:nth-child(1){animation-delay:0.05s} .card:nth-child(2){animation-delay:0.12s} .card:nth-child(3){animation-delay:0.19s}
+  @keyframes card-in { to { opacity: 1; transform: translateY(0); } }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; border-radius: 24px 24px 0 0; }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 14px 0 rgba(0,0,0,0.08); }
+  .card-1::before { background: var(--purple); }  .card:hover.card-1 { border-color: var(--purple); }
+  .card-2::before { background: var(--coral); }   .card:hover.card-2 { border-color: var(--coral); }
+  .card-3::before { background: var(--blue); }    .card:hover.card-3 { border-color: var(--blue); }
+  .card-emoji { font-size: 48px; display: block; margin-bottom: 14px; line-height: 1; }
+  .card-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--dark); margin-bottom: 8px; }
+  .card-desc { font-size: 13px; color: #888; font-weight: 600; line-height: 1.6; }
+  .card-example { margin-top: 12px; padding: 10px 12px; background: var(--sky); border-radius: 10px; font-size: 13px; font-weight: 700; color: #444; line-height: 1.6; text-align: left; }
+  .card-badge { display: inline-block; margin-top: 14px; padding: 4px 14px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+  .card-1 .card-badge { background: #f7eeff; color: #9a3de0; }
+  .card-2 .card-badge { background: #fff0ee; color: var(--coral); }
+  .card-3 .card-badge { background: #eef4ff; color: var(--blue); }
+  footer { position: relative; z-index: 1; text-align: center; padding: 20px; font-size: 13px; color: #aaa; font-weight: 600; }
+
+  /* ── CAN vs COULD COMPARISON ── */
+  .compare-banner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto 36px; padding: 0 24px; }
+  .compare-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: #777; text-align: center; margin-bottom: 16px; letter-spacing: 0.5px; }
+  .compare-grid { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
+  .compare-card { background: white; border-radius: 20px; padding: 18px 16px; box-shadow: 0 5px 0 rgba(0,0,0,0.07); display: flex; flex-direction: column; gap: 10px; }
+  .compare-can { border-top: 5px solid #00C9A7; }
+  .compare-could { border-top: 5px solid var(--purple); }
+  .compare-word { font-family: 'Fredoka One', cursive; font-size: clamp(15px, 3vw, 20px); }
+  .compare-can .compare-word { color: #00C9A7; }
+  .compare-could .compare-word { color: var(--purple); }
+  .compare-tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+  .compare-can .compare-tag { background: #e0fff4; color: #00A386; }
+  .compare-could .compare-tag { background: #f7eeff; color: #9a3de0; }
+  .compare-examples { font-size: clamp(12px, 2.2vw, 14px); font-weight: 700; color: #444; line-height: 2; display: flex; flex-direction: column; gap: 2px; }
+  .time-chip { display: inline-block; padding: 1px 7px; border-radius: 6px; font-size: 10px; font-weight: 900; background: #e0fff4; color: #00A386; margin-left: 4px; vertical-align: middle; }
+  .time-chip.time-past { background: #f7eeff; color: #9a3de0; }
+  .compare-arrow { font-size: 28px; color: #ccc; text-align: center; font-weight: 900; }
+  .compare-tip { margin-top: 14px; background: white; border-radius: 16px; padding: 14px 18px; border-left: 5px solid var(--yellow); box-shadow: 0 4px 0 rgba(0,0,0,0.05); font-size: 13px; color: #555; font-weight: 600; line-height: 1.7; }
+  @media (max-width: 480px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    .compare-arrow { transform: rotate(90deg); }
+  }
 </style>
 </head>
 <body>
-<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
-<button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀</button>
-<button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">▶</button>
-<div id="dots"></div>
-<div id="quick-nav">
-  <button class="qn-btn" style="background:#888" onclick="showSlide(0)">Home</button>
-  <div class="qn-divider"></div>
-  <button class="qn-btn" style="background:#C77DFF" id="qn-what" onclick="goToSection('what')">What is COULD?</button>
-  <button class="qn-btn" style="background:#FF9F43" id="qn-verb" onclick="goToSection('verb')">Verb Rule</button>
-  <button class="qn-btn" style="background:#4D96FF" id="qn-examples" onclick="goToSection('examples')">Examples</button>
-  <div class="qn-divider"></div>
-  <button class="qn-btn" style="background:#FFD93D;color:#555;text-shadow:none;" id="qn-quiz" onclick="goToSection('quiz')">Quiz!</button>
+<div class="bg-shapes"><div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div></div>
+<div class="nav-row">
+  <a href="../index.html" class="back-btn">← Grammar</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">🎯 Could / Couldn't</span>
 </div>
-
-<!-- INTRO -->
-<div class="slide active" id="s0" style="background:linear-gradient(145deg,#C77DFF,#4D96FF,#FFD93D);justify-content:center;gap:16px;">
-  <div style="font-size:clamp(3rem,10vw,8rem);color:white;text-shadow:0 8px 0 rgba(0,0,0,0.12);animation:titleBounce 1.8s ease-in-out infinite alternate;text-align:center;line-height:1.1;">could!</div>
-  <div style="font-size:clamp(1.2rem,3.5vw,2.2rem);color:white;animation:pulse 1.4s ease-in-out infinite alternate;">Tap to start! 💪</div>
-</div>
-
-<!-- WHAT IS COULD -->
-<div class="slide" id="s-what" data-section="what" style="background:#FEF9F0;gap:10px;flex-direction:column;align-items:center;justify-content:center;">
-  <div style="font-size:clamp(1.6rem,4.5vw,3rem);color:#333;text-align:center;">What does COULD mean?</div>
-  <div style="display:inline-block;padding:8px 22px;border-radius:50px;font-size:clamp(1rem,2.5vw,1.7rem);color:white;background:#C77DFF;text-shadow:0 2px 4px rgba(0,0,0,0.15);">COULD = past ability — things you were able to do</div>
-  <div style="display:flex;gap:clamp(10px,2vw,18px);justify-content:center;flex-wrap:wrap;width:100%;max-width:700px;">
-    <div style="background:white;border-radius:20px;padding:clamp(12px,2.2vw,20px);box-shadow:0 6px 0 rgba(0,0,0,0.07);display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;min-width:clamp(120px,28vw,180px);">
-      <div style="font-size:clamp(2.5rem,6vw,4rem);">🏊</div>
-      <div style="font-size:clamp(0.95rem,2vw,1.4rem);color:#333;text-align:center;">I could <strong style="color:#C77DFF">swim</strong></div>
-    </div>
-    <div style="background:white;border-radius:20px;padding:clamp(12px,2.2vw,20px);box-shadow:0 6px 0 rgba(0,0,0,0.07);display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;min-width:clamp(120px,28vw,180px);">
-      <div style="font-size:clamp(2.5rem,6vw,4rem);">🎵</div>
-      <div style="font-size:clamp(0.95rem,2vw,1.4rem);color:#333;text-align:center;">She could <strong style="color:#C77DFF">sing</strong></div>
-    </div>
-    <div style="background:white;border-radius:20px;padding:clamp(12px,2.2vw,20px);box-shadow:0 6px 0 rgba(0,0,0,0.07);display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;min-width:clamp(120px,28vw,180px);">
-      <div style="font-size:clamp(2.5rem,6vw,4rem);">🏃</div>
-      <div style="font-size:clamp(0.95rem,2vw,1.4rem);color:#333;text-align:center;">They could <strong style="color:#C77DFF">run</strong></div>
-    </div>
+<header>
+  <div class="star-row">🎯 🌟 🎯 🌟 🎯</div>
+  <p class="page-label">Grammar</p>
+  <h1><span>C</span><span>o</span><span>u</span><span>l</span><span>d</span><span> </span><span>/</span><span> </span><span>C</span><span>o</span><span>u</span><span>l</span><span>d</span><span>n</span><span>'</span><span>t</span></h1>
+  <p class="subtitle">Talking about past ability — what you could do! 💪</p>
+</header>
+<div class="tip-banner">
+  <div class="tip-inner">
+    💡 <strong>Quick rule:</strong> <strong>Could</strong> is the same for everyone — I, you, he, she, it, we, they all use <strong>could</strong>! e.g. <em>"I <strong>could</strong> swim."</em> / <em>"She <strong>could</strong> sing."</em> / <em>"They <strong>could</strong> run fast."</em>
   </div>
 </div>
-
-<!-- COULD SAME FOR EVERYONE -->
-<div class="slide" id="s-overview" data-section="what" style="background:#FEF9F0;gap:14px;flex-direction:column;align-items:center;justify-content:center;">
-  <div style="font-size:clamp(1.6rem,4.5vw,3rem);color:#333;text-align:center;">COULD is easy! 🎉</div>
-  <div style="background:white;border-radius:22px;padding:clamp(14px,2.5vw,24px);box-shadow:0 7px 0 rgba(0,0,0,0.09);display:flex;flex-direction:column;align-items:center;gap:12px;max-width:500px;width:100%;">
-    <div style="font-size:clamp(1.4rem,3.5vw,2.6rem);color:white;padding:10px 28px;border-radius:50px;background:#C77DFF;text-shadow:0 2px 4px rgba(0,0,0,0.15);">could</div>
-    <div style="font-size:clamp(0.95rem,2.2vw,1.5rem);color:#888;text-align:center;line-height:1.9;">
-      I / You / He / She / It / We / They<br>all use <strong style="color:#C77DFF">could</strong> — no changes!
-    </div>
-  </div>
-  <div style="font-size:clamp(0.9rem,2vw,1.3rem);color:#aaa;text-align:center;">No -s for He/She! &nbsp;✅ She <strong style="color:#C77DFF">could</strong> &nbsp;❌ She <s>coulds</s></div>
-</div>
-
-<!-- VERB RULE -->
-<div class="slide" id="s-verb" data-section="verb" style="background:#FEF9F0;gap:12px;flex-direction:column;align-items:center;justify-content:center;">
-  <div style="font-size:clamp(1.5rem,4vw,2.8rem);color:#333;text-align:center;">What verb comes after COULD?</div>
-  <div style="background:white;border-radius:22px;padding:clamp(14px,2.5vw,22px);box-shadow:0 7px 0 rgba(0,0,0,0.09);max-width:640px;width:100%;display:flex;flex-direction:column;gap:12px;">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;padding:8px 0;">
-      <div style="padding:clamp(8px,1.8vw,14px) clamp(10px,2vw,20px);border-radius:14px;font-size:clamp(1rem,2.5vw,1.8rem);font-weight:900;color:white;background:#C77DFF;text-shadow:0 2px 4px rgba(0,0,0,0.15);">could</div>
-      <div style="font-size:clamp(1.2rem,2.5vw,2rem);color:#ccc;font-weight:900;">+</div>
-      <div style="padding:clamp(8px,1.8vw,14px) clamp(10px,2vw,20px);border-radius:14px;font-size:clamp(1rem,2.5vw,1.8rem);font-weight:900;color:white;background:#FF9F43;text-shadow:0 2px 4px rgba(0,0,0,0.15);">base verb</div>
-      <div style="font-size:clamp(0.85rem,1.8vw,1.3rem);color:#aaa;">(no -s, no -ing, no -ed)</div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div style="background:#EDFFF5;border-radius:14px;padding:clamp(10px,2vw,16px);">
-        <div style="font-size:clamp(0.8rem,1.8vw,1.1rem);font-weight:900;color:#3a9e46;margin-bottom:6px;">✅ Correct</div>
-        <div style="font-size:clamp(0.92rem,2.1vw,1.4rem);color:#333;line-height:1.9;">
-          She could <strong style="color:#3a9e46">swim</strong><br>
-          He could <strong style="color:#3a9e46">run</strong><br>
-          Dogs could <strong style="color:#3a9e46">jump</strong><br>
-          I could <strong style="color:#3a9e46">play</strong>
-        </div>
+<div class="compare-banner">
+  <p class="compare-title">🤔 What's the difference?</p>
+  <div class="compare-grid">
+    <div class="compare-card compare-can">
+      <div class="compare-word">CAN / CAN'T</div>
+      <div class="compare-tag">Right now — present ability</div>
+      <div class="compare-examples">
+        <div>✅ I <strong>can</strong> swim. <span class="time-chip">NOW</span></div>
+        <div>❌ She <strong>can't</strong> drive. <span class="time-chip">NOW</span></div>
+        <div>❓ <strong>Can</strong> you sing? <span class="time-chip">NOW</span></div>
       </div>
-      <div style="background:#FFF0F0;border-radius:14px;padding:clamp(10px,2vw,16px);">
-        <div style="font-size:clamp(0.8rem,1.8vw,1.1rem);font-weight:900;color:#C0392B;margin-bottom:6px;">❌ Wrong</div>
-        <div style="font-size:clamp(0.92rem,2.1vw,1.4rem);color:#aaa;line-height:1.9;">
-          She could <s>swims</s><br>
-          He could <s>running</s><br>
-          Dogs could <s>jumped</s><br>
-          I could <s>played</s>
-        </div>
+    </div>
+    <div class="compare-arrow">⟷</div>
+    <div class="compare-card compare-could">
+      <div class="compare-word">COULD / COULDN'T</div>
+      <div class="compare-tag">In the past — past ability</div>
+      <div class="compare-examples">
+        <div>✅ I <strong>could</strong> swim. <span class="time-chip time-past">PAST</span></div>
+        <div>❌ She <strong>couldn't</strong> drive. <span class="time-chip time-past">PAST</span></div>
+        <div>❓ <strong>Could</strong> you sing? <span class="time-chip time-past">PAST</span></div>
       </div>
     </div>
   </div>
-</div>
-
-<!-- PEOPLE EXAMPLES -->
-<div class="slide" id="s-people-ex" data-section="examples" style="background:#FEF9F0;gap:8px;flex-direction:column;align-items:center;justify-content:center;">
-  <div style="font-size:clamp(1.6rem,4.5vw,3rem);color:#333;text-align:center;">People using COULD</div>
-  <div style="display:inline-block;padding:8px 24px;border-radius:50px;font-size:clamp(1rem,2.5vw,1.9rem);font-weight:900;color:white;background:#C77DFF;text-shadow:0 2px 4px rgba(0,0,0,0.15);">could + base verb</div>
-  <div class="ex-sentences">
-    <div class="ex-sentence-box" style="border-color:#C77DFF"><div class="ex-icon">🏊</div>I <span class="ex-verb" style="background:#F5EEFF;color:#8338EC">could</span> <span class="ex-verb" style="background:#FFF4EA;color:#E67E00">swim</span> when I was five.</div>
-    <div class="ex-sentence-box" style="border-color:#C77DFF"><div class="ex-icon">🎵</div>She <span class="ex-verb" style="background:#F5EEFF;color:#8338EC">could</span> <span class="ex-verb" style="background:#FFF4EA;color:#E67E00">sing</span> very well.</div>
-    <div class="ex-sentence-box" style="border-color:#C77DFF"><div class="ex-icon">🚲</div>He <span class="ex-verb" style="background:#F5EEFF;color:#8338EC">could</span> <span class="ex-verb" style="background:#FFF4EA;color:#E67E00">ride</span> a bike at age four.</div>
-    <div class="ex-sentence-box" style="border-color:#C77DFF"><div class="ex-icon">🗣️</div>They <span class="ex-verb" style="background:#F5EEFF;color:#8338EC">could</span> <span class="ex-verb" style="background:#FFF4EA;color:#E67E00">speak</span> two languages.</div>
+  <div class="compare-tip">
+    💬 <strong>Think of it this way:</strong> CAN = what you <em>can do today</em>. COULD = what you <em>could do before</em>!<br>
+    e.g. <em>"When I was 3, I <strong style="color:#C77DFF">couldn't</strong> read — but now I <strong style="color:#00C9A7">can</strong>!"</em>
   </div>
 </div>
-
-<!-- ANIMAL EXAMPLES -->
-<div class="slide" id="s-animal-ex" data-section="examples" style="background:#FEF9F0;gap:8px;flex-direction:column;align-items:center;justify-content:center;">
-  <div style="font-size:clamp(1.6rem,4.5vw,3rem);color:#333;text-align:center;">Animals using COULD</div>
-  <div style="display:inline-block;padding:8px 24px;border-radius:50px;font-size:clamp(1rem,2.5vw,1.9rem);font-weight:900;color:white;background:#4D96FF;text-shadow:0 2px 4px rgba(0,0,0,0.15);">could + base verb</div>
-  <div class="ex-sentences">
-    <div class="ex-sentence-box" style="border-color:#4D96FF"><div class="ex-icon">🦁</div>The lion <span class="ex-verb" style="background:#F5EEFF;color:#8338EC">could</span> <span class="ex-verb" style="background:#FFF4EA;color:#E67E00">run</span> very fast.</div>
-    <div class="ex-sentence-box" style="border-color:#4D96FF"><div class="ex-icon">🐦</div>The bird <span class="ex-verb" style="background:#F5EEFF;color:#8338EC">could</span> <span class="ex-verb" style="background:#FFF4EA;color:#E67E00">fly</span> high in the sky.</div>
-    <div class="ex-sentence-box" style="border-color:#4D96FF"><div class="ex-icon">🐬</div>The dolphin <span class="ex-verb" style="background:#F5EEFF;color:#8338EC">could</span> <span class="ex-verb" style="background:#FFF4EA;color:#E67E00">jump</span> out of the water.</div>
-    <div class="ex-sentence-box" style="border-color:#4D96FF"><div class="ex-icon">🐘</div>The elephant <span class="ex-verb" style="background:#F5EEFF;color:#8338EC">could</span> <span class="ex-verb" style="background:#FFF4EA;color:#E67E00">lift</span> heavy logs.</div>
+<section class="grid-section">
+  <p class="section-label">📖 Choose a form</p>
+  <div class="grid">
+    <a href="normal/index.html" class="card card-1">
+      <span class="card-emoji">✅</span>
+      <div class="card-title">Normal Form</div>
+      <div class="card-desc">Say what someone was able to do</div>
+      <div class="card-example">I <strong>could</strong> swim.<br>She <strong>could</strong> sing.</div>
+      <span class="card-badge">Positive</span>
+    </a>
+    <a href="negative/index.html" class="card card-2">
+      <span class="card-emoji">❌</span>
+      <div class="card-title">Negative Form</div>
+      <div class="card-desc">Say what someone was NOT able to do</div>
+      <div class="card-example">I <strong>couldn't</strong> drive.<br>He <strong>couldn't</strong> fly.</div>
+      <span class="card-badge">Negative</span>
+    </a>
+    <a href="question/index.html" class="card card-3">
+      <span class="card-emoji">❓</span>
+      <div class="card-title">Question Form</div>
+      <div class="card-desc">Ask about past ability</div>
+      <div class="card-example"><strong>Could</strong> you swim?<br><strong>Could</strong> she sing?</div>
+      <span class="card-badge">Question</span>
+    </a>
   </div>
-</div>
-
-<!-- SUMMARY -->
-<div class="slide" id="s-summary" style="background:#FFD93D;gap:12px;flex-direction:column;align-items:center;justify-content:center;" data-section="examples">
-  <div style="font-size:clamp(1.8rem,5vw,3.8rem);color:#3A006A;text-align:center;">Quick Summary! 💪</div>
-  <div class="summary-grid">
-    <div class="summary-card">
-      <div class="summary-card-title" style="color:#C77DFF">COULD = same for all</div>
-      <div class="summary-card-content">I / You / He / She<br>We / They / It<br>→ all use <span class="hl" style="background:#F5EEFF;color:#8338EC">could</span></div>
-    </div>
-    <div class="summary-card">
-      <div class="summary-card-title" style="color:#FF9F43">Verb after COULD</div>
-      <div class="summary-card-content">
-        ✅ She could <span class="hl" style="background:#FFF4EA;color:#E67E00">swim</span><br>
-        ❌ She could <s style="color:#aaa">swims</s><br>
-        ❌ She could <s style="color:#aaa">swimming</s>
-      </div>
-    </div>
-    <div class="summary-card" style="grid-column:1/-1">
-      <div class="summary-card-title">The formula</div>
-      <div class="summary-card-content" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-        <span class="hl" style="background:#F5EEFF;color:#8338EC">Subject</span> +
-        <span class="hl" style="background:#F5EEFF;color:#8338EC">could</span> +
-        <span class="hl" style="background:#FFF4EA;color:#E67E00">base verb</span>
-        <span style="color:#aaa">→ I could <strong style="color:#E67E00">swim</strong>.</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- FINISH -->
-<div class="slide" id="finish-slide" style="background:linear-gradient(145deg,#C77DFF,#4D96FF,#FFD93D);flex-direction:column;align-items:center;justify-content:center;gap:12px;">
-  <div style="font-size:clamp(5rem,14vw,9rem);animation:titleBounce 1.4s ease-in-out infinite alternate;line-height:1;">🏆</div>
-  <div style="font-size:clamp(2.2rem,7vw,5.5rem);color:white;text-shadow:0 7px 0 rgba(0,0,0,0.12);text-align:center;">Brilliant!</div>
-  <div style="font-size:clamp(1.1rem,2.8vw,2rem);color:rgba(255,255,255,0.9);text-align:center;">You mastered COULD!</div>
-  <button style="border:none;border-radius:50px;padding:14px 48px;font-family:inherit;font-size:clamp(1.1rem,2.8vw,1.8rem);font-weight:900;color:#8338EC;background:white;box-shadow:0 6px 0 rgba(0,0,0,0.12);cursor:pointer;" onclick="showSlide(0)">Play Again</button>
-</div>
-
-<script>
-const QUIZZES=[
-  // --- Pick COULD ---
-  {subject:"I",      emoji:"🏊", subjectColor:"#C77DFF", sentence:"I _______ swim when I was five.",    choices:["can","coulds","could"],        correct:"could",  feedback:"I could → COULD is the same for everyone!"},
-  {subject:"She",    emoji:"🎵", subjectColor:"#4D96FF", sentence:"She _______ sing very well.",         choices:["coulds","could","is could"],   correct:"could",  feedback:"She could → COULD never adds -s!"},
-  {subject:"They",   emoji:"🏃", subjectColor:"#C77DFF", sentence:"They _______ run very fast.",         choices:["could","are could","coulds"],  correct:"could",  feedback:"They could → COULD for everyone!"},
-  {subject:"He",     emoji:"🚲", subjectColor:"#4D96FF", sentence:"He _______ ride a bike at age four.", choices:["coulds","could","is could"],   correct:"could",  feedback:"He could → COULD never changes!"},
-  {subject:"The lion",emoji:"🦁",subjectColor:"#C77DFF", sentence:"The lion _______ run fast.",          choices:["coulds","can","could"],        correct:"could",  feedback:"The lion could → COULD for animals too!"},
-  // --- Pick base verb ---
-  {subject:"I",      emoji:"🏊", subjectColor:"#FF9F43", sentence:"I could _______.",                    choices:["swims","swimming","swim"],     correct:"swim",   feedback:"could + BASE VERB → swim ✅  (not swims ❌)"},
-  {subject:"She",    emoji:"🎵", subjectColor:"#FF9F43", sentence:"She could _______ very well.",        choices:["sings","singing","sing"],      correct:"sing",   feedback:"could + BASE VERB → sing ✅  (not sings ❌)"},
-  {subject:"He",     emoji:"🚲", subjectColor:"#FF9F43", sentence:"He could _______ a bike.",            choices:["rides","riding","ride"],       correct:"ride",   feedback:"could + BASE VERB → ride ✅  (not rides ❌)"},
-  {subject:"They",   emoji:"🗣️", subjectColor:"#FF9F43", sentence:"They could _______ two languages.",  choices:["speaks","speaking","speak"],   correct:"speak",  feedback:"could + BASE VERB → speak ✅  (not speaks ❌)"},
-  {subject:"The bird",emoji:"🐦",subjectColor:"#FF9F43", sentence:"The bird could _______ high.",        choices:["flies","flying","fly"],        correct:"fly",    feedback:"could + BASE VERB → fly ✅  (not flies ❌)"},
-];
-const STATIC=['s0','s-what','s-overview','s-verb','s-people-ex','s-animal-ex','s-summary'];
-const slideOrder=[...STATIC];
-const quizAnswered={};
-QUIZZES.forEach((_,qi)=>{const id=`quiz-${qi}`;const el=document.createElement('div');el.className='slide quiz-slide';el.id=id;el.dataset.section='quiz';document.body.appendChild(el);slideOrder.push(id);});
-slideOrder.push('finish-slide');
-let current=0;
-function buildDots(){const d=document.getElementById('dots');d.innerHTML='';slideOrder.forEach((_,i)=>{const dot=document.createElement('div');dot.className='dot'+(i===0?' active':'');d.appendChild(dot);});}
-function updateDots(){document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));document.getElementById('progress-bar').style.width=(current/(slideOrder.length-1)*100)+'%';updateQuickNav();}
-function updateQuickNav(){document.querySelectorAll('.qn-btn').forEach(b=>b.classList.remove('active-nav'));const sid=slideOrder[current];const sec=document.getElementById(sid)?.dataset?.section;if(sid==='s0')document.querySelectorAll('.qn-btn')[0].classList.add('active-nav');if(sec==='what')document.getElementById('qn-what')?.classList.add('active-nav');if(sec==='verb')document.getElementById('qn-verb')?.classList.add('active-nav');if(sec==='examples')document.getElementById('qn-examples')?.classList.add('active-nav');if(sec==='quiz')document.getElementById('qn-quiz')?.classList.add('active-nav');}
-function showSlide(n){n=Math.max(0,Math.min(slideOrder.length-1,n));document.getElementById(slideOrder[current]).classList.remove('active');current=n;document.getElementById(slideOrder[current]).classList.add('active');updateDots();document.getElementById('prevBtn').style.display=current===0?'none':'';document.getElementById('nextBtn').style.display=current===slideOrder.length-1?'none':'';const sid=slideOrder[current];if(sid.startsWith('quiz-'))initQuiz(parseInt(sid.split('-')[1]));if(sid==='finish-slide')confetti();}
-function changeSlide(d){showSlide(current+d);}
-function goToSection(sec){const idx=slideOrder.findIndex(id=>document.getElementById(id)?.dataset?.section===sec);if(idx>=0)showSlide(idx);}
-document.body.addEventListener('click',e=>{if(e.target.closest('.nav-btn,.quiz-btn,.qn-btn'))return;const sid=slideOrder[current];if(sid.startsWith('quiz-')||sid==='finish-slide')return;spawnSparkle(e.clientX,e.clientY);changeSlide(1);});
-function initQuiz(qi){const q=QUIZZES[qi];const el=document.getElementById(`quiz-${qi}`);const done=quizAnswered[qi];el.innerHTML=`<div class="quiz-counter">Question ${qi+1} of ${QUIZZES.length}</div><div class="quiz-icon-wrap">${q.emoji}</div><div class="quiz-subject-badge" style="background:${q.subjectColor}">${q.subject}</div><div class="quiz-sentence">${q.sentence.replace('_______','<span class="quiz-blank"></span>')}</div><div class="quiz-choices" id="qz-choices-${qi}"></div><div class="quiz-feedback" id="qz-feedback-${qi}">${done?q.feedback:''}</div>`;
-const wrap=el.querySelector(`#qz-choices-${qi}`);[...q.choices].sort(()=>Math.random()-.5).forEach(choice=>{const btn=document.createElement('button');btn.className='quiz-btn';btn.textContent=choice;if(done){if(choice===q.correct){btn.classList.add('correct');btn.style.background='#6BCB77';btn.style.boxShadow='0 7px 0 #3DAD8E';}else{btn.disabled=true;btn.style.opacity='0.35';}}btn.onclick=()=>handleQuizAnswer(qi,choice===q.correct,btn,el,q.feedback);wrap.appendChild(btn);});}
-function handleQuizAnswer(qi,correct,btn,el,feedback){if(quizAnswered[qi])return;if(correct){quizAnswered[qi]=true;btn.classList.add('correct');el.querySelector(`#qz-feedback-${qi}`).textContent=feedback;el.querySelectorAll('.quiz-btn').forEach(b=>{b.disabled=true;if(b!==btn)b.style.opacity='0.35';});spawnSparkle(btn.getBoundingClientRect().left+btn.offsetWidth/2,btn.getBoundingClientRect().top+btn.offsetHeight/2);confetti();setTimeout(()=>changeSlide(1),1500);}else{btn.classList.add('wrong');el.querySelector(`#qz-feedback-${qi}`).textContent='Try again!';setTimeout(()=>{btn.classList.remove('wrong');btn.style.background='';el.querySelector(`#qz-feedback-${qi}`).textContent='';},850);}}
-function spawnSparkle(x,y){const sparks=['✨','⭐','🌟','💫'];for(let i=0;i<3;i++){const el=document.createElement('div');el.className='sparkle';el.textContent=sparks[Math.floor(Math.random()*sparks.length)];el.style.cssText=`left:${x-20+(Math.random()-.5)*60}px;top:${y-20+(Math.random()-.5)*40}px;animation-delay:${i*.12}s`;document.body.appendChild(el);setTimeout(()=>el.remove(),950);}}
-function confetti(){const cols=['#C77DFF','#4D96FF','#FFD93D','#6BCB77','#FF6B6B','#FF9F43','#fff'];for(let i=0;i<32;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*30}vh;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.5}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),1900);}}
-buildDots();showSlide(0);
-</script>
+</section>
+<footer>Pang made with ❤️ for kids learning English</footer>
 </body>
 </html>
