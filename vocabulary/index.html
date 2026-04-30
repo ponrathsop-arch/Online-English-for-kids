@@ -38,9 +38,6 @@
   @keyframes bounce-letter { from { transform: translateY(0); } to { transform: translateY(-8px); } }
   .subtitle { margin-top: 12px; font-size: 17px; color: #555; font-weight: 600; }
 
-  /* ══════════════════════════════════
-     EXCLUSIVE GAME BANNER — Odd One Out
-     ══════════════════════════════════ */
   .exclusive-section {
     position: relative; z-index: 1;
     max-width: 1100px; margin: 0 auto;
@@ -75,7 +72,6 @@
   }
   @keyframes banner-in { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
 
-  /* shimmer sweep */
   .odd-banner::after {
     content: '';
     position: absolute; inset: 0;
@@ -93,7 +89,6 @@
     position: relative; z-index: 1;
   }
 
-  /* floating emoji cluster */
   .odd-emoji-cluster {
     flex-shrink: 0;
     width: 110px; height: 110px;
@@ -161,13 +156,11 @@
   .odd-cta .cta-arrow { font-size: 1.1rem; transition: transform .2s; }
   .odd-banner:hover .cta-arrow { transform: translateX(4px); }
 
-  /* decorative circles */
   .odd-deco { position: absolute; border-radius: 50%; pointer-events: none; }
   .odd-deco-1 { width:180px; height:180px; top:-60px; right:160px; background:rgba(255,255,255,.04); }
   .odd-deco-2 { width:120px; height:120px; bottom:-40px; right:280px; background:rgba(255,255,255,.05); }
   .odd-deco-3 { width:80px;  height:80px;  top:10px;   right:80px;  background:rgba(255,217,61,.08); }
 
-  /* responsive */
   @media (max-width: 620px) {
     .odd-banner-inner { flex-direction: column; align-items: flex-start; padding: 24px 22px; gap: 18px; }
     .odd-emoji-cluster { width:90px; height:90px; }
@@ -176,14 +169,11 @@
     .odd-cta { align-self: flex-start; }
   }
 
-  /* ══════════════════════════════════
-     VOCABULARY GRID (unchanged)
-     ══════════════════════════════════ */
   .grid-section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 8px 24px 80px; }
   .section-label { font-family: 'Fredoka One', cursive; font-size: 22px; color: #777; text-align: center; margin-bottom: 32px; letter-spacing: 1px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
   .card { background: white; border-radius: 24px; padding: 32px 24px 28px; text-align: center; cursor: pointer; text-decoration: none; display: block; position: relative; overflow: hidden; border: 3px solid transparent; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; box-shadow: 0 6px 0 rgba(0,0,0,0.08); opacity: 0; transform: translateY(30px); animation: card-in 0.5s ease forwards; }
-  .card:nth-child(1){animation-delay:.05s;} .card:nth-child(2){animation-delay:.10s;} .card:nth-child(3){animation-delay:.15s;} .card:nth-child(4){animation-delay:.20s;} .card:nth-child(5){animation-delay:.25s;} .card:nth-child(6){animation-delay:.30s;} .card:nth-child(7){animation-delay:.35s;} .card:nth-child(8){animation-delay:.40s;} .card:nth-child(9){animation-delay:.45s;} .card:nth-child(10){animation-delay:.50s;} .card:nth-child(11){animation-delay:.55s;} .card:nth-child(12){animation-delay:.60s;} .card:nth-child(13){animation-delay:.65s;} .card:nth-child(14){animation-delay:.70s;}
+  .card:nth-child(1){animation-delay:.05s;} .card:nth-child(2){animation-delay:.10s;} .card:nth-child(3){animation-delay:.15s;} .card:nth-child(4){animation-delay:.20s;} .card:nth-child(5){animation-delay:.25s;} .card:nth-child(6){animation-delay:.30s;} .card:nth-child(7){animation-delay:.35s;} .card:nth-child(8){animation-delay:.40s;} .card:nth-child(9){animation-delay:.45s;} .card:nth-child(10){animation-delay:.50s;} .card:nth-child(11){animation-delay:.55s;} .card:nth-child(12){animation-delay:.60s;} .card:nth-child(13){animation-delay:.65s;} .card:nth-child(14){animation-delay:.70s;} .card:nth-child(15){animation-delay:.75s;}
   @keyframes card-in { to { opacity:1; transform:translateY(0); } }
   .card::before { content:''; position:absolute; top:0; left:0; right:0; height:6px; border-radius:24px 24px 0 0; }
   .card:hover { transform:translateY(-6px); box-shadow:0 14px 0 rgba(0,0,0,0.08); }
@@ -227,15 +217,11 @@
   <div class="exclusive-label">🎮 Featured Game</div>
 
   <a href="odd-one-out/index.html" class="odd-banner">
-
-    <!-- decorative circles -->
     <div class="odd-deco odd-deco-1"></div>
     <div class="odd-deco odd-deco-2"></div>
     <div class="odd-deco odd-deco-3"></div>
 
     <div class="odd-banner-inner">
-
-      <!-- floating emoji cluster -->
       <div class="odd-emoji-cluster">
         <span class="oe">🐘</span>
         <span class="oe">🍎</span>
@@ -243,7 +229,6 @@
         <span class="oe">🐶</span>
       </div>
 
-      <!-- text -->
       <div class="odd-text">
         <div class="odd-eyebrow">New Game</div>
         <div class="odd-title">
@@ -259,11 +244,9 @@
         </div>
       </div>
 
-      <!-- CTA button -->
       <button class="odd-cta">
         Play Now <span class="cta-arrow">→</span>
       </button>
-
     </div>
   </a>
 </section>
@@ -333,14 +316,23 @@
       <span class="card-badge">Food</span>
     </a>
 
-   <!-- SPORTS -->
+    <!-- SPORTS -->
     <a href="sports/index.html" class="card card-3">
       <span class="card-emoji">⚽</span>
       <div class="card-title">Sports</div>
       <div class="card-desc">Games, activities & sporting words</div>
       <span class="card-badge">Activity</span>
     </a>
-   
+
+    <!-- SYMPTOMS -->
+    <a href="symptoms/index.html" class="card card-5">
+      <span class="card-new-ribbon">✨ New</span>
+      <span class="card-emoji">🤒</span>
+      <div class="card-title">Symptoms</div>
+      <div class="card-desc">Headache, fever, cough & more!</div>
+      <span class="card-badge">Health</span>
+    </a>
+
     <!-- GETTING AROUND -->
     <a href="transport/index.html" class="card card-3">
       <span class="card-emoji">🚌</span>
