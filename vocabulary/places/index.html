@@ -23,7 +23,15 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 /* ── HOME ── */
 #home-screen{padding-top:40px;text-align:center;padding-bottom:72px;}
 .home-title{font-family:'Fredoka One',cursive;font-size:2.6rem;color:var(--teal);line-height:1.1;margin-bottom:6px;}
-.home-sub{font-size:.95rem;color:var(--muted);margin-bottom:40px;}
+.home-sub{font-size:.95rem;color:var(--muted);margin-bottom:16px;}
+
+/* ── SET SELECTOR ── */
+.set-selector{display:flex;gap:10px;justify-content:center;max-width:340px;margin:0 auto 28px;}
+.set-btn{flex:1;border:3px solid transparent;border-radius:18px;padding:12px 8px;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;transition:all .18s;background:rgba(255,255,255,.85);color:var(--muted);box-shadow:0 3px 12px rgba(0,0,0,.08);}
+.set-btn.active{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:0 4px 16px rgba(13,148,136,.35);}
+.set-btn:hover:not(.active){border-color:var(--teal);color:var(--teal);}
+.set-label{display:block;font-size:.72rem;font-family:'Nunito',sans-serif;font-weight:800;margin-top:2px;opacity:.85;}
+
 .home-learn-btns{display:flex;flex-direction:column;gap:16px;max-width:340px;margin:0 auto 32px;}
 .home-learn-btn{border:none;border-radius:22px;padding:22px 24px;display:flex;align-items:center;gap:18px;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.12);transition:transform .18s,box-shadow .18s;width:100%;text-align:left;color:#fff;}
 .home-learn-btn:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.18);}
@@ -227,7 +235,20 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 <!-- ═══ HOME ═══ -->
 <div id="home-screen" class="screen active">
   <div class="home-title">🏙️ Places in Town</div>
-  <div class="home-sub">Choose how you want to learn!</div>
+  <div class="home-sub">Choose a set, then pick an activity!</div>
+
+  <!-- SET SELECTOR -->
+  <div class="set-selector">
+    <button class="set-btn active" id="set-btn-1" onclick="selectSet(1)">
+      📍 Set 1
+      <span class="set-label">museum · bakery · hospital · library · supermarket · bank · post office</span>
+    </button>
+    <button class="set-btn" id="set-btn-2" onclick="selectSet(2)">
+      📍 Set 2
+      <span class="set-label">zoo · school · park · restaurant · police station · bus stop · train station</span>
+    </button>
+  </div>
+
   <div class="home-learn-btns">
     <button class="home-learn-btn" onclick="startActivity('learn11')">
       <span class="hlb-icon">📖</span>
@@ -515,110 +536,97 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 
 <script>
 // ══════════════════════════════════════
-// DATA — Places in Town
+// DATA — Places in Town (split into sets)
 // ══════════════════════════════════════
-const PLACES = [
+const ALL_PLACES = [
+  // ── SET 1 ──
   {
-    id: 'museum',
-    word: 'museum',
-    emoji: '🏛️',
+    id: 'museum', set: 1, word: 'museum', emoji: '🏛️',
     sentences: ['We visit the museum on Sunday.', 'The museum has a big dinosaur.'],
     fillQ: 'We go to the {blank} on Sunday.'
   },
   {
-    id: 'bakery',
-    word: 'bakery',
-    emoji: '🥐',
+    id: 'bakery', set: 1, word: 'bakery', emoji: '🥐',
     sentences: ['The bakery smells sweet in the morning.', 'My mum buys bread at the bakery.'],
     fillQ: 'She buys bread at the {blank}.'
   },
   {
-    id: 'hospital',
-    word: 'hospital',
-    emoji: '🏥',
+    id: 'hospital', set: 1, word: 'hospital', emoji: '🏥',
     sentences: ['The hospital is very busy today.', 'Doctors work in the hospital every day.'],
     fillQ: 'Doctors work in the {blank}.'
   },
   {
-    id: 'library',
-    word: 'library',
-    emoji: '📚',
+    id: 'library', set: 1, word: 'library', emoji: '📚',
     sentences: ['The library is quiet and clean.', 'We read books in the library.'],
     fillQ: 'We read books in the {blank}.'
   },
   {
-    id: 'supermarket',
-    word: 'supermarket',
-    emoji: '🛒',
+    id: 'supermarket', set: 1, word: 'supermarket', emoji: '🛒',
     sentences: ['The supermarket sells food and drinks.', 'Dad goes to the supermarket after work.'],
     fillQ: 'Dad goes to the {blank}.'
   },
   {
-    id: 'bank',
-    word: 'bank',
-    emoji: '🏦',
+    id: 'bank', set: 1, word: 'bank', emoji: '🏦',
     sentences: ['The bank opens early in the morning.', 'My dad saves money in the bank.'],
     fillQ: 'He saves money in the {blank}.'
   },
   {
-    id: 'post office',
-    word: 'post office',
-    emoji: '📮',
+    id: 'post office', set: 1, word: 'post office', emoji: '📮',
     sentences: ['The post office is near my house.', 'Grandma sends letters at the post office.'],
     fillQ: 'She sends letters at the {blank}.'
   },
+  // ── SET 2 ──
   {
-    id: 'zoo',
-    word: 'zoo',
-    emoji: '🦁',
+    id: 'zoo', set: 2, word: 'zoo', emoji: '🦁',
     sentences: ['The zoo has many animals.', 'We visit the zoo on Saturday.'],
-    fillQ: 'We visit the {blank}.'
+    fillQ: 'We visit the {blank} on Saturday.'
   },
   {
-    id: 'school',
-    word: 'school',
-    emoji: '🏫',
+    id: 'school', set: 2, word: 'school', emoji: '🏫',
     sentences: ['The school is big and bright.', 'Children study at the school every day.'],
     fillQ: 'Children study at the {blank}.'
   },
   {
-    id: 'park',
-    word: 'park',
-    emoji: '🌳',
+    id: 'park', set: 2, word: 'park', emoji: '🌳',
     sentences: ['The park is green and beautiful.', 'We play in the park after school.'],
     fillQ: 'We play in the {blank}.'
   },
   {
-    id: 'restaurant',
-    word: 'restaurant',
-    emoji: '🍽️',
+    id: 'restaurant', set: 2, word: 'restaurant', emoji: '🍽️',
     sentences: ['The restaurant is full at night.', 'My family eats at the restaurant.'],
     fillQ: 'We eat at the {blank}.'
   },
   {
-    id: 'police station',
-    word: 'police station',
-    emoji: '👮',
+    id: 'police station', set: 2, word: 'police station', emoji: '👮',
     sentences: ['The police station is in the city.', 'Police officers work at the police station.'],
     fillQ: 'Police work at the {blank}.'
   },
   {
-    id: 'bus stop',
-    word: 'bus stop',
-    emoji: '🚌',
+    id: 'bus stop', set: 2, word: 'bus stop', emoji: '🚌',
     sentences: ['The bus stop is near the school.', 'We wait at the bus stop every morning.'],
     fillQ: 'We wait at the {blank}.'
   },
   {
-    id: 'train station',
-    word: 'train station',
-    emoji: '🚉',
+    id: 'train station', set: 2, word: 'train station', emoji: '🚉',
     sentences: ['The train station is very busy.', 'We arrive at the train station early.'],
     fillQ: 'We arrive at the {blank}.'
   },
 ];
 
 const ACCENTS = ['#0D9488','#F43F5E','#3B82F6','#F59E0B','#6366F1','#84CC16','#0D9488','#F43F5E','#3B82F6','#F59E0B','#6366F1','#84CC16','#0D9488','#F43F5E'];
+
+// ══════════════════════════════════════
+// SET SELECTION
+// ══════════════════════════════════════
+let currentSet = 1;
+let PLACES = ALL_PLACES.filter(p => p.set === 1);
+
+function selectSet(n) {
+  currentSet = n;
+  PLACES = ALL_PLACES.filter(p => p.set === n);
+  document.getElementById('set-btn-1').classList.toggle('active', n === 1);
+  document.getElementById('set-btn-2').classList.toggle('active', n === 2);
+}
 
 // ══════════════════════════════════════
 // STATE
@@ -727,7 +735,6 @@ function startActivity(act){
 
 // ══════════════════════════════════════
 // FLASHCARD
-// Uses emoji as the "image" since no image files
 // ══════════════════════════════════════
 function buildDots(){
   const dr=document.getElementById('fc-dots'); dr.innerHTML='';
@@ -761,12 +768,10 @@ function renderFC(){
   const wordEl=document.getElementById('fc-word');
   wordEl.textContent=a.word;
   wordEl.style.color=accent;
-  // sentences — only 2 for places
   const s1el=document.getElementById('fc-s1');
   const s2el=document.getElementById('fc-s2');
   s1el.textContent=a.sentences[0]; s1el.style.borderTopColor=accent;
   s2el.textContent=a.sentences[1]; s2el.style.borderTopColor=accent;
-  // emoji as picture
   document.getElementById('fc-img1-ph').textContent=a.emoji;
   document.getElementById('fc-img1-ph').style.fontSize='6rem';
   document.getElementById('fc-img1-ph').style.display='none';
@@ -1290,7 +1295,6 @@ function openLightbox(emoji, label){
 function closeLightbox(){
   document.getElementById('lightbox').classList.remove('on');
 }
-
 
 document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('bottom-nav').classList.add('visible');
