@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Colourful World - English with Pang</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #F5F0FF;
+  --purple: #7B4FBF;
+  --yellow: #FFD93D;
+  --dark: #2d2d2d;
+  --page: #FDFBFF;
+}
+body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh; overflow-x: hidden; }
+
+/* TOP BAR */
+.top-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; background: white; box-shadow: 0 3px 0 rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 200; }
+.back-link { display: inline-flex; align-items: center; gap: 6px; font-family: 'Fredoka One', cursive; font-size: 16px; color: #aaa; text-decoration: none; transition: color 0.2s; }
+.back-link:hover { color: var(--purple); }
+.book-title-bar { font-family: 'Fredoka One', cursive; font-size: 18px; color: var(--dark); text-align: center; flex: 1; padding: 0 12px; }
+.credit-tag { font-size: 11px; color: #bbb; font-weight: 700; text-align: right; line-height: 1.5; min-width: 100px; }
+
+/* TABS */
+.tabs { display: flex; justify-content: center; padding: 20px 20px 0; gap: 4px; }
+.tab-btn { font-family: 'Fredoka One', cursive; font-size: 17px; padding: 11px 26px; border: none; background: white; color: #bbb; cursor: pointer; border-radius: 14px 14px 0 0; border-bottom: 3px solid transparent; transition: all 0.2s; }
+.tab-btn.active { color: var(--purple); border-bottom: 3px solid var(--purple); }
+.tab-btn:hover:not(.active) { color: #888; }
+.tabs-line { height: 3px; background: #e5e0d8; margin: 0 20px; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* READ TAB */
+.read-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 16px 80px;
+  position: relative;
+}
+
+.read-wrap::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 30px;
+  transform: translateX(-50%);
+  width: 1250px; height: 620px;
+  pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(circle at 8% 50%, rgba(123,79,191,0.35) 0 80px, transparent 210px),
+    radial-gradient(circle at 92% 50%, rgba(255,217,61,0.35) 0 80px, transparent 210px),
+    radial-gradient(circle at 18% 75%, rgba(77,150,255,0.25) 0 60px, transparent 180px),
+    radial-gradient(circle at 82% 75%, rgba(255,154,60,0.25) 0 60px, transparent 180px);
+  filter: blur(10px);
+  animation: magicGlow 5s ease-in-out infinite;
+}
+
+.read-wrap::after {
+  content: "🌈 ✦ 🚀  ✦ 🌈    🪐 ✦ 🌈";
+  position: absolute;
+  left: 50%; top: 35px;
+  transform: translateX(-50%);
+  width: 1200px; height: 520px;
+  color: rgba(123,79,191,0.70);
+  font-size: 36px; letter-spacing: 42px; line-height: 170px;
+  text-shadow: 0 0 12px rgba(255,255,255,0.95), 0 0 26px rgba(255,217,61,0.6);
+  pointer-events: none; z-index: 0;
+  animation: starFloat 6s ease-in-out infinite;
+}
+
+.book-viewport, .nav-row { position: relative; z-index: 1; }
+
+@keyframes magicGlow {
+  0%, 100% { opacity: 0.55; transform: translateX(-50%) scale(0.98); }
+  50% { opacity: 0.9; transform: translateX(-50%) scale(1.03); }
+}
+@keyframes starFloat {
+  0%, 100% { opacity: 0.45; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(-8px); }
+}
+
+/* book shell */
+.book-viewport {
+  position: relative;
+  overflow: hidden;
+  border-radius: 26px;
+  background: #2a0a5c;
+  padding: 14px 16px 18px;
+  box-shadow: 0 10px 0 #1a0640, 0 18px 35px rgba(0,0,0,0.22);
+  margin-bottom: 50px;
+}
+
+.page-flash {
+  position: absolute;
+  inset: 14px 16px 18px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.5);
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0;
+}
+.page-flash.show { animation: flashWink 0.45s ease-out; }
+@keyframes flashWink {
+  0% { opacity: 0; }
+  25% { opacity: 0.75; }
+  70% { opacity: 0.25; }
+  100% { opacity: 0; }
+}
+
+.page-spread {
+  display: flex;
+  min-height: 440px;
+  width: 100%;
+  position: absolute;
+  top: 0; left: 0;
+  will-change: transform, opacity;
+  background: var(--page);
+}
+.page-spread.current {
+  position: relative;
+  transform: translateX(0);
+  opacity: 1;
+  z-index: 2;
+}
+
+/* COVER PAGE */
+.cover-page {
+  min-height: 440px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.cover-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  z-index: 0;
+}
+.cover-page-fallback {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #2a0a5c, #1a0640);
+  z-index: 0;
+}
+.cover-gradient {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 60%;
+  background: linear-gradient(transparent, rgba(4,2,10,0.92));
+  z-index: 1;
+  pointer-events: none;
+}
+.cover-gradient-top {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 22%;
+  background: linear-gradient(rgba(4,2,10,0.55), transparent);
+  z-index: 1;
+  pointer-events: none;
+}
+.cover-title-block {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 2;
+  padding: 0 28px 28px;
+  text-align: center;
+}
+.cover-main-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 38px;
+  line-height: 1.15;
+  color: #FFD93D;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.85), 0 0 40px rgba(123,79,191,0.6);
+  margin-bottom: 6px;
+}
+.cover-tap-hint {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 700;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.5px;
+}
+.cover-author {
+  position: absolute;
+  top: 14px; left: 0; right: 0;
+  z-index: 2;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px; font-weight: 800;
+  color: rgba(220,200,255,0.60);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.page-spread.enter-from-right { transform: translateX(100%); opacity: 1; z-index: 3; }
+.page-spread.enter-from-left  { transform: translateX(-100%); opacity: 1; z-index: 3; }
+.page-spread.exit-to-left  { animation: exitLeft  0.22s cubic-bezier(0.25,0.0,0.20,1.0) forwards; z-index: 2; }
+.page-spread.exit-to-right { animation: exitRight 0.22s cubic-bezier(0.25,0.0,0.20,1.0) forwards; z-index: 2; }
+@keyframes exitLeft  { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+@keyframes exitRight { from { transform: translateX(0); } to { transform: translateX(100%); } }
+
+/* Spiral notebook spine */
+.book-spine {
+  width: 52px; flex-shrink: 0;
+  position: relative; z-index: 5;
+  background: #fdfbff;
+  border-left: 1px solid #ddd4c8;
+  border-right: 1px solid #ddd4c8;
+}
+.book-spine::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 22px;
+  transform: translateX(-50%);
+  width: 34px;
+  height: calc(100% - 44px);
+  background:
+    radial-gradient(ellipse at center, transparent 0 35%, #111 38% 52%, transparent 55%)
+    center top / 34px 34px repeat-y;
+}
+.book-spine::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 22px;
+  transform: translateX(-50%);
+  width: 8px;
+  height: calc(100% - 44px);
+  background: #111;
+  border-radius: 10px;
+}
+
+.page-left {
+  flex: 1.05;
+  display: flex; align-items: center; justify-content: center;
+  padding: 28px 20px;
+  background: var(--page);
+  border-right: 1px solid #e8ddf5;
+  position: relative;
+}
+
+.page-right {
+  flex: 1;
+  padding: 40px 32px 50px 26px;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  background: var(--page);
+  position: relative;
+  background-image: repeating-linear-gradient(transparent, transparent 39px, #ede4f8 40px);
+  background-position: 0 28px;
+}
+.page-right::after {
+  content: '';
+  position: absolute; bottom: 0; right: 0;
+  width: 32px; height: 32px;
+  background: linear-gradient(225deg, #ddd0f0 50%, var(--page) 50%);
+  border-radius: 6px 0 0 0;
+}
+
+.story-para { font-family: 'Lora', serif; font-size: 17px; line-height: 40px; color: #3a3030; margin-bottom: 0; }
+.story-para + .story-para { margin-top: 40px; }
+.speech { color: var(--purple); font-style: italic; font-weight: 600; }
+.key-word { background: #EEE0FF; padding: 2px 7px; border-radius: 5px; font-weight: 700; color: #5a1fa0; cursor: pointer; border-bottom: 2px solid #C9A0FF; transition: background 0.15s, transform 0.1s; display: inline-block; }
+.key-word:hover { background: #D8BFFF; transform: scale(1.08); }
+
+.pg-num { position: absolute; bottom: 12px; font-family: 'Fredoka One', cursive; font-size: 13px; color: #d0c4b4; }
+.pg-l { left: 20px; }
+.pg-r { right: 40px; }
+
+.page-img { width: 100%; max-height: 360px; object-fit: contain; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); display: block; }
+.img-ph { width: 100%; aspect-ratio: 4/3; max-width: 400px; background: linear-gradient(135deg,#EEE0FF,#F8F3FF); border-radius: 12px; border: 3px dashed #C9A0FF; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--purple); text-align: center; padding: 20px; }
+.ph-icon { font-size: 48px; }
+.ph-name { font-family: 'Fredoka One', cursive; font-size: 16px; }
+.ph-size { font-size: 11px; color: #b090e0; font-weight: 700; }
+
+/* NAV */
+.nav-row { display: flex; align-items: center; justify-content: center; gap: 18px; }
+.nav-btn { font-family: 'Fredoka One', cursive; font-size: 17px; padding: 12px 30px; border: none; border-radius: 14px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 5px 0 rgba(0,0,0,0.12); }
+.nav-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0,0,0,0.12); }
+.nav-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.10); }
+.nav-btn:disabled { opacity: 0.28; cursor: default; }
+.btn-prev { background: white; color: #888; }
+.btn-next { background: var(--purple); color: white; }
+.page-dots { display: flex; gap: 8px; align-items: center; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #ddd; cursor: pointer; transition: all 0.25s; }
+.dot.on { background: var(--purple); transform: scale(1.4); }
+
+/* MOBILE */
+@media (max-width: 640px) {
+  .page-spread { flex-direction: column; min-height: auto; }
+  .book-spine { width: 100%; height: 10px; background: linear-gradient(90deg, var(--purple), var(--yellow)); }
+  .page-left { border-right: none; border-bottom: 1px solid #e8ddf5; padding: 20px; }
+  .page-right { padding: 20px 20px 40px; background-image: none; }
+  .story-para { font-size: 15px; }
+  .credit-tag { display: none; }
+}
+
+/* WATCH TAB */
+.watch-wrap { max-width: 680px; margin: 0 auto; padding: 40px 20px 60px; text-align: center; }
+.watch-wrap h2 { font-family: 'Fredoka One', cursive; font-size: 26px; color: var(--dark); margin-bottom: 8px; }
+.watch-wrap p { font-size: 15px; color: #888; font-weight: 600; margin-bottom: 28px; }
+.video-thumb-link { display: block; position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 0 rgba(0,0,0,0.10); cursor: pointer; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; }
+.video-thumb-link:hover { transform: translateY(-5px); box-shadow: 0 16px 0 rgba(0,0,0,0.10); }
+.video-thumb-link:hover .play-btn { transform: translate(-50%,-50%) scale(1.12); }
+.thumb-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+.thumb-placeholder { width: 100%; aspect-ratio: 4/3; background: linear-gradient(135deg, #2a0a5c, #7B4FBF); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
+.thumb-placeholder .tp-icon { font-size: 64px; }
+.thumb-placeholder .tp-text { font-family: 'Fredoka One', cursive; font-size: 20px; color: white; opacity: 0.7; }
+.play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 80px; height: 80px; background: rgba(255,255,255,0.92); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 24px rgba(0,0,0,0.28); transition: transform 0.2s; }
+.play-btn::after { content: ''; width: 0; height: 0; border-style: solid; border-width: 16px 0 16px 28px; border-color: transparent transparent transparent var(--purple); margin-left: 5px; }
+.thumb-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(transparent, rgba(0,0,0,0.45)); }
+.thumb-label { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; font-family: 'Fredoka One', cursive; font-size: 18px; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+.watch-note { margin-top: 20px; font-size: 13px; color: #bbb; font-weight: 700; }
+.watch-note a { color: var(--purple); text-decoration: none; }
+.watch-note a:hover { text-decoration: underline; }
+
+/* WORDS TAB */
+.words-wrap { max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; }
+.words-intro { text-align: center; margin-bottom: 10px; }
+.words-intro h2 { font-family: 'Fredoka One', cursive; font-size: 26px; color: var(--dark); margin-bottom: 6px; }
+.words-intro p { font-size: 14px; color: #999; font-weight: 600; }
+.tap-hint { text-align: center; font-size: 13px; color: #bbb; font-weight: 700; margin-bottom: 24px; }
+.vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; }
+.vocab-card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 6px 0 rgba(0,0,0,0.07); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+.vocab-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 14px 0 rgba(0,0,0,0.08); }
+.vocab-card:active { transform: scale(0.97); }
+.vocab-pic { height: 130px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; position: relative; overflow: hidden; }
+.vocab-pic img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; display:none; }
+.vocab-pic img.loaded { display: block; }
+.v-ph { display: flex; flex-direction: column; align-items: center; gap: 3px; position: relative; z-index: 1; }
+.v-ph-emoji { font-size: 42px; }
+.v-ph-file { font-size: 10px; color: #bbb; font-weight: 700; }
+.vocab-body { padding: 12px 14px 16px; }
+.vocab-word { font-family: 'Fredoka One', cursive; font-size: 21px; color: var(--dark); margin-bottom: 2px; }
+.vocab-type { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #ccc; margin-bottom: 6px; }
+.vocab-sentence { font-size: 12px; color: #888; font-weight: 600; line-height: 1.55; font-style: italic; border-left: 3px solid #C9A0FF; padding-left: 8px; }
+.t-colour  .vocab-pic { background: linear-gradient(135deg,#EEE0FF,#DDD0FF); }
+.t-noun    .vocab-pic { background: linear-gradient(135deg,#E8F4FF,#C8E0FF); }
+.t-adj     .vocab-pic { background: linear-gradient(135deg,#FFF9D6,#FFE58A); }
+.t-place   .vocab-pic { background: linear-gradient(135deg,#E8FFE8,#C8F5C8); }
+
+/* WORD POPUP */
+.word-popup-overlay { display:none; position:fixed; inset:0; z-index:500; background:rgba(10,4,25,0.55); backdrop-filter:blur(5px); align-items:center; justify-content:center; padding:20px; }
+.word-popup-overlay.open { display:flex; }
+.word-popup { background:white; border-radius:24px; width:100%; max-width:340px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,0.28); animation:wp-in 0.28s cubic-bezier(0.175,0.885,0.32,1.275); position:relative; }
+@keyframes wp-in { from{opacity:0;transform:scale(0.78) translateY(24px);}to{opacity:1;transform:scale(1) translateY(0);} }
+.wp-pic { height:180px; display:flex; align-items:center; justify-content:center; flex-direction:column; position:relative; overflow:hidden; }
+.wp-pic img { width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;display:none; }
+.wp-pic img.loaded { display:block; }
+.wp-ph { position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:4px; }
+.wp-ph-emoji { font-size:60px; }
+.wp-body { padding:18px 22px 22px; }
+.wp-type { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#ccc;margin-bottom:3px; }
+.wp-word { font-family:'Fredoka One',cursive;font-size:36px;color:var(--dark);margin-bottom:10px;line-height:1; }
+.wp-sentence { font-family:'Lora',serif;font-size:14px;color:#666;line-height:1.65;font-style:italic;border-left:3px solid var(--purple);padding-left:10px; }
+.wp-close { position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.18);border:none;color:white;font-size:16px;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s; }
+.wp-close:hover { background:rgba(0,0,0,0.35); }
+
+/* SPOTLIGHT */
+.spotlight-overlay { display: none; position: fixed; inset: 0; z-index: 500; background: rgba(10,4,25,0.65); backdrop-filter: blur(7px); align-items: center; justify-content: center; padding: 20px; }
+.spotlight-overlay.open { display: flex; }
+.spotlight-card { background: white; border-radius: 28px; width: 100%; max-width: 420px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.30); animation: sp-in 0.3s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; }
+@keyframes sp-in { from { opacity:0; transform:scale(0.80) translateY(30px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.sp-pic { height: 220px; display: flex; align-items: center; justify-content: center; flex-direction: column; position: relative; overflow: hidden; }
+.sp-pic img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; display:none; }
+.sp-pic img.loaded { display:block; }
+.sp-ph { position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:6px; }
+.sp-ph-emoji { font-size: 72px; }
+.sp-body { padding: 22px 28px 28px; }
+.sp-type { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #ccc; margin-bottom: 4px; }
+.sp-word { font-family: 'Fredoka One', cursive; font-size: 42px; color: var(--dark); margin-bottom: 12px; line-height: 1; }
+.sp-sentence { font-family: 'Lora', serif; font-size: 16px; color: #555; line-height: 1.7; font-style: italic; border-left: 4px solid var(--purple); padding-left: 12px; margin-bottom: 20px; }
+.sp-nav { display: flex; gap: 10px; align-items: center; justify-content: center; }
+.sp-btn { font-family: 'Fredoka One', cursive; font-size: 16px; padding: 10px 22px; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,0.10); transition: transform 0.15s; }
+.sp-btn:hover { transform: translateY(-2px); }
+.sp-prev { background: #f5f0ea; color: #888; }
+.sp-next { background: var(--purple); color: white; }
+.sp-close { position: absolute; top: 14px; right: 16px; background: rgba(0,0,0,0.18); border: none; color: white; font-size: 18px; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.sp-close:hover { background: rgba(0,0,0,0.35); }
+.sp-counter { font-family: 'Fredoka One', cursive; font-size: 14px; color: #ccc; min-width: 50px; text-align: center; }
+
+footer { text-align: center; padding: 20px; font-size: 13px; color: #aaa; font-weight: 600; }
+footer a { color: #bbb; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="../index.html" class="back-link">&#8592; Stories</a>
+  <div class="book-title-bar">&#x1F308; Our Colourful World</div>
+  <div class="credit-tag">British Council<br>LearnEnglish Kids</div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('read',this)">&#x1F4D6; Read</button>
+  <button class="tab-btn" onclick="switchTab('watch',this)">&#x1F3AC; Watch</button>
+  <button class="tab-btn" onclick="switchTab('words',this)">&#x2728; Words</button>
+</div>
+<div class="tabs-line"></div>
+
+<!-- READ -->
+<div id="tab-read" class="tab-panel active">
+  <div class="read-wrap">
+    <div class="book-viewport" id="bookViewport">
+      <div class="page-flash" id="pageFlash"></div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn btn-prev" id="btnPrev" onclick="go(-1)" disabled>&#8592; Back</button>
+      <div class="page-dots" id="dots"></div>
+      <button class="nav-btn btn-next" id="btnNext" onclick="go(1)">Next &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- WATCH -->
+<div id="tab-watch" class="tab-panel">
+  <div class="watch-wrap">
+    <h2>&#x1F3AC; Watch the Story</h2>
+    <p>Tap to watch Our Colourful World on the British Council website!</p>
+    <a href="https://learnenglishkids.britishcouncil.org/en/short-stories/our-colourful-world"
+       target="_blank" rel="noopener" class="video-thumb-link">
+      <img src="page1.jpg" alt="Our Colourful World" class="thumb-img"
+           onerror="this.style.display='none';document.getElementById('thumbPh').style.display='flex'">
+      <div id="thumbPh" class="thumb-placeholder" style="display:none">
+        <div class="tp-icon">&#x1F308;</div>
+        <div class="tp-text">Our Colourful World</div>
+      </div>
+      <div class="thumb-overlay"></div>
+      <div class="thumb-label">&#x1F4FA; Watch on British Council</div>
+      <div class="play-btn"></div>
+    </a>
+    <div class="watch-note">
+      &#x1F517; Opens on
+      <a href="https://learnenglishkids.britishcouncil.org/en/short-stories/our-colourful-world"
+         target="_blank" rel="noopener">British Council LearnEnglish Kids</a>
+    </div>
+  </div>
+</div>
+
+<!-- WORDS -->
+<div id="tab-words" class="tab-panel">
+  <div class="words-wrap">
+    <div class="words-intro">
+      <h2>&#x2728; Words to Learn</h2>
+      <p>Colours and space words from the story.</p>
+    </div>
+    <p class="tap-hint">&#x1F446; Tap any card to focus on it!</p>
+    <div class="vocab-grid" id="vocabGrid"></div>
+  </div>
+</div>
+
+<!-- WORD POPUP -->
+<div class="word-popup-overlay" id="wpOverlay" onclick="wpClose(event)">
+  <div class="word-popup" id="wpCard">
+    <button class="wp-close" onclick="wpClose()">&#x2715;</button>
+    <div class="wp-pic" id="wpPic"></div>
+    <div class="wp-body">
+      <div class="wp-type" id="wpType"></div>
+      <div class="wp-word" id="wpWord"></div>
+      <div class="wp-sentence" id="wpSentence"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SPOTLIGHT -->
+<div class="spotlight-overlay" id="spOverlay" onclick="spClose(event)">
+  <div class="spotlight-card" id="spCard">
+    <button class="sp-close" onclick="spClose()">&#x2715;</button>
+    <div class="sp-pic" id="spPic"></div>
+    <div class="sp-body">
+      <div class="sp-type" id="spType"></div>
+      <div class="sp-word" id="spWord"></div>
+      <div class="sp-sentence" id="spSentence"></div>
+      <div class="sp-nav">
+        <button class="sp-btn sp-prev" onclick="spMove(-1)">&#8592;</button>
+        <span class="sp-counter" id="spCounter"></span>
+        <button class="sp-btn sp-next" onclick="spMove(1)">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Pang made with &#x2764;&#xFE0F; for kids learning English &nbsp;&middot;&nbsp;
+  Story from <a href="https://learnenglishkids.britishcouncil.org" target="_blank" rel="noopener">British Council LearnEnglish Kids</a>
+</footer>
+
+<script>
+/* PAGE DATA */
+var pages = [
+  {
+    img:"page1.jpg", alt:"Our Colourful World cover",
+    cover:true, paras:[]
+  },
+  {
+    img:"page1.jpg", alt:"Billy and Splodge in a spaceship looking for animals", icon:"&#x1F680;",
+    paras:[
+      "This is Billy and Splodge. Billy and Splodge are in a spaceship. They are looking for animals in space."
+    ]
+  },
+  {
+    img:"page2.jpg", alt:"A red planet with red trees and red leaves", icon:"&#x1F534;",
+    paras:[
+      "'Everything on this planet is red. Look at this forest. The trees are red and the leaves are red. But there aren\'t any animals here.'"
+    ]
+  },
+  {
+    img:"page3.jpg", alt:"A yellow planet with yellow sky, clouds and volcano", icon:"&#x1F7E1;",
+    paras:[
+      "Splodge sees another planet. 'Everything on this planet is yellow. Look at the yellow sky and the yellow clouds. There is a yellow volcano too. Look at the yellow smoke! There aren\'t any animals here.'"
+    ]
+  },
+  {
+    img:"page4.jpg", alt:"A pink planet with a pink sea, shells and plants", icon:"&#x1F338;",
+    paras:[
+      "Now Splodge sees another planet. 'Everything on this planet is pink. Look at the pink sea. There are pink shells and pink plants in the sea. There aren\'t any animals here.'"
+    ]
+  },
+  {
+    img:"page5.jpg", alt:"A hot blue planet with a blue sun, desert and blue sand", icon:"&#x1F535;",
+    paras:[
+      "Splodge sees another planet. 'Everything on this planet is blue. This planet is very hot. There is a big blue sun and a desert with blue sand. And look! There are blue plants. There aren\'t any animals here.'"
+    ]
+  },
+  {
+    img:"page6.jpg", alt:"A cold green planet with green clouds and green snow, and a scary animal", icon:"&#x1F7E2;",
+    paras:[
+      "Splodge sees one more planet. 'Everything on this planet is green. This planet is very cold. The clouds are green and the snow is green. There aren\'t any anim\u2026 Arghhh!'"
+    ]
+  },
+  {
+    img:"page7.jpg", alt:"Billy in the spaceship calling to Splodge", icon:"&#x1F6F8;",
+    paras:[
+      "Billy is in the spaceship. 'Splodge, there are animals in space. Let\'s go home!'"
+    ]
+  },
+  {
+    img:"page8.jpg", alt:"Planet Earth with blue sky, yellow sun, green grass and colourful flowers", icon:"&#x1F30D;",
+    paras:[
+      "Splodge sees another planet. It\'s planet Earth. The sky is blue and the sun is yellow. The grass is green and the flowers are red and pink. What colours can you see?"
+    ]
+  }
+];
+
+/* Preload images */
+pages.forEach(function(pg) { var img = new Image(); img.src = pg.img; });
+
+/* VOCAB DATA */
+var vocab = [
+  { word:"spaceship", type:"noun",      emoji:"&#x1F680;", theme:"t-noun",   img:"word.spaceship.jpg", sentence:"Billy and Splodge travel through space in a spaceship." },
+  { word:"planet",    type:"noun",      emoji:"&#x1FA90;", theme:"t-noun",   img:"word.planet.jpg",    sentence:"Splodge sees a planet and lands on it to look for animals." },
+  { word:"red",       type:"adjective", emoji:"&#x1F534;", theme:"t-colour", img:"word.red.jpg",       sentence:"Everything on the first planet is red — the trees and the leaves." },
+  { word:"forest",    type:"noun",      emoji:"&#x1FAB5;", theme:"t-place",  img:"word.forest.jpg",    sentence:"There is a forest on the red planet with red trees and red leaves." },
+  { word:"yellow",    type:"adjective", emoji:"&#x1F7E1;", theme:"t-colour", img:"word.yellow.jpg",    sentence:"Everything on the second planet is yellow, including the sky and clouds." },
+  { word:"sky",       type:"noun",      emoji:"&#x1F324;&#xFE0F;", theme:"t-noun", img:"word.sky.jpg", sentence:"Look at the yellow sky and the yellow clouds on the planet." },
+  { word:"pink",      type:"adjective", emoji:"&#x1F338;", theme:"t-colour", img:"word.pink.jpg",      sentence:"Everything on the third planet is pink, including the sea and shells." },
+  { word:"sea",       type:"noun",      emoji:"&#x1F30A;", theme:"t-place",  img:"word.sea.jpg",       sentence:"Look at the pink sea with pink shells and pink plants." },
+  { word:"blue",      type:"adjective", emoji:"&#x1F535;", theme:"t-colour", img:"word.blue.jpg",      sentence:"Everything on the fourth planet is blue — even the sun and the sand." },
+  { word:"hot",       type:"adjective", emoji:"&#x1F525;", theme:"t-adj",    img:"word.hot.jpg",       sentence:"The blue planet is very hot with a big blue sun." },
+  { word:"green",     type:"adjective", emoji:"&#x1F7E2;", theme:"t-colour", img:"word.green.jpg",     sentence:"Everything on the fifth planet is green — the clouds and the snow." },
+  { word:"cold",      type:"adjective", emoji:"&#x1F976;", theme:"t-adj",    img:"word.cold.jpg",      sentence:"The green planet is very cold with green snow and green clouds." }
+];
+
+/* VOCAB LOOKUP */
+var vocabMap = {};
+vocab.forEach(function(v, i) { vocabMap[v.word.toLowerCase()] = i; });
+var vocabAliases = {
+  "spaceships": "spaceship",
+  "planets":    "planet",
+  "forests":    "forest",
+  "skies":      "sky",
+  "seas":       "sea"
+};
+Object.keys(vocabAliases).forEach(function(alias) {
+  var target = vocabAliases[alias];
+  if (vocabMap.hasOwnProperty(target)) vocabMap[alias] = vocabMap[target];
+});
+
+function escapeHTML(str) {
+  return String(str).replace(/[&<>"']/g, function(ch) {
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]);
+  });
+}
+
+function highlightTokens(text) {
+  var tokens = text.match(/[a-zA-Z']+|[^a-zA-Z']+/g) || [];
+  var html = '';
+  tokens.forEach(function(tok) {
+    var stripped = tok.toLowerCase().replace(/[^a-z]/g, '');
+    var idx = -1;
+    if (vocabMap.hasOwnProperty(stripped)) {
+      idx = vocabMap[stripped];
+    } else if (stripped.length > 2 && stripped.slice(-1) === 's' && vocabMap.hasOwnProperty(stripped.slice(0, -1))) {
+      idx = vocabMap[stripped.slice(0, -1)];
+    }
+    if (idx >= 0) {
+      html += '<span class="key-word" onclick="spOpen(' + idx + ')" tabindex="0" role="button">' + escapeHTML(tok) + '</span>';
+    } else {
+      html += escapeHTML(tok);
+    }
+  });
+  return html;
+}
+
+function highlightText(text) {
+  return highlightTokens(text);
+}
+
+/* BUILD paragraph HTML with speech detection */
+function buildParaHTML(text) {
+  var out = '';
+  var i = 0;
+  var inSpeech = false;
+  var speechBuffer = '';
+  var plainBuffer = '';
+
+  function flushPlain() { if (plainBuffer) { out += highlightText(plainBuffer); plainBuffer = ''; } }
+  function flushSpeech() {
+    if (speechBuffer) { out += '<span class="speech">' + highlightText(speechBuffer) + '</span>'; speechBuffer = ''; }
+  }
+
+  while (i < text.length) {
+    var ch = text[i];
+    if (ch === "'") {
+      var prev = i > 0 ? text[i-1] : ' ';
+      var next = i < text.length-1 ? text[i+1] : '';
+      if (!inSpeech) {
+        if ((prev === ' ' || i === 0) && /[A-Z]/.test(next)) {
+          flushPlain(); inSpeech = true; speechBuffer += ch;
+        } else { plainBuffer += ch; }
+      } else {
+        if (next === '' || next === ' ' || next === '!' || next === '?' || next === '.') {
+          speechBuffer += ch; flushSpeech(); inSpeech = false;
+        } else { speechBuffer += ch; }
+      }
+    } else {
+      if (inSpeech) { speechBuffer += ch; } else { plainBuffer += ch; }
+    }
+    i++;
+  }
+  if (inSpeech) { flushSpeech(); } else { flushPlain(); }
+  return '<p class="story-para">' + out + '</p>';
+}
+
+/* BUILD a page spread element */
+function buildSpread(idx) {
+  var pg = pages[idx];
+  var div = document.createElement('div');
+
+  /* COVER */
+  if (pg.cover) {
+    div.className = 'page-spread cover-page';
+    div.innerHTML =
+      '<div class="cover-page-fallback"></div>' +
+      '<img src="page1.jpg" alt="Our Colourful World" class="cover-bg-img" ' +
+        'onerror="this.style.display=\'none\'">' +
+      '<div class="cover-gradient-top"></div>' +
+      '<div class="cover-gradient"></div>' +
+      '<div class="cover-author">British Council LearnEnglish Kids</div>' +
+      '<div class="cover-title-block">' +
+        '<div class="cover-main-title">Our Colourful<br>World</div>' +
+        '<div class="cover-tap-hint">&#x1F308; Tap Next to begin</div>' +
+      '</div>';
+    return div;
+  }
+
+  /* STORY PAGE */
+  div.className = 'page-spread';
+  var phId = 'ph' + idx;
+  var textHTML = '';
+  pg.paras.forEach(function(para) { textHTML += buildParaHTML(para); });
+  textHTML += '<span class="pg-num pg-r">' + idx + '</span>';
+
+  div.innerHTML =
+    '<div class="page-left">' +
+      '<div class="img-ph" id="' + phId + '">' +
+        '<div class="ph-icon">' + pg.icon + '</div>' +
+        '<div class="ph-name">' + pg.img + '</div>' +
+        '<div class="ph-size">800 x 600 px recommended</div>' +
+      '</div>' +
+      '<img src="' + pg.img + '" alt="' + pg.alt + '" class="page-img" style="display:none" ' +
+        'onload="this.style.display=\'block\';var e=document.getElementById(\'' + phId + '\');if(e)e.style.display=\'none\';">' +
+      '<span class="pg-num pg-l">' + (idx * 2 - 1) + '</span>' +
+    '</div>' +
+    '<div class="book-spine"></div>' +
+    '<div class="page-right">' + textHTML + '</div>';
+  return div;
+}
+
+/* PAGE TURN */
+var cur = 0;
+var turning = false;
+var viewport = document.getElementById('bookViewport');
+
+viewport.onclick = function(e) {
+  if (e.target.classList.contains('key-word') || e.target.closest('button')) return;
+  go(1);
+};
+
+var firstSpread = buildSpread(0);
+firstSpread.classList.add('current');
+viewport.appendChild(firstSpread);
+
+function go(dir) {
+  if (turning) return;
+  var next = cur + dir;
+  if (next < 0 || next >= pages.length) return;
+  turning = true;
+
+  var newSpread = buildSpread(next);
+  newSpread.classList.add('current');
+  newSpread.style.opacity = '0';
+
+  var flash = document.createElement('div');
+  flash.className = 'page-flash show';
+
+  viewport.innerHTML = '';
+  viewport.appendChild(newSpread);
+  viewport.appendChild(flash);
+
+  setTimeout(function() {
+    newSpread.style.transition = 'opacity 0.18s ease';
+    newSpread.style.opacity = '1';
+  }, 40);
+
+  setTimeout(function() {
+    if (flash.parentNode) flash.parentNode.removeChild(flash);
+    cur = next;
+    turning = false;
+    updateUI();
+  }, 450);
+}
+
+function updateUI() {
+  document.getElementById('btnPrev').disabled = (cur === 0);
+  var nxt = document.getElementById('btnNext');
+  nxt.disabled = (cur === pages.length - 1);
+  nxt.innerHTML = (cur === pages.length - 1) ? '&#x1F389; The End!' : 'Next &#8594;';
+  document.querySelectorAll('.dot').forEach(function(d, i) { d.classList.toggle('on', i === cur); });
+}
+
+/* Dots */
+var dotsEl = document.getElementById('dots');
+pages.forEach(function(_, i) {
+  var d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  (function(idx) { d.onclick = function() { if (turning || idx === cur) return; go(idx > cur ? 1 : -1); }; })(i);
+  dotsEl.appendChild(d);
+});
+
+updateUI();
+
+function getThemeBg(theme) {
+  if (theme === 't-colour') return 'background:linear-gradient(135deg,#EEE0FF,#DDD0FF)';
+  if (theme === 't-place')  return 'background:linear-gradient(135deg,#E8FFE8,#C8F5C8)';
+  if (theme === 't-adj')    return 'background:linear-gradient(135deg,#FFF9D6,#FFE58A)';
+  return 'background:linear-gradient(135deg,#E8F4FF,#C8E0FF)';
+}
+
+/* WORD POPUP */
+function spOpen(idx) {
+  var v = vocab[idx];
+  var picEl = document.getElementById('wpPic');
+  picEl.setAttribute('style', getThemeBg(v.theme));
+  picEl.innerHTML =
+    '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\');this.nextElementSibling.style.display=\'none\';">' +
+    '<div class="wp-ph"><div class="wp-ph-emoji">' + v.emoji + '</div></div>';
+  document.getElementById('wpType').textContent = v.type;
+  document.getElementById('wpWord').textContent = v.word;
+  document.getElementById('wpSentence').innerHTML = v.sentence;
+  document.getElementById('wpOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function wpClose(e) {
+  if (e && e.target !== document.getElementById('wpOverlay')) return;
+  document.getElementById('wpOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* VOCAB GRID */
+var grid = document.getElementById('vocabGrid');
+var spIdx = 0;
+vocab.forEach(function(v, i) {
+  var card = document.createElement('div');
+  card.className = 'vocab-card ' + v.theme;
+  card.innerHTML =
+    '<div class="vocab-pic">' +
+      '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\');this.nextElementSibling.style.display=\'none\';">' +
+      '<div class="v-ph"><div class="v-ph-emoji">' + v.emoji + '</div>' +
+      '<div class="v-ph-file">' + v.img + '</div></div>' +
+    '</div>' +
+    '<div class="vocab-body">' +
+      '<div class="vocab-type">' + v.type + '</div>' +
+      '<div class="vocab-word">' + v.word + '</div>' +
+      '<div class="vocab-sentence">' + v.sentence + '</div>' +
+    '</div>';
+  card.onclick = function() { spOpenFull(i); };
+  grid.appendChild(card);
+});
+
+/* SPOTLIGHT */
+function spOpenFull(idx) {
+  spIdx = idx; spRender();
+  document.getElementById('spOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function spRender() {
+  var v = vocab[spIdx];
+  var picEl = document.getElementById('spPic');
+  picEl.setAttribute('style', getThemeBg(v.theme));
+  picEl.innerHTML =
+    '<img src="' + v.img + '" alt="' + v.word + '" onload="this.classList.add(\'loaded\');this.nextElementSibling.style.display=\'none\';">' +
+    '<div class="sp-ph"><div class="sp-ph-emoji">' + v.emoji + '</div></div>';
+  document.getElementById('spType').textContent = v.type;
+  document.getElementById('spWord').textContent = v.word;
+  document.getElementById('spSentence').innerHTML = v.sentence;
+  document.getElementById('spCounter').textContent = (spIdx + 1) + ' / ' + vocab.length;
+}
+function spMove(dir) {
+  spIdx = (spIdx + dir + vocab.length) % vocab.length;
+  var card = document.getElementById('spCard');
+  card.style.transition = 'opacity 0.14s, transform 0.14s';
+  card.style.opacity = '0';
+  card.style.transform = 'scale(0.95) translateX(' + (dir > 0 ? '18px' : '-18px') + ')';
+  setTimeout(function() { spRender(); card.style.transform = 'scale(1) translateX(0)'; card.style.opacity = '1'; }, 140);
+}
+function spClose(e) {
+  if (e && e.target !== document.getElementById('spOverlay')) return;
+  document.getElementById('spOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* Keyboard */
+document.addEventListener('keydown', function(e) {
+  var wpOpen = document.getElementById('wpOverlay').classList.contains('open');
+  var spOpen = document.getElementById('spOverlay').classList.contains('open');
+  if (e.key === 'Escape') { if (wpOpen) wpClose(); if (spOpen) spClose(); }
+  if (e.key === 'ArrowRight') { if (spOpen) spMove(1); else if (!wpOpen) go(1); }
+  if (e.key === 'ArrowLeft')  { if (spOpen) spMove(-1); else if (!wpOpen) go(-1); }
+});
+
+/* TABS */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
