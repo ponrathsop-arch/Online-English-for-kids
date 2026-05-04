@@ -64,12 +64,14 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .fc-word-badge{font-family:'Fredoka One',cursive;font-size:3.2rem;margin-bottom:16px;}
 .fc-slide.word-only{justify-content:center;}
 .fc-slide.word-only .fc-word-badge{font-size:4rem;margin-bottom:0;}
-.fc-img-wrap{width:360px;height:360px;margin:0 auto 16px;}
-.fc-img{width:360px;height:360px;object-fit:cover;border-radius:28px;box-shadow:0 8px 32px rgba(0,0,0,.13);display:block;}
-.fc-img-ph{width:360px;height:360px;border-radius:22px;display:none;align-items:center;justify-content:center;font-size:5.5rem;background:rgba(0,0,0,.05);}
+.fc-img-wrap{width:320px;height:320px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;}
+.fc-img-wrap img{width:320px;height:320px;object-fit:cover;border-radius:28px;box-shadow:0 8px 32px rgba(0,0,0,.13);display:block;}
+
+.fc-img{width:320px;height:320px;object-fit:cover;border-radius:28px;box-shadow:0 8px 32px rgba(0,0,0,.13);display:block;}
+.fc-img-ph{width:320px;height:320px;border-radius:28px;display:none;align-items:center;justify-content:center;font-size:7rem;background:rgba(0,0,0,.05);}
 .sentence-box{
-  background:rgba(255,255,255,.92);border-radius:20px;padding:15px 22px;font-size:1.3rem;
-  font-weight:800;box-shadow:0 4px 24px rgba(0,0,0,.11);max-width:520px;width:100%;line-height:1.6;
+  background:rgba(255,255,255,.92);border-radius:20px;padding:15px 22px;font-size:1.12rem;
+  font-weight:800;box-shadow:0 4px 24px rgba(0,0,0,.11);max-width:340px;width:100%;line-height:1.6;
   visibility:hidden;opacity:0;transform:translateY(14px);transition:opacity .4s,transform .4s;
   margin:0 auto 10px;border-top:5px solid var(--teal);text-align:center;
 }
@@ -217,18 +219,6 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .pic-only-card .p-ph{font-size:2.2rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
 
 #footer{text-align:center;padding:22px 16px 10px;font-size:.76rem;color:var(--muted);position:relative;z-index:1;}
-
-
-/* ── REAL IMAGE SUPPORT ── */
-.real-img{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;}
-.fc-img-wrap .real-img{width:220px;height:220px;border-radius:22px;box-shadow:0 8px 32px rgba(0,0,0,.13);}
-.activity-img-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;background:rgba(0,0,0,.05);border-radius:inherit;}
-.mem-back .real-img{height:calc(100% - 28px);border-radius:13px 13px 0 0;}
-.summary-card .real-img{width:56px;height:56px;border-radius:12px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.08);}
-.summary-card .activity-img-fallback{width:56px;height:56px;font-size:2.5rem;flex-shrink:0;background:transparent;}
-.voca-card .real-img{width:220px;height:220px;border-radius:22px;}
-.voca-card .activity-img-fallback{width:220px;height:220px;font-size:5.5rem;}
-#lightbox-emoji img{max-width:82vw;max-height:72vh;border-radius:24px;box-shadow:0 8px 32px rgba(0,0,0,.5);object-fit:contain;}
 
 /* ── LIGHTBOX ── */
 #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:2000;align-items:center;justify-content:center;cursor:pointer;animation:lbIn .18s ease;}
@@ -657,36 +647,6 @@ const shuffle = a => {
   return r;
 };
 
-// Real image helper: default filenames are museum.jpg and museum1.jpg.
-// For words with spaces, the default removes spaces: police station → policestation.jpg.
-function imageBase(a){
-  return (a.imgBase || a.id || a.word).toLowerCase().replace(/\s+/g,'');
-}
-function imageSrc(a, variant){
-  return imageBase(a) + (variant ? variant : '') + '.jpg';
-}
-function makeImg(a, variant, imgClass='real-img', fallbackClass='activity-img-fallback'){
-  const img=document.createElement('img');
-  img.className=imgClass;
-  img.src=imageSrc(a, variant);
-  img.alt='';
-  img.onerror=function(){
-    const ph=document.createElement('div');
-    ph.className=fallbackClass;
-    ph.textContent=a.emoji;
-    this.replaceWith(ph);
-  };
-  return img;
-}
-function imgHTML(a, variant, imgClass='real-img', fallbackClass='activity-img-fallback'){
-  return `<img class="${imgClass}" src="${imageSrc(a, variant)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="${fallbackClass}" style="display:none;">${a.emoji}</div>`;
-}
-function setImg(el,a,variant,imgClass='real-img',fallbackClass='activity-img-fallback'){
-  el.innerHTML='';
-  el.appendChild(makeImg(a, variant, imgClass, fallbackClass));
-}
-
-
 // ══════════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════════
@@ -814,15 +774,20 @@ function renderFC(){
   const s2el=document.getElementById('fc-s2');
   s1el.textContent=a.sentences[0]; s1el.style.borderTopColor=accent;
   s2el.textContent=a.sentences[1]; s2el.style.borderTopColor=accent;
-  setImg(document.getElementById('fc-img1-wrap'), a, '');
-  setImg(document.getElementById('fc-img2-wrap'), a, '1');
+  document.getElementById('fc-img1-ph').textContent=a.emoji;
+  document.getElementById('fc-img1-ph').style.fontSize='6rem';
+  document.getElementById('fc-img1-ph').style.display='none';
+  document.getElementById('fc-img2-ph').textContent=a.emoji;
+  document.getElementById('fc-img2-ph').style.fontSize='6rem';
+  document.getElementById('fc-img2-ph').style.display='none';
   resetSlide();
   updateDots();
   if(fcMode==='learn11'){
     wordEl.style.display='block';
     document.getElementById('fc-slide').classList.add('word-only');
   } else {
-    document.getElementById('fc-img1-wrap').style.display='block';
+    document.getElementById('fc-img1-wrap').style.display='flex';
+    document.getElementById('fc-img1-ph').style.display='flex';
   }
 }
 function fcTap(){
@@ -831,10 +796,12 @@ function fcTap(){
   if(fcMode==='learn11'){
     if(fcTapState===1){
       document.getElementById('fc-slide').classList.remove('word-only');
-      document.getElementById('fc-img1-wrap').style.display='block';
+      document.getElementById('fc-img1-wrap').style.display='flex';
+      document.getElementById('fc-img1-ph').style.display='flex';
     } else if(fcTapState===2){
       document.getElementById('fc-img1-wrap').style.display='none';
-      document.getElementById('fc-img2-wrap').style.display='block';
+      document.getElementById('fc-img2-wrap').style.display='flex';
+      document.getElementById('fc-img2-ph').style.display='flex';
       document.getElementById('fc-s1').classList.add('show');
     } else if(fcTapState===3){
       document.getElementById('fc-s2').classList.add('show');
@@ -845,7 +812,8 @@ function fcTap(){
       document.getElementById('fc-word').style.display='block';
     } else if(fcTapState===2){
       document.getElementById('fc-img1-wrap').style.display='none';
-      document.getElementById('fc-img2-wrap').style.display='block';
+      document.getElementById('fc-img2-wrap').style.display='flex';
+      document.getElementById('fc-img2-ph').style.display='flex';
       document.getElementById('fc-s1').classList.add('show');
     } else if(fcTapState===3){
       document.getElementById('fc-s2').classList.add('show');
@@ -867,7 +835,8 @@ function fcPrev(){
   renderFC();
   document.getElementById('fc-word').style.display='block';
   document.getElementById('fc-img1-wrap').style.display='none';
-  document.getElementById('fc-img2-wrap').style.display='block';
+  document.getElementById('fc-img2-wrap').style.display='flex';
+  document.getElementById('fc-img2-ph').style.display='flex';
   document.getElementById('fc-s1').classList.add('show');
   document.getElementById('fc-s2').classList.add('show');
   document.getElementById('fc-hint').textContent='tap to continue';
@@ -895,7 +864,9 @@ function initMatch(){
   shuffledImgs.forEach(a=>{
     const card=document.createElement('div');
     card.className='match-img-card'; card.dataset.id=a.id;
-    card.appendChild(makeImg(a, '', 'real-img', 'm-ph'));
+    const ph=document.createElement('div');
+    ph.className='m-ph'; ph.textContent=a.emoji;
+    card.appendChild(ph);
     card.addEventListener('click',()=>matchTapImg(card,a.id));
     grid.appendChild(card);
   });
@@ -957,7 +928,7 @@ function renderFill(){
   const sentHTML=a.fillQ.replace('{blank}','<span class="fill-blank" id="fill-blank">?</span>');
   document.getElementById('fill-main').innerHTML=`
     <div class="fill-card">
-      <div class="fill-img-ph" style="display:flex;padding:0;overflow:hidden;">${imgHTML(a,'1')}</div>
+      <div class="fill-img-ph" style="display:flex;">${a.emoji}</div>
       <div class="fill-sentence">${sentHTML}</div>
       <div class="fill-choices">
         ${choices.map(c=>`<button class="fill-choice" onclick="fillCheck(this,${JSON.stringify(c)},${JSON.stringify(a.word)})">${c}</button>`).join('')}
@@ -1012,7 +983,7 @@ function initMemory(){
     card.innerHTML=`<div class="mem-inner">
       <div class="mem-front" style="background:${side==='right'?'linear-gradient(135deg,#3B82F6,#1d4ed8)':'linear-gradient(135deg,var(--teal),#0F766E)'};">${num}</div>
       <div class="mem-back">
-        <div class="mem-emoji">${imgHTML(a,'')}</div>
+        <div class="mem-emoji">${a.emoji}</div>
         <div class="mem-name">${a.word}</div>
       </div>
     </div>`;
@@ -1067,7 +1038,7 @@ function renderSummary(){
     const card=document.createElement('div');
     card.className='summary-card';
     card.style.borderLeftColor=ACCENTS[globalIdx%ACCENTS.length];
-    card.innerHTML=`<div class="s-emoji" style="width:56px;height:56px;flex-shrink:0;">${imgHTML(a,'')}</div><div class="s-name">${a.word}</div>`;
+    card.innerHTML=`<div class="s-emoji">${a.emoji}</div><div class="s-name">${a.word}</div>`;
     grid.appendChild(card);
   });
 }
@@ -1101,7 +1072,7 @@ function vcRender(){
   card.style.transform='translateX(0) rotate(0deg)';
   card.style.opacity='1';
   card.classList.remove('correct-flash','wrong-flash');
-  card.innerHTML=imgHTML(item,'');
+  card.innerHTML=`<span style="font-size:5.5rem;">${item.emoji}</span>`;
   document.getElementById('vc-a-txt').textContent=vcChoices[0].word;
   document.getElementById('vc-b-txt').textContent=vcChoices[1].word;
   document.getElementById('vc-btn-a').classList.remove('flash-correct','flash-wrong');
@@ -1221,7 +1192,7 @@ function renderSpell(){
   const choices=shuffle([a.word,...misspellings]);
   document.getElementById('spell-main').innerHTML=`
     <div class="spell-card">
-      <div class="spell-img-ph" style="padding:0;overflow:hidden;">${imgHTML(a,'')}</div>
+      <div class="spell-img-ph">${a.emoji}</div>
       <div class="spell-prompt">Which spelling is correct?</div>
       <div class="spell-choices">
         ${choices.map(c=>`<button class="spell-choice" onclick="spellCheck(this,${JSON.stringify(c)},${JSON.stringify(a.word)})">${c}</button>`).join('')}
@@ -1278,8 +1249,10 @@ function renderPicsOnly(){
     card.className='pic-only-card';
     card.style.cursor='pointer';
     card.title=a.word;
-    card.appendChild(makeImg(a, '', 'real-img', 'p-ph'));
-    card.addEventListener('click',()=>openLightbox(`<img src="${imageSrc(a,'')}" alt="" onerror="this.replaceWith(document.createTextNode('${a.emoji}'))">`, a.word));
+    const ph=document.createElement('div');
+    ph.className='p-ph'; ph.textContent=a.emoji;
+    card.appendChild(ph);
+    card.addEventListener('click',()=>openLightbox(a.emoji, a.word));
     grid.appendChild(card);
   });
 }
@@ -1316,8 +1289,8 @@ function renderPicsOnly(){
   draw();
 })();
 
-function openLightbox(content, label){
-  document.getElementById('lightbox-emoji').innerHTML = content;
+function openLightbox(emoji, label){
+  document.getElementById('lightbox-emoji').textContent = emoji;
   document.getElementById('lightbox-label').textContent = label;
   document.getElementById('lightbox').classList.add('on');
 }
