@@ -55,9 +55,12 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 .fc-word-badge{font-family:'Fredoka One',cursive;font-size:3.2rem;margin-bottom:16px;}
 .fc-slide.word-only{justify-content:center;}
 .fc-slide.word-only .fc-word-badge{font-size:4rem;margin-bottom:0;}
-.fc-img-wrap{width:220px;height:220px;margin:0 auto 16px;}
-.fc-img-ph{width:220px;height:220px;border-radius:22px;display:none;align-items:center;justify-content:center;font-size:6.5rem;background:rgba(0,0,0,.04);box-shadow:0 8px 32px rgba(0,0,0,.1);overflow:hidden;}
-.fc-img-ph img{width:100%;height:100%;object-fit:cover;border-radius:22px;}
+
+/* ── FLASHCARD IMAGE — bigger & centred ── */
+.fc-img-wrap{width:320px;height:320px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;}
+.fc-img-ph{width:320px;height:320px;border-radius:28px;display:none;align-items:center;justify-content:center;font-size:7rem;background:rgba(0,0,0,.04);box-shadow:0 8px 32px rgba(0,0,0,.1);overflow:hidden;}
+.fc-img-ph img{width:100%;height:100%;object-fit:cover;border-radius:28px;}
+
 .sentence-box{
   background:rgba(255,255,255,.92);border-radius:20px;padding:15px 22px;font-size:1.12rem;
   font-weight:800;box-shadow:0 4px 24px rgba(0,0,0,.11);max-width:340px;width:100%;line-height:1.6;
@@ -522,129 +525,30 @@ body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:
 </div><!-- #app -->
 
 <script>
-// ══════════════════════════════════════
-// DATA — Vehicles / Transport
-// ══════════════════════════════════════
 const VEHICLES = [
-  {
-    id: 'car',
-    word: 'car',
-    emoji: '🚗',
-    sentences: ['My dad drives a car to work.', 'The car is fast and clean.'],
-    fillQ: 'My dad drives a {blank}.'
-  },
-  {
-    id: 'bicycle',
-    word: 'bicycle',
-    emoji: '🚲',
-    sentences: ['I ride a bicycle in the park.', 'My brother has a new bicycle.'],
-    fillQ: 'I ride a {blank}.'
-  },
-  {
-    id: 'bus',
-    word: 'bus',
-    emoji: '🚌',
-    sentences: ['We take the bus to school.', 'The bus is full in the morning.'],
-    fillQ: 'We take the {blank} to school.'
-  },
-  {
-    id: 'motorcycle',
-    word: 'motorcycle',
-    emoji: '🏍️',
-    sentences: ['My uncle rides a motorcycle.', 'The motorcycle is very loud.'],
-    fillQ: 'My uncle rides a {blank}.'
-  },
-  {
-    id: 'truck',
-    word: 'truck',
-    emoji: '🚚',
-    sentences: ['The truck carries big boxes.', 'We see a truck on the road.'],
-    fillQ: 'The {blank} carries big boxes.'
-  },
-  {
-    id: 'train',
-    word: 'train',
-    emoji: '🚆',
-    sentences: ['The train moves very fast.', 'We travel by train to another city.'],
-    fillQ: 'We travel by {blank}.'
-  },
-  {
-    id: 'van',
-    word: 'van',
-    emoji: '🚐',
-    sentences: ['The van is big and white.', 'Our family rides in a van.'],
-    fillQ: 'We ride in a {blank}.'
-  },
-  {
-    id: 'airplane',
-    word: 'airplane',
-    emoji: '✈️',
-    sentences: ['The airplane flies in the sky.', 'We travel by airplane on holiday.'],
-    fillQ: 'We travel by {blank}.'
-  },
-  {
-    id: 'ship',
-    word: 'ship',
-    emoji: '🚢',
-    sentences: ['The ship sails on the sea.', 'We see a big ship at the beach.'],
-    fillQ: 'We see a {blank} on the sea.'
-  },
-  {
-    id: 'helicopter',
-    word: 'helicopter',
-    emoji: '🚁',
-    sentences: ['The helicopter flies over the city.', 'We hear the helicopter in the sky.'],
-    fillQ: 'We hear the {blank}.'
-  },
-  {
-    id: 'tractor',
-    word: 'tractor',
-    emoji: '🚜',
-    sentences: ['The farmer drives a tractor.', 'The tractor works on the farm.'],
-    fillQ: 'The farmer drives a {blank}.'
-  },
-  {
-    id: 'taxi',
-    word: 'taxi',
-    emoji: '🚕',
-    sentences: ['We take a taxi to the hotel.', 'The taxi stops in front of us.'],
-    fillQ: 'We take a {blank}.'
-  },
-  {
-    id: 'ambulance',
-    word: 'ambulance',
-    emoji: '🚑',
-    sentences: ['The ambulance helps sick people.', 'The ambulance moves very fast.'],
-    fillQ: 'The {blank} helps sick people.'
-  },
+  { id:'car', word:'car', emoji:'🚗', sentences:['My dad drives a car to work.','The car is fast and clean.'], fillQ:'My dad drives a {blank}.' },
+  { id:'bicycle', word:'bicycle', emoji:'🚲', sentences:['I ride a bicycle in the park.','My brother has a new bicycle.'], fillQ:'I ride a {blank}.' },
+  { id:'bus', word:'bus', emoji:'🚌', sentences:['We take the bus to school.','The bus is full in the morning.'], fillQ:'We take the {blank} to school.' },
+  { id:'motorcycle', word:'motorcycle', emoji:'🏍️', sentences:['My uncle rides a motorcycle.','The motorcycle is very loud.'], fillQ:'My uncle rides a {blank}.' },
+  { id:'truck', word:'truck', emoji:'🚚', sentences:['The truck carries big boxes.','We see a truck on the road.'], fillQ:'The {blank} carries big boxes.' },
+  { id:'train', word:'train', emoji:'🚆', sentences:['The train moves very fast.','We travel by train to another city.'], fillQ:'We travel by {blank}.' },
+  { id:'van', word:'van', emoji:'🚐', sentences:['The van is big and white.','Our family rides in a van.'], fillQ:'We ride in a {blank}.' },
+  { id:'airplane', word:'airplane', emoji:'✈️', sentences:['The airplane flies in the sky.','We travel by airplane on holiday.'], fillQ:'We travel by {blank}.' },
+  { id:'ship', word:'ship', emoji:'🚢', sentences:['The ship sails on the sea.','We see a big ship at the beach.'], fillQ:'We see a {blank} on the sea.' },
+  { id:'helicopter', word:'helicopter', emoji:'🚁', sentences:['The helicopter flies over the city.','We hear the helicopter in the sky.'], fillQ:'We hear the {blank}.' },
+  { id:'tractor', word:'tractor', emoji:'🚜', sentences:['The farmer drives a tractor.','The tractor works on the farm.'], fillQ:'The farmer drives a {blank}.' },
+  { id:'taxi', word:'taxi', emoji:'🚕', sentences:['We take a taxi to the hotel.','The taxi stops in front of us.'], fillQ:'We take a {blank}.' },
+  { id:'ambulance', word:'ambulance', emoji:'🚑', sentences:['The ambulance helps sick people.','The ambulance moves very fast.'], fillQ:'The {blank} helps sick people.' },
 ];
 
 const ACCENTS = ['#0EA5E9','#EF4444','#8B5CF6','#F97316','#EAB308','#10B981','#0EA5E9','#EF4444','#8B5CF6','#F97316','#EAB308','#10B981','#0EA5E9'];
 
-// ══════════════════════════════════════
-// IMAGE HELPER
-// Convention: word.jpg = flashcard tap1/match/memory/summary/vocabinder/picsonly
-//             word1.jpg = flashcard tap2 (sentence screen) / fill
-// ══════════════════════════════════════
-function makeImg(id, suffix, emoji, cls) {
-  // suffix: '' for word.jpg, '1' for word1.jpg, '2' for word2.jpg
+// ── IMAGE HELPER ──
+function fillImgContainer(container, id, suffix, emoji) {
+  container.innerHTML = '';
   const img = document.createElement('img');
   img.src = id + suffix + '.jpg';
   img.alt = id;
-  if (cls) img.className = cls;
-  img.onerror = function() {
-    // fallback: replace img with emoji span
-    const span = document.createElement('span');
-    span.textContent = emoji;
-    this.parentNode.replaceChild(span, this);
-  };
-  return img;
-}
-
-// Fill a container: try img first, emoji fallback
-function fillImgContainer(container, id, suffix, emoji) {
-  container.innerHTML = '';
-  const img = makeImg(id, suffix, emoji);
   img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;';
   img.onerror = function() {
     container.innerHTML = '';
@@ -655,26 +559,17 @@ function fillImgContainer(container, id, suffix, emoji) {
   container.appendChild(img);
 }
 
-// ══════════════════════════════════════
-// STATE
-// ══════════════════════════════════════
 let fcMode='', fcList=[], fcIdx=0, fcTapState=0;
 let matchSel={img:null,word:null}, matchCorrect=0;
 let fillIdx=0, fillList=[], fillAnswered=false;
 let currentActivity='';
 
-// ══════════════════════════════════════
-// UTILS
-// ══════════════════════════════════════
 const shuffle = a => {
   const r=[...a];
   for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}
   return r;
 };
 
-// ══════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -693,89 +588,42 @@ function goHome(){
 function bnActivity(act){startActivity(act);}
 function updateBnavActivity(act){
   ['bn-home','bn-wf','bn-pf','bn-match','bn-mem','bn-fill','bn-spell','bn-sum'].forEach(id=>{
-    const btn=document.getElementById(id);
-    if(!btn) return;
+    const btn=document.getElementById(id); if(!btn)return;
     btn.style.background=''; btn.style.color='var(--muted)';
   });
-  const map={
-    'learn11':['bn-wf',  'var(--sky)'],
-    'learn12':['bn-pf',  'var(--fire)'],
-    'match':  ['bn-match','var(--mint)'],
-    'memory': ['bn-mem', 'var(--sky)'],
-    'fill':   ['bn-fill', 'var(--sun)'],
-    'spell':  ['bn-spell','var(--violet)'],
-    'summary':['bn-sum', 'var(--sky)'],
-  };
+  const map={'learn11':['bn-wf','var(--sky)'],'learn12':['bn-pf','var(--fire)'],'match':['bn-match','var(--mint)'],'memory':['bn-mem','var(--sky)'],'fill':['bn-fill','var(--sun)'],'spell':['bn-spell','var(--violet)'],'summary':['bn-sum','var(--sky)']};
   if(map[act]){
     const btn=document.getElementById(map[act][0]);
-    if(btn){btn.style.background=map[act][1]; btn.style.color= act==='fill'?'#1E293B':'#fff';}
+    if(btn){btn.style.background=map[act][1]; btn.style.color=act==='fill'?'#1E293B':'#fff';}
   }
 }
 
-// ══════════════════════════════════════
-// START ACTIVITY
-// ══════════════════════════════════════
 function startActivity(act){
-  currentActivity=act;
-  updateBnavActivity(act);
+  currentActivity=act; updateBnavActivity(act);
   if(act==='learn11'||act==='learn12'){
     fcMode=act; fcList=[...VEHICLES]; fcIdx=0;
     document.getElementById('fc-mode-label').textContent=act==='learn11'?'📖 Word First':'🖼️ Picture First';
-    buildDots();
-    showScreen('flashcard-screen');
+    buildDots(); showScreen('flashcard-screen');
     document.getElementById('fc-finish').style.display='none';
     document.getElementById('fc-slide').style.display='flex';
     document.querySelector('.fc-nav-row').style.display='flex';
     renderFC();
-  } else if(act==='match'){
-    showScreen('match-screen');
-    document.getElementById('match-finish').style.display='none';
-    document.getElementById('match-main').style.display='block';
-    initMatch();
-  } else if(act==='memory'){
-    showScreen('memory-screen');
-    document.getElementById('mem-finish').style.display='none';
-    initMemory();
-  } else if(act==='summary'){
-    showScreen('summary-screen');
-    sumPage=0;
-    renderSummary();
-  } else if(act==='fill'){
-    fillList=shuffle([...VEHICLES]); fillIdx=0;
-    showScreen('fill-screen');
-    document.getElementById('fill-finish').style.display='none';
-    document.getElementById('fill-main').style.display='block';
-    renderFill();
-  } else if(act==='spell'){
-    showScreen('spell-screen');
-    document.getElementById('spell-finish').style.display='none';
-    document.getElementById('spell-main').style.display='block';
-    initSpell();
-  } else if(act==='wordsonly'){
-    showScreen('words-screen');
-    renderWordsOnly();
-  } else if(act==='picsonly'){
-    showScreen('pics-screen');
-    renderPicsOnly();
-  }
+  } else if(act==='match'){ showScreen('match-screen'); document.getElementById('match-finish').style.display='none'; document.getElementById('match-main').style.display='block'; initMatch();
+  } else if(act==='memory'){ showScreen('memory-screen'); document.getElementById('mem-finish').style.display='none'; initMemory();
+  } else if(act==='summary'){ showScreen('summary-screen'); sumPage=0; renderSummary();
+  } else if(act==='fill'){ fillList=shuffle([...VEHICLES]); fillIdx=0; showScreen('fill-screen'); document.getElementById('fill-finish').style.display='none'; document.getElementById('fill-main').style.display='block'; renderFill();
+  } else if(act==='spell'){ showScreen('spell-screen'); document.getElementById('spell-finish').style.display='none'; document.getElementById('spell-main').style.display='block'; initSpell();
+  } else if(act==='wordsonly'){ showScreen('words-screen'); renderWordsOnly();
+  } else if(act==='picsonly'){ showScreen('pics-screen'); renderPicsOnly(); }
 }
 
-// ══════════════════════════════════════
-// FLASHCARD
-// ══════════════════════════════════════
+// ── FLASHCARD ──
 function buildDots(){
   const dr=document.getElementById('fc-dots'); dr.innerHTML='';
-  fcList.forEach((_,i)=>{
-    const d=document.createElement('div');
-    d.className='dot'+(i===0?' active':'');
-    d.id='fcd'+i; dr.appendChild(d);
-  });
+  fcList.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.id='fcd'+i;dr.appendChild(d);});
 }
 function updateDots(){
-  fcList.forEach((_,i)=>{
-    const d=document.getElementById('fcd'+i);
-    if(d) d.className='dot'+(i<fcIdx?' done':i===fcIdx?' active':'');
-  });
+  fcList.forEach((_,i)=>{const d=document.getElementById('fcd'+i);if(d)d.className='dot'+(i<fcIdx?' done':i===fcIdx?' active':'');});
 }
 function resetSlide(){
   document.getElementById('fc-slide').classList.remove('word-only');
@@ -785,7 +633,7 @@ function resetSlide(){
   ['fc-s1','fc-s2'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('show');});
   document.getElementById('fc-hint').textContent='Tap to continue →';
   const prevBtn=document.getElementById('fc-prev-btn');
-  if(fcIdx>0) prevBtn.classList.remove('hidden'); else prevBtn.classList.add('hidden');
+  if(fcIdx>0)prevBtn.classList.remove('hidden'); else prevBtn.classList.add('hidden');
   fcTapState=0;
 }
 function renderFC(){
@@ -793,31 +641,23 @@ function renderFC(){
   const accent=ACCENTS[fcIdx%ACCENTS.length];
   document.getElementById('fc-progress').textContent=(fcIdx+1)+' / '+fcList.length;
   const wordEl=document.getElementById('fc-word');
-  wordEl.textContent=a.word;
-  wordEl.style.color=accent;
-  const s1el=document.getElementById('fc-s1');
-  const s2el=document.getElementById('fc-s2');
-  s1el.textContent=a.sentences[0]; s1el.style.borderTopColor=accent;
-  s2el.textContent=a.sentences[1]; s2el.style.borderTopColor=accent;
+  wordEl.textContent=a.word; wordEl.style.color=accent;
+  document.getElementById('fc-s1').textContent=a.sentences[0]; document.getElementById('fc-s1').style.borderTopColor=accent;
+  document.getElementById('fc-s2').textContent=a.sentences[1]; document.getElementById('fc-s2').style.borderTopColor=accent;
 
-  // img1 = word.jpg (tap 1)
-  const img1ph = document.getElementById('fc-img1-ph');
-  fillImgContainer(img1ph, a.id, '', a.emoji);
-  img1ph.style.display='none';
+  // Preload both images into their placeholders
+  fillImgContainer(document.getElementById('fc-img1-ph'), a.id, '', a.emoji);
+  fillImgContainer(document.getElementById('fc-img2-ph'), a.id, '1', a.emoji);
+  document.getElementById('fc-img1-ph').style.display='none';
+  document.getElementById('fc-img2-ph').style.display='none';
 
-  // img2 = word1.jpg (tap 2, with sentences)
-  const img2ph = document.getElementById('fc-img2-ph');
-  fillImgContainer(img2ph, a.id, '1', a.emoji);
-  img2ph.style.display='none';
-
-  resetSlide();
-  updateDots();
+  resetSlide(); updateDots();
   if(fcMode==='learn11'){
     wordEl.style.display='block';
     document.getElementById('fc-slide').classList.add('word-only');
   } else {
-    document.getElementById('fc-img1-wrap').style.display='block';
-    img1ph.style.display='flex';
+    document.getElementById('fc-img1-wrap').style.display='flex';
+    document.getElementById('fc-img1-ph').style.display='flex';
   }
 }
 function fcTap(){
@@ -826,11 +666,11 @@ function fcTap(){
   if(fcMode==='learn11'){
     if(fcTapState===1){
       document.getElementById('fc-slide').classList.remove('word-only');
-      document.getElementById('fc-img1-wrap').style.display='block';
+      document.getElementById('fc-img1-wrap').style.display='flex';
       document.getElementById('fc-img1-ph').style.display='flex';
     } else if(fcTapState===2){
       document.getElementById('fc-img1-wrap').style.display='none';
-      document.getElementById('fc-img2-wrap').style.display='block';
+      document.getElementById('fc-img2-wrap').style.display='flex';
       document.getElementById('fc-img2-ph').style.display='flex';
       document.getElementById('fc-s1').classList.add('show');
     } else if(fcTapState===3){
@@ -842,7 +682,7 @@ function fcTap(){
       document.getElementById('fc-word').style.display='block';
     } else if(fcTapState===2){
       document.getElementById('fc-img1-wrap').style.display='none';
-      document.getElementById('fc-img2-wrap').style.display='block';
+      document.getElementById('fc-img2-wrap').style.display='flex';
       document.getElementById('fc-img2-ph').style.display='flex';
       document.getElementById('fc-s1').classList.add('show');
     } else if(fcTapState===3){
@@ -860,12 +700,11 @@ function fcAdvance(){
   } else { renderFC(); }
 }
 function fcPrev(){
-  if(fcIdx<=0) return;
-  fcIdx--;
+  if(fcIdx<=0)return; fcIdx--;
   renderFC();
   document.getElementById('fc-word').style.display='block';
   document.getElementById('fc-img1-wrap').style.display='none';
-  document.getElementById('fc-img2-wrap').style.display='block';
+  document.getElementById('fc-img2-wrap').style.display='flex';
   document.getElementById('fc-img2-ph').style.display='flex';
   document.getElementById('fc-s1').classList.add('show');
   document.getElementById('fc-s2').classList.add('show');
@@ -880,64 +719,44 @@ function restartFC(){
   renderFC();
 }
 
-// ══════════════════════════════════════
-// MATCH — uses word.jpg
-// ══════════════════════════════════════
+// ── MATCH ──
 function initMatch(){
   matchSel={img:null,word:null}; matchCorrect=0;
   document.getElementById('match-score-top').textContent='0 matched';
-  const grid=document.getElementById('match-grid');
-  const wordsEl=document.getElementById('match-words');
+  const grid=document.getElementById('match-grid'); const wordsEl=document.getElementById('match-words');
   grid.innerHTML=''; wordsEl.innerHTML='';
-  const shuffledImgs=shuffle([...VEHICLES]);
-  const shuffledWords=shuffle([...VEHICLES]);
-  shuffledImgs.forEach(a=>{
-    const card=document.createElement('div');
-    card.className='match-img-card'; card.dataset.id=a.id;
-    const img=makeImg(a.id,'',a.emoji);
+  shuffle([...VEHICLES]).forEach(a=>{
+    const card=document.createElement('div'); card.className='match-img-card'; card.dataset.id=a.id;
+    const img=document.createElement('img'); img.src=a.id+'.jpg'; img.alt=a.word;
     img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:10px;display:block;';
-    img.onerror=function(){
-      const span=document.createElement('span');
-      span.className='m-ph'; span.textContent=a.emoji;
-      this.parentNode.replaceChild(span,this);
-    };
+    img.onerror=function(){const sp=document.createElement('span');sp.className='m-ph';sp.textContent=a.emoji;this.parentNode.replaceChild(sp,this);};
     card.appendChild(img);
-    card.addEventListener('click',()=>matchTapImg(card,a.id));
-    grid.appendChild(card);
+    card.addEventListener('click',()=>matchTapImg(card,a.id)); grid.appendChild(card);
   });
-  shuffledWords.forEach(a=>{
-    const pill=document.createElement('button');
-    pill.className='match-word-pill'; pill.dataset.id=a.id; pill.textContent=a.word;
-    pill.addEventListener('click',()=>matchTapWord(pill,a.id));
-    wordsEl.appendChild(pill);
+  shuffle([...VEHICLES]).forEach(a=>{
+    const pill=document.createElement('button'); pill.className='match-word-pill'; pill.dataset.id=a.id; pill.textContent=a.word;
+    pill.addEventListener('click',()=>matchTapWord(pill,a.id)); wordsEl.appendChild(pill);
   });
 }
 function matchTapImg(card,id){
-  if(card.classList.contains('correct')) return;
+  if(card.classList.contains('correct'))return;
   document.querySelectorAll('.match-img-card.selected').forEach(c=>c.classList.remove('selected'));
   card.classList.add('selected'); matchSel.img=id; checkPair();
 }
 function matchTapWord(pill,id){
-  if(pill.classList.contains('correct')) return;
+  if(pill.classList.contains('correct'))return;
   document.querySelectorAll('.match-word-pill.selected').forEach(p=>p.classList.remove('selected'));
   pill.classList.add('selected'); matchSel.word=id; checkPair();
 }
 function checkPair(){
-  if(!matchSel.img||!matchSel.word) return;
+  if(!matchSel.img||!matchSel.word)return;
   const total=VEHICLES.length;
   if(matchSel.img===matchSel.word){
     document.querySelector(`.match-img-card[data-id="${matchSel.img}"]`).classList.replace('selected','correct');
     document.querySelector(`.match-word-pill[data-id="${matchSel.word}"]`).classList.replace('selected','correct');
-    matchCorrect++;
-    document.getElementById('match-score-top').textContent=matchCorrect+' matched';
+    matchCorrect++; document.getElementById('match-score-top').textContent=matchCorrect+' matched';
     matchSel={img:null,word:null};
-    if(matchCorrect===total){
-      setTimeout(()=>{
-        document.getElementById('match-main').style.display='none';
-        document.getElementById('match-finish-msg').textContent='You matched all '+total+' vehicles! 🎉';
-        document.getElementById('match-finish').style.display='block';
-      },500);
-    }
+    if(matchCorrect===total){setTimeout(()=>{document.getElementById('match-main').style.display='none';document.getElementById('match-finish-msg').textContent='You matched all '+total+' vehicles! 🎉';document.getElementById('match-finish').style.display='block';},500);}
   } else {
     const ic=document.querySelector(`.match-img-card[data-id="${matchSel.img}"]`);
     const wp=document.querySelector(`.match-word-pill[data-id="${matchSel.word}"]`);
@@ -946,165 +765,82 @@ function checkPair(){
   }
 }
 
-// ══════════════════════════════════════
-// FILL IN THE BLANK — uses word1.jpg
-// ══════════════════════════════════════
-function initFill(){
-  fillList=shuffle([...VEHICLES]); fillIdx=0;
-  document.getElementById('fill-finish').style.display='none';
-  document.getElementById('fill-main').style.display='block';
-  renderFill();
-}
+// ── FILL ──
+function initFill(){ fillList=shuffle([...VEHICLES]); fillIdx=0; document.getElementById('fill-finish').style.display='none'; document.getElementById('fill-main').style.display='block'; renderFill(); }
 function renderFill(){
   document.getElementById('fill-progress').textContent=(fillIdx+1)+' / '+fillList.length;
   const a=fillList[fillIdx]; fillAnswered=false;
   const others=VEHICLES.filter(x=>x.id!==a.id);
   const choices=shuffle([a.word,...shuffle(others).slice(0,2).map(x=>x.word)]);
   const sentHTML=a.fillQ.replace('{blank}','<span class="fill-blank" id="fill-blank">?</span>');
-  const wrapper=document.createElement('div');
-  wrapper.className='fill-card';
-
-  const imgPh=document.createElement('div');
-  imgPh.className='fill-img-ph';
-  fillImgContainer(imgPh, a.id, '1', a.emoji);
-  wrapper.appendChild(imgPh);
-
-  const sentDiv=document.createElement('div');
-  sentDiv.className='fill-sentence'; sentDiv.innerHTML=sentHTML;
-  wrapper.appendChild(sentDiv);
-
-  const choicesDiv=document.createElement('div');
-  choicesDiv.className='fill-choices';
-  choices.forEach(c=>{
-    const btn=document.createElement('button');
-    btn.className='fill-choice';
-    btn.textContent=c;
-    btn.onclick=()=>fillCheck(btn,c,a.word);
-    choicesDiv.appendChild(btn);
-  });
+  const wrapper=document.createElement('div'); wrapper.className='fill-card';
+  const imgPh=document.createElement('div'); imgPh.className='fill-img-ph';
+  fillImgContainer(imgPh, a.id, '1', a.emoji); wrapper.appendChild(imgPh);
+  const sentDiv=document.createElement('div'); sentDiv.className='fill-sentence'; sentDiv.innerHTML=sentHTML; wrapper.appendChild(sentDiv);
+  const choicesDiv=document.createElement('div'); choicesDiv.className='fill-choices';
+  choices.forEach(c=>{const btn=document.createElement('button');btn.className='fill-choice';btn.textContent=c;btn.onclick=()=>fillCheck(btn,c,a.word);choicesDiv.appendChild(btn);});
   wrapper.appendChild(choicesDiv);
-
-  const fb=document.createElement('div'); fb.className='fill-feedback'; fb.id='fill-fb';
-  wrapper.appendChild(fb);
-  const nextBtn=document.createElement('button');
-  nextBtn.className='fill-next-btn'; nextBtn.id='fill-next-btn'; nextBtn.textContent='Next →';
-  nextBtn.onclick=fillNext;
-  wrapper.appendChild(nextBtn);
-
-  document.getElementById('fill-main').innerHTML='';
-  document.getElementById('fill-main').appendChild(wrapper);
+  const fb=document.createElement('div'); fb.className='fill-feedback'; fb.id='fill-fb'; wrapper.appendChild(fb);
+  const nextBtn=document.createElement('button'); nextBtn.className='fill-next-btn'; nextBtn.id='fill-next-btn'; nextBtn.textContent='Next →'; nextBtn.onclick=fillNext; wrapper.appendChild(nextBtn);
+  document.getElementById('fill-main').innerHTML=''; document.getElementById('fill-main').appendChild(wrapper);
 }
 function fillCheck(btn,chosen,correct){
-  if(fillAnswered) return;
+  if(fillAnswered)return;
   if(chosen===correct){
-    fillAnswered=true;
-    document.getElementById('fill-blank').textContent=correct;
-    document.getElementById('fill-blank').classList.add('correct');
-    document.querySelectorAll('.fill-choice').forEach(b=>b.disabled=true);
-    btn.classList.add('correct-choice');
-    document.getElementById('fill-fb').textContent='✅ Correct!';
-    document.getElementById('fill-fb').className='fill-feedback ok';
+    fillAnswered=true; document.getElementById('fill-blank').textContent=correct; document.getElementById('fill-blank').classList.add('correct');
+    document.querySelectorAll('.fill-choice').forEach(b=>b.disabled=true); btn.classList.add('correct-choice');
+    document.getElementById('fill-fb').textContent='✅ Correct!'; document.getElementById('fill-fb').className='fill-feedback ok';
     document.getElementById('fill-next-btn').classList.add('show');
   } else {
-    btn.classList.add('wrong-choice');
-    document.getElementById('fill-fb').textContent='❌ Try again!';
-    document.getElementById('fill-fb').className='fill-feedback no';
+    btn.classList.add('wrong-choice'); document.getElementById('fill-fb').textContent='❌ Try again!'; document.getElementById('fill-fb').className='fill-feedback no';
     setTimeout(()=>{btn.classList.remove('wrong-choice');document.getElementById('fill-fb').textContent='';},700);
   }
 }
-function fillNext(){
-  fillIdx++;
-  if(fillIdx>=fillList.length){
-    document.getElementById('fill-main').style.display='none';
-    document.getElementById('fill-finish').style.display='block';
-  } else { renderFill(); }
-}
+function fillNext(){ fillIdx++; if(fillIdx>=fillList.length){document.getElementById('fill-main').style.display='none';document.getElementById('fill-finish').style.display='block';} else {renderFill();} }
 
-// ══════════════════════════════════════
-// MEMORY GAME — uses word.jpg on back
-// ══════════════════════════════════════
+// ── MEMORY ──
 function initMemory(){
   const status=document.getElementById('mem-status');
-  const leftCol=document.getElementById('mem-col-left');
-  const rightCol=document.getElementById('mem-col-right');
-  leftCol.innerHTML=''; rightCol.innerHTML='';
-  document.getElementById('mem-finish').style.display='none';
+  const leftCol=document.getElementById('mem-col-left'); const rightCol=document.getElementById('mem-col-right');
+  leftCol.innerHTML=''; rightCol.innerHTML=''; document.getElementById('mem-finish').style.display='none';
   status.textContent='Find all the pairs! 🧠';
-  const leftVehicles=shuffle([...VEHICLES]);
-  const rightVehicles=shuffle([...VEHICLES]);
-  let flipped=[], matched=0, lock=false;
-  const total=VEHICLES.length;
+  const leftV=shuffle([...VEHICLES]); const rightV=shuffle([...VEHICLES]);
+  let flipped=[], matched=0, lock=false; const total=VEHICLES.length;
   function makeCard(a,num,side){
-    const card=document.createElement('div');
-    card.className='mem-card'; card.dataset.id=a.id; card.dataset.side=side;
-
-    // Build back with image
-    const imgEl=document.createElement('img');
-    imgEl.className='mem-img';
-    imgEl.src=a.id+'.jpg';
-    imgEl.alt=a.word;
-    const emojiEl=document.createElement('div');
-    emojiEl.className='mem-emoji-fb';
-    emojiEl.textContent=a.emoji;
-    emojiEl.style.display='none';
+    const card=document.createElement('div'); card.className='mem-card'; card.dataset.id=a.id; card.dataset.side=side;
+    const imgEl=document.createElement('img'); imgEl.className='mem-img'; imgEl.src=a.id+'.jpg'; imgEl.alt=a.word;
+    const emojiEl=document.createElement('div'); emojiEl.className='mem-emoji-fb'; emojiEl.textContent=a.emoji; emojiEl.style.display='none';
     imgEl.onerror=function(){this.style.display='none';emojiEl.style.display='flex';};
-
-    const nameEl=document.createElement('div');
-    nameEl.className='mem-name'; nameEl.textContent=a.word;
-
-    const backDiv=document.createElement('div');
-    backDiv.className='mem-back';
-    backDiv.appendChild(imgEl);
-    backDiv.appendChild(emojiEl);
-    backDiv.appendChild(nameEl);
-
-    const frontDiv=document.createElement('div');
-    frontDiv.className='mem-front';
+    const nameEl=document.createElement('div'); nameEl.className='mem-name'; nameEl.textContent=a.word;
+    const backDiv=document.createElement('div'); backDiv.className='mem-back'; backDiv.appendChild(imgEl); backDiv.appendChild(emojiEl); backDiv.appendChild(nameEl);
+    const frontDiv=document.createElement('div'); frontDiv.className='mem-front';
     frontDiv.style.background=side==='right'?'linear-gradient(135deg,#8B5CF6,#6D28D9)':'linear-gradient(135deg,var(--sky),#0369A1)';
     frontDiv.textContent=num;
-
-    const inner=document.createElement('div');
-    inner.className='mem-inner';
-    inner.appendChild(frontDiv);
-    inner.appendChild(backDiv);
-    card.appendChild(inner);
-
+    const inner=document.createElement('div'); inner.className='mem-inner'; inner.appendChild(frontDiv); inner.appendChild(backDiv); card.appendChild(inner);
     card.addEventListener('click',()=>{
-      if(lock||card.classList.contains('flipped')||card.classList.contains('matched')) return;
+      if(lock||card.classList.contains('flipped')||card.classList.contains('matched'))return;
       if(flipped.length===1&&flipped[0].side===side){flipped[0].card.classList.remove('flipped');flipped=[];}
-      card.classList.add('flipped');
-      flipped.push({card,id:a.id,side});
+      card.classList.add('flipped'); flipped.push({card,id:a.id,side});
       if(flipped.length===2){
         lock=true;
         if(flipped[0].id===flipped[1].id){
           flipped[0].card.classList.add('matched'); flipped[1].card.classList.add('matched');
           matched++; flipped=[]; lock=false;
           status.textContent=matched===total?'🎉 All matched!':'✅ '+matched+' / '+total+' found!';
-          if(matched===total){
-            setTimeout(()=>{
-              document.getElementById('mem-finish-msg').textContent='You found all '+total+' pairs! 🎉';
-              document.getElementById('mem-finish').style.display='block';
-            },600);
-          }
-        } else {
-          setTimeout(()=>{flipped[0].card.classList.remove('flipped');flipped[1].card.classList.remove('flipped');flipped=[];lock=false;},800);
-        }
+          if(matched===total){setTimeout(()=>{document.getElementById('mem-finish-msg').textContent='You found all '+total+' pairs! 🎉';document.getElementById('mem-finish').style.display='block';},600);}
+        } else { setTimeout(()=>{flipped[0].card.classList.remove('flipped');flipped[1].card.classList.remove('flipped');flipped=[];lock=false;},800); }
       }
     });
     return card;
   }
-  leftVehicles.forEach((a,i)=>leftCol.appendChild(makeCard(a,i+1,'left')));
-  rightVehicles.forEach((a,i)=>rightCol.appendChild(makeCard(a,i+1,'right')));
-  lock=true;
-  document.querySelectorAll('.mem-card').forEach(c=>c.classList.add('flipped'));
+  leftV.forEach((a,i)=>leftCol.appendChild(makeCard(a,i+1,'left')));
+  rightV.forEach((a,i)=>rightCol.appendChild(makeCard(a,i+1,'right')));
+  lock=true; document.querySelectorAll('.mem-card').forEach(c=>c.classList.add('flipped'));
   setTimeout(()=>{document.querySelectorAll('.mem-card:not(.matched)').forEach(c=>c.classList.remove('flipped'));lock=false;},2000);
 }
 
-// ══════════════════════════════════════
-// SUMMARY — uses word.jpg thumbnail
-// ══════════════════════════════════════
-const PER_PAGE=7;
-let sumPage=0;
+// ── SUMMARY ──
+const PER_PAGE=7; let sumPage=0;
 function renderSummary(){
   const totalPages=Math.ceil(VEHICLES.length/PER_PAGE);
   sumPage=Math.max(0,Math.min(sumPage,totalPages-1));
@@ -1113,342 +849,123 @@ function renderSummary(){
   document.getElementById('summary-progress').textContent=(sumPage*PER_PAGE+1)+'–'+(sumPage*PER_PAGE+slice.length)+' of '+VEHICLES.length;
   document.getElementById('sum-prev').style.visibility=sumPage===0?'hidden':'visible';
   document.getElementById('sum-next').style.visibility=sumPage===totalPages-1?'hidden':'visible';
-  const grid=document.getElementById('summary-grid');
-  grid.innerHTML='';
+  const grid=document.getElementById('summary-grid'); grid.innerHTML='';
   slice.forEach((a,i)=>{
     const globalIdx=sumPage*PER_PAGE+i;
-    const card=document.createElement('div');
-    card.className='summary-card';
-    card.style.borderLeftColor=ACCENTS[globalIdx%ACCENTS.length];
-
-    const img=document.createElement('img');
-    img.className='s-thumb'; img.src=a.id+'.jpg'; img.alt=a.word;
-    const emojiSpan=document.createElement('div');
-    emojiSpan.className='s-emoji'; emojiSpan.textContent=a.emoji;
-    emojiSpan.style.display='none';
+    const card=document.createElement('div'); card.className='summary-card'; card.style.borderLeftColor=ACCENTS[globalIdx%ACCENTS.length];
+    const img=document.createElement('img'); img.className='s-thumb'; img.src=a.id+'.jpg'; img.alt=a.word;
+    const emojiSpan=document.createElement('div'); emojiSpan.className='s-emoji'; emojiSpan.textContent=a.emoji; emojiSpan.style.display='none';
     img.onerror=function(){this.style.display='none';emojiSpan.style.display='block';};
-
-    const nameDiv=document.createElement('div');
-    nameDiv.className='s-name'; nameDiv.textContent=a.word;
-
-    card.appendChild(img);
-    card.appendChild(emojiSpan);
-    card.appendChild(nameDiv);
-    grid.appendChild(card);
+    const nameDiv=document.createElement('div'); nameDiv.className='s-name'; nameDiv.textContent=a.word;
+    card.appendChild(img); card.appendChild(emojiSpan); card.appendChild(nameDiv); grid.appendChild(card);
   });
 }
 function summaryPage(dir){sumPage+=dir;renderSummary();}
 
-// ══════════════════════════════════════
-// VOCABINDER — uses word.jpg
-// ══════════════════════════════════════
+// ── VOCABINDER ──
 let vcDeck=[],vcIdx=0,vcCorrect=0,vcWrong=0,vcLocked=false,vcChoices=[],vcDragX=0,vcDragging=false,vcStartX=0;
-function showVocabinder(){
-  showScreen('voca-screen');
-  document.getElementById('bottom-nav').classList.remove('visible');
-  vcRestart();
-}
+function showVocabinder(){ showScreen('voca-screen'); document.getElementById('bottom-nav').classList.remove('visible'); vcRestart(); }
 function vcRestart(){
-  vcDeck=shuffle([...VEHICLES]);
-  vcIdx=0; vcCorrect=0; vcWrong=0; vcLocked=false;
-  document.getElementById('vc-comp').classList.remove('on');
-  document.getElementById('vc-game').style.display='block';
-  document.getElementById('vc-total').textContent=vcDeck.length;
-  vcRender();
+  vcDeck=shuffle([...VEHICLES]); vcIdx=0; vcCorrect=0; vcWrong=0; vcLocked=false;
+  document.getElementById('vc-comp').classList.remove('on'); document.getElementById('vc-game').style.display='block';
+  document.getElementById('vc-total').textContent=vcDeck.length; vcRender();
 }
 function vcRender(){
   if(vcIdx>=vcDeck.length){vcShowComp();return;}
   const item=vcDeck[vcIdx];
-  const pool=VEHICLES.filter(a=>a.id!==item.id);
-  const wrong=pool[Math.floor(Math.random()*pool.length)];
+  const pool=VEHICLES.filter(a=>a.id!==item.id); const wrong=pool[Math.floor(Math.random()*pool.length)];
   vcChoices=shuffle([item,wrong]);
   const card=document.getElementById('vc-card');
-  card.style.transition='none';
-  card.style.transform='translateX(0) rotate(0deg)';
-  card.style.opacity='1';
-  card.classList.remove('correct-flash','wrong-flash');
-
-  // Build card content with image
-  card.innerHTML='';
-  const img=document.createElement('img');
-  img.src=item.id+'.jpg'; img.alt=item.word;
+  card.style.transition='none'; card.style.transform='translateX(0) rotate(0deg)'; card.style.opacity='1';
+  card.classList.remove('correct-flash','wrong-flash'); card.innerHTML='';
+  const img=document.createElement('img'); img.src=item.id+'.jpg'; img.alt=item.word;
   img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:25px;display:block;';
-  img.onerror=function(){
-    this.style.display='none';
-    const em=document.createElement('span');
-    em.className='vc-emoji'; em.textContent=item.emoji;
-    card.appendChild(em);
-  };
+  img.onerror=function(){this.style.display='none';const em=document.createElement('span');em.className='vc-emoji';em.textContent=item.emoji;card.appendChild(em);};
   card.appendChild(img);
-
-  document.getElementById('vc-a-txt').textContent=vcChoices[0].word;
-  document.getElementById('vc-b-txt').textContent=vcChoices[1].word;
-  document.getElementById('vc-btn-a').classList.remove('flash-correct','flash-wrong');
-  document.getElementById('vc-btn-b').classList.remove('flash-correct','flash-wrong');
-  document.getElementById('vc-peek-l').textContent=vcChoices[0].word;
-  document.getElementById('vc-peek-r').textContent=vcChoices[1].word;
-  document.getElementById('vc-peek-l').style.opacity=0;
-  document.getElementById('vc-peek-r').style.opacity=0;
+  document.getElementById('vc-a-txt').textContent=vcChoices[0].word; document.getElementById('vc-b-txt').textContent=vcChoices[1].word;
+  document.getElementById('vc-btn-a').classList.remove('flash-correct','flash-wrong'); document.getElementById('vc-btn-b').classList.remove('flash-correct','flash-wrong');
+  document.getElementById('vc-peek-l').textContent=vcChoices[0].word; document.getElementById('vc-peek-r').textContent=vcChoices[1].word;
+  document.getElementById('vc-peek-l').style.opacity=0; document.getElementById('vc-peek-r').style.opacity=0;
   vcUpdateHUD(); vcLocked=false; vcSetupDrag();
 }
-function vcUpdateHUD(){
-  document.getElementById('vc-correct').textContent=vcCorrect;
-  document.getElementById('vc-wrong').textContent=vcWrong;
-  document.getElementById('vc-done').textContent=vcIdx;
-  document.getElementById('vc-prog').style.width=(vcDeck.length?(vcIdx/vcDeck.length)*100:0)+'%';
-}
+function vcUpdateHUD(){ document.getElementById('vc-correct').textContent=vcCorrect; document.getElementById('vc-wrong').textContent=vcWrong; document.getElementById('vc-done').textContent=vcIdx; document.getElementById('vc-prog').style.width=(vcDeck.length?(vcIdx/vcDeck.length)*100:0)+'%'; }
 function vcPick(side){if(vcLocked)return;vcResolve(vcChoices[side].id===vcDeck[vcIdx].id,side);}
 function vcResolve(isOk,side){
   if(vcLocked)return; vcLocked=true;
-  const card=document.getElementById('vc-card');
-  const chosenBtn=side===0?document.getElementById('vc-btn-a'):document.getElementById('vc-btn-b');
-  if(isOk){vcCorrect++;card.classList.add('correct-flash');chosenBtn.classList.add('flash-correct');}
-  else{vcWrong++;card.classList.add('wrong-flash');chosenBtn.classList.add('flash-wrong');}
-  setTimeout(()=>vcFlyOut(side===0?'left':'right'),200);
-  setTimeout(()=>{vcIdx++;vcRender();},isOk?700:900);
+  const card=document.getElementById('vc-card'); const chosenBtn=side===0?document.getElementById('vc-btn-a'):document.getElementById('vc-btn-b');
+  if(isOk){vcCorrect++;card.classList.add('correct-flash');chosenBtn.classList.add('flash-correct');} else {vcWrong++;card.classList.add('wrong-flash');chosenBtn.classList.add('flash-wrong');}
+  setTimeout(()=>vcFlyOut(side===0?'left':'right'),200); setTimeout(()=>{vcIdx++;vcRender();},isOk?700:900);
 }
-function vcFlyOut(dir){
-  const card=document.getElementById('vc-card');
-  card.style.transition='transform .42s ease, opacity .38s';
-  card.style.transform=`translateX(${dir==='right'?380:-380}px) rotate(${dir==='right'?15:-15}deg)`;
-  card.style.opacity='0';
-}
-function vcShowComp(){
-  document.getElementById('vc-game').style.display='none';
-  const comp=document.getElementById('vc-comp');
-  comp.classList.add('on');
-  document.getElementById('vc-comp-stats').textContent=`✅ ${vcCorrect} correct  ❌ ${vcWrong} wrong — all ${vcDeck.length} vehicles done!`;
-}
-function vcSetupDrag(){
-  const card=document.getElementById('vc-card');
-  card.onmousedown=e=>vcStartDrag(e.clientX);
-  card.ontouchstart=e=>{e.preventDefault();vcStartDrag(e.touches[0].clientX);};
-}
+function vcFlyOut(dir){ const card=document.getElementById('vc-card'); card.style.transition='transform .42s ease, opacity .38s'; card.style.transform=`translateX(${dir==='right'?380:-380}px) rotate(${dir==='right'?15:-15}deg)`; card.style.opacity='0'; }
+function vcShowComp(){ document.getElementById('vc-game').style.display='none'; document.getElementById('vc-comp').classList.add('on'); document.getElementById('vc-comp-stats').textContent=`✅ ${vcCorrect} correct  ❌ ${vcWrong} wrong — all ${vcDeck.length} vehicles done!`; }
+function vcSetupDrag(){ const card=document.getElementById('vc-card'); card.onmousedown=e=>vcStartDrag(e.clientX); card.ontouchstart=e=>{e.preventDefault();vcStartDrag(e.touches[0].clientX);}; }
 function vcStartDrag(x){
-  if(vcLocked)return;
-  vcDragging=true; vcStartX=x; vcDragX=0;
+  if(vcLocked)return; vcDragging=true; vcStartX=x; vcDragX=0;
   const card=document.getElementById('vc-card');
-  function onMove(cx){
-    if(!vcDragging)return;
-    vcDragX=cx-vcStartX;
-    card.style.transition='none';
-    card.style.transform=`translateX(${vcDragX}px) rotate(${vcDragX*.06}deg)`;
-    const t=40;
-    document.getElementById('vc-peek-l').style.opacity=vcDragX<-t?Math.min((-vcDragX-t)/60,1):0;
-    document.getElementById('vc-peek-r').style.opacity=vcDragX>t?Math.min((vcDragX-t)/60,1):0;
-  }
-  function onUp(){
-    if(!vcDragging)return; vcDragging=false;
-    document.removeEventListener('mousemove',mm);
-    document.removeEventListener('mouseup',mu);
-    document.removeEventListener('touchmove',tm);
-    document.removeEventListener('touchend',tu);
-    if(vcDragX>90) vcResolve(vcChoices[1].id===vcDeck[vcIdx].id,1);
-    else if(vcDragX<-90) vcResolve(vcChoices[0].id===vcDeck[vcIdx].id,0);
-    else{
-      card.style.transition='transform .3s ease';
-      card.style.transform='translateX(0) rotate(0)';
-      document.getElementById('vc-peek-l').style.opacity=0;
-      document.getElementById('vc-peek-r').style.opacity=0;
-    }
-    vcDragX=0;
-  }
-  const mm=e=>onMove(e.clientX);
-  const mu=()=>onUp();
-  const tm=e=>{e.preventDefault();onMove(e.touches[0].clientX);};
-  const tu=()=>onUp();
-  document.addEventListener('mousemove',mm);
-  document.addEventListener('mouseup',mu);
-  document.addEventListener('touchmove',tm,{passive:false});
-  document.addEventListener('touchend',tu);
+  function onMove(cx){ if(!vcDragging)return; vcDragX=cx-vcStartX; card.style.transition='none'; card.style.transform=`translateX(${vcDragX}px) rotate(${vcDragX*.06}deg)`; const t=40; document.getElementById('vc-peek-l').style.opacity=vcDragX<-t?Math.min((-vcDragX-t)/60,1):0; document.getElementById('vc-peek-r').style.opacity=vcDragX>t?Math.min((vcDragX-t)/60,1):0; }
+  function onUp(){ if(!vcDragging)return; vcDragging=false; document.removeEventListener('mousemove',mm); document.removeEventListener('mouseup',mu); document.removeEventListener('touchmove',tm); document.removeEventListener('touchend',tu); if(vcDragX>90)vcResolve(vcChoices[1].id===vcDeck[vcIdx].id,1); else if(vcDragX<-90)vcResolve(vcChoices[0].id===vcDeck[vcIdx].id,0); else{card.style.transition='transform .3s ease';card.style.transform='translateX(0) rotate(0)';document.getElementById('vc-peek-l').style.opacity=0;document.getElementById('vc-peek-r').style.opacity=0;} vcDragX=0; }
+  const mm=e=>onMove(e.clientX); const mu=()=>onUp(); const tm=e=>{e.preventDefault();onMove(e.touches[0].clientX);}; const tu=()=>onUp();
+  document.addEventListener('mousemove',mm); document.addEventListener('mouseup',mu); document.addEventListener('touchmove',tm,{passive:false}); document.addEventListener('touchend',tu);
 }
 
-// ══════════════════════════════════════
-// SPELLING — uses word.jpg
-// ══════════════════════════════════════
+// ── SPELLING ──
 let spellList=[],spellIdx=0,spellAnswered=false;
 function makeMisspellings(word,count){
-  const w=word.toLowerCase();
-  const variants=new Set();
-  const ops=[
-    s=>{const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];return s.slice(0,i)+s[i]+s.slice(i);},
-    s=>{if(s.length<3)return null;const i=Math.floor(Math.random()*(s.length-1));const a=[...s];[a[i],a[i+1]]=[a[i+1],a[i]];return a.join('');},
-    s=>{if(s.length<4)return null;const i=1+Math.floor(Math.random()*(s.length-2));return s.slice(0,i)+s.slice(i+1);},
-    s=>{const vowels='aeiou';const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];const v=vowels[Math.floor(Math.random()*5)];return s.slice(0,i)+v+s.slice(i+1);},
-    s=>{const i=1+Math.floor(Math.random()*(s.length-1));const c='aeioulnrst'[Math.floor(Math.random()*10)];return s.slice(0,i)+c+s.slice(i);},
-  ];
-  let attempts=0;
-  while(variants.size<count&&attempts<80){
-    attempts++;
-    const op=ops[Math.floor(Math.random()*ops.length)];
-    const v=op(w);
-    if(v&&v!==w&&v.length>1) variants.add(v);
-  }
-  return [...variants].slice(0,count);
+  const w=word.toLowerCase(); const variants=new Set();
+  const ops=[s=>{const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];return s.slice(0,i)+s[i]+s.slice(i);},s=>{if(s.length<3)return null;const i=Math.floor(Math.random()*(s.length-1));const a=[...s];[a[i],a[i+1]]=[a[i+1],a[i]];return a.join('');},s=>{if(s.length<4)return null;const i=1+Math.floor(Math.random()*(s.length-2));return s.slice(0,i)+s.slice(i+1);},s=>{const vowels='aeiou';const vs=[...s].map((c,i)=>('aeiou'.includes(c)?i:-1)).filter(i=>i>=0);if(!vs.length)return null;const i=vs[Math.floor(Math.random()*vs.length)];const v=vowels[Math.floor(Math.random()*5)];return s.slice(0,i)+v+s.slice(i+1);},s=>{const i=1+Math.floor(Math.random()*(s.length-1));const c='aeioulnrst'[Math.floor(Math.random()*10)];return s.slice(0,i)+c+s.slice(i);}];
+  let attempts=0; while(variants.size<count&&attempts<80){attempts++;const op=ops[Math.floor(Math.random()*ops.length)];const v=op(w);if(v&&v!==w&&v.length>1)variants.add(v);} return [...variants].slice(0,count);
 }
-function initSpell(){
-  spellList=shuffle([...VEHICLES]); spellIdx=0;
-  document.getElementById('spell-finish').style.display='none';
-  document.getElementById('spell-main').style.display='block';
-  renderSpell();
-}
+function initSpell(){ spellList=shuffle([...VEHICLES]); spellIdx=0; document.getElementById('spell-finish').style.display='none'; document.getElementById('spell-main').style.display='block'; renderSpell(); }
 function renderSpell(){
-  const total=spellList.length;
-  document.getElementById('spell-progress').textContent=(spellIdx+1)+' / '+total;
+  document.getElementById('spell-progress').textContent=(spellIdx+1)+' / '+spellList.length;
   const a=spellList[spellIdx]; spellAnswered=false;
-  const misspellings=makeMisspellings(a.word,2);
-  const choices=shuffle([a.word,...misspellings]);
-
-  const wrapper=document.createElement('div');
-  wrapper.className='spell-card';
-
-  const imgPh=document.createElement('div');
-  imgPh.className='spell-img-ph';
-  fillImgContainer(imgPh, a.id, '', a.emoji);
-  wrapper.appendChild(imgPh);
-
-  const prompt=document.createElement('div');
-  prompt.className='spell-prompt'; prompt.textContent='Which spelling is correct?';
-  wrapper.appendChild(prompt);
-
-  const choicesDiv=document.createElement('div');
-  choicesDiv.className='spell-choices';
-  choices.forEach(c=>{
-    const btn=document.createElement('button');
-    btn.className='spell-choice'; btn.textContent=c;
-    btn.onclick=()=>spellCheck(btn,c,a.word);
-    choicesDiv.appendChild(btn);
-  });
+  const choices=shuffle([a.word,...makeMisspellings(a.word,2)]);
+  const wrapper=document.createElement('div'); wrapper.className='spell-card';
+  const imgPh=document.createElement('div'); imgPh.className='spell-img-ph'; fillImgContainer(imgPh,a.id,'',a.emoji); wrapper.appendChild(imgPh);
+  const prompt=document.createElement('div'); prompt.className='spell-prompt'; prompt.textContent='Which spelling is correct?'; wrapper.appendChild(prompt);
+  const choicesDiv=document.createElement('div'); choicesDiv.className='spell-choices';
+  choices.forEach(c=>{const btn=document.createElement('button');btn.className='spell-choice';btn.textContent=c;btn.onclick=()=>spellCheck(btn,c,a.word);choicesDiv.appendChild(btn);});
   wrapper.appendChild(choicesDiv);
-
-  const nextBtn=document.createElement('button');
-  nextBtn.className='spell-next-btn'; nextBtn.id='spell-next-btn'; nextBtn.textContent='Next →';
-  nextBtn.onclick=spellNext;
-  wrapper.appendChild(nextBtn);
-
-  document.getElementById('spell-main').innerHTML='';
-  document.getElementById('spell-main').appendChild(wrapper);
+  const nextBtn=document.createElement('button'); nextBtn.className='spell-next-btn'; nextBtn.id='spell-next-btn'; nextBtn.textContent='Next →'; nextBtn.onclick=spellNext; wrapper.appendChild(nextBtn);
+  document.getElementById('spell-main').innerHTML=''; document.getElementById('spell-main').appendChild(wrapper);
 }
-function spellCheck(btn,chosen,correct){
-  if(spellAnswered) return;
-  if(chosen===correct){
-    spellAnswered=true;
-    btn.classList.add('correct-spell');
-    document.querySelectorAll('.spell-choice').forEach(b=>b.disabled=true);
-    document.getElementById('spell-next-btn').classList.add('show');
-  } else {
-    btn.classList.add('wrong-spell');
-    setTimeout(()=>btn.classList.remove('wrong-spell'),500);
-  }
-}
-function spellNext(){
-  spellIdx++;
-  if(spellIdx>=spellList.length){
-    document.getElementById('spell-main').style.display='none';
-    document.getElementById('spell-finish-sub').textContent='You spelled all '+spellList.length+' vehicles! 🎉';
-    document.getElementById('spell-finish').style.display='block';
-  } else { renderSpell(); }
-}
+function spellCheck(btn,chosen,correct){ if(spellAnswered)return; if(chosen===correct){spellAnswered=true;btn.classList.add('correct-spell');document.querySelectorAll('.spell-choice').forEach(b=>b.disabled=true);document.getElementById('spell-next-btn').classList.add('show');} else {btn.classList.add('wrong-spell');setTimeout(()=>btn.classList.remove('wrong-spell'),500);} }
+function spellNext(){ spellIdx++; if(spellIdx>=spellList.length){document.getElementById('spell-main').style.display='none';document.getElementById('spell-finish-sub').textContent='You spelled all '+spellList.length+' vehicles! 🎉';document.getElementById('spell-finish').style.display='block';} else {renderSpell();} }
 
-// ══════════════════════════════════════
-// WORDS ONLY
-// ══════════════════════════════════════
-function renderWordsOnly(){
-  document.getElementById('words-progress').textContent=VEHICLES.length+' words';
-  const grid=document.getElementById('words-grid');
-  grid.innerHTML='';
-  VEHICLES.forEach((a,i)=>{
-    const card=document.createElement('div');
-    card.className='word-only-card';
-    card.style.borderLeftColor=ACCENTS[i%ACCENTS.length];
-    card.textContent=a.word;
-    grid.appendChild(card);
-  });
-}
+// ── WORDS ONLY ──
+function renderWordsOnly(){ document.getElementById('words-progress').textContent=VEHICLES.length+' words'; const grid=document.getElementById('words-grid'); grid.innerHTML=''; VEHICLES.forEach((a,i)=>{const card=document.createElement('div');card.className='word-only-card';card.style.borderLeftColor=ACCENTS[i%ACCENTS.length];card.textContent=a.word;grid.appendChild(card);}); }
 
-// ══════════════════════════════════════
-// PICTURES ONLY — uses word.jpg, lightbox
-// ══════════════════════════════════════
+// ── PICTURES ONLY ──
 function renderPicsOnly(){
   document.getElementById('pics-progress').textContent=VEHICLES.length+' pictures';
-  const grid=document.getElementById('pics-grid');
-  grid.innerHTML='';
+  const grid=document.getElementById('pics-grid'); grid.innerHTML='';
   shuffle([...VEHICLES]).forEach(a=>{
-    const card=document.createElement('div');
-    card.className='pic-only-card';
-    card.style.cursor='pointer';
-    card.title=a.word;
-
-    const img=document.createElement('img');
-    img.src=a.id+'.jpg'; img.alt=a.word;
-    img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:8px;display:block;';
-    img.onerror=function(){
-      this.style.display='none';
-      const sp=document.createElement('div');
-      sp.className='p-ph'; sp.textContent=a.emoji;
-      card.appendChild(sp);
-    };
-    card.appendChild(img);
-    card.addEventListener('click',()=>openLightbox(a.id, a.emoji, a.word));
-    grid.appendChild(card);
+    const card=document.createElement('div'); card.className='pic-only-card'; card.style.cursor='pointer'; card.title=a.word;
+    const img=document.createElement('img'); img.src=a.id+'.jpg'; img.alt=a.word; img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:8px;display:block;';
+    img.onerror=function(){this.style.display='none';const sp=document.createElement('div');sp.className='p-ph';sp.textContent=a.emoji;card.appendChild(sp);};
+    card.appendChild(img); card.addEventListener('click',()=>openLightbox(a.id,a.emoji,a.word)); grid.appendChild(card);
   });
 }
 
-// ══════════════════════════════════════
-// BUBBLES
-// ══════════════════════════════════════
+// ── BUBBLES ──
 (function(){
-  const cv=document.getElementById('bubble-canvas');
-  const cx=cv.getContext('2d');
-  const cols=['#0EA5E9','#EF4444','#8B5CF6','#F97316','#EAB308','#10B981'];
-  let bs=[];
-  function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
-  resize(); window.addEventListener('resize',resize);
-  for(let i=0;i<14;i++){
-    const r=22+Math.random()*48;
-    bs.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r,
-      dx:(Math.random()-.5)*.55,dy:(Math.random()-.5)*.55,col:cols[i%cols.length]});
-  }
-  function draw(){
-    cx.clearRect(0,0,cv.width,cv.height);
-    bs.forEach(b=>{
-      b.x+=b.dx; b.y+=b.dy;
-      if(b.x<-b.r)b.x=cv.width+b.r; if(b.x>cv.width+b.r)b.x=-b.r;
-      if(b.y<-b.r)b.y=cv.height+b.r; if(b.y>cv.height+b.r)b.y=-b.r;
-      cx.globalAlpha=.12;
-      cx.beginPath();cx.arc(b.x,b.y,b.r,0,Math.PI*2);cx.fillStyle=b.col;cx.fill();
-      cx.globalAlpha=.28;
-      cx.beginPath();cx.arc(b.x-b.r*.28,b.y-b.r*.28,b.r*.2,0,Math.PI*2);cx.fillStyle='#fff';cx.fill();
-      cx.globalAlpha=1;
-    });
-    requestAnimationFrame(draw);
-  }
+  const cv=document.getElementById('bubble-canvas'); const cx=cv.getContext('2d');
+  const cols=['#0EA5E9','#EF4444','#8B5CF6','#F97316','#EAB308','#10B981']; let bs=[];
+  function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight;} resize(); window.addEventListener('resize',resize);
+  for(let i=0;i<14;i++){const r=22+Math.random()*48;bs.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r,dx:(Math.random()-.5)*.55,dy:(Math.random()-.5)*.55,col:cols[i%cols.length]});}
+  function draw(){cx.clearRect(0,0,cv.width,cv.height);bs.forEach(b=>{b.x+=b.dx;b.y+=b.dy;if(b.x<-b.r)b.x=cv.width+b.r;if(b.x>cv.width+b.r)b.x=-b.r;if(b.y<-b.r)b.y=cv.height+b.r;if(b.y>cv.height+b.r)b.y=-b.r;cx.globalAlpha=.12;cx.beginPath();cx.arc(b.x,b.y,b.r,0,Math.PI*2);cx.fillStyle=b.col;cx.fill();cx.globalAlpha=.28;cx.beginPath();cx.arc(b.x-b.r*.28,b.y-b.r*.28,b.r*.2,0,Math.PI*2);cx.fillStyle='#fff';cx.fill();cx.globalAlpha=1;});requestAnimationFrame(draw);}
   draw();
 })();
 
-// ══════════════════════════════════════
-// LIGHTBOX — shows real image if available
-// ══════════════════════════════════════
-function openLightbox(id, emoji, label){
-  const lbImg=document.getElementById('lightbox-img');
-  const lbEmoji=document.getElementById('lightbox-emoji');
-  const lbLabel=document.getElementById('lightbox-label');
-  lbLabel.textContent=label;
-
-  lbImg.style.display='block';
-  lbEmoji.style.display='none';
-  lbImg.src=id+'.jpg';
-  lbImg.alt=label;
-  lbImg.onerror=function(){
-    this.style.display='none';
-    lbEmoji.style.display='block';
-    lbEmoji.textContent=emoji;
-  };
+// ── LIGHTBOX ──
+function openLightbox(id,emoji,label){
+  const lbImg=document.getElementById('lightbox-img'); const lbEmoji=document.getElementById('lightbox-emoji');
+  document.getElementById('lightbox-label').textContent=label;
+  lbImg.style.display='block'; lbEmoji.style.display='none'; lbImg.src=id+'.jpg'; lbImg.alt=label;
+  lbImg.onerror=function(){this.style.display='none';lbEmoji.style.display='block';lbEmoji.textContent=emoji;};
   document.getElementById('lightbox').classList.add('on');
 }
-function closeLightbox(){
-  document.getElementById('lightbox').classList.remove('on');
-}
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('on'); }
 
 document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('bottom-nav').classList.add('visible');
