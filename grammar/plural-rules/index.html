@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plural Rules — Learn English</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --teal:#0D9488;--rose:#F43F5E;--blue:#3B82F6;
+  --amber:#F59E0B;--indigo:#6366F1;--lime:#65A30D;
+  --orange:#EA580C;--pink:#DB2777;--cyan:#0891B2;
+  --bg:#F0FDF9;--text:#1E293B;--muted:#64748B;--card:#fff;
+}
+body{font-family:'Nunito',sans-serif;font-weight:800;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+#rainbow-bar{position:fixed;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#0D9488,#3B82F6,#6366F1,#F43F5E,#F59E0B,#65A30D,#0D9488);z-index:1000;}
+#bubble-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+#app{position:relative;z-index:1;padding-top:12px;}
+
+/* ── SCREENS ── */
+.screen{display:none;max-width:520px;margin:0 auto;padding:12px 14px 80px;}
+.screen.active{display:block;}
+
+/* ── HOME ── */
+#home-screen{padding-top:32px;text-align:center;}
+.home-title{font-family:‘Fredoka One’,cursive;font-size:2.3rem;color:var(–teal);line-height:1.1;margin-bottom:4px;}
+.home-sub{font-size:.88rem;color:var(–muted);margin-bottom:22px;}
+
+.cat-list{display:flex;flex-direction:column;gap:10px;max-width:400px;margin:0 auto 24px;}
+.cat-btn{border:none;border-radius:18px;padding:16px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.11);transition:transform .18s,box-shadow .18s;width:100%;text-align:left;color:#fff;}
+.cat-btn:hover{transform:translateY(-3px);box-shadow:0 8px 26px rgba(0,0,0,.17);}
+.cat-icon{font-size:1.9rem;flex-shrink:0;}
+.cat-name{font-family:‘Fredoka One’,cursive;font-size:1.1rem;display:block;}
+.cat-rule{font-size:.75rem;opacity:.88;}
+.cat-count{margin-left:auto;font-family:‘Fredoka One’,cursive;font-size:.85rem;background:rgba(255,255,255,.25);border-radius:50px;padding:3px 10px;flex-shrink:0;}
+
+.fill-home-btn{border:none;border-radius:18px;padding:16px 24px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.11);transition:transform .18s;width:100%;max-width:400px;margin:0 auto;text-align:left;color:#fff;background:var(–amber);}
+.fill-home-btn:hover{transform:translateY(-2px);}
+
+/* ── BOTTOM NAV ── */
+#bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #e2e8f0;z-index:500;height:60px;}
+#bottom-nav.visible{display:flex;}
+.bnav-btn{flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:‘Nunito’,sans-serif;font-size:10px;font-weight:900;color:var(–muted);padding:4px 2px;transition:all .18s;}
+.bnav-btn .bn-icon{font-size:17px;line-height:1;}
+
+/* ── BACK BAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.back-btn{background:none;border:2px solid #cbd5e1;border-radius:50px;padding:6px 14px;font-family:‘Nunito’,sans-serif;font-weight:900;font-size:.84rem;color:var(–muted);cursor:pointer;}
+.back-btn:hover{border-color:var(–text);color:var(–text);}
+.screen-title{font-family:‘Fredoka One’,cursive;font-size:1rem;}
+.prog-label{font-size:.82rem;color:var(–muted);}
+
+/* ── WORD PAIR CARD ── */
+.pair-intro{background:rgba(255,255,255,.92);border-radius:18px;padding:12px 16px;margin-bottom:14px;box-shadow:0 3px 14px rgba(0,0,0,.08);border-top:5px solid var(–teal);text-align:center;}
+.pair-intro .rule-badge{display:inline-block;font-family:‘Fredoka One’,cursive;font-size:.88rem;padding:4px 14px;border-radius:50px;color:#fff;margin-bottom:6px;}
+.pair-intro .rule-desc{font-size:.82rem;color:var(–muted);}
+
+.pair-card{background:rgba(255,255,255,.94);border-radius:22px;box-shadow:0 5px 24px rgba(0,0,0,.10);overflow:hidden;margin-bottom:14px;}
+.pair-inner{display:grid;grid-template-columns:1fr 1fr;min-height:340px;}
+
+/* desktop side-by-side, mobile stacked */
+@media(max-width:480px){
+.pair-inner{grid-template-columns:1fr;min-height:auto;}
+.pair-side.plural-side{border-top:3px solid rgba(255,255,255,.4);border-left:none!important;}
+}
+
+.pair-side{display:flex;flex-direction:column;align-items:center;padding:18px 14px;text-align:center;}
+.pair-side.singular-side{background:rgba(255,255,255,.0);}
+.pair-side.plural-side{border-left:2px dashed rgba(255,255,255,.4);}
+.plural-side-hidden{opacity:0;transform:translateX(18px);pointer-events:none;}
+.plural-side-visible{opacity:1;transform:translateX(0);transition:opacity .4s ease, transform .4s ease;}
+@media(max-width:480px){
+.plural-side-hidden{opacity:0;transform:translateY(14px);}
+.plural-side-visible{opacity:1;transform:translateY(0);transition:opacity .4s ease, transform .4s ease;}
+}
+
+.side-label{font-size:.7rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin-bottom:8px;}
+.pair-word{font-family:‘Fredoka One’,cursive;font-size:2rem;margin-bottom:10px;line-height:1;}
+.pair-img-wrap{width:100%;max-width:200px;aspect-ratio:1;margin:0 auto 10px;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.12);}
+.pair-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.pair-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4.5rem;}
+.pair-sentence{font-size:.82rem;color:var(–muted);line-height:1.55;font-weight:800;}
+.pair-sentence strong{color:var(–text);}
+
+.pair-nav{display:flex;align-items:center;justify-content:center;gap:16px;padding:12px 18px;background:rgba(0,0,0,.03);border-top:1px solid rgba(0,0,0,.06);}
+.nav-pill{border:2px solid #ddd;border-radius:50px;padding:7px 20px;background:#fff;font-family:‘Nunito’,sans-serif;font-weight:900;font-size:1rem;color:var(–muted);cursor:pointer;transition:all .18s;}
+.nav-pill:hover{border-color:var(–teal);color:var(–teal);}
+.nav-pill.hidden{visibility:hidden;}
+.pair-counter{font-size:.82rem;color:var(–muted);}
+
+.dot-row{display:flex;gap:6px;justify-content:center;padding:10px 0 4px;flex-wrap:wrap;}
+.dot{width:8px;height:8px;border-radius:50%;background:#cbd5e1;transition:all .3s;}
+.dot.active{transform:scale(1.35);}
+.dot.done{opacity:.5;}
+
+.finish-card{background:#fff;border-radius:24px;box-shadow:0 6px 28px rgba(0,0,0,.10);text-align:center;padding:34px 22px;animation:fadeUp .5s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+.trophy{font-size:3.4rem;display:inline-block;animation:bounce 1s infinite alternate;}
+@keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+.finish-title{font-family:‘Fredoka One’,cursive;font-size:1.6rem;margin:8px 0 4px;color:var(–teal);}
+.finish-sub{color:var(–muted);font-size:.88rem;margin-bottom:18px;}
+.btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.pill-btn{border:none;border-radius:50px;padding:11px 24px;font-family:‘Nunito’,sans-serif;font-weight:900;font-size:.93rem;cursor:pointer;transition:transform .15s;color:#fff;}
+.pill-btn:hover{transform:scale(1.05);}
+.btn-green{background:var(–teal);}
+.btn-orange{background:var(–amber);}
+.btn-indigo{background:var(–indigo);}
+
+/* ── FILL ── */
+#fill-screen{padding-top:12px;}
+.fill-card{background:rgba(255,255,255,.94);border-radius:22px;box-shadow:0 5px 22px rgba(0,0,0,.09);padding:22px 18px;text-align:center;border-top:5px solid var(–amber);}
+.fill-tag{display:inline-block;font-size:.72rem;font-family:‘Fredoka One’,cursive;padding:3px 12px;border-radius:50px;color:#fff;margin-bottom:10px;}
+.fill-emoji{font-size:5rem;margin-bottom:8px;display:block;line-height:1;}
+.fill-sentence{font-size:1.05rem;line-height:1.75;margin-bottom:14px;}
+.fill-blank{display:inline-block;border-bottom:3px solid var(–blue);min-width:82px;padding:0 6px;font-family:‘Fredoka One’,cursive;font-size:1.05rem;color:var(–blue);transition:all .3s;}
+.fill-blank.correct{color:var(–teal);border-color:var(–teal);}
+.fill-choices{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:10px;}
+.fill-choice{border:2px solid transparent;border-radius:50px;padding:9px 18px;font-family:‘Nunito’,sans-serif;font-weight:900;font-size:.9rem;background:rgba(255,255,255,.9);box-shadow:0 3px 10px rgba(0,0,0,.09);cursor:pointer;color:var(–text);transition:all .2s;}
+.fill-choice:hover:not(:disabled){border-color:var(–blue);}
+.fill-choice.correct-c{background:var(–teal);color:#fff;border-color:var(–teal);}
+.fill-choice.wrong-c{animation:shake .4s;border-color:var(–rose);}
+.fill-choice:disabled{opacity:.6;cursor:default;}
+.fill-fb{min-height:18px;font-size:.86rem;margin-bottom:8px;}
+.fill-fb.ok{color:var(–teal);}
+.fill-fb.no{color:var(–rose);}
+.fill-next{display:none;background:var(–teal);color:#fff;border:none;border-radius:50px;padding:11px 30px;font-family:‘Nunito’,sans-serif;font-weight:900;font-size:.93rem;cursor:pointer;transition:transform .15s;margin-top:2px;}
+.fill-next.show{display:inline-block;}
+.fill-next:hover{transform:scale(1.05);}
+.fill-hint{margin-top:10px;font-size:.78rem;color:var(–muted);background:rgba(0,0,0,.04);border-radius:10px;padding:7px 12px;}
+
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+@keyframes pulse{0%,100%{opacity:.7;}50%{opacity:1;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+#footer{text-align:center;padding:18px 16px 10px;font-size:.74rem;color:var(–muted);position:relative;z-index:1;}
+</style>
+
+</head>
+<body>
+<div id="rainbow-bar"></div>
+<canvas id="bubble-canvas"></canvas>
+<div id="app">
+
+<!-- ═══ HOME ═══ -->
+
+<div id="home-screen" class="screen active">
+  <div class="home-title">📚 Plural Rules</div>
+  <div class="home-sub">Choose a category to study word pairs</div>
+
+  <div class="cat-list" id="cat-list"></div>
+
+  <div style="max-width:400px;margin:0 auto 8px;">
+    <button class="fill-home-btn" onclick="startFill()">
+      <span class="cat-icon">✏️</span>
+      <span>
+        <span class="cat-name">Fill in the Blank</span>
+        <span class="cat-rule">Practice all categories — complete the sentence!</span>
+      </span>
+    </button>
+  </div>
+
+  <div id="footer">Pang made with ❤️ for kids learning English</div>
+</div>
+
+<!-- ═══ BOTTOM NAV ═══ -->
+
+<div id="bottom-nav">
+  <button class="bnav-btn" id="bn-home" onclick="goHome()"><span class="bn-icon">🏠</span>Home</button>
+  <button class="bnav-btn" id="bn-fill" onclick="startFill()"><span class="bn-icon">✏️</span>Fill</button>
+</div>
+
+<!-- ═══ WORD PAIR SCREEN ═══ -->
+
+<div id="pair-screen" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="screen-title" id="pair-cat-title"></div>
+    <div class="prog-label" id="pair-prog"></div>
+  </div>
+  <div id="pair-intro"></div>
+  <div id="pair-main"></div>
+  <div class="dot-row" id="pair-dots"></div>
+  <div id="pair-finish" style="display:none;margin-top:10px;">
+    <div class="finish-card">
+      <div class="trophy">🏆</div>
+      <div class="finish-title">Great Job!</div>
+      <div class="finish-sub">You studied all the word pairs!</div>
+      <div class="btn-row">
+        <button class="pill-btn btn-orange" onclick="restartPairs()">Again</button>
+        <button class="pill-btn btn-indigo" onclick="startFill()">Try Fill in Blank</button>
+        <button class="pill-btn btn-green" onclick="goHome()">Menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FILL SCREEN ═══ -->
+
+<div id="fill-screen" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="screen-title" style="color:var(--amber);">✏️ Fill in the Blank</div>
+    <div class="prog-label" id="fill-prog"></div>
+  </div>
+  <div id="fill-main"></div>
+  <div id="fill-finish" style="display:none;margin-top:10px;">
+    <div class="finish-card">
+      <div class="trophy">🎉</div>
+      <div class="finish-title">Amazing!</div>
+      <div class="finish-sub" id="fill-finish-sub"></div>
+      <div class="btn-row">
+        <button class="pill-btn btn-orange" onclick="restartFill()">Play Again</button>
+        <button class="pill-btn btn-green" onclick="goHome()">Menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<script>
+// ══════════════════════════════════════
+// CATEGORIES & DATA
+// ══════════════════════════════════════
+const CATEGORIES = [
+  {
+    id:'cat1', name:'Change Form Completely', rule:'Irregular — whole word changes!',
+    icon:'🔄', color:'#0D9488',
+    words:[
+      {id:'man',    s:'man',    p:'men',      e:'👨', easy:['There is one man.','There are four men.'],           mid:['The man is carrying a bag.','Four men are playing tennis.'],       fill:'There are four _____ playing tennis.',      fa:'men',      fo:['mans','manes']},
+      {id:'woman',  s:'woman',  p:'women',    e:'👩', easy:['There is one woman.','There are three women.'],       mid:['The woman is reading a book.','Three women are shopping together.'], fill:'Three _____ are shopping together.',         fa:'women',    fo:['womans','wimens']},
+      {id:'child',  s:'child',  p:'children', e:'🧒', easy:['One child is sleeping.','Two children are running.'], mid:['The child is drawing a picture.','The children are playing in the park.'], fill:'The _____ are playing in the park.',     fa:'children', fo:['childs','childrens']},
+      {id:'person', s:'person', p:'people',   e:'🧑', easy:['One person is waiting.','Five people are eating.'],   mid:['The person is holding an umbrella.','Many people are watching the football game.'], fill:'Many _____ are watching the game.', fa:'people',   fo:['persons','peoples']},
+      {id:'mouse',  s:'mouse',  p:'mice',     e:'🐭', easy:['I see one mouse.','I see two mice.'],                 mid:['The mouse is eating cheese.','The mice are hiding under the table.'], fill:'The _____ are hiding under the table.',  fa:'mice',     fo:['mouses','mices']},
+      {id:'louse',  s:'louse',  p:'lice',     e:'🦟', easy:['The dog has one louse.','The dog has many lice.'],   mid:['The louse is in the dog\'s fur.','The lice are making the dog itchy.'], fill:'The _____ are making the dog itchy.',   fa:'lice',     fo:['louses','lices']},
+      {id:'tooth',  s:'tooth',  p:'teeth',    e:'🦷', easy:['I have one tooth.','Sharks have many teeth.'],        mid:['The tooth is hurting.','The boy brushes his teeth every day.'],        fill:'The boy brushes his _____ every day.',      fa:'teeth',    fo:['tooths','toothes']},
+      {id:'foot',   s:'foot',   p:'feet',     e:'🦶', easy:['I have two feet.','The baby has small feet.'],        mid:['My foot hurts today.','The football players are running on their feet.'], fill:'I have two _____ .',                    fa:'feet',     fo:['foots','feets']},
+      {id:'goose',  s:'goose',  p:'geese',    e:'🦢', easy:['There is one goose.','There are six geese.'],         mid:['The goose is swimming in the lake.','The geese are walking across the road.'], fill:'The _____ are walking across the road.', fa:'geese',  fo:['gooses','goosees']},
+      {id:'ox',     s:'ox',     p:'oxen',     e:'🐂', easy:['There is one ox.','The farmers have two oxen.'],      mid:['The ox is pulling a cart.','The oxen are working on the farm.'],      fill:'The _____ are working on the farm.',         fa:'oxen',     fo:['oxs','oxes']},
+    ]
+  },
+  {
+    id:'cat2', name:'No Change', rule:'Singular = Plural — same word!',
+    icon:'🟰', color:'#3B82F6',
+    words:[
+      {id:'sheep', s:'sheep', p:'sheep', e:'🐑', easy:['There is one sheep.','There are five sheep.'], mid:['The sheep is eating grass.','The sheep are sleeping near the tree.'], fill:'The _____ are sleeping near the tree.', fa:'sheep', fo:['sheeps','sheepes']},
+      {id:'deer',  s:'deer',  p:'deer',  e:'🦌', easy:['I see one deer.','I see three deer.'],         mid:['The deer is drinking water.','The deer are running in the forest.'],  fill:'The _____ are running in the forest.',  fa:'deer',  fo:['deers','deeres']},
+      {id:'fish',  s:'fish',  p:'fish',  e:'🐟', easy:['There is one fish.','There are many fish.'],   mid:['The fish is swimming fast.','The fish are swimming near the rocks.'], fill:'The _____ are swimming near the rocks.', fa:'fish',  fo:['fishs','fishes']},
+    ]
+  },
+  {
+    id:'cat3a', name:'Consonant + y → -ies', rule:'Drop the y, add -ies',
+    icon:'🔤', color:'#6366F1',
+    words:[
+      {id:'baby',    s:'baby',    p:'babies',   e:'👶', easy:['The baby is crying.','The babies are sleeping.'],         mid:['The baby is wearing a yellow hat.','The babies are playing with toys.'],   fill:'The _____ are playing with toys.',          fa:'babies',   fo:['babys','babyes']},
+      {id:'city',    s:'city',    p:'cities',   e:'🏙️', easy:['Bangkok is a city.','These are big cities.'],              mid:['The city is very crowded.','Many cities have tall buildings.'],           fill:'Many _____ have tall buildings.',            fa:'cities',   fo:['citys','cityes']},
+      {id:'family',  s:'family',  p:'families', e:'👨‍👩‍👧‍👦', easy:['I have a big family.','Two families are eating dinner.'], mid:['My family likes camping.','The families are watching the school show.'], fill:'The _____ are watching the school show.',   fa:'families', fo:['familys','familyes']},
+      {id:'story',   s:'story',   p:'stories',  e:'📖', easy:['I like this story.','She reads many stories.'],            mid:['The story is very funny.','The children are listening to stories.'],      fill:'The children are listening to _____.',      fa:'stories',  fo:['storys','storyes']},
+      {id:'country', s:'country', p:'countries',e:'🌍', easy:['Thailand is a country.','We learned about many countries.'],mid:['The country is very beautiful.','The countries are working together.'],  fill:'The _____ are working together.',           fa:'countries',fo:['countrys','countyes']},
+      {id:'party',   s:'party',   p:'parties',  e:'🎉', easy:['The party is fun.','We went to two parties.'],             mid:['The party starts at six o\'clock.','The children are enjoying the parties.'],fill:'The children are enjoying the _____.',  fa:'parties',  fo:['partys','partyes']},
+    ]
+  },
+  {
+    id:'cat3b', name:'Vowel + y → just add -s', rule:'Keep the y, just add -s',
+    icon:'➕', color:'#0891B2',
+    words:[
+      {id:'toy',    s:'toy',    p:'toys',    e:'🧸', easy:['This is my toy.','The toys are on the floor.'],   mid:['The toy is very expensive.','The children are sharing their toys.'],     fill:'The children are sharing their _____ .', fa:'toys',    fo:['toies','toyes']},
+      {id:'monkey', s:'monkey', p:'monkeys', e:'🐒', easy:['I see one monkey.','The monkeys are jumping.'],  mid:['The monkey is eating a banana.','The monkeys are climbing the trees.'],  fill:'The _____ are climbing the trees.',        fa:'monkeys', fo:['monkies','monkeyes']},
+      {id:'key',    s:'key',    p:'keys',    e:'🔑', easy:['This is my key.','The keys are on the table.'],  mid:['The key is inside the bag.','The teachers are carrying their keys.'],    fill:'The teachers are carrying their _____ .', fa:'keys',    fo:['keies','keyes']},
+      {id:'boy',    s:'boy',    p:'boys',    e:'👦', easy:['The boy is happy.','The boys are running.'],      mid:['The boy is riding a bicycle.','The boys are playing football together.'], fill:'The _____ are playing football together.', fa:'boys',    fo:['boies','boyes']},
+    ]
+  },
+  {
+    id:'cat4', name:'-f / -fe → -ves', rule:'Change f or fe to -ves',
+    icon:'🍂', color:'#EA580C',
+    words:[
+      {id:'leaf',  s:'leaf',  p:'leaves', e:'🍃', easy:['The leaf is green.','The leaves are falling.'],                   mid:['A leaf is on the table.','The leaves are moving in the wind.'],             fill:'The _____ are moving in the wind.',         fa:'leaves', fo:['leafs','leafes']},
+      {id:'wolf',  s:'wolf',  p:'wolves', e:'🐺', easy:['There is one wolf.','The wolves are hungry.'],                   mid:['The wolf is howling loudly.','The wolves are running through the forest.'],  fill:'The _____ are running through the forest.', fa:'wolves', fo:['wolfs','wolfes']},
+      {id:'knife', s:'knife', p:'knives', e:'🔪', easy:['This is a knife.','The knives are sharp.'],                      mid:['The knife is on the plate.','The chefs are using knives in the kitchen.'],  fill:'The chefs are using _____ in the kitchen.', fa:'knives', fo:['knifes','knifers']},
+      {id:'wife',  s:'wife',  p:'wives',  e:'👰', easy:['The man has one wife.','The men are talking to their wives.'],   mid:['The wife is cooking dinner.','The wives are shopping together.'],           fill:'The _____ are shopping together.',          fa:'wives',  fo:['wifes','wifees']},
+      {id:'shelf', s:'shelf', p:'shelves',e:'📚', easy:['The shelf is brown.','The shelves are full of books.'],          mid:['The shelf is above the desk.','The shelves are inside the library.'],        fill:'The _____ are inside the library.',          fa:'shelves',fo:['shelfs','shelfers']},
+      {id:'life',  s:'life',  p:'lives',  e:'💫', easy:['The cat has one life.','Cats are said to have nine lives.'],     mid:['Her life is very busy.','Their lives changed after the accident.'],         fill:'Their _____ changed after the accident.',   fa:'lives',  fo:['lifes','lifees']},
+      {id:'half',  s:'half',  p:'halves', e:'🍎', easy:['I ate half the cake.','Cut the apples into halves.'],            mid:['One half is bigger than the other half.','The teacher divided the class into halves.'], fill:'Cut the apples into _____ .', fa:'halves', fo:['halfs','halfes']},
+      {id:'roof',  s:'roof',  p:'roofs',  e:'🏠', easy:['The house has a roof.','The roofs are wet.'],                   mid:['The roof is covered with snow.','The birds are sitting on the roofs.'],      fill:'The birds are sitting on the _____ .',      fa:'roofs',  fo:['rooves','roofes']},
+      {id:'chef',  s:'chef',  p:'chefs',  e:'👨‍🍳', easy:['He is a chef.','The chefs are cooking dinner.'],               mid:['The chef is making soup.','The chefs are working in the kitchen.'],         fill:'The _____ are working in the kitchen.',     fa:'chefs',  fo:['cheves','chefes']},
+      {id:'belief',s:'belief',p:'beliefs',e:'💭', easy:['That is my belief.','People have different beliefs.'],           mid:['His belief is very strong.','Their beliefs are important to them.'],         fill:'Their _____ are important to them.',        fa:'beliefs',fo:['believes','beliefes']},
+    ]
+  },
+  {
+    id:'cat5', name:'Ending in -o', rule:'-o → -oes or just add -s',
+    icon:'🍅', color:'#DB2777',
+    words:[
+      {id:'potato', s:'potato', p:'potatoes', e:'🥔', easy:['I have one potato.','We cooked many potatoes.'],       mid:['The potato is very hot.','The potatoes are in the soup.'],                  fill:'The _____ are in the soup.',                fa:'potatoes',fo:['potatos','potatoess']},
+      {id:'tomato', s:'tomato', p:'tomatoes', e:'🍅', easy:['This tomato is red.','The tomatoes are fresh.'],        mid:['The tomato is on the sandwich.','The farmers are picking tomatoes.'],       fill:'The farmers are picking _____ .',           fa:'tomatoes',fo:['tomatos','tomatoess']},
+      {id:'hero',   s:'hero',   p:'heroes',   e:'🦸', easy:['He is a hero.','The heroes are brave.'],                mid:['The hero saved the child.','The heroes helped many people.'],             fill:'The _____ helped many people.',             fa:'heroes',  fo:['heros','heroess']},
+      {id:'piano',  s:'piano',  p:'pianos',   e:'🎹', easy:['There is one piano.','The pianos are black.'],          mid:['The piano is very old.','The students are playing the pianos.'],          fill:'The students are playing the _____ .',      fa:'pianos',  fo:['pianoes','pianoss']},
+      {id:'photo',  s:'photo',  p:'photos',   e:'📷', easy:['This is a photo.','The photos are beautiful.'],         mid:['The photo is on the wall.','The tourists are taking photos.'],            fill:'The tourists are taking _____ .',           fa:'photos',  fo:['photoes','photoss']},
+      {id:'zoo',    s:'zoo',    p:'zoos',     e:'🦁', easy:['We visited one zoo.','The zoos are crowded today.'],    mid:['The zoo has many animals.','The children are learning about animals at the zoos.'], fill:'The _____ are crowded today.',        fa:'zoos',    fo:['zooes','zooss']},
+      {id:'radio',  s:'radio',  p:'radios',   e:'📻', easy:['I have a radio.','The radios are loud.'],               mid:['The radio is playing music.','The old radios are inside the museum.'],    fill:'The old _____ are inside the museum.',      fa:'radios',  fo:['radioes','radioss']},
+    ]
+  },
+  {
+    id:'cat6', name:'Add -es', rule:'sh / ch / x / s / o → add -es',
+    icon:'📦', color:'#65A30D',
+    words:[
+      {id:'bus',   s:'bus',   p:'buses',   e:'🚌', easy:['The bus is yellow.','The buses are full.'],        mid:['The bus is stopping now.','The buses are waiting outside the school.'],   fill:'The _____ are waiting outside the school.',  fa:'buses',   fo:['buss','bused']},
+      {id:'box',   s:'box',   p:'boxes',   e:'📦', easy:['This is a box.','The boxes are heavy.'],           mid:['The box is under the chair.','The workers are carrying boxes.'],          fill:'The workers are carrying _____ .',           fa:'boxes',   fo:['boxs','boxed']},
+      {id:'watch', s:'watch', p:'watches', e:'⌚', easy:['I have one watch.','They have two watches.'],      mid:['The watch is expensive.','The boys are wearing watches.'],               fill:'The boys are wearing _____ .',               fa:'watches', fo:['watchs','watchers']},
+      {id:'dish',  s:'dish',  p:'dishes',  e:'🍽️', easy:['This dish is clean.','The dishes are dirty.'],    mid:['The dish is on the table.','The children are washing the dishes.'],      fill:'The children are washing the _____ .',      fa:'dishes',  fo:['dishs','dishers']},
+      {id:'brush', s:'brush', p:'brushes', e:'🖌️', easy:['I have one brush.','The brushes are new.'],        mid:['The brush is in the bathroom.','The artists are using brushes to paint.'], fill:'The artists are using _____ to paint.',      fa:'brushes', fo:['brushs','brushers']},
+      {id:'class', s:'class', p:'classes', e:'🏫', easy:['I have one class today.','The classes are interesting.'], mid:['The class starts at nine o\'clock.','The students are attending online classes.'], fill:'The students are attending online _____ .', fa:'classes', fo:['classs','classers']},
+    ]
+  },
+  {
+    id:'cat7', name:'Normal Rule — add -s', rule:'Most nouns: just add -s!',
+    icon:'✅', color:'#0D9488',
+    words:[
+      {id:'cat',     s:'cat',     p:'cats',     e:'🐱', easy:['The cat is sleeping.','The cats are running.'],            mid:['The cat is under the bed.','The cats are chasing a ball.'],             fill:'The _____ are chasing a ball.',          fa:'cats',     fo:['cates','cates']},
+      {id:'dog',     s:'dog',     p:'dogs',     e:'🐶', easy:['The dog is barking.','The dogs are loud.'],                mid:['The dog is eating food.','The dogs are playing in the garden.'],       fill:'The _____ are playing in the garden.',   fa:'dogs',     fo:['doges','dogges']},
+      {id:'book',    s:'book',    p:'books',    e:'📚', easy:['This is my book.','The books are heavy.'],                 mid:['The book is on the desk.','The students are reading books quietly.'],   fill:'The students are reading _____ quietly.',fa:'books',    fo:['bookes','bookers']},
+      {id:'apple',   s:'apple',   p:'apples',   e:'🍎', easy:['This apple is red.','The apples are sweet.'],              mid:['The apple is in my bag.','The apples are falling from the tree.'],     fill:'The _____ are falling from the tree.',   fa:'apples',   fo:['applees','applees']},
+      {id:'teacher', s:'teacher', p:'teachers', e:'👩‍🏫', easy:['She is a teacher.','The teachers are friendly.'],       mid:['The teacher is helping the students.','The teachers are talking in the office.'], fill:'The _____ are talking in the office.', fa:'teachers', fo:['teacheres','teacherers']},
+      {id:'car',     s:'car',     p:'cars',     e:'🚗', easy:['The car is blue.','The cars are fast.'],                   mid:['The car is parked outside.','The cars are moving slowly in traffic.'],  fill:'The _____ are moving slowly in traffic.',fa:'cars',     fo:['cares','carres']},
+    ]
+  },
+];
+
+// accent colour per category
+const CAT_COLORS = CATEGORIES.map(c=>c.color);
+
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+let currentCat = null;
+let pairIdx = 0;
+let pairRevealed = false;
+let fillList = [], fillIdx = 0, fillAnswered = false, fillScore = 0;
+
+// ══════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════
+const shuffle = a => {
+  const r=[...a];
+  for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}
+  return r;
+};
+
+// ══════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  document.getElementById('bottom-nav').classList.add('visible');
+}
+function goHome(){
+  showScreen('home-screen');
+  setActiveNav('bn-home','#1E293B');
+}
+function setActiveNav(id, color){
+  ['bn-home','bn-fill'].forEach(b=>{
+    const el=document.getElementById(b);
+    if(el){el.style.background='';el.style.color='var(--muted)';}
+  });
+  const el=document.getElementById(id);
+  if(el){el.style.background=color;el.style.color='#fff';}
+}
+
+// ══════════════════════════════════════
+// BUILD HOME
+// ══════════════════════════════════════
+function buildHome(){
+  const list=document.getElementById('cat-list');
+  list.innerHTML='';
+  CATEGORIES.forEach((cat,i)=>{
+    const btn=document.createElement('button');
+    btn.className='cat-btn';
+    btn.style.background=cat.color;
+    btn.innerHTML=`
+      <span class="cat-icon">${cat.icon}</span>
+      <span>
+        <span class="cat-name">${cat.name}</span>
+        <span class="cat-rule">${cat.rule}</span>
+      </span>
+      <span class="cat-count">${cat.words.length} words</span>
+    `;
+    btn.addEventListener('click',()=>startCategory(cat));
+    list.appendChild(btn);
+  });
+}
+
+// ══════════════════════════════════════
+// WORD PAIR VIEW
+// ══════════════════════════════════════
+function startCategory(cat){
+  currentCat=cat; pairIdx=0; pairRevealed=false;
+  document.getElementById('pair-cat-title').textContent=cat.icon+' '+cat.name;
+  document.getElementById('pair-cat-title').style.color=cat.color;
+  document.getElementById('pair-finish').style.display='none';
+  document.getElementById('pair-main').style.display='block';
+  showScreen('pair-screen');
+  setActiveNav('bn-home','#1E293B');
+  buildIntro(cat);
+  buildDots();
+  renderPair();
+}
+function buildIntro(cat){
+  const el=document.getElementById('pair-intro');
+  el.innerHTML=`<div class="pair-intro">
+    <span class="rule-badge" style="background:${cat.color};">${cat.rule}</span>
+    <div class="rule-desc">See the singular → tap the card to reveal the plural!</div>
+  </div>`;
+}
+function buildDots(){
+  const dr=document.getElementById('pair-dots'); dr.innerHTML='';
+  currentCat.words.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i===0?' active':'');
+    d.style.background=i===0?currentCat.color:'#cbd5e1';
+    d.id='pd'+i; dr.appendChild(d);
+  });
+}
+function updateDots(){
+  currentCat.words.forEach((_,i)=>{
+    const d=document.getElementById('pd'+i);
+    if(!d) return;
+    if(i<pairIdx){d.className='dot done';d.style.background=currentCat.color;d.style.opacity='.4';}
+    else if(i===pairIdx){d.className='dot active';d.style.background=currentCat.color;d.style.opacity='1';}
+    else{d.className='dot';d.style.background='#cbd5e1';d.style.opacity='1';}
+  });
+}
+
+function makeImgEl(src, emoji){
+  const wrap=document.createElement('div');
+  wrap.className='pair-img-wrap';
+  const img=document.createElement('img');
+  img.src=src; img.alt='';
+  img.onerror=function(){
+    const ph=document.createElement('div');
+    ph.className='pair-img-ph';
+    ph.textContent=emoji;
+    this.replaceWith(ph);
+  };
+  wrap.appendChild(img);
+  return wrap;
+}
+
+function renderPair(){
+  const w=currentCat.words[pairIdx];
+  const col=currentCat.color;
+  pairRevealed=false;
+  document.getElementById('pair-prog').textContent=(pairIdx+1)+' / '+currentCat.words.length;
+  updateDots();
+
+  const container=document.getElementById('pair-main');
+  container.innerHTML='';
+
+  const card=document.createElement('div');
+  card.className='pair-card';
+  card.style.borderTop=`5px solid ${col}`;
+  card.style.cursor='pointer';
+  card.title='Tap to reveal plural';
+  card.addEventListener('click', revealPlural);
+
+  const inner=document.createElement('div');
+  inner.className='pair-inner';
+
+  // ── SINGULAR SIDE ──
+  const singularSide=document.createElement('div');
+  singularSide.className='pair-side singular-side';
+  singularSide.style.background=col+'18';
+  singularSide.innerHTML=`<div class="side-label" style="color:${col};">Singular (one)</div>
+    <div class="pair-word" style="color:${col};">${w.s}</div>`;
+  singularSide.appendChild(makeImgEl(w.id+'.jpg', w.e));
+  const sEasy=document.createElement('div');
+  sEasy.className='pair-sentence';
+  sEasy.innerHTML=`<strong>${w.easy[0]}</strong><br>${w.mid[0]}`;
+  singularSide.appendChild(sEasy);
+
+  // ── PLURAL SIDE (hidden, same grid cell — appears in place) ──
+  const pluralSide=document.createElement('div');
+  pluralSide.className='pair-side plural-side plural-side-hidden';
+  pluralSide.id='plural-side';
+  pluralSide.style.background=col+'2a';
+  pluralSide.style.borderLeft=`2px dashed ${col}55`;
+  pluralSide.innerHTML=`<div class="side-label" style="color:${col};">Plural (many)</div>
+    <div class="pair-word" style="color:${col};">${w.p}</div>`;
+  pluralSide.appendChild(makeImgEl(w.id+'1.jpg', w.e));
+  const pEasy=document.createElement('div');
+  pEasy.className='pair-sentence';
+  pEasy.innerHTML=`<strong>${w.easy[1]}</strong><br>${w.mid[1]}`;
+  pluralSide.appendChild(pEasy);
+
+  inner.appendChild(singularSide);
+  inner.appendChild(pluralSide);
+  card.appendChild(inner);
+
+  // tap hint bar
+  const tapHint=document.createElement('div');
+  tapHint.id='tap-hint';
+  tapHint.style.cssText=`background:${col};color:#fff;text-align:center;padding:10px;font-family:'Fredoka One',cursive;font-size:.95rem;animation:pulse 1.8s infinite;`;
+  tapHint.textContent='Tap to reveal the plural →';
+  card.appendChild(tapHint);
+
+  // nav row (hidden until revealed)
+  const navRow=document.createElement('div');
+  navRow.className='pair-nav';
+  navRow.id='pair-nav-row';
+  navRow.style.display='none';
+
+  const prevBtn=document.createElement('button');
+  prevBtn.className='nav-pill'+(pairIdx===0?' hidden':'');
+  prevBtn.textContent='←';
+  prevBtn.addEventListener('click',(e)=>{e.stopPropagation();if(pairIdx>0){pairIdx--;renderPair();}});
+
+  const counter=document.createElement('div');
+  counter.className='pair-counter';
+  counter.textContent=(pairIdx+1)+' of '+currentCat.words.length;
+
+  const nextBtn=document.createElement('button');
+  nextBtn.className='nav-pill';
+  nextBtn.style.borderColor=col;
+  nextBtn.style.color=col;
+  nextBtn.textContent=pairIdx===currentCat.words.length-1?'Finish ✓':'Next →';
+  nextBtn.addEventListener('click',(e)=>{
+    e.stopPropagation();
+    pairIdx++;
+    if(pairIdx>=currentCat.words.length){
+      container.style.display='none';
+      document.getElementById('pair-dots').style.display='none';
+      document.getElementById('pair-intro').style.display='none';
+      document.getElementById('pair-finish').style.display='block';
+    } else { renderPair(); }
+  });
+
+  navRow.appendChild(prevBtn);
+  navRow.appendChild(counter);
+  navRow.appendChild(nextBtn);
+  card.appendChild(navRow);
+  container.appendChild(card);
+}
+
+function revealPlural(){
+  if(pairRevealed) return;
+  pairRevealed=true;
+  const hint=document.getElementById('tap-hint');
+  if(hint) hint.style.display='none';
+  const ps=document.getElementById('plural-side');
+  if(ps){ ps.classList.remove('plural-side-hidden'); ps.classList.add('plural-side-visible'); ps.style.pointerEvents='auto'; }
+  const nav=document.getElementById('pair-nav-row');
+  if(nav) nav.style.display='flex';
+}
+
+function restartPairs(){
+  pairIdx=0; pairRevealed=false;
+  document.getElementById('pair-main').style.display='block';
+  document.getElementById('pair-dots').style.display='flex';
+  document.getElementById('pair-intro').style.display='block';
+  document.getElementById('pair-finish').style.display='none';
+  buildDots();
+  renderPair();
+}
+
+// ══════════════════════════════════════
+// FILL IN THE BLANK — all categories
+// ══════════════════════════════════════
+function startFill(){
+  // gather all words from all categories
+  const allWords=[];
+  CATEGORIES.forEach(cat=>{
+    cat.words.forEach(w=>allWords.push({...w, catColor:cat.color, catName:cat.name, catRule:cat.rule}));
+  });
+  fillList=shuffle(allWords);
+  fillIdx=0; fillScore=0; fillAnswered=false;
+  document.getElementById('fill-finish').style.display='none';
+  document.getElementById('fill-main').style.display='block';
+  showScreen('fill-screen');
+  setActiveNav('bn-fill', 'var(--amber)');
+  renderFill();
+}
+function restartFill(){
+  const allWords=[];
+  CATEGORIES.forEach(cat=>{cat.words.forEach(w=>allWords.push({...w,catColor:cat.color,catName:cat.name,catRule:cat.rule}));});
+  fillList=shuffle(allWords); fillIdx=0; fillScore=0; fillAnswered=false;
+  document.getElementById('fill-finish').style.display='none';
+  document.getElementById('fill-main').style.display='block';
+  renderFill();
+}
+function renderFill(){
+  document.getElementById('fill-prog').textContent=(fillIdx+1)+' / '+fillList.length;
+  const a=fillList[fillIdx]; fillAnswered=false;
+  const choices=shuffle([a.fa,...a.fo]);
+  const sentHTML=a.fill.replace('_____','<span class="fill-blank" id="fill-blank">?</span>');
+  document.getElementById('fill-main').innerHTML=`
+    <div class="fill-card">
+      <span class="fill-tag" style="background:${a.catColor};">${a.catName}</span>
+      <span class="fill-emoji">${a.e}</span>
+      <div style="font-size:.8rem;color:var(--muted);margin-bottom:10px;font-weight:800;">Complete the sentence with the correct plural:</div>
+      <div class="fill-sentence">${sentHTML}</div>
+      <div class="fill-choices">
+        ${choices.map(c=>`<button class="fill-choice" onclick="fillCheck(this,${JSON.stringify(c)},${JSON.stringify(a.fa)})">${c}</button>`).join('')}
+      </div>
+      <div class="fill-fb" id="fill-fb"></div>
+      <button class="fill-next" id="fill-next" onclick="fillNext()">Next →</button>
+    </div>
+    <div class="fill-hint">💡 <strong>${a.s}</strong> → <strong style="color:${a.catColor};">${a.p}</strong> &nbsp;·&nbsp; ${a.catRule}</div>
+  `;
+}
+function fillCheck(btn,chosen,correct){
+  if(fillAnswered) return;
+  if(chosen===correct){
+    fillAnswered=true; fillScore++;
+    document.getElementById('fill-blank').textContent=correct;
+    document.getElementById('fill-blank').classList.add('correct');
+    document.querySelectorAll('.fill-choice').forEach(b=>b.disabled=true);
+    btn.classList.add('correct-c');
+    document.getElementById('fill-fb').textContent='✅ Correct!';
+    document.getElementById('fill-fb').className='fill-fb ok';
+    document.getElementById('fill-next').classList.add('show');
+  } else {
+    btn.classList.add('wrong-c');
+    document.getElementById('fill-fb').textContent='❌ Try again!';
+    document.getElementById('fill-fb').className='fill-fb no';
+    setTimeout(()=>{btn.classList.remove('wrong-c');document.getElementById('fill-fb').textContent='';},700);
+  }
+}
+function fillNext(){
+  fillIdx++;
+  if(fillIdx>=fillList.length){
+    document.getElementById('fill-main').style.display='none';
+    document.getElementById('fill-finish-sub').textContent=`You got ${fillScore} out of ${fillList.length} correct! 🎉`;
+    document.getElementById('fill-finish').style.display='block';
+  } else { renderFill(); }
+}
+
+// ══════════════════════════════════════
+// BUBBLES
+// ══════════════════════════════════════
+(function(){
+  const cv=document.getElementById('bubble-canvas');
+  const cx=cv.getContext('2d');
+  const cols=['#0D9488','#F43F5E','#3B82F6','#F59E0B','#6366F1','#84CC16'];
+  let bs=[];
+  function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
+  resize(); window.addEventListener('resize',resize);
+  for(let i=0;i<14;i++){
+    const r=22+Math.random()*48;
+    bs.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r,
+      dx:(Math.random()-.5)*.5,dy:(Math.random()-.5)*.5,col:cols[i%cols.length]});
+  }
+  function draw(){
+    cx.clearRect(0,0,cv.width,cv.height);
+    bs.forEach(b=>{
+      b.x+=b.dx; b.y+=b.dy;
+      if(b.x<-b.r)b.x=cv.width+b.r; if(b.x>cv.width+b.r)b.x=-b.r;
+      if(b.y<-b.r)b.y=cv.height+b.r; if(b.y>cv.height+b.r)b.y=-b.r;
+      cx.globalAlpha=.11;
+      cx.beginPath();cx.arc(b.x,b.y,b.r,0,Math.PI*2);cx.fillStyle=b.col;cx.fill();
+      cx.globalAlpha=.25;
+      cx.beginPath();cx.arc(b.x-b.r*.28,b.y-b.r*.28,b.r*.2,0,Math.PI*2);cx.fillStyle='#fff';cx.fill();
+      cx.globalAlpha=1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  buildHome();
+  document.getElementById('bottom-nav').classList.add('visible');
+  setActiveNav('bn-home','#1E293B');
+});
+</script>
+
+</body>
+</html>
