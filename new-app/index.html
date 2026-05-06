@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learn English with Pang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header card" aria-label="Site introduction">
+      <a class="brand" href="./index.html" aria-label="Learn English with Pang home">
+        <span class="brand-mark">P</span>
+        <span>Pang English</span>
+      </a>
+      <nav class="top-nav" aria-label="Page sections">
+        <a href="#adventures">Adventures</a>
+        <a href="#categories">Categories</a>
+        <a href="#vocabinder">Vocabinder</a>
+        <a href="#stories">Stories</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero card" id="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Bright lessons for curious kids</p>
+          <h1>Learn English with Pang 🌈</h1>
+          <p class="hero-subtitle">Fun phonics, vocabulary, grammar and stories for kids</p>
+          <div class="button-row">
+            <a class="button button-primary" href="#adventures">Start Learning</a>
+            <a class="button button-secondary" href="#stories">Explore Stories</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="rainbow-card">
+            <span class="star star-one">✦</span>
+            <span class="star star-two">✧</span>
+            <div class="sun-face">☀️</div>
+            <div class="word-bubbles">
+              <span>cat</span>
+              <span>run</span>
+              <span>happy</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="adventures" aria-labelledby="adventures-title">
+        <div class="section-heading">
+          <p class="eyebrow">Pick a path</p>
+          <h2 id="adventures-title">Choose Your Learning Adventure</h2>
+        </div>
+        <div class="adventure-grid">
+          <article class="adventure-card phonics">
+            <span class="card-icon">🔤</span>
+            <h3>Phonics Quest</h3>
+            <p>Practice sounds, blends, and early reading steps.</p>
+          </article>
+          <article class="adventure-card words">
+            <span class="card-icon">🧭</span>
+            <h3>Word Explorer</h3>
+            <p>Discover useful words with pictures and examples.</p>
+          </article>
+          <article class="adventure-card grammar">
+            <span class="card-icon">🧱</span>
+            <h3>Grammar Builder</h3>
+            <p>Build friendly sentences and learn grammar patterns.</p>
+          </article>
+          <article class="adventure-card story">
+            <span class="card-icon">📚</span>
+            <h3>Story World</h3>
+            <p>Read, listen, and play with story vocabulary.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="categories" aria-labelledby="categories-title">
+        <div class="section-heading inline-heading">
+          <div>
+            <p class="eyebrow">Learning shelves</p>
+            <h2 id="categories-title">Categories</h2>
+          </div>
+        </div>
+        <div class="category-grid">
+          <a class="category-card" href="#adventures"><span>🎵</span>Phonics</a>
+          <a class="category-card" href="#vocabinder"><span>🍎</span>Vocabulary</a>
+          <a class="category-card" href="#activities"><span>✏️</span>Grammar</a>
+          <a class="category-card" href="#stories"><span>📖</span>Stories</a>
+          <a class="category-card" href="#activities"><span>🎲</span>Games</a>
+          <a class="category-card" href="#vocabinder"><span>🗂️</span>Vocabinder</a>
+        </div>
+      </section>
+
+      <section class="section" id="activities" aria-labelledby="activities-title">
+        <div class="section-heading">
+          <p class="eyebrow">Tap, try, play</p>
+          <h2 id="activities-title">Interactive Activities</h2>
+        </div>
+        <div class="activity-grid">
+          <article class="activity-card"><span>🧩</span><h3>Missing Letters</h3><p>Fill in the sounds to finish each word.</p></article>
+          <article class="activity-card"><span>🤝</span><h3>Word Match</h3><p>Match words with meanings and pictures.</p></article>
+          <article class="activity-card"><span>👂</span><h3>Listen &amp; Choose</h3><p>Hear a word, then choose the right answer.</p></article>
+          <article class="activity-card"><span>🔨</span><h3>Build the Word</h3><p>Drag letter chunks into the correct order.</p></article>
+          <article class="activity-card"><span>🔎</span><h3>Word Search</h3><p>Find hidden vocabulary in a playful grid.</p></article>
+          <article class="activity-card"><span>💬</span><h3>Sentence Builder</h3><p>Put words together to make clear sentences.</p></article>
+        </div>
+      </section>
+
+      <section class="section vocab-section" id="vocabinder" aria-labelledby="vocabinder-title">
+        <div class="section-heading">
+          <p class="eyebrow">Save and review words</p>
+          <h2 id="vocabinder-title">Vocabinder 🗂️</h2>
+          <p class="section-intro">Choose a deck, then use Back and Next to review vocabulary cards.</p>
+        </div>
+
+        <div class="vocab-layout card">
+          <aside class="deck-panel" aria-label="Vocabulary decks">
+            <h3>Choose a deck</h3>
+            <div class="deck-list" id="deckList"></div>
+          </aside>
+
+          <article class="vocab-card" aria-live="polite">
+            <div class="vocab-image" id="vocabImageWrap">
+              <img id="vocabImage" alt="" />
+              <div class="image-placeholder" id="imagePlaceholder">Picture coming soon</div>
+            </div>
+            <div class="vocab-content">
+              <p class="deck-label" id="activeDeckLabel">Sports</p>
+              <h3 id="vocabWord">tennis</h3>
+              <p class="meaning" id="vocabMeaning">a sport with a racket and ball</p>
+              <p class="sentence" id="vocabSentence">She plays tennis after school.</p>
+              <div class="vocab-controls">
+                <button class="button button-secondary" type="button" id="prevCard">Back</button>
+                <span id="cardCount" class="card-count">1 / 1</span>
+                <button class="button button-primary" type="button" id="nextCard">Next</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="story-section card" id="stories" aria-labelledby="stories-title">
+        <div class="story-copy">
+          <p class="eyebrow">Read and imagine</p>
+          <h2 id="stories-title">Story World 📚</h2>
+          <p>Explore interactive stories with friendly words, listening practice, mini games, and gentle review activities for young learners.</p>
+          <div class="tag-row" aria-label="Story features">
+            <span>Read</span>
+            <span>Listen</span>
+            <span>Learn Words</span>
+            <span>Play Games</span>
+          </div>
+          <a class="button button-primary" href="#hero">Open Stories</a>
+        </div>
+        <div class="storybook-art" aria-hidden="true">
+          <div class="book-shape">📖</div>
+          <span class="floating-note">abc</span>
+          <span class="floating-note note-two">✨</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./data/vocab.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
