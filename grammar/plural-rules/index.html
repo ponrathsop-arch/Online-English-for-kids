@@ -287,7 +287,7 @@ const CATEGORIES = [
     ]
   },
   {
-    id:'cat4', name:'-f / -fe → -ves', rule:'Change f or fe to -ves',
+    id:'cat4', name:'-f / -fe → -ves (or -s!)', rule:'Usually change f or fe to -ves',
     icon:'🍂', color:'#EA580C',
     words:[
       {id:'leaf',  s:'leaf',  p:'leaves', e:'🍃', easy:['The leaf is green.','The leaves are falling.'],                   mid:['A leaf is on the table.','The leaves are moving in the wind.'],             fill:'The _____ are moving in the wind.',         fa:'leaves', fo:['leafs','leafes']},
@@ -297,9 +297,9 @@ const CATEGORIES = [
       {id:'shelf', s:'shelf', p:'shelves',e:'📚', easy:['The shelf is brown.','The shelves are full of books.'],          mid:['The shelf is above the desk.','The shelves are inside the library.'],        fill:'The _____ are inside the library.',          fa:'shelves',fo:['shelfs','shelfers']},
       {id:'life',  s:'life',  p:'lives',  e:'💫', easy:['The cat has one life.','Cats are said to have nine lives.'],     mid:['Her life is very busy.','Their lives changed after the accident.'],         fill:'Their _____ changed after the accident.',   fa:'lives',  fo:['lifes','lifees']},
       {id:'half',  s:'half',  p:'halves', e:'🍎', easy:['I ate half the cake.','Cut the apples into halves.'],            mid:['One half is bigger than the other half.','The teacher divided the class into halves.'], fill:'Cut the apples into _____ .', fa:'halves', fo:['halfs','halfes']},
-      {id:'roof',  s:'roof',  p:'roofs',  e:'🏠', easy:['The house has a roof.','The roofs are wet.'],                   mid:['The roof is covered with snow.','The birds are sitting on the roofs.'],      fill:'The birds are sitting on the _____ .',      fa:'roofs',  fo:['rooves','roofes']},
-      {id:'chef',  s:'chef',  p:'chefs',  e:'👨‍🍳', easy:['He is a chef.','The chefs are cooking dinner.'],               mid:['The chef is making soup.','The chefs are working in the kitchen.'],         fill:'The _____ are working in the kitchen.',     fa:'chefs',  fo:['cheves','chefes']},
-      {id:'belief',s:'belief',p:'beliefs',e:'💭', easy:['That is my belief.','People have different beliefs.'],           mid:['His belief is very strong.','Their beliefs are important to them.'],         fill:'Their _____ are important to them.',        fa:'beliefs',fo:['believes','beliefes']},
+      {id:'roof',  s:'roof',  p:'roofs',  e:'🏠', exception:true, easy:['The house has a roof.','The roofs are wet.'],    mid:['The roof is covered with snow.','The birds are sitting on the roofs.'],  fill:'The birds are sitting on the _____ .', fa:'roofs',  fo:['rooves','roofes']},
+      {id:'chef',  s:'chef',  p:'chefs',  e:'👨‍🍳', exception:true, easy:['He is a chef.','The chefs are cooking dinner.'], mid:['The chef is making soup.','The chefs are working in the kitchen.'],    fill:'The _____ are working in the kitchen.', fa:'chefs',  fo:['cheves','chefes']},
+      {id:'belief',s:'belief',p:'beliefs',e:'💭', exception:true, easy:['That is my belief.','People have different beliefs.'], mid:['His belief is very strong.','Their beliefs are important to them.'], fill:'Their _____ are important to them.', fa:'beliefs',fo:['believes','beliefes']},
     ]
   },
   {
@@ -423,9 +423,13 @@ function startCategory(cat){
 }
 function buildIntro(cat){
   const el=document.getElementById('pair-intro');
+  const exceptionNote = cat.id==='cat4'
+    ? `<div style="margin-top:8px;background:#FEF3C7;border-radius:10px;padding:7px 12px;font-size:.8rem;color:#92400E;font-weight:800;">⚠️ Exceptions: <strong>roof→roofs, chef→chefs, belief→beliefs</strong> just add <strong>-s</strong>!</div>`
+    : '';
   el.innerHTML=`<div class="pair-intro">
     <span class="rule-badge" style="background:${cat.color};">${cat.rule}</span>
     <div class="rule-desc">See the singular → tap the card to reveal the plural!</div>
+    ${exceptionNote}
   </div>`;
 }
 function buildDots(){
@@ -486,8 +490,12 @@ function renderPair(){
   const singularSide=document.createElement('div');
   singularSide.className='pair-side singular-side';
   singularSide.style.background=col+'18';
+  const ruleLabel = w.exception
+    ? `<div style="font-size:.75rem;background:#FEF3C7;color:#92400E;border-radius:50px;padding:4px 12px;margin-bottom:6px;font-family:'Fredoka One',cursive;border:2px solid #F59E0B;">⚠️ Exception — just add -s!</div>`
+    : `<div style="font-size:.7rem;background:${col}22;color:${col};border-radius:50px;padding:3px 10px;margin-bottom:6px;font-family:'Fredoka One',cursive;">${currentCat.rule}</div>`;
   singularSide.innerHTML=`<div class="side-label" style="color:${col};">Singular (one)</div>
-    <div class="pair-word" style="color:${col};">${w.s}</div>`;
+    <div class="pair-word" style="color:${col};">${w.s}</div>
+    ${ruleLabel}`;
   singularSide.appendChild(makeImgEl(w.id+'.jpg', w.e));
   const sEasy=document.createElement('div');
   sEasy.className='pair-sentence';
@@ -514,20 +522,20 @@ function renderPair(){
 
   // bottom bar — always visible, holds ← and tap hint / Next →
   const bottomBar=document.createElement('div');
-  bottomBar.style.cssText='display:flex;align-items:center;border-top:1px solid rgba(0,0,0,.06);';
+  bottomBar.style.cssText='display:flex;align-items:stretch;border-top:1px solid rgba(0,0,0,.06);min-height:48px;';
 
   // ← prev button — always visible from word 2+
   const prevBtn=document.createElement('button');
   prevBtn.className='nav-pill'+(pairIdx===0?' hidden':'');
-  prevBtn.style.cssText='margin:10px 0 10px 14px;flex-shrink:0;';
+  prevBtn.style.cssText='margin:0;border-radius:0;border:none;border-right:1px solid rgba(0,0,0,.07);padding:0 18px;flex-shrink:0;font-size:1.1rem;background:#fff;color:var(--muted);cursor:pointer;';
   prevBtn.textContent='←';
   prevBtn.addEventListener('click',(e)=>{e.stopPropagation();if(pairIdx>0){pairIdx--;renderPair();}});
   bottomBar.appendChild(prevBtn);
 
-  // tap hint (shown before reveal, replaces next row)
+  // tap hint (shown before reveal)
   const tapHint=document.createElement('div');
   tapHint.id='tap-hint';
-  tapHint.style.cssText=`flex:1;background:${col};color:#fff;text-align:center;padding:10px;font-family:'Fredoka One',cursive;font-size:.95rem;animation:pulse 1.8s infinite;`;
+  tapHint.style.cssText=`flex:1;background:${col};color:#fff;text-align:center;padding:0 14px;font-family:'Fredoka One',cursive;font-size:.95rem;animation:pulse 1.8s infinite;display:flex;align-items:center;justify-content:center;`;
   tapHint.textContent='Tap to reveal the plural →';
   bottomBar.appendChild(tapHint);
 
@@ -535,7 +543,7 @@ function renderPair(){
   const navRow=document.createElement('div');
   navRow.className='pair-nav';
   navRow.id='pair-nav-row';
-  navRow.style.cssText='display:none;flex:1;justify-content:center;gap:16px;padding:10px 14px;';
+  navRow.style.cssText='display:none;flex:1;align-items:center;justify-content:center;gap:16px;padding:0 14px;';
 
   const counter=document.createElement('div');
   counter.className='pair-counter';
