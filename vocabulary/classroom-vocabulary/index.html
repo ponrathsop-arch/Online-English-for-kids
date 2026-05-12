@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classroom Vocabulary</title>
+<style>
+  :root {
+    --primary: #1a9e6e;
+    --primary-dark: #137a54;
+    --accent: #3b82f6;
+    --accent2: #06b6d4;
+    --teal: #10b981;
+    --bg: #f0fdf8;
+    --card-bg: #ffffff;
+    --text: #1a2e25;
+    --text-light: #6b8f7e;
+    --shadow: 0 4px 20px rgba(26,158,110,0.13);
+    --radius: 20px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── decorative blobs ── */
+  .blob {
+    position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; opacity: .15;
+  }
+  .blob1 { width:260px;height:260px;background:#3b82f6;top:-60px;left:-80px; }
+  .blob2 { width:200px;height:200px;background:#10b981;bottom:80px;right:-60px; }
+  .blob3 { width:170px;height:170px;background:#06b6d4;top:40%;left:-50px; }
+  .blob4 { width:130px;height:130px;background:#1a9e6e;bottom:20%;right:10px; }
+
+  /* ── screens ── */
+  .screen { display:none; position:relative; z-index:1; min-height:100vh; padding-bottom:70px; }
+  .screen.active { display:flex; flex-direction:column; }
+  .hidden { display:none !important; }
+  .hidden-screen { display:none !important; }
+
+  /* ══ NAV BAR ══ */
+  .top-nav {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 16px 10px;
+    position:sticky; top:0; background:rgba(240,253,248,.92);
+    backdrop-filter:blur(8px); z-index:10;
+  }
+  .nav-back {
+    background:#fff; border:2px solid #d1fae5; border-radius:30px;
+    padding:8px 16px; font-size:14px; font-weight:700;
+    color:var(--primary); cursor:pointer; font-family:inherit;
+    transition:background .15s; text-decoration:none; display:inline-block;
+  }
+  .nav-back:hover { background:#d1fae5; }
+  .nav-title { font-size:16px; font-weight:900; color:var(--primary); }
+  .nav-counter { font-size:13px; color:var(--text-light); font-weight:700; }
+
+  /* progress bar */
+  .progress-bar-wrap { height:4px; background:#d1fae5; }
+  .progress-bar { height:100%; background:var(--primary); transition:width .3s; }
+
+  /* ══ FLASHCARD ══ */
+  .fc-body {
+    flex:1; display:flex; flex-direction:column;
+    align-items:center; padding:20px 16px 10px;
+  }
+  .fc-banner {
+    background:var(--primary); color:#fff;
+    border-radius:30px; padding:8px 20px;
+    font-size:13px; font-weight:700; margin-bottom:18px; text-align:center;
+  }
+  .tap-hint { font-size:12px; color:var(--text-light); margin-bottom:14px; font-weight:600; }
+  .fc-card {
+    background:var(--card-bg); border-radius:24px;
+    box-shadow:var(--shadow); width:100%; max-width:420px;
+    cursor:pointer; user-select:none; transition:transform .15s; overflow:hidden;
+  }
+  .fc-card:active { transform:scale(.98); }
+  .fc-stage0 {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:50px 20px; min-height:220px;
+  }
+  .fc-word { font-size:42px; font-weight:900; color:var(--primary); text-align:center; letter-spacing:-1px; }
+  .fc-pos { font-size:13px; color:var(--text-light); margin-top:6px; font-weight:600; }
+  .fc-stage1 {
+    display:flex; flex-direction:column; align-items:center;
+    padding:30px 20px 26px; min-height:220px;
+  }
+  .fc-word-sm { font-size:30px; font-weight:900; color:var(--primary); margin-bottom:4px; }
+  .fc-meaning-badge {
+    background:#ecfdf5; color:#065f46;
+    border-radius:20px; padding:8px 18px;
+    font-size:14px; font-weight:700; text-align:center;
+    margin:10px 0 6px; line-height:1.4;
+  }
+  /* full screen sentence stages */
+  .fc-full { display:flex; flex-direction:column; width:100%; }
+  .fc-full-header {
+    background:var(--primary); border-radius:16px 16px 0 0;
+    padding:14px 20px 12px; text-align:center;
+  }
+  .fc-full-header-word { font-size:26px; font-weight:900; color:#fff; letter-spacing:-.5px; }
+  .fc-full-header-meaning { font-size:12px; color:rgba(255,255,255,.82); font-weight:700; margin-top:3px; }
+  .fc-sent-label {
+    font-size:10px; font-weight:800; color:var(--text-light);
+    letter-spacing:.08em; text-transform:uppercase; text-align:center; padding:10px 0 4px;
+  }
+  .fc-img { width:100%; height:200px; object-fit:cover; }
+  .fc-img-placeholder {
+    width:100%; height:200px; background:#d1fae5;
+    display:flex; align-items:center; justify-content:center; font-size:64px;
+  }
+  .fc-sentence-bold {
+    font-size:16px; font-weight:800; text-align:center;
+    padding:14px 16px 16px; line-height:1.5;
+  }
+  .fc-back-btn {
+    background:#fff; border:2px solid #d1fae5; border-radius:30px;
+    padding:8px 14px; font-size:14px; font-weight:700;
+    color:var(--primary); cursor:pointer; font-family:inherit; transition:background .15s;
+  }
+  .fc-back-btn:hover { background:#d1fae5; }
+  .fc-back-btn:disabled { opacity:.35; cursor:default; }
+  .fc-bottom {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 20px; border-top:2px solid #d1fae5; background:#fff;
+  }
+  .fc-counter { font-size:14px; color:var(--text-light); font-weight:700; }
+  .fc-next-btn {
+    background:var(--primary); color:#fff; border:none;
+    border-radius:30px; padding:10px 26px; font-size:15px;
+    font-weight:800; cursor:pointer; font-family:inherit;
+    transition:background .15s, transform .12s;
+  }
+  .fc-next-btn:hover { background:var(--primary-dark); }
+  .fc-next-btn:active { transform:scale(.97); }
+  .fc-next-btn:disabled { background:#a7f3d0; cursor:default; }
+
+  /* ══ FILL IN BLANK ══ */
+  .fill-body { flex:1; padding:16px 16px 30px; display:flex; flex-direction:column; gap:16px; }
+  .fill-card { background:var(--card-bg); border-radius:20px; box-shadow:var(--shadow); overflow:hidden; }
+  .fill-img { width:100%; height:160px; object-fit:cover; }
+  .fill-img-placeholder {
+    width:100%; height:160px; background:#d1fae5;
+    display:flex; align-items:center; justify-content:center; font-size:60px;
+  }
+  .fill-content { padding:16px; }
+  .fill-sentence { font-size:17px; font-weight:700; line-height:1.6; margin-bottom:14px; text-align:center; }
+  .fill-blank {
+    display:inline-block; min-width:120px;
+    border-bottom:3px solid var(--primary);
+    text-align:center; font-weight:900; color:var(--primary); padding:0 6px;
+  }
+  .fill-options { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:12px; }
+  .fill-opt {
+    background:#ecfdf5; border:2px solid transparent;
+    border-radius:20px; padding:8px 18px; font-size:14px;
+    font-weight:800; color:var(--primary); cursor:pointer;
+    font-family:inherit; transition:all .15s;
+  }
+  .fill-opt:hover { background:#d1fae5; }
+  .fill-opt.correct { background:#d1fae5; border-color:var(--primary); color:#065f46; }
+  .fill-opt.wrong { background:#fee2e2; border-color:#ef4444; color:#991b1b; }
+  .fill-feedback { text-align:center; font-size:14px; font-weight:800; min-height:22px; margin-bottom:6px; }
+  .fill-feedback.ok { color:var(--primary); }
+  .fill-feedback.no { color:#ef4444; }
+
+  /* ══ SPELLING ══ */
+  .spell-body { flex:1; padding:20px 16px 30px; display:flex; flex-direction:column; align-items:center; }
+  .spell-card {
+    background:var(--card-bg); border-radius:24px;
+    box-shadow:var(--shadow); width:100%; max-width:420px;
+    padding:24px 20px; margin-bottom:16px;
+  }
+  .spell-prompt { font-size:13px; color:var(--text-light); font-weight:700; text-align:center; margin-bottom:8px; }
+  .spell-meaning { text-align:center; font-size:16px; font-weight:800; color:var(--primary); margin-bottom:6px; }
+  .spell-sentence { font-size:14px; text-align:center; color:var(--text-light); margin-bottom:20px; line-height:1.5; }
+  .spell-tiles { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:16px; min-height:44px; }
+  .spell-tile {
+    width:40px; height:44px; background:var(--primary); color:#fff;
+    border-radius:10px; font-size:18px; font-weight:900;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:transform .12s; font-family:inherit; border:none;
+  }
+  .spell-tile:hover { transform:scale(1.08); }
+  .spell-tile.used { background:#a7f3d0; color:#6b8f7e; cursor:default; }
+  .spell-answer { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; min-height:44px; margin-bottom:14px; }
+  .spell-ans-slot {
+    width:40px; height:44px; border-radius:10px; border:2px dashed #a7f3d0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; font-weight:900; color:var(--primary);
+    cursor:pointer; transition:border-color .15s; background:#f0fdf8;
+  }
+  .spell-ans-slot.filled { border-style:solid; border-color:var(--primary); background:#ecfdf5; }
+  .spell-ans-slot.correct { border-color:var(--primary); background:#d1fae5; color:#065f46; }
+  .spell-ans-slot.wrong { border-color:#ef4444; background:#fee2e2; color:#991b1b; }
+  .spell-check-btn {
+    background:var(--accent); color:#fff; border:none;
+    border-radius:30px; padding:12px 32px; font-size:16px;
+    font-weight:900; cursor:pointer; font-family:inherit;
+    transition:background .15s, transform .12s; margin-bottom:10px;
+  }
+  .spell-check-btn:hover { background:#2563eb; }
+  .spell-check-btn:active { transform:scale(.97); }
+  .spell-feedback { font-size:15px; font-weight:800; text-align:center; min-height:24px; }
+  .spell-feedback.ok { color:var(--primary); }
+  .spell-feedback.no { color:#ef4444; }
+
+  /* ══ VOCABINDER ══ */
+  .vb-body { flex:1; display:flex; flex-direction:column; align-items:center; padding:20px 16px 30px; }
+  .vb-instruction { font-size:13px; color:var(--text-light); font-weight:700; margin-bottom:16px; text-align:center; }
+  .vb-card-wrap { width:100%; max-width:380px; position:relative; height:320px; margin-bottom:20px; }
+  .vb-card {
+    position:absolute; inset:0; background:var(--card-bg); border-radius:24px;
+    box-shadow:0 6px 30px rgba(26,158,110,.18);
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:center; padding:30px 20px;
+    transition:transform .35s cubic-bezier(.4,0,.2,1), opacity .3s;
+    cursor:pointer; user-select:none;
+  }
+  .vb-card.slide-left { transform:translateX(-110%) rotate(-8deg); opacity:0; }
+  .vb-card.slide-right { transform:translateX(110%) rotate(8deg); opacity:0; }
+  .vb-emoji { font-size:52px; margin-bottom:12px; }
+  .vb-word { font-size:34px; font-weight:900; color:var(--primary); margin-bottom:6px; }
+  .vb-meaning { font-size:14px; color:var(--text-light); font-weight:700; text-align:center; }
+  .vb-buttons { display:flex; gap:20px; }
+  .vb-btn {
+    width:70px; height:70px; border-radius:50%; border:none;
+    font-size:28px; cursor:pointer; font-family:inherit;
+    transition:transform .15s, box-shadow .15s; box-shadow:0 4px 14px rgba(0,0,0,.12);
+  }
+  .vb-btn:hover { transform:scale(1.1); box-shadow:0 6px 20px rgba(0,0,0,.18); }
+  .vb-btn.know { background:#d1fae5; }
+  .vb-btn.dontknow { background:#fee2e2; }
+  .vb-score { font-size:14px; font-weight:800; color:var(--text-light); margin-top:14px; }
+
+  /* ══ WORDS ONLY ══ */
+  .wo-body { flex:1; padding:16px; display:flex; flex-direction:column; gap:10px; }
+  .wo-item {
+    background:var(--card-bg); border-radius:16px;
+    padding:14px 18px; box-shadow:var(--shadow);
+    display:flex; align-items:flex-start; gap:14px;
+  }
+  .wo-num {
+    background:var(--primary); color:#fff; border-radius:50%;
+    width:28px; height:28px; min-width:28px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:900;
+  }
+  .wo-word { font-size:18px; font-weight:900; color:var(--primary); margin-bottom:3px; }
+  .wo-meaning-text { font-size:13px; color:var(--text-light); font-weight:600; }
+
+  /* ══ PICTURES ONLY ══ */
+  .po-body { flex:1; padding:16px; }
+  .po-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .po-item {
+    background:var(--card-bg); border-radius:18px;
+    box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column;
+  }
+  .po-img { width:100%; height:120px; object-fit:cover; }
+  .po-img-placeholder {
+    width:100%; height:120px; background:#d1fae5;
+    display:flex; align-items:center; justify-content:center; font-size:42px;
+  }
+  .po-label { font-size:13px; font-weight:900; color:var(--primary); text-align:center; padding:8px 6px; }
+
+  /* ══ SUMMARY ══ */
+  .sum-body { flex:1; padding:16px; display:flex; flex-direction:column; gap:12px; }
+  .sum-card {
+    background:var(--card-bg); border-radius:20px;
+    box-shadow:var(--shadow); display:flex; overflow:hidden;
+  }
+  .sum-img-wrap { width:90px; min-width:90px; }
+  .sum-img { width:100%; height:100%; object-fit:cover; }
+  .sum-img-placeholder {
+    width:100%; height:100%; background:#d1fae5;
+    display:flex; align-items:center; justify-content:center; font-size:34px;
+  }
+  .sum-info { padding:12px 14px; }
+  .sum-word { font-size:18px; font-weight:900; color:var(--primary); margin-bottom:2px; }
+  .sum-meaning { font-size:12px; color:var(--text-light); font-weight:700; margin-bottom:6px; }
+  .sum-s1 { font-size:13px; font-weight:700; margin-bottom:2px; }
+  .sum-s2 { font-size:12px; color:var(--text-light); }
+
+  /* ══ BOTTOM NAV ══ */
+  .bottom-nav {
+    position:fixed; bottom:0; left:0; right:0;
+    background:#fff; border-top:2px solid #d1fae5;
+    display:flex; z-index:100;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .bn-btn {
+    flex:1; display:flex; flex-direction:column;
+    align-items:center; padding:8px 2px 6px;
+    font-size:9px; font-weight:800; color:var(--text-light);
+    cursor:pointer; background:none; border:none; font-family:inherit;
+    transition:color .15s; line-height:1.2;
+  }
+  .bn-btn .bn-icon { font-size:18px; margin-bottom:2px; }
+  .bn-btn.active { color:var(--primary); }
+
+  /* ══ RAINBOW BAR ══ */
+  .rainbow-bar {
+    height:5px;
+    background:linear-gradient(90deg,#3b82f6,#10b981,#06b6d4,#1a9e6e,#3b82f6);
+    background-size:200%;
+    animation:rainbow 4s linear infinite;
+  }
+  @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  @keyframes pulse { 0%,100%{transform:scale(1);box-shadow:0 6px 20px rgba(26,158,110,.35);} 50%{transform:scale(1.04);box-shadow:0 10px 28px rgba(26,158,110,.5);} }
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+<div class="blob blob4"></div>
+
+<!-- ══════════════ INTRO ══════════════ -->
+<div id="intro" class="screen active" onclick="startFromIntro()" style="cursor:pointer;">
+  <div class="rainbow-bar"></div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px 120px;text-align:center;">
+    <div style="font-size:72px;margin-bottom:16px;animation:bounce 2s infinite;">📚</div>
+    <div style="font-size:12px;font-weight:800;letter-spacing:3px;color:var(--text-light);text-transform:uppercase;margin-bottom:10px;">English with Pang</div>
+    <div style="font-size:32px;font-weight:900;color:var(--primary);line-height:1.2;margin-bottom:8px;">Classroom<br>Vocabulary</div>
+    <div style="background:var(--primary);color:#fff;border-radius:30px;padding:5px 18px;font-size:13px;font-weight:800;display:inline-block;margin-bottom:24px;">20 words</div>
+
+    <div style="background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:18px 22px;max-width:340px;margin-bottom:28px;text-align:left;">
+      <div style="font-size:13px;font-weight:800;color:var(--primary);margin-bottom:10px;">📖 What you'll learn:</div>
+      <div style="font-size:13px;color:var(--text-light);font-weight:700;line-height:2;">
+        📋 project &nbsp;·&nbsp; 🎤 presentation<br>
+        📝 assignment &nbsp;·&nbsp; 🔬 experiment<br>
+        🔍 research &nbsp;·&nbsp; 🧮 calculator<br>
+        📓 notebook &nbsp;·&nbsp; 📖 dictionary<br>
+        🏅 grade &nbsp;·&nbsp; ⏰ deadline<br>
+        📚 subject &nbsp;·&nbsp; ❓ quiz<br>
+        📄 report &nbsp;·&nbsp; ✍️ essay<br>
+        🗓️ schedule &nbsp;·&nbsp; 👕 uniform<br>
+        📅 semester &nbsp;·&nbsp; 🎯 concentrate<br>
+        ✏️ revise &nbsp;·&nbsp; 🧠 memorize
+      </div>
+    </div>
+
+    <div style="background:var(--primary);color:#fff;border-radius:50px;padding:16px 40px;font-size:18px;font-weight:900;box-shadow:0 6px 20px rgba(26,158,110,.35);animation:pulse 2s infinite;">
+      Tap anywhere to start ✨
+    </div>
+    <div style="font-size:12px;color:var(--text-light);font-weight:700;margin-top:14px;">7 activities inside</div>
+  </div>
+  <div class="bottom-nav">
+    <button class="bn-btn active" onclick="startFromIntro();event.stopPropagation();"><span class="bn-icon">🃏</span>Words</button>
+    <button class="bn-btn" onclick="switchTab('fill');event.stopPropagation();"><span class="bn-icon">✏️</span>Fill</button>
+    <button class="bn-btn" onclick="switchTab('spelling');event.stopPropagation();"><span class="bn-icon">🔤</span>Spell</button>
+    <button class="bn-btn" onclick="switchTab('vocabinder');event.stopPropagation();"><span class="bn-icon">⚡</span>Vocab</button>
+    <button class="bn-btn" onclick="switchTab('wordsonly');event.stopPropagation();"><span class="bn-icon">📝</span>List</button>
+    <button class="bn-btn" onclick="switchTab('picsonly');event.stopPropagation();"><span class="bn-icon">🖼️</span>Pics</button>
+    <button class="bn-btn" onclick="switchTab('summary');event.stopPropagation();"><span class="bn-icon">📋</span>Summary</button>
+  </div>
+</div>
+
+<!-- ══════════════ HOME / WORD FIRST ══════════════ -->
+<div id="home" class="screen">
+  <div class="rainbow-bar"></div>
+  <div style="padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;">
+    <a href="../index.html" class="nav-back">← Home</a>
+    <span style="font-size:15px;font-weight:900;color:var(--primary);">Classroom Vocabulary</span>
+    <span style="font-size:13px;color:var(--text-light);font-weight:700;">20 words</span>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="home-progress" style="width:5%"></div></div>
+
+  <div class="fc-body">
+    <div class="fc-banner" id="home-banner">Tap the card to reveal the meaning!</div>
+    <div class="tap-hint" id="home-hint">👆 Tap anywhere on the card</div>
+
+    <div class="fc-card" id="home-s0" onclick="homeNextStage()">
+      <div class="fc-stage0">
+        <div class="fc-word" id="home-word0"></div>
+        <div class="fc-pos">noun / verb</div>
+      </div>
+    </div>
+    <div class="fc-card hidden" id="home-s1" onclick="homeNextStage()">
+      <div class="fc-stage1">
+        <div class="fc-word-sm" id="home-word1"></div>
+        <div class="fc-meaning-badge" id="home-meaning1"></div>
+        <div style="font-size:12px;color:var(--text-light);font-weight:700;margin-top:8px;">👆 Tap to see first sentence</div>
+      </div>
+    </div>
+    <div class="fc-card hidden" id="home-s2" onclick="homeNextStage()">
+      <div class="fc-full">
+        <div class="fc-full-header">
+          <div class="fc-full-header-word" id="home-word2"></div>
+          <div class="fc-full-header-meaning" id="home-meaning2"></div>
+        </div>
+        <div class="fc-sent-label">SENTENCE 1</div>
+        <div class="fc-img-placeholder" id="home-img2-ph"><span id="home-em2"></span></div>
+        <img id="home-img2" class="fc-img hidden" alt="">
+        <div class="fc-sentence-bold" id="home-s2-bold"></div>
+        <div style="text-align:center;padding:0 0 12px;font-size:12px;color:var(--text-light);font-weight:700;">👆 Tap to see second sentence</div>
+      </div>
+    </div>
+    <div class="fc-card hidden" id="home-s3">
+      <div class="fc-full">
+        <div class="fc-full-header">
+          <div class="fc-full-header-word" id="home-word3"></div>
+          <div class="fc-full-header-meaning" id="home-meaning3"></div>
+        </div>
+        <div class="fc-sent-label">SENTENCE 2</div>
+        <div class="fc-img-placeholder" id="home-img3-ph"><span id="home-em3"></span></div>
+        <img id="home-img3" class="fc-img hidden" alt="">
+        <div class="fc-sentence-bold" id="home-s3-bold"></div>
+        <div style="text-align:center;padding:0 0 12px;font-size:12px;color:var(--text-light);font-weight:700;">🎉 Great! Tap Next for the next word.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fc-bottom">
+    <button class="fc-back-btn" id="home-back-btn" onclick="homePrevStage()">← Back</button>
+    <span class="fc-counter" id="home-counter">1 of 20</span>
+    <button class="fc-next-btn" onclick="homeNext()">Next →</button>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="bn-btn active" onclick="switchTab('home')"><span class="bn-icon">🃏</span>Words</button>
+    <button class="bn-btn" onclick="switchTab('fill')"><span class="bn-icon">✏️</span>Fill</button>
+    <button class="bn-btn" onclick="switchTab('spelling')"><span class="bn-icon">🔤</span>Spell</button>
+    <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
+    <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
+    <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
+    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+  </div>
+</div>
+
+<!-- ══════════════ FILL IN BLANK ══════════════ -->
+<div id="fill" class="screen">
+  <div class="rainbow-bar"></div>
+  <div class="top-nav">
+    <button class="nav-back" onclick="switchTab('home')">← Back</button>
+    <span class="nav-title">✏️ Fill in the Blank</span>
+    <span class="nav-counter" id="fill-counter">1 / 20</span>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="fill-progress"></div></div>
+  <div class="fill-body">
+    <div class="fill-card">
+      <div class="fill-img-placeholder" id="fill-img-ph"><span id="fill-em"></span></div>
+      <img id="fill-img" class="fill-img hidden" alt="">
+      <div class="fill-content">
+        <div class="fill-sentence" id="fill-sentence"></div>
+        <div class="fill-options" id="fill-options"></div>
+        <div class="fill-feedback" id="fill-feedback"></div>
+      </div>
+    </div>
+    <button class="fc-next-btn" id="fill-next" onclick="fillNext()" style="align-self:center;margin-top:6px;" disabled>Next →</button>
+  </div>
+  <div class="bottom-nav">
+    <button class="bn-btn" onclick="switchTab('home')"><span class="bn-icon">🃏</span>Words</button>
+    <button class="bn-btn active" onclick="switchTab('fill')"><span class="bn-icon">✏️</span>Fill</button>
+    <button class="bn-btn" onclick="switchTab('spelling')"><span class="bn-icon">🔤</span>Spell</button>
+    <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
+    <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
+    <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
+    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+  </div>
+</div>
+
+<!-- ══════════════ SPELLING ══════════════ -->
+<div id="spelling" class="screen">
+  <div class="rainbow-bar"></div>
+  <div class="top-nav">
+    <button class="nav-back" onclick="switchTab('home')">← Back</button>
+    <span class="nav-title">🔤 Spelling</span>
+    <span class="nav-counter" id="spell-counter">1 / 20</span>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="spell-progress"></div></div>
+  <div class="spell-body">
+    <div class="spell-card">
+      <div class="spell-prompt">What is the word?</div>
+      <div class="spell-meaning" id="spell-meaning"></div>
+      <div class="spell-sentence" id="spell-sentence"></div>
+      <div class="spell-answer" id="spell-answer"></div>
+      <div class="spell-tiles" id="spell-tiles"></div>
+      <button class="spell-check-btn" onclick="spellCheck()">Check ✓</button>
+      <div class="spell-feedback" id="spell-feedback"></div>
+    </div>
+    <button class="fc-next-btn" id="spell-next" onclick="spellNext()" style="margin-top:10px;" disabled>Next →</button>
+  </div>
+  <div class="bottom-nav">
+    <button class="bn-btn" onclick="switchTab('home')"><span class="bn-icon">🃏</span>Words</button>
+    <button class="bn-btn" onclick="switchTab('fill')"><span class="bn-icon">✏️</span>Fill</button>
+    <button class="bn-btn active" onclick="switchTab('spelling')"><span class="bn-icon">🔤</span>Spell</button>
+    <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
+    <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
+    <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
+    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+  </div>
+</div>
+
+<!-- ══════════════ VOCABINDER ══════════════ -->
+<div id="vocabinder" class="screen">
+  <div class="rainbow-bar"></div>
+  <div class="top-nav">
+    <button class="nav-back" onclick="switchTab('home')">← Back</button>
+    <span class="nav-title">⚡ Vocabinder</span>
+    <span class="nav-counter" id="vb-counter">1 / 20</span>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="vb-progress"></div></div>
+  <div class="vb-body">
+    <div class="vb-instruction">Do you know this word? Tap ✅ or ❌</div>
+    <div class="vb-card-wrap">
+      <div class="vb-card" id="vb-card">
+        <div class="vb-emoji" id="vb-emoji"></div>
+        <div class="vb-word" id="vb-word"></div>
+        <div class="vb-meaning" id="vb-meaning"></div>
+      </div>
+    </div>
+    <div class="vb-buttons">
+      <button class="vb-btn dontknow" onclick="vbAnswer(false)">❌</button>
+      <button class="vb-btn know" onclick="vbAnswer(true)">✅</button>
+    </div>
+    <div class="vb-score" id="vb-score">✅ 0 &nbsp;&nbsp; ❌ 0</div>
+  </div>
+  <div class="bottom-nav">
+    <button class="bn-btn" onclick="switchTab('home')"><span class="bn-icon">🃏</span>Words</button>
+    <button class="bn-btn" onclick="switchTab('fill')"><span class="bn-icon">✏️</span>Fill</button>
+    <button class="bn-btn" onclick="switchTab('spelling')"><span class="bn-icon">🔤</span>Spell</button>
+    <button class="bn-btn active" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
+    <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
+    <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
+    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+  </div>
+</div>
+
+<!-- ══════════════ WORDS ONLY ══════════════ -->
+<div id="wordsonly" class="screen">
+  <div class="rainbow-bar"></div>
+  <div class="top-nav">
+    <button class="nav-back" onclick="switchTab('home')">← Back</button>
+    <span class="nav-title">📝 Words Only</span>
+    <span style="width:60px"></span>
+  </div>
+  <div class="wo-body" id="wo-body"></div>
+  <div class="bottom-nav">
+    <button class="bn-btn" onclick="switchTab('home')"><span class="bn-icon">🃏</span>Words</button>
+    <button class="bn-btn" onclick="switchTab('fill')"><span class="bn-icon">✏️</span>Fill</button>
+    <button class="bn-btn" onclick="switchTab('spelling')"><span class="bn-icon">🔤</span>Spell</button>
+    <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
+    <button class="bn-btn active" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
+    <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
+    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+  </div>
+</div>
+
+<!-- ══════════════ PICTURES ONLY ══════════════ -->
+<div id="picsonly" class="screen">
+  <div class="rainbow-bar"></div>
+  <div class="top-nav">
+    <button class="nav-back" onclick="switchTab('home')">← Back</button>
+    <span class="nav-title">🖼️ Pictures Only</span>
+    <span style="width:60px"></span>
+  </div>
+  <div class="po-body"><div class="po-grid" id="po-grid"></div></div>
+  <div class="bottom-nav">
+    <button class="bn-btn" onclick="switchTab('home')"><span class="bn-icon">🃏</span>Words</button>
+    <button class="bn-btn" onclick="switchTab('fill')"><span class="bn-icon">✏️</span>Fill</button>
+    <button class="bn-btn" onclick="switchTab('spelling')"><span class="bn-icon">🔤</span>Spell</button>
+    <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
+    <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
+    <button class="bn-btn active" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
+    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+  </div>
+</div>
+
+<!-- ══════════════ SUMMARY ══════════════ -->
+<div id="summary" class="screen">
+  <div class="rainbow-bar"></div>
+  <div class="top-nav">
+    <button class="nav-back" onclick="switchTab('home')">← Back</button>
+    <span class="nav-title">📋 Summary</span>
+    <span style="width:60px"></span>
+  </div>
+  <div class="sum-body" id="sum-body"></div>
+  <div class="bottom-nav">
+    <button class="bn-btn" onclick="switchTab('home')"><span class="bn-icon">🃏</span>Words</button>
+    <button class="bn-btn" onclick="switchTab('fill')"><span class="bn-icon">✏️</span>Fill</button>
+    <button class="bn-btn" onclick="switchTab('spelling')"><span class="bn-icon">🔤</span>Spell</button>
+    <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
+    <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
+    <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
+    <button class="bn-btn active" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  WORD DATA
+// ══════════════════════════════════════════════
+const words = [
+  { word:"project",      meaning:"a piece of work you plan and do over time",          emoji:"📋", s1:"We are doing a science project about plants.",       s2:"Her project took two weeks to finish." },
+  { word:"presentation", meaning:"when you show and explain something to others",      emoji:"🎤", s1:"Tom gave a presentation about space.",                s2:"I get nervous before presentations." },
+  { word:"assignment",   meaning:"a task or piece of work given by a teacher",         emoji:"📝", s1:"I haven't finished my assignment yet.",               s2:"The teacher gave us a difficult assignment." },
+  { word:"experiment",   meaning:"a test you do to find out or discover something",    emoji:"🔬", s1:"The students did an experiment in science class.",    s2:"Our experiment was successful." },
+  { word:"research",     meaning:"looking for information about a topic",              emoji:"🔍", s1:"She is doing research about dolphins.",                s2:"We researched the topic online." },
+  { word:"calculator",   meaning:"a device used to do math calculations",              emoji:"🧮", s1:"You may use a calculator in math class.",             s2:"My calculator ran out of battery." },
+  { word:"notebook",     meaning:"a book with blank pages for writing notes",          emoji:"📓", s1:"I forgot my notebook at home.",                      s2:"He writes new words in his notebook." },
+  { word:"dictionary",   meaning:"a book that explains the meaning of words",          emoji:"📖", s1:"Please check the dictionary for the meaning.",       s2:"I use a dictionary when I read difficult books." },
+  { word:"grade",        meaning:"a mark or score showing how well you did",           emoji:"🏅", s1:"She got a good grade on the test.",                  s2:"His grades improved this semester." },
+  { word:"deadline",     meaning:"the last day or time to finish something",           emoji:"⏰", s1:"The project deadline is next Friday.",                s2:"We must finish before the deadline." },
+  { word:"subject",      meaning:"an area of study, like math or science",             emoji:"📚", s1:"My favorite subject is English.",                    s2:"Science is a difficult subject for some students." },
+  { word:"quiz",         meaning:"a short test to check what you know",                emoji:"❓", s1:"We had a surprise quiz today.",                      s2:"I studied hard for the vocabulary quiz." },
+  { word:"report",       meaning:"a piece of writing about a topic or event",          emoji:"📄", s1:"The students wrote a report about pollution.",       s2:"I need to finish my book report tonight." },
+  { word:"essay",        meaning:"a longer piece of writing about one topic",          emoji:"✍️", s1:"She is writing an essay about friendship.",          s2:"My essay is too short." },
+  { word:"schedule",     meaning:"a plan that shows what happens and when",            emoji:"🗓️", s1:"Our class schedule changed this week.",              s2:"I checked my schedule before school." },
+  { word:"uniform",      meaning:"special clothes worn at school or work",             emoji:"👕", s1:"Students must wear a school uniform.",               s2:"His uniform is dirty after soccer practice." },
+  { word:"semester",     meaning:"one half of the school year",                        emoji:"📅", s1:"The new semester starts next month.",                s2:"She worked very hard this semester." },
+  { word:"concentrate",  meaning:"to focus your mind on something",                    emoji:"🎯", s1:"Please concentrate during the lesson.",              s2:"I can't concentrate when it is noisy." },
+  { word:"revise",       meaning:"to go over your work again to improve it",           emoji:"✏️", s1:"I need to revise before the exam.",                  s2:"She revised her essay many times." },
+  { word:"memorize",     meaning:"to learn something so well you remember it",         emoji:"🧠", s1:"The students memorized the new vocabulary.",         s2:"It is hard to memorize long definitions." }
+];
+
+const IMG_PATH = "images/classroom/";
+function imgSrc(word, suffix) { return IMG_PATH + word + suffix + ".jpg"; }
+function setupImg(imgEl, phEl, src) {
+  imgEl.src = src;
+  imgEl.onload = () => { imgEl.classList.remove('hidden'); phEl.classList.add('hidden'); };
+  imgEl.onerror = () => {};
+}
+
+// ══════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function startFromIntro() { homeInit(); showScreen('home'); }
+
+function switchTab(tab) {
+  switch(tab) {
+    case 'home':       homeInit();   showScreen('home');       break;
+    case 'fill':       fillInit();   showScreen('fill');       break;
+    case 'spelling':   spellInit();  showScreen('spelling');   break;
+    case 'vocabinder': vbInit();     showScreen('vocabinder'); break;
+    case 'wordsonly':  woInit();     showScreen('wordsonly');  break;
+    case 'picsonly':   poInit();     showScreen('picsonly');   break;
+    case 'summary':    sumInit();    showScreen('summary');    break;
+  }
+}
+
+// ══════════════════════════════════════════════
+//  HOME / WORD FIRST
+// ══════════════════════════════════════════════
+let homeIndex = 0, homeStage = 0;
+
+function homeInit() { homeIndex = 0; homeStage = 0; homeRender(); }
+
+function homeRender() {
+  const w = words[homeIndex];
+  const total = words.length;
+  document.getElementById('home-counter').textContent = `${homeIndex+1} of ${total}`;
+  document.getElementById('home-progress').style.width = `${((homeIndex+1)/total)*100}%`;
+
+  document.getElementById('home-word0').textContent = w.word;
+  document.getElementById('home-word1').textContent = w.word;
+  document.getElementById('home-meaning1').textContent = '📖 ' + w.meaning;
+
+  document.getElementById('home-word2').textContent = w.word;
+  document.getElementById('home-meaning2').textContent = w.meaning;
+  document.getElementById('home-s2-bold').textContent = w.s1;
+  document.getElementById('home-em2').textContent = w.emoji;
+  const img2 = document.getElementById('home-img2'), ph2 = document.getElementById('home-img2-ph');
+  img2.classList.add('hidden'); ph2.classList.remove('hidden');
+  setupImg(img2, ph2, imgSrc(w.word,''));
+
+  document.getElementById('home-word3').textContent = w.word;
+  document.getElementById('home-meaning3').textContent = w.meaning;
+  document.getElementById('home-s3-bold').textContent = w.s2;
+  document.getElementById('home-em3').textContent = w.emoji;
+  const img3 = document.getElementById('home-img3'), ph3 = document.getElementById('home-img3-ph');
+  img3.classList.add('hidden'); ph3.classList.remove('hidden');
+  setupImg(img3, ph3, imgSrc(w.word,'1'));
+
+  homeSetStage(0);
+}
+
+function homeSetStage(s) {
+  homeStage = s;
+  ['home-s0','home-s1','home-s2','home-s3'].forEach((id,i) => {
+    document.getElementById(id).classList.toggle('hidden', i !== s);
+  });
+  const banners = [
+    "Tap the card to reveal the meaning!",
+    "Tap to see the first sentence!",
+    "Tap to see the second sentence!",
+    "🎉 Great! Tap Next for the next word."
+  ];
+  document.getElementById('home-banner').textContent = banners[s];
+  document.getElementById('home-hint').textContent = s < 3 ? "👆 Tap anywhere on the card" : "";
+  document.getElementById('home-back-btn').disabled = (s === 0 && homeIndex === 0);
+}
+
+function homeNextStage() { if (homeStage < 3) homeSetStage(homeStage + 1); }
+
+function homePrevStage() {
+  if (homeStage > 0) { homeSetStage(homeStage - 1); }
+  else if (homeIndex > 0) { homeIndex--; homeRender(); homeSetStage(3); }
+}
+
+function homeNext() { homeIndex = (homeIndex + 1) % words.length; homeRender(); }
+
+// ══════════════════════════════════════════════
+//  FILL IN THE BLANK
+// ══════════════════════════════════════════════
+let fillIndex = 0, fillAnswered = false;
+
+function fillInit() { fillIndex = 0; fillAnswered = false; fillRender(); }
+
+function fillMakeSentence(s1, word) {
+  const re = new RegExp(`\\b${word}\\b`, 'i');
+  const parts = s1.split(re);
+  if (parts.length < 2) return s1;
+  return parts[0] + `<span class="fill-blank">_____</span>` + parts.slice(1).join('');
+}
+
+function fillRender() {
+  const w = words[fillIndex];
+  const total = words.length;
+  document.getElementById('fill-counter').textContent = `${fillIndex+1} / ${total}`;
+  document.getElementById('fill-progress').style.width = `${((fillIndex+1)/total)*100}%`;
+
+  const imgEl = document.getElementById('fill-img'), phEl = document.getElementById('fill-img-ph');
+  document.getElementById('fill-em').textContent = w.emoji;
+  imgEl.classList.add('hidden'); phEl.classList.remove('hidden');
+  setupImg(imgEl, phEl, imgSrc(w.word,''));
+
+  document.getElementById('fill-sentence').innerHTML = fillMakeSentence(w.s1, w.word);
+
+  const others = words.filter((_,i) => i !== fillIndex).map(x=>x.word);
+  const opts = [...others.sort(()=>Math.random()-.5).slice(0,3), w.word].sort(()=>Math.random()-.5);
+  const container = document.getElementById('fill-options');
+  container.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'fill-opt'; btn.textContent = opt;
+    btn.onclick = () => fillAnswer(opt, w.word, btn);
+    container.appendChild(btn);
+  });
+  document.getElementById('fill-feedback').textContent = '';
+  document.getElementById('fill-feedback').className = 'fill-feedback';
+  document.getElementById('fill-next').disabled = true;
+  fillAnswered = false;
+}
+
+function fillAnswer(chosen, correct, btn) {
+  if (fillAnswered) return;
+  fillAnswered = true;
+  const fb = document.getElementById('fill-feedback');
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.textContent = '🎉 Correct!'; fb.className = 'fill-feedback ok';
+    document.getElementById('fill-sentence').innerHTML =
+      document.getElementById('fill-sentence').innerHTML.replace(
+        '<span class="fill-blank">_____</span>',
+        `<span class="fill-blank" style="color:var(--primary)">${correct}</span>`
+      );
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = `❌ The answer is: ${correct}`; fb.className = 'fill-feedback no';
+    document.querySelectorAll('.fill-opt').forEach(b => { if (b.textContent === correct) b.classList.add('correct'); });
+  }
+  document.getElementById('fill-next').disabled = false;
+}
+
+function fillNext() { fillIndex = (fillIndex + 1) % words.length; fillRender(); }
+
+// ══════════════════════════════════════════════
+//  SPELLING
+// ══════════════════════════════════════════════
+let spellIndex = 0, spellLetters = [], spellChosen = [];
+
+function spellInit() { spellIndex = 0; spellRender(); }
+
+function spellRender() {
+  const w = words[spellIndex];
+  const total = words.length;
+  document.getElementById('spell-counter').textContent = `${spellIndex+1} / ${total}`;
+  document.getElementById('spell-progress').style.width = `${((spellIndex+1)/total)*100}%`;
+  document.getElementById('spell-meaning').textContent = w.meaning;
+  document.getElementById('spell-sentence').textContent = w.s1.replace(new RegExp(`\\b${w.word}\\b`,'i'), '_____');
+  document.getElementById('spell-feedback').textContent = '';
+  document.getElementById('spell-feedback').className = 'spell-feedback';
+  document.getElementById('spell-next').disabled = true;
+
+  const letters = w.word.split('');
+  const extras = 'aeioulnrst'.split('').sort(()=>Math.random()-.5).slice(0,3);
+  spellLetters = [...letters, ...extras].sort(()=>Math.random()-.5);
+  spellChosen = Array(letters.length).fill(null);
+  renderSpellTiles(); renderSpellAnswer(w.word.length);
+}
+
+function renderSpellTiles() {
+  const c = document.getElementById('spell-tiles'); c.innerHTML = '';
+  spellLetters.forEach((l,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'spell-tile' + (spellChosen.indexOf(i) >= 0 ? ' used' : '');
+    btn.textContent = l.toUpperCase(); btn.onclick = () => spellPickLetter(i);
+    c.appendChild(btn);
+  });
+}
+
+function renderSpellAnswer(len) {
+  const c = document.getElementById('spell-answer'); c.innerHTML = '';
+  for (let i = 0; i < len; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'spell-ans-slot' + (spellChosen[i] !== null ? ' filled' : '');
+    if (spellChosen[i] !== null) { slot.textContent = spellLetters[spellChosen[i]].toUpperCase(); slot.onclick = () => spellRemoveLetter(i); }
+    c.appendChild(slot);
+  }
+}
+
+function spellPickLetter(idx) {
+  const emptyPos = spellChosen.indexOf(null);
+  if (emptyPos === -1 || spellChosen.includes(idx)) return;
+  spellChosen[emptyPos] = idx;
+  renderSpellTiles(); renderSpellAnswer(words[spellIndex].word.length);
+}
+
+function spellRemoveLetter(pos) {
+  spellChosen[pos] = null;
+  renderSpellTiles(); renderSpellAnswer(words[spellIndex].word.length);
+}
+
+function spellCheck() {
+  const w = words[spellIndex];
+  if (spellChosen.includes(null)) {
+    document.getElementById('spell-feedback').textContent = '⚠️ Fill in all letters first!';
+    document.getElementById('spell-feedback').className = 'spell-feedback no'; return;
+  }
+  const typed = spellChosen.map(i => spellLetters[i]).join('').toLowerCase();
+  const slots = document.querySelectorAll('.spell-ans-slot');
+  const fb = document.getElementById('spell-feedback');
+  if (typed === w.word.toLowerCase()) {
+    slots.forEach(s => s.classList.add('correct'));
+    fb.textContent = '🎉 Correct!'; fb.className = 'spell-feedback ok';
+  } else {
+    slots.forEach(s => s.classList.add('wrong'));
+    fb.textContent = `❌ The word is: ${w.word}`; fb.className = 'spell-feedback no';
+  }
+  document.getElementById('spell-next').disabled = false;
+}
+
+function spellNext() { spellIndex = (spellIndex + 1) % words.length; spellRender(); }
+
+// ══════════════════════════════════════════════
+//  VOCABINDER
+// ══════════════════════════════════════════════
+let vbIndex = 0, vbKnow = 0, vbDontKnow = 0;
+
+function vbInit() { vbIndex = 0; vbKnow = 0; vbDontKnow = 0; vbRender(); }
+
+function vbRender() {
+  const w = words[vbIndex];
+  document.getElementById('vb-counter').textContent = `${vbIndex+1} / ${words.length}`;
+  document.getElementById('vb-progress').style.width = `${((vbIndex+1)/words.length)*100}%`;
+  document.getElementById('vb-emoji').textContent = w.emoji;
+  document.getElementById('vb-word').textContent = w.word;
+  document.getElementById('vb-meaning').textContent = w.meaning;
+  document.getElementById('vb-score').innerHTML = `✅ ${vbKnow} &nbsp;&nbsp; ❌ ${vbDontKnow}`;
+  document.getElementById('vb-card').classList.remove('slide-left','slide-right');
+}
+
+function vbAnswer(know) {
+  if (know) vbKnow++; else vbDontKnow++;
+  const card = document.getElementById('vb-card');
+  card.classList.add(know ? 'slide-right' : 'slide-left');
+  setTimeout(() => { vbIndex = (vbIndex + 1) % words.length; vbRender(); }, 380);
+}
+
+// ══════════════════════════════════════════════
+//  WORDS ONLY
+// ══════════════════════════════════════════════
+function woInit() {
+  const body = document.getElementById('wo-body'); body.innerHTML = '';
+  words.forEach((w,i) => {
+    const div = document.createElement('div'); div.className = 'wo-item';
+    div.innerHTML = `<div class="wo-num">${i+1}</div><div><div class="wo-word">${w.word}</div><div class="wo-meaning-text">${w.meaning}</div></div>`;
+    body.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  PICTURES ONLY
+// ══════════════════════════════════════════════
+function poInit() {
+  const grid = document.getElementById('po-grid'); grid.innerHTML = '';
+  words.forEach(w => {
+    const div = document.createElement('div'); div.className = 'po-item';
+    const ph = document.createElement('div'); ph.className = 'po-img-placeholder'; ph.textContent = w.emoji;
+    const img = document.createElement('img'); img.className = 'po-img hidden'; img.alt = w.word;
+    img.src = imgSrc(w.word,'');
+    img.onload = () => { img.classList.remove('hidden'); ph.remove(); };
+    img.onerror = () => {};
+    const label = document.createElement('div'); label.className = 'po-label'; label.textContent = w.word;
+    div.appendChild(ph); div.appendChild(img); div.appendChild(label);
+    grid.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  SUMMARY
+// ══════════════════════════════════════════════
+function sumInit() {
+  const body = document.getElementById('sum-body'); body.innerHTML = '';
+  words.forEach(w => {
+    const card = document.createElement('div'); card.className = 'sum-card';
+    const imgWrap = document.createElement('div'); imgWrap.className = 'sum-img-wrap';
+    const ph = document.createElement('div'); ph.className = 'sum-img-placeholder'; ph.textContent = w.emoji;
+    const img = document.createElement('img'); img.className = 'sum-img hidden'; img.alt = w.word;
+    img.src = imgSrc(w.word,'');
+    img.onload = () => { img.classList.remove('hidden'); ph.style.display='none'; };
+    img.onerror = () => {};
+    imgWrap.appendChild(ph); imgWrap.appendChild(img);
+    const info = document.createElement('div'); info.className = 'sum-info';
+    info.innerHTML = `<div class="sum-word">${w.word}</div><div class="sum-meaning">${w.meaning}</div><div class="sum-s1">${w.s1}</div><div class="sum-s2">${w.s2}</div>`;
+    card.appendChild(imgWrap); card.appendChild(info);
+    body.appendChild(card);
+  });
+}
+</script>
+</body>
+</html>
