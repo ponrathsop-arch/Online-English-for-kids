@@ -579,7 +579,6 @@
   .story-popup-header {
     background:var(--primary); padding:20px 22px 16px; text-align:center;
   }
-  .story-popup-emoji { font-size:44px; display:block; margin-bottom:6px; }
   .story-popup-word { font-size:28px; font-weight:900; color:#fff; }
   .story-popup-body { padding:16px 22px 22px; }
   .story-popup-meaning {
@@ -912,7 +911,6 @@
 <div class="story-popup-overlay" id="storyPopupOverlay" onclick="storyPopupClose(event)">
   <div class="story-popup">
     <div class="story-popup-header">
-      <span class="story-popup-emoji" id="storyPopupEmoji"></span>
       <div class="story-popup-word" id="storyPopupWord"></div>
       <button class="story-popup-close" onclick="storyPopupClose()">✕</button>
     </div>
@@ -1027,7 +1025,7 @@ const words = [
   }
 ];
 
-const IMG_PATH = "images/feelings/";
+const IMG_PATH = "./";
 
 function imgSrc(word, suffix) {
   return IMG_PATH + word + suffix + ".jpg";
@@ -1449,23 +1447,23 @@ function sumInit() {
 // ══════════════════════════════════════════════
 const storyPages = [
   { cover: true },
-  { img: 'images/feelings/story/page1.jpg', emoji: '🎤',
+  { img: 'story/page1.jpg', emoji: '🎤',
     text: 'Next week was the school talent show, and everyone in the class was preparing for it. Mia felt nervous because she had never sung on stage before. Her best friend Emma felt very confident because she practiced every day after school.' },
-  { img: 'images/feelings/story/page2.jpg', emoji: '🤔',
+  { img: 'story/page2.jpg', emoji: '🤔',
     text: 'Tom was very curious about everyone\'s talents. He walked around the classroom and asked many questions. "What are you going to do on stage?" he asked excitedly.' },
-  { img: 'images/feelings/story/page3.jpg', emoji: '😤',
+  { img: 'story/page3.jpg', emoji: '😤',
     text: 'During art class, Ben became frustrated because he could not finish his poster. He tried again and again, but the paint kept falling on the floor. His teacher stayed patient and helped him clean up.' },
-  { img: 'images/feelings/story/page4.jpg', emoji: '🤲',
+  { img: 'story/page4.jpg', emoji: '🤲',
     text: 'At lunchtime, Leo acted a little selfish. He did not want to share his chips with anyone. However, Sarah was very generous and shared her cookies with the whole table.' },
-  { img: 'images/feelings/story/page5.jpg', emoji: '😳',
+  { img: 'story/page5.jpg', emoji: '😳',
     text: 'Later, Mia accidentally dropped her music papers in front of the class. She felt very embarrassed, but her classmates smiled kindly and helped her pick them up. They were very polite and supportive.' },
-  { img: 'images/feelings/story/page6.jpg', emoji: '😞',
+  { img: 'story/page6.jpg', emoji: '😞',
     text: 'One student named Jack was a bit lazy. He forgot to practice for the talent show and spent most of his time playing games instead. His partner felt disappointed because they were supposed to practice together.' },
-  { img: 'images/feelings/story/page7.jpg', emoji: '💪',
+  { img: 'story/page7.jpg', emoji: '💪',
     text: 'After school, Emma helped clean the classroom because she was very responsible. The teacher thanked her for always helping others.' },
-  { img: 'images/feelings/story/page8.jpg', emoji: '😊',
+  { img: 'story/page8.jpg', emoji: '😊',
     text: 'On the day of the talent show, Mia sang beautifully on stage. Her parents felt very proud of her. Even Jack practiced hard at the last minute and did better than expected.' },
-  { img: 'images/feelings/story/page9.jpg', emoji: '😒',
+  { img: 'story/page9.jpg', emoji: '😒',
     text: 'At the end of the show, one student felt a little jealous because another group won first prize. But the teacher reminded everyone that trying their best was the most important thing of all.' }
 ];
 
@@ -1498,7 +1496,7 @@ function storyRender() {
     book.innerHTML = `
       <div class="story-cover">
         <div class="story-cover-fallback"></div>
-        <img src="images/feelings/story/cover.jpg" class="story-cover-img" alt="cover"
+        <img src="story/cover.jpg" class="story-cover-img" alt="cover"
           onerror="this.style.display='none'">
         <div class="story-cover-stars">★ ✦ ★ ✦ ★</div>
         <div class="story-cover-grad"></div>
@@ -1545,7 +1543,6 @@ function storyGo(dir) {
 function storyPopupOpen(key) {
   const data = storyWordMap[key];
   if (!data) return;
-  document.getElementById('storyPopupEmoji').textContent = data.emoji;
   document.getElementById('storyPopupWord').textContent = key;
   document.getElementById('storyPopupMeaning').textContent = data.meaning;
   document.getElementById('storyPopupOverlay').classList.add('open');
