@@ -442,6 +442,158 @@
   @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
   @keyframes pulse { 0%,100%{transform:scale(1);box-shadow:0 6px 20px rgba(91,106,240,.35);} 50%{transform:scale(1.04);box-shadow:0 10px 28px rgba(91,106,240,.5);} }
 
+  /* ══════════════════════════════════
+     STORY SCREEN
+  ══════════════════════════════════ */
+  #story { background: #fdf6ee; }
+  .story-wrap { flex:1; display:flex; flex-direction:column; padding:14px 14px 0; }
+
+  /* book shell */
+  .story-book {
+    background: #6b2d0e;
+    border-radius: 20px;
+    padding: 10px 12px 14px;
+    box-shadow: 0 8px 0 #8a3e18, 0 14px 28px rgba(0,0,0,0.2);
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .story-book::after {
+    content:'';
+    position:absolute; inset:0;
+    background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.06) 50%, transparent 65%);
+    background-size:200% 100%;
+    animation: story-shimmer 4s infinite linear;
+    pointer-events:none;
+  }
+  @keyframes story-shimmer { from{background-position:200% 0} to{background-position:-200% 0} }
+
+  /* cover page */
+  .story-cover {
+    border-radius:12px; overflow:hidden;
+    position:relative; min-height:340px;
+    display:flex; flex-direction:column;
+  }
+  .story-cover-img {
+    width:100%; height:100%; object-fit:cover;
+    position:absolute; inset:0; border-radius:12px;
+  }
+  .story-cover-fallback {
+    position:absolute; inset:0;
+    background: linear-gradient(160deg,#1a2a4a,#0d1a30);
+    border-radius:12px;
+  }
+  .story-cover-grad {
+    position:absolute; left:0; right:0; bottom:0; height:65%;
+    background: linear-gradient(transparent, rgba(5,2,0,.92));
+    border-radius:0 0 12px 12px; pointer-events:none;
+  }
+  .story-cover-body {
+    position:absolute; left:0; right:0; bottom:0;
+    padding:0 22px 24px; text-align:center; z-index:2;
+  }
+  .story-cover-title {
+    font-family:'Nunito',sans-serif; font-size:24px; font-weight:900;
+    color:#FFD93D; line-height:1.2; margin-bottom:6px;
+    text-shadow:0 2px 12px rgba(0,0,0,.8);
+  }
+  .story-cover-hint {
+    font-size:12px; font-weight:700; color:rgba(255,255,255,.45);
+  }
+  .story-cover-stars {
+    position:absolute; top:14px; left:0; right:0;
+    text-align:center; font-size:18px; letter-spacing:8px;
+    color:rgba(255,217,61,.7); z-index:2;
+    animation: story-star 3s ease-in-out infinite alternate;
+  }
+  @keyframes story-star { from{opacity:.5;transform:translateY(0)} to{opacity:1;transform:translateY(-4px)} }
+
+  /* story page (not cover) */
+  .story-page {
+    border-radius:12px; overflow:hidden;
+    background:#fffdf7; min-height:340px;
+    display:flex; flex-direction:column;
+  }
+  .story-page-img {
+    width:100%; height:200px; object-fit:cover; display:block;
+  }
+  .story-page-img-ph {
+    width:100%; height:200px; background:#f0e8d8;
+    display:flex; align-items:center; justify-content:center;
+    font-size:56px;
+  }
+  .story-page-text {
+    flex:1; padding:16px 18px 20px;
+    font-family:'Georgia',serif; font-size:15px;
+    line-height:1.8; color:#3a2e28;
+    background-image: repeating-linear-gradient(transparent, transparent 31px, #f0e4d0 32px);
+    background-position: 0 18px;
+  }
+  .story-key-word {
+    background:#fff3cd; padding:1px 5px; border-radius:4px;
+    font-weight:700; color:#a06800; cursor:pointer;
+    border-bottom:2px solid #ffd093; display:inline-block;
+    transition:background .15s, transform .1s;
+  }
+  .story-key-word:hover { background:#ffe566; transform:scale(1.06); }
+  .story-pg-num {
+    font-size:11px; font-weight:800; color:#c0b090;
+    text-align:right; padding:0 16px 8px;
+  }
+
+  /* story nav */
+  .story-nav {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 4px 10px;
+  }
+  .story-nav-btn {
+    background:var(--primary); color:#fff; border:none;
+    border-radius:24px; padding:10px 22px; font-size:14px;
+    font-weight:800; cursor:pointer; font-family:inherit;
+    transition:transform .15s, box-shadow .15s;
+    box-shadow:0 4px 0 var(--primary-dark);
+  }
+  .story-nav-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 0 var(--primary-dark); }
+  .story-nav-btn:active:not(:disabled) { transform:translateY(1px); box-shadow:0 2px 0 var(--primary-dark); }
+  .story-nav-btn:disabled { opacity:.3; cursor:default; box-shadow:none; }
+  .story-nav-btn.prev { background:#fff; color:var(--primary); border:2px solid #e0e4ff; box-shadow:0 4px 0 #c8cef0; }
+  .story-nav-btn.prev:hover:not(:disabled) { box-shadow:0 6px 0 #c8cef0; }
+  .story-dots { display:flex; gap:6px; align-items:center; }
+  .story-dot { width:8px; height:8px; border-radius:50%; background:#d0d4f0; cursor:pointer; transition:all .2s; }
+  .story-dot.on { background:var(--primary); transform:scale(1.4); }
+
+  /* word meaning popup */
+  .story-popup-overlay {
+    display:none; position:fixed; inset:0; z-index:500;
+    background:rgba(20,10,40,.55); backdrop-filter:blur(6px);
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .story-popup-overlay.open { display:flex; }
+  .story-popup {
+    background:#fff; border-radius:22px; width:100%; max-width:300px;
+    overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.28);
+    animation: popup-in .25s cubic-bezier(.175,.885,.32,1.275);
+    position:relative;
+  }
+  @keyframes popup-in { from{opacity:0;transform:scale(.8) translateY(20px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  .story-popup-header {
+    background:var(--primary); padding:20px 22px 16px; text-align:center;
+  }
+  .story-popup-emoji { font-size:44px; display:block; margin-bottom:6px; }
+  .story-popup-word { font-size:28px; font-weight:900; color:#fff; }
+  .story-popup-body { padding:16px 22px 22px; }
+  .story-popup-meaning {
+    font-size:14px; font-weight:700; color:#5a5a7a; line-height:1.5;
+    background:#f0f4ff; border-radius:12px; padding:12px 14px;
+    text-align:center;
+  }
+  .story-popup-close {
+    position:absolute; top:10px; right:12px;
+    background:rgba(255,255,255,.2); border:none; color:#fff;
+    width:28px; height:28px; border-radius:50%; font-size:14px;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+
   .hidden { display:none !important; }
   .hidden-screen { display:none !important; }
 </style>
@@ -488,7 +640,7 @@
     <button class="bn-btn" onclick="switchTab('vocabinder');event.stopPropagation();"><span class="bn-icon">⚡</span>Vocab</button>
     <button class="bn-btn" onclick="switchTab('wordsonly');event.stopPropagation();"><span class="bn-icon">📝</span>List</button>
     <button class="bn-btn" onclick="switchTab('picsonly');event.stopPropagation();"><span class="bn-icon">🖼️</span>Pics</button>
-    <button class="bn-btn" onclick="switchTab('summary');event.stopPropagation();"><span class="bn-icon">📋</span>Summary</button>
+    <button class="bn-btn" onclick="switchTab('story');event.stopPropagation();"><span class="bn-icon">📚</span>Story</button>
   </div>
 </div>
 
@@ -563,7 +715,7 @@
     <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
     <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
     <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
-    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+    <button class="bn-btn" onclick="switchTab('story')"><span class="bn-icon">📚</span>Story</button>
   </div>
 </div>
 
@@ -598,7 +750,7 @@
     <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
     <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
     <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
-    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+    <button class="bn-btn" onclick="switchTab('story')"><span class="bn-icon">📚</span>Story</button>
   </div>
 </div>
 
@@ -630,7 +782,7 @@
     <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
     <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
     <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
-    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+    <button class="bn-btn" onclick="switchTab('story')"><span class="bn-icon">📚</span>Story</button>
   </div>
 </div>
 
@@ -665,7 +817,7 @@
     <button class="bn-btn active" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
     <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
     <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
-    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+    <button class="bn-btn" onclick="switchTab('story')"><span class="bn-icon">📚</span>Story</button>
   </div>
 </div>
 
@@ -685,7 +837,7 @@
     <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
     <button class="bn-btn active" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
     <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
-    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+    <button class="bn-btn" onclick="switchTab('story')"><span class="bn-icon">📚</span>Story</button>
   </div>
 </div>
 
@@ -705,7 +857,7 @@
     <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
     <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
     <button class="bn-btn active" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
-    <button class="bn-btn" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+    <button class="bn-btn" onclick="switchTab('story')"><span class="bn-icon">📚</span>Story</button>
   </div>
 </div>
 
@@ -725,7 +877,48 @@
     <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
     <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
     <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
-    <button class="bn-btn active" onclick="switchTab('summary')"><span class="bn-icon">📋</span>Summary</button>
+    <button class="bn-btn" onclick="switchTab('story')"><span class="bn-icon">📚</span>Story</button>
+  </div>
+</div>
+
+<!-- ══════════════ STORY ══════════════ -->
+<div id="story" class="screen">
+  <div class="rainbow-bar"></div>
+  <div class="top-nav">
+    <button class="nav-back" onclick="switchTab('home')">← Back</button>
+    <span class="nav-title">📚 The School Talent Show</span>
+    <span class="nav-counter" id="story-counter">1 / 10</span>
+  </div>
+  <div class="story-wrap">
+    <div class="story-book" id="story-book"></div>
+    <div class="story-nav">
+      <button class="story-nav-btn prev" id="story-prev" onclick="storyGo(-1)" disabled>← Back</button>
+      <div class="story-dots" id="story-dots"></div>
+      <button class="story-nav-btn" id="story-next" onclick="storyGo(1)">Next →</button>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="bn-btn" onclick="switchTab('home')"><span class="bn-icon">🃏</span>Words</button>
+    <button class="bn-btn" onclick="switchTab('fill')"><span class="bn-icon">✏️</span>Fill</button>
+    <button class="bn-btn" onclick="switchTab('spelling')"><span class="bn-icon">🔤</span>Spell</button>
+    <button class="bn-btn" onclick="switchTab('vocabinder')"><span class="bn-icon">⚡</span>Vocab</button>
+    <button class="bn-btn" onclick="switchTab('wordsonly')"><span class="bn-icon">📝</span>List</button>
+    <button class="bn-btn" onclick="switchTab('picsonly')"><span class="bn-icon">🖼️</span>Pics</button>
+    <button class="bn-btn active" onclick="switchTab('story')"><span class="bn-icon">📚</span>Story</button>
+  </div>
+</div>
+
+<!-- ══════════════ WORD POPUP (story) ══════════════ -->
+<div class="story-popup-overlay" id="storyPopupOverlay" onclick="storyPopupClose(event)">
+  <div class="story-popup">
+    <div class="story-popup-header">
+      <span class="story-popup-emoji" id="storyPopupEmoji"></span>
+      <div class="story-popup-word" id="storyPopupWord"></div>
+      <button class="story-popup-close" onclick="storyPopupClose()">✕</button>
+    </div>
+    <div class="story-popup-body">
+      <div class="story-popup-meaning" id="storyPopupMeaning"></div>
+    </div>
   </div>
 </div>
 
@@ -871,6 +1064,7 @@ function switchTab(tab) {
     case 'wordsonly': woInit();     showScreen('wordsonly'); break;
     case 'picsonly':  poInit();     showScreen('picsonly');  break;
     case 'summary':   sumInit();    showScreen('summary');   break;
+    case 'story':     storyInit();  showScreen('story');     break;
   }
 }
 // ══════════════════════════════════════════════
@@ -1250,6 +1444,120 @@ function sumInit() {
     body.appendChild(card);
   });
 }
+// ══════════════════════════════════════════════
+//  STORY
+// ══════════════════════════════════════════════
+const storyPages = [
+  { cover: true },
+  { img: 'images/feelings/story/page1.jpg', emoji: '🎤',
+    text: 'Next week was the school talent show, and everyone in the class was preparing for it. Mia felt nervous because she had never sung on stage before. Her best friend Emma felt very confident because she practiced every day after school.' },
+  { img: 'images/feelings/story/page2.jpg', emoji: '🤔',
+    text: 'Tom was very curious about everyone\'s talents. He walked around the classroom and asked many questions. "What are you going to do on stage?" he asked excitedly.' },
+  { img: 'images/feelings/story/page3.jpg', emoji: '😤',
+    text: 'During art class, Ben became frustrated because he could not finish his poster. He tried again and again, but the paint kept falling on the floor. His teacher stayed patient and helped him clean up.' },
+  { img: 'images/feelings/story/page4.jpg', emoji: '🤲',
+    text: 'At lunchtime, Leo acted a little selfish. He did not want to share his chips with anyone. However, Sarah was very generous and shared her cookies with the whole table.' },
+  { img: 'images/feelings/story/page5.jpg', emoji: '😳',
+    text: 'Later, Mia accidentally dropped her music papers in front of the class. She felt very embarrassed, but her classmates smiled kindly and helped her pick them up. They were very polite and supportive.' },
+  { img: 'images/feelings/story/page6.jpg', emoji: '😞',
+    text: 'One student named Jack was a bit lazy. He forgot to practice for the talent show and spent most of his time playing games instead. His partner felt disappointed because they were supposed to practice together.' },
+  { img: 'images/feelings/story/page7.jpg', emoji: '💪',
+    text: 'After school, Emma helped clean the classroom because she was very responsible. The teacher thanked her for always helping others.' },
+  { img: 'images/feelings/story/page8.jpg', emoji: '😊',
+    text: 'On the day of the talent show, Mia sang beautifully on stage. Her parents felt very proud of her. Even Jack practiced hard at the last minute and did better than expected.' },
+  { img: 'images/feelings/story/page9.jpg', emoji: '😒',
+    text: 'At the end of the show, one student felt a little jealous because another group won first prize. But the teacher reminded everyone that trying their best was the most important thing of all.' }
+];
+
+// build vocab lookup from words array
+const storyWordMap = {};
+words.forEach(w => { storyWordMap[w.word.toLowerCase()] = { meaning: w.meaning, emoji: w.emoji }; });
+
+function storyHighlight(text) {
+  return text.replace(/\b([a-zA-Z]+)\b/g, function(tok) {
+    const key = tok.toLowerCase();
+    if (storyWordMap[key]) {
+      const idx = Object.keys(storyWordMap).indexOf(key);
+      return `<span class="story-key-word" onclick="storyPopupOpen('${key}')">${tok}</span>`;
+    }
+    return tok;
+  });
+}
+
+let storyCur = 0;
+
+function storyInit() { storyCur = 0; storyRender(); }
+
+function storyRender() {
+  const total = storyPages.length;
+  document.getElementById('story-counter').textContent = `${storyCur + 1} / ${total}`;
+  const book = document.getElementById('story-book');
+  const pg = storyPages[storyCur];
+
+  if (pg.cover) {
+    book.innerHTML = `
+      <div class="story-cover">
+        <div class="story-cover-fallback"></div>
+        <img src="images/feelings/story/cover.jpg" class="story-cover-img" alt="cover"
+          onerror="this.style.display='none'">
+        <div class="story-cover-stars">★ ✦ ★ ✦ ★</div>
+        <div class="story-cover-grad"></div>
+        <div class="story-cover-body">
+          <div class="story-cover-title">The School<br>Talent Show</div>
+          <div class="story-cover-hint">Tap Next to begin reading 📖</div>
+        </div>
+      </div>`;
+  } else {
+    const pgNum = storyCur;
+    book.innerHTML = `
+      <div class="story-page">
+        <div class="story-page-img-ph" id="story-img-ph-${storyCur}">${pg.emoji}</div>
+        <img src="${pg.img}" class="story-page-img hidden" id="story-img-${storyCur}" alt="page ${storyCur}"
+          onload="this.classList.remove('hidden');document.getElementById('story-img-ph-${storyCur}').style.display='none'">
+        <div class="story-page-text">${storyHighlight(pg.text)}</div>
+        <div class="story-pg-num">Page ${pgNum}</div>
+      </div>`;
+  }
+
+  // dots
+  const dotsEl = document.getElementById('story-dots');
+  dotsEl.innerHTML = '';
+  storyPages.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'story-dot' + (i === storyCur ? ' on' : '');
+    d.onclick = () => { if (i !== storyCur) { storyCur = i; storyRender(); } };
+    dotsEl.appendChild(d);
+  });
+
+  document.getElementById('story-prev').disabled = storyCur === 0;
+  const nxt = document.getElementById('story-next');
+  nxt.textContent = storyCur === total - 1 ? '🎉 The End!' : 'Next →';
+  nxt.disabled = storyCur === total - 1;
+}
+
+function storyGo(dir) {
+  const next = storyCur + dir;
+  if (next < 0 || next >= storyPages.length) return;
+  storyCur = next;
+  storyRender();
+}
+
+function storyPopupOpen(key) {
+  const data = storyWordMap[key];
+  if (!data) return;
+  document.getElementById('storyPopupEmoji').textContent = data.emoji;
+  document.getElementById('storyPopupWord').textContent = key;
+  document.getElementById('storyPopupMeaning').textContent = data.meaning;
+  document.getElementById('storyPopupOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function storyPopupClose(e) {
+  if (e && e.target !== document.getElementById('storyPopupOverlay')) return;
+  document.getElementById('storyPopupOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 // intro shows on load — homeInit called when user taps
 </script>
 </body>
