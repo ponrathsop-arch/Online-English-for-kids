@@ -169,9 +169,42 @@
     .odd-cta { align-self: flex-start; }
   }
 
-  .grid-section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 8px 24px 80px; }
+  /* ══ GRID SECTIONS ══ */
+  .grid-section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 8px 24px 48px; }
   .section-label { font-family: 'Fredoka One', cursive; font-size: 22px; color: #777; text-align: center; margin-bottom: 32px; letter-spacing: 1px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+
+  /* ══ ADVANCED SECTION DIVIDER ══ */
+  .advanced-section {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+  .advanced-divider {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 28px;
+  }
+  .advanced-divider-line {
+    flex: 1; height: 2px;
+    background: linear-gradient(90deg, transparent, #a78bfa, transparent);
+    border-radius: 2px;
+  }
+  .advanced-divider-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    background: linear-gradient(90deg, #7C3AED, #db2777);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    white-space: nowrap;
+    letter-spacing: .5px;
+  }
+  .advanced-sublabel {
+    font-size: 13px; color: #999; font-weight: 700;
+    text-align: center; margin-top: -18px; margin-bottom: 26px;
+    letter-spacing: .3px;
+  }
+
+  /* ══ CARDS ══ */
   .card { background: white; border-radius: 24px; padding: 32px 24px 28px; text-align: center; cursor: pointer; text-decoration: none; display: block; position: relative; overflow: hidden; border: 3px solid transparent; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; box-shadow: 0 6px 0 rgba(0,0,0,0.08); opacity: 0; transform: translateY(30px); animation: card-in 0.5s ease forwards; }
   .card:nth-child(1){animation-delay:.05s;} .card:nth-child(2){animation-delay:.10s;} .card:nth-child(3){animation-delay:.15s;} .card:nth-child(4){animation-delay:.20s;} .card:nth-child(5){animation-delay:.25s;} .card:nth-child(6){animation-delay:.30s;} .card:nth-child(7){animation-delay:.35s;} .card:nth-child(8){animation-delay:.40s;} .card:nth-child(9){animation-delay:.45s;} .card:nth-child(10){animation-delay:.50s;} .card:nth-child(11){animation-delay:.55s;} .card:nth-child(12){animation-delay:.60s;} .card:nth-child(13){animation-delay:.65s;} .card:nth-child(14){animation-delay:.70s;} .card:nth-child(15){animation-delay:.75s;}
   @keyframes card-in { to { opacity:1; transform:translateY(0); } }
@@ -185,6 +218,16 @@
   .card-6::before{background:var(--purple);} .card:hover.card-6{border-color:var(--purple);}
   .card-7::before{background:var(--pink);} .card:hover.card-7{border-color:var(--pink);}
   .card-8::before{background:var(--yellow);} .card:hover.card-8{border-color:var(--yellow);}
+
+  /* advanced card gets a purple shimmer top bar */
+  .card-adv::before {
+    background: linear-gradient(90deg, #7C3AED, #db2777, #7C3AED);
+    background-size: 200%;
+    animation: shimmer-bar 3s linear infinite;
+  }
+  @keyframes shimmer-bar { from{background-position:0%} to{background-position:200%} }
+  .card:hover.card-adv { border-color: #a78bfa; }
+
   .card-emoji { font-size:48px; display:block; margin-bottom:14px; line-height:1; }
   .card-title { font-family:'Fredoka One',cursive; font-size:22px; color:var(--dark); margin-bottom:8px; }
   .card-desc { font-size:13px; color:#888; font-weight:600; line-height:1.5; }
@@ -197,7 +240,19 @@
   .card-6 .card-badge{background:#f7eeff;color:#9a3de0;}
   .card-7 .card-badge{background:#fff0f8;color:#c0006a;}
   .card-8 .card-badge{background:#fffbe8;color:#b08000;}
+  .card-adv .card-badge { background: linear-gradient(90deg,#ede9fe,#fce7f3); color:#7C3AED; }
+
   .card-new-ribbon { position:absolute; top:14px; right:-1px; background:var(--coral); color:white; font-family:'Fredoka One',cursive; font-size:12px; padding:3px 12px 3px 10px; border-radius:4px 0 0 4px; letter-spacing:.5px; box-shadow:-2px 2px 6px rgba(0,0,0,.12); }
+
+  /* 🧠 hard ribbon */
+  .card-hard-ribbon {
+    position:absolute; top:14px; right:-1px;
+    background: linear-gradient(90deg, #7C3AED, #db2777);
+    color:white; font-family:'Fredoka One',cursive; font-size:12px;
+    padding:3px 12px 3px 10px; border-radius:4px 0 0 4px;
+    letter-spacing:.5px; box-shadow:-2px 2px 6px rgba(124,58,237,.3);
+  }
+
   footer { position:relative; z-index:1; text-align:center; padding:20px; font-size:13px; color:#aaa; font-weight:600; }
 </style>
 </head>
@@ -256,7 +311,6 @@
   <p class="section-label">📦 Word Collections</p>
   <div class="grid">
 
-    <!-- PREPOSITIONS -->
     <a href="prepositions/index.html" class="card card-1">
       <span class="card-new-ribbon">✨ New</span>
       <span class="card-emoji">📍</span>
@@ -265,7 +319,6 @@
       <span class="card-badge">Location</span>
     </a>
 
-    <!-- ANIMALS -->
     <a href="animals/index.html" class="card card-6">
       <span class="card-emoji">🐘</span>
       <div class="card-title">Animals</div>
@@ -273,7 +326,6 @@
       <span class="card-badge">Nature</span>
     </a>
 
-    <!-- PEOPLE -->
     <a href="people/index.html" class="card card-5">
       <span class="card-new-ribbon">✨ New</span>
       <span class="card-emoji">👨‍👩‍👧‍👦</span>
@@ -282,7 +334,6 @@
       <span class="card-badge">People</span>
     </a>
 
-    <!-- OCCUPATIONS -->
     <a href="jobs/index.html" class="card card-8">
       <span class="card-new-ribbon">✨ New</span>
       <span class="card-emoji">👩‍💼</span>
@@ -291,7 +342,6 @@
       <span class="card-badge">Jobs</span>
     </a>
 
-    <!-- HOUSE & OBJECTS -->
     <a href="house-objects/index.html" class="card card-5">
       <span class="card-emoji">🛋️</span>
       <div class="card-title">House & Objects</div>
@@ -299,7 +349,6 @@
       <span class="card-badge">Objects</span>
     </a>
 
-    <!-- CLOTHES & ACCESSORIES -->
     <a href="clothes/index.html" class="card card-7">
       <span class="card-new-ribbon">✨ New</span>
       <span class="card-emoji">🛍️</span>
@@ -308,7 +357,6 @@
       <span class="card-badge">Fashion</span>
     </a>
 
-    <!-- FRUIT -->
     <a href="fruit/index.html" class="card card-4">
       <span class="card-emoji">🍓</span>
       <div class="card-title">Fruit</div>
@@ -316,7 +364,6 @@
       <span class="card-badge">Food</span>
     </a>
 
-    <!-- SPORTS -->
     <a href="sports/index.html" class="card card-3">
       <span class="card-emoji">⚽</span>
       <div class="card-title">Sports</div>
@@ -324,7 +371,6 @@
       <span class="card-badge">Activity</span>
     </a>
 
-    <!-- SYMPTOMS -->
     <a href="symptoms/index.html" class="card card-5">
       <span class="card-new-ribbon">✨ New</span>
       <span class="card-emoji">🤒</span>
@@ -333,7 +379,6 @@
       <span class="card-badge">Health</span>
     </a>
 
-    <!-- GETTING AROUND -->
     <a href="transport/index.html" class="card card-3">
       <span class="card-emoji">🚌</span>
       <div class="card-title">Getting Around</div>
@@ -341,7 +386,6 @@
       <span class="card-badge">Transport</span>
     </a>
 
-    <!-- PLACES IN TOWN -->
     <a href="places/index.html" class="card card-4">
       <span class="card-emoji">🏙️</span>
       <div class="card-title">Places in Town</div>
@@ -349,7 +393,6 @@
       <span class="card-badge">Places</span>
     </a>
 
-    <!-- FOOD & DRINKS -->
     <a href="food/index.html" class="card card-2">
       <span class="card-emoji">🍽️</span>
       <div class="card-title">Food & Drinks</div>
@@ -357,7 +400,6 @@
       <span class="card-badge">Food</span>
     </a>
 
-    <!-- ACTIONS -->
     <a href="actions/index.html" class="card card-1">
       <span class="card-emoji">🏃</span>
       <div class="card-title">Actions</div>
@@ -365,12 +407,33 @@
       <span class="card-badge">Verbs</span>
     </a>
 
-    <!-- ADJECTIVES -->
     <a href="adjectives/index.html" class="card card-6">
       <span class="card-emoji">🌈</span>
       <div class="card-title">Adjectives</div>
       <div class="card-desc">Big, small, happy, fast & more!</div>
       <span class="card-badge">Describing</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- ══ ADVANCED VOCABULARY SECTION ══ -->
+<section class="advanced-section">
+  <div class="advanced-divider">
+    <div class="advanced-divider-line"></div>
+    <div class="advanced-divider-label">🧠 Advanced Vocabulary</div>
+    <div class="advanced-divider-line"></div>
+  </div>
+  <p class="advanced-sublabel">Bigger words for bigger thinkers ✨</p>
+
+  <div class="grid">
+
+    <a href="strong-feelings/index.html" class="card card-adv">
+      <span class="card-hard-ribbon">🧠 Advanced</span>
+      <span class="card-emoji">🌊</span>
+      <div class="card-title">Strong Feelings & Personality</div>
+      <div class="card-desc">frustrated, confident, generous & more!</div>
+      <span class="card-badge">Feelings</span>
     </a>
 
   </div>
