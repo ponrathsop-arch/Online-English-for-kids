@@ -107,14 +107,14 @@
   .fc-banner {
     background: var(--primary); color: #fff;
     border-radius: 30px; padding: 8px 20px;
-    font-size: 13px; font-weight: 700; margin-bottom: 18px;
-    text-align: center;
+    font-size: 13px; font-weight: 700; margin-bottom: 12px;
+    text-align: center; align-self: center;
   }
 
   /* tap hint */
   .tap-hint {
     font-size: 12px; color: var(--text-light); margin-bottom: 14px;
-    font-weight: 600;
+    font-weight: 600; text-align: center;
   }
 
   /* stage 0: word only */
@@ -200,6 +200,7 @@
   }
   .fc-back-btn:hover { background: #e8eaff; }
   .fc-back-btn:disabled { opacity: .35; cursor: default; }
+  .fc-bottom {
     display: flex; align-items: center; justify-content: space-between;
     padding: 14px 20px; border-top: 2px solid #e8eaff;
     background: #fff;
@@ -516,10 +517,10 @@
     display:flex; flex-direction:column;
   }
   .story-page-img {
-    width:100%; aspect-ratio: 4/3; object-fit:cover; display:block;
+    width:100%; height:220px; object-fit:cover; display:block;
   }
   .story-page-img-ph {
-    width:100%; aspect-ratio: 4/3; background:#f0e8d8;
+    width:100%; height:220px; background:#f0e8d8;
     display:flex; align-items:center; justify-content:center;
     font-size:56px;
   }
@@ -653,7 +654,7 @@
     <span style="font-size:13px;color:var(--text-light);font-weight:700;">14 words</span>
   </div>
   <div class="progress-bar-wrap"><div class="progress-bar" id="home-progress" style="width:7.14%"></div></div>
-  <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:16px 16px 0;">
+  <div class="fc-body">
     <div class="fc-banner" id="home-banner">Tap the card to reveal the meaning!</div>
     <div class="tap-hint" id="home-hint">👆 Tap anywhere on the card</div>
 
