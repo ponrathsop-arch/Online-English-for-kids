@@ -596,13 +596,13 @@ function renderVocab(){
   } else if(vocabSubState===2){
     inner.innerHTML=`
       <div class="vc-sent-word">${item.word}</div>
-      <div class="vc-word-img">${imgBox(item,'')}</div>
+      <div class="vc-word-img">${imgBox(item,'1')}</div>
       <div class="vc-sent-box"><div class="vc-sent-num">Sentence 1</div>${hlWord(item.s1,item.word)}</div>`;
     hint.textContent='Tap for Sentence 2 →';
   } else {
     inner.innerHTML=`
       <div class="vc-sent-word">${item.word}</div>
-      <div class="vc-word-img">${imgBox(item,'')}</div>
+      <div class="vc-word-img">${imgBox(item,'2')}</div>
       <div class="vc-sent-box"><div class="vc-sent-num">Sentence 2</div>${hlWord(item.s2,item.word)}</div>`;
     hint.textContent=vocabIdx<WORDS.length-1?'Tap for the next word →':'Tap to continue →';
   }
