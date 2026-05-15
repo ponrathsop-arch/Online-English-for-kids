@@ -193,7 +193,7 @@ html,body{height:100%;font-family:'Nunito',Arial,sans-serif;font-weight:800;back
 </style>
 </head>
 <body>
-<button class="back-btn" onclick="window.location.href='https://ponrathsop-arch.github.io/Online-English-for-kids/focus-vocab/'">←</button>
+<button class="back-btn" onclick="window.location.href='https://ponrathsop-arch.github.io/Online-English-for-kids'">←</button>
 <div class="float-layer" id="floatLayer">
   <div class="float-emoji" style="left:4%;top:12%;">📚</div>
   <div class="float-emoji" style="left:18%;top:40%;">✏️</div>
@@ -334,6 +334,11 @@ html,body{height:100%;font-family:'Nunito',Arial,sans-serif;font-weight:800;back
   <div class="all-inner" id="all-inner"></div>
 </div>
 
+<!-- WORDS ONLY -->
+<div class="screen scrollable" id="s-words-only">
+  <div class="all-inner" id="words-only-inner"></div>
+</div>
+
 <!-- DONE -->
 <div class="screen" id="s-done">
   <div class="cel-ico">🏆</div>
@@ -353,6 +358,7 @@ html,body{height:100%;font-family:'Nunito',Arial,sans-serif;font-weight:800;back
   <button class="tab" id="tab-la"      onclick="jumpTo('s-light-a')"> <div class="tab-icon">⚡</div><div class="tab-label">Speed A</div> <div class="tab-pip"></div></button>
   <button class="tab" id="tab-lb"      onclick="jumpTo('s-light-b')"> <div class="tab-icon">⚡</div><div class="tab-label">Speed B</div> <div class="tab-pip"></div></button>
   <button class="tab" id="tab-all"     onclick="jumpTo('s-all')">     <div class="tab-icon">📋</div><div class="tab-label">All 25</div>  <div class="tab-pip"></div></button>
+  <button class="tab" id="tab-wo"      onclick="jumpTo('s-words-only')"><div class="tab-icon">🔡</div><div class="tab-label">Words</div>   <div class="tab-pip"></div></button>
 </div>
 
 <script>
@@ -397,7 +403,7 @@ const TAB_MAP = {
   's-home':'tab-home','s-vocab-a':'tab-va','s-vocab-b':'tab-vb',
   's-match-a':'tab-mma','s-match-b':'tab-mmb',
   's-light-a':'tab-la','s-light-b':'tab-lb',
-  's-all':'tab-all','s-done':'tab-home'
+  's-all':'tab-all','s-words-only':'tab-wo','s-done':'tab-home'
 };
 
 function showScreen(id){
@@ -415,6 +421,7 @@ function showScreen(id){
   if(id==='s-light-a')  initLightning('a');
   if(id==='s-light-b')  initLightning('b');
   if(id==='s-all')      buildAllWords();
+  if(id==='s-words-only') buildWordsOnly();
   if(id==='s-done')     bigConfetti();
 }
 function jumpTo(id){ showScreen(id); }
@@ -496,12 +503,11 @@ function renderVocab(sec){
     hint.textContent='Tap to see the meaning →';
 
   } else if(state===1){
-    /* State 1: word + picture + English meaning + Thai */
+    /* State 1: word + picture + English meaning only (no Thai) */
     inner.innerHTML=`
       <div class="vc-word" style="font-size:clamp(1.8rem,5vw,3rem);">${item.word}</div>
       <div class="vc-word-img">${imgBox(item.word.replace(/ /g,'-'), item.emoji||'📖')}</div>
-      <div class="vc-english">${item.english}</div>
-      <div class="vc-thai">${item.thai}</div>`;
+      <div class="vc-english">${item.english}</div>`;
     hint.textContent='Tap for Sentence 1 →';
 
   } else if(state===2){
@@ -715,6 +721,31 @@ function makeAllRow(item,num){
     <div class="all-meaning">${item.english}<br><span style="color:var(--muted);font-size:.85em;">${item.thai}</span></div>
   `;
   return row;
+}
+
+function buildWordsOnly(){
+  const el=document.getElementById('words-only-inner');
+  el.innerHTML='';
+  const ha=document.createElement('div');
+  ha.className='all-section-hdr all-sec-a';
+  ha.textContent='📘 Section A';
+  el.appendChild(ha);
+  SEC_A.forEach((item,i)=>{
+    const row=document.createElement('div');
+    row.className='all-row';
+    row.innerHTML=`<div class="all-num">${i+1}</div><div class="all-word" style="font-size:clamp(1.2rem,4vw,1.7rem);">${item.word}</div>`;
+    el.appendChild(row);
+  });
+  const hb=document.createElement('div');
+  hb.className='all-section-hdr all-sec-b';
+  hb.textContent='📗 Section B';
+  el.appendChild(hb);
+  SEC_B.forEach((item,i)=>{
+    const row=document.createElement('div');
+    row.className='all-row';
+    row.innerHTML=`<div class="all-num">${i+13}</div><div class="all-word" style="font-size:clamp(1.2rem,4vw,1.7rem);">${item.word}</div>`;
+    el.appendChild(row);
+  });
 }
 </script>
 </body>
