@@ -382,6 +382,43 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100
 .sp-close:hover { background: rgba(0,0,0,0.35); }
 .sp-counter { font-family: 'Fredoka One', cursive; font-size: 14px; color: #ccc; min-width: 50px; text-align: center; }
 
+/* MATCH (MEMORY) TAB */
+.match-wrap { max-width: 720px; margin: 0 auto; padding: 32px 20px 60px; }
+.match-intro { text-align: center; margin-bottom: 16px; }
+.match-intro h2 { font-family: 'Fredoka One', cursive; font-size: 26px; color: var(--dark); margin-bottom: 6px; }
+.match-intro p { font-size: 14px; color: #999; font-weight: 600; }
+.match-stats { display: flex; justify-content: center; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+.stat-pill { background: white; border-radius: 14px; padding: 8px 18px; box-shadow: 0 4px 0 rgba(0,0,0,0.06); font-family: 'Fredoka One', cursive; font-size: 15px; color: var(--purple); }
+.stat-pill span { color: var(--dark); }
+.match-win { text-align: center; background: white; border-radius: 20px; padding: 20px; margin-bottom: 18px; box-shadow: 0 6px 0 rgba(0,0,0,0.07); display: none; }
+.match-win.show { display: block; animation: wp-in 0.3s; }
+.match-win .mw-title { font-family: 'Fredoka One', cursive; font-size: 26px; color: var(--purple); margin-bottom: 4px; }
+.match-win .mw-sub { font-size: 14px; color: #888; font-weight: 600; }
+.match-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+.mcard { aspect-ratio: 3/4; cursor: pointer; perspective: 700px; }
+.mcard-inner { position: relative; width: 100%; height: 100%; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); transform-style: preserve-3d; }
+.mcard.flipped .mcard-inner, .mcard.matched .mcard-inner { transform: rotateY(180deg); }
+.mcard-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 16px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.mcard-front { background: linear-gradient(150deg, #7B4FBF, #2a0a5c); box-shadow: 0 5px 0 rgba(0,0,0,0.14); }
+.mcard-front .m-cover { font-size: 40px; opacity: 0.92; }
+.mcard-back { transform: rotateY(180deg); background: #FDFBFF; border: 2px solid #ede4f8; box-shadow: 0 5px 0 rgba(0,0,0,0.08); }
+.mcard-back .m-emoji { font-size: 46px; }
+.mcard-back .m-pic { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; display: none; }
+.mcard-back .m-pic.loaded { display: block; }
+.mcard-back .m-word { position: absolute; bottom: 5px; left: 0; right: 0; text-align: center; font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--purple); opacity: 0; transition: opacity 0.3s; background: rgba(253,251,255,0.88); padding: 2px; }
+.mcard.matched .mcard-back { border-color: #7BD88F; box-shadow: 0 0 0 3px #B6F0C2, 0 5px 0 rgba(0,0,0,0.08); }
+.mcard.matched .m-word { opacity: 1; }
+.mcard.matched { animation: matchPop 0.4s ease; }
+@keyframes matchPop { 0%{transform:scale(1);} 40%{transform:scale(1.08);} 100%{transform:scale(1);} }
+.match-controls { text-align: center; }
+.match-btn { font-family: 'Fredoka One', cursive; font-size: 17px; padding: 12px 30px; border: none; border-radius: 14px; cursor: pointer; background: var(--purple); color: white; box-shadow: 0 5px 0 rgba(0,0,0,0.14); transition: transform 0.15s, box-shadow 0.15s; }
+.match-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0,0,0,0.14); }
+.match-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.12); }
+@media (max-width: 640px) {
+  .match-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .mcard-back .m-emoji { font-size: 38px; }
+}
+
 footer { text-align: center; padding: 20px; font-size: 13px; color: #aaa; font-weight: 600; }
 footer a { color: #bbb; text-decoration: none; }
 </style>
@@ -398,6 +435,7 @@ footer a { color: #bbb; text-decoration: none; }
   <button class="tab-btn active" onclick="switchTab('read',this)">&#x1F4D6; Read</button>
   <button class="tab-btn" onclick="switchTab('watch',this)">&#x1F3AC; Watch</button>
   <button class="tab-btn" onclick="switchTab('words',this)">&#x2728; Words</button>
+  <button class="tab-btn" onclick="switchTab('match',this)">&#x1F3B4; Match</button>
 </div>
 <div class="tabs-line"></div>
 
@@ -449,6 +487,28 @@ footer a { color: #bbb; text-decoration: none; }
     </div>
     <p class="tap-hint">&#x1F446; Tap any card to focus on it!</p>
     <div class="vocab-grid" id="vocabGrid"></div>
+  </div>
+</div>
+
+<!-- MATCH -->
+<div id="tab-match" class="tab-panel">
+  <div class="match-wrap">
+    <div class="match-intro">
+      <h2>&#x1F3B4; Memory Match</h2>
+      <p>Look at the pictures, then find the matching pairs!</p>
+    </div>
+    <div class="match-stats">
+      <div class="stat-pill">Pairs <span id="mMatched">0</span>/<span id="mTotal">6</span></div>
+      <div class="stat-pill">Tries <span id="mMoves">0</span></div>
+    </div>
+    <div class="match-win" id="matchWin">
+      <div class="mw-title">&#x1F389; You did it!</div>
+      <div class="mw-sub" id="mwSub"></div>
+    </div>
+    <div class="match-grid" id="matchGrid"></div>
+    <div class="match-controls">
+      <button class="match-btn" id="matchPlayBtn">&#x1F504; Play Again</button>
+    </div>
   </div>
 </div>
 
@@ -833,6 +893,118 @@ function spClose(e) {
   document.getElementById('spOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
+
+/* ============ MEMORY MATCH GAME ============ */
+var matchStarted = false, mLock = true, mFlipped = [], mMoves = 0, mMatched = 0;
+var M_PAIRS = 6, M_PREVIEW_MS = 2000;
+
+function shuffleArr(a) {
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function buildMatchCard(item) {
+  var card = document.createElement('div');
+  card.className = 'mcard flipped';
+  card.setAttribute('data-pair', item.word);
+
+  var inner = document.createElement('div');
+  inner.className = 'mcard-inner';
+
+  var front = document.createElement('div');
+  front.className = 'mcard-face mcard-front';
+  var cover = document.createElement('div');
+  cover.className = 'm-cover';
+  cover.innerHTML = '&#x1F308;';
+  front.appendChild(cover);
+
+  var back = document.createElement('div');
+  back.className = 'mcard-face mcard-back';
+  var pic = document.createElement('img');
+  pic.className = 'm-pic';
+  pic.src = item.img;
+  pic.alt = item.word;
+  var ph = document.createElement('div');
+  ph.className = 'm-emoji';
+  ph.innerHTML = item.emoji;
+  pic.addEventListener('load', function () { pic.classList.add('loaded'); ph.style.display = 'none'; });
+  var word = document.createElement('div');
+  word.className = 'm-word';
+  word.textContent = item.word;
+  back.appendChild(pic); back.appendChild(ph); back.appendChild(word);
+
+  inner.appendChild(front); inner.appendChild(back);
+  card.appendChild(inner);
+  card.addEventListener('click', function () { onMatchCardClick(card); });
+  return card;
+}
+
+function startMatchGame() {
+  matchStarted = true; mLock = true; mFlipped = []; mMoves = 0; mMatched = 0;
+
+  var pool = shuffleArr(vocab.slice()).slice(0, M_PAIRS);
+  var deck = [];
+  pool.forEach(function (item) { deck.push(item); deck.push(item); });
+  shuffleArr(deck);
+
+  var grid = document.getElementById('matchGrid');
+  grid.innerHTML = '';
+  deck.forEach(function (item) { grid.appendChild(buildMatchCard(item)); });
+
+  document.getElementById('mTotal').textContent = M_PAIRS;
+  document.getElementById('mMatched').textContent = '0';
+  document.getElementById('mMoves').textContent = '0';
+  document.getElementById('matchWin').classList.remove('show');
+
+  /* "see 2 seconds" preview, then flip all face-down */
+  setTimeout(function () {
+    document.querySelectorAll('#matchGrid .mcard').forEach(function (c) { c.classList.remove('flipped'); });
+    setTimeout(function () { mLock = false; }, 420);
+  }, M_PREVIEW_MS);
+}
+
+function onMatchCardClick(card) {
+  if (mLock || card.classList.contains('matched') || card.classList.contains('flipped')) return;
+
+  card.classList.add('flipped');
+  mFlipped.push(card);
+  if (mFlipped.length < 2) return;
+
+  mMoves++;
+  document.getElementById('mMoves').textContent = mMoves;
+  mLock = true;
+
+  var a = mFlipped[0], b = mFlipped[1];
+  if (a.getAttribute('data-pair') === b.getAttribute('data-pair')) {
+    setTimeout(function () {
+      a.classList.add('matched'); b.classList.add('matched');
+      mFlipped = []; mMatched++;
+      document.getElementById('mMatched').textContent = mMatched;
+      mLock = false;
+      if (mMatched === M_PAIRS) finishMatchGame();
+    }, 450);
+  } else {
+    setTimeout(function () {
+      a.classList.remove('flipped'); b.classList.remove('flipped');
+      mFlipped = []; mLock = false;
+    }, 900);
+  }
+}
+
+function finishMatchGame() {
+  document.getElementById('mwSub').textContent = 'You found all ' + M_PAIRS + ' pairs in ' + mMoves + ' tries!';
+  document.getElementById('matchWin').classList.add('show');
+}
+
+document.getElementById('matchPlayBtn').addEventListener('click', startMatchGame);
+document.querySelectorAll('.tab-btn').forEach(function (b) {
+  if (b.textContent.indexOf('Match') !== -1) {
+    b.addEventListener('click', function () { if (!matchStarted) startMatchGame(); });
+  }
+});
 
 /* Keyboard */
 document.addEventListener('keydown', function(e) {
