@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Verb 3 – Present Perfect</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;width:100vw;overflow:hidden;background:#FEF9F0;touch-action:manipulation;font-weight:800;}
+.slide{display:none;width:100vw;height:calc(100vh - 7px - 56px - 70px);position:absolute;top:7px;left:0;flex-direction:column;align-items:center;justify-content:center;padding:12px 16px 8px;overflow:hidden;}
+.slide.active{display:flex;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}
+@keyframes popIn{0%{transform:scale(0.85);opacity:0}100%{transform:scale(1);opacity:1}}
+#progress-bar-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,0.07);z-index:998;}
+#progress-bar{height:100%;background:linear-gradient(90deg,#FF9F43,#FF6B6B,#C77DFF,#4D96FF,#6BCB77);transition:width .4s ease;width:0%;}
+#dots{position:fixed;bottom:calc(70px + 28px);left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:999;flex-wrap:wrap;justify-content:center;max-width:90vw;}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.18);transition:all .3s;flex-shrink:0;}
+.dot.active{background:#555;transform:scale(1.5);}
+.nav-btn{position:fixed;bottom:calc(70px + 14px);background:rgba(80,80,80,0.18);border:none;border-radius:50%;width:52px;height:52px;font-size:1.5rem;cursor:pointer;z-index:999;transition:transform .15s;backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,0.1);}
+.nav-btn:hover{transform:scale(1.15);}
+#prevBtn{left:16px;}#nextBtn{right:16px;}
+#quick-nav{position:fixed;bottom:0;left:0;width:100%;height:70px;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border-top:2px solid #F0EAE0;z-index:997;padding:10px 10px 12px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;}
+#quick-nav::-webkit-scrollbar{display:none;}
+.qn-btn{flex-shrink:0;border:none;border-radius:14px;padding:8px 14px;font-family:inherit;font-weight:800;font-size:clamp(0.7rem,1.5vw,1rem);cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 3px 0 rgba(0,0,0,0.13);color:white;text-shadow:0 1px 3px rgba(0,0,0,0.18);}
+.qn-btn:hover{transform:translateY(-3px);}
+.qn-btn.active-nav{outline:3px solid rgba(0,0,0,0.25);transform:translateY(-2px);}
+.qn-divider{flex-shrink:0;width:2px;height:32px;background:#EDE8E0;border-radius:2px;}
+
+/* INTRO */
+#s0{background:linear-gradient(145deg,#FF9F43,#FF6B6B,#C77DFF,#4D96FF);justify-content:center;gap:16px;}
+.rainbow-title{font-size:clamp(2.4rem,8vw,6rem);color:white;text-shadow:0 8px 0 rgba(0,0,0,0.12);animation:titleBounce 1.8s ease-in-out infinite alternate;text-align:center;line-height:1.15;}
+@keyframes titleBounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-16px) rotate(2deg)}}
+.formula-badge{padding:10px 26px;border-radius:50px;background:rgba(255,255,255,0.25);color:white;font-size:clamp(1rem,3vw,1.8rem);border:2px solid rgba(255,255,255,0.45);text-align:center;}
+.tap-hint{font-size:clamp(1.2rem,3.5vw,2.2rem);color:white;animation:pulse 1.4s ease-in-out infinite alternate;}
+@keyframes pulse{from{opacity:.4;transform:scale(0.97)}to{opacity:1;transform:scale(1.03)}}
+
+/* SECTION INTRO SLIDES */
+.section-intro{justify-content:center;gap:16px;}
+.section-intro-icon{font-size:clamp(3rem,10vw,6rem);}
+.section-intro-title{font-size:clamp(2rem,6vw,4.5rem);color:white;text-shadow:0 6px 0 rgba(0,0,0,0.12);text-align:center;line-height:1.2;}
+.section-intro-sub{font-size:clamp(1rem,3vw,1.8rem);color:rgba(255,255,255,0.92);text-align:center;}
+.section-intro-badge{padding:8px 24px;border-radius:50px;background:rgba(255,255,255,0.25);color:white;font-size:clamp(0.9rem,2.2vw,1.4rem);border:2px solid rgba(255,255,255,0.4);text-align:center;}
+.same-note{padding:6px 20px;border-radius:50px;background:rgba(255,255,255,0.92);color:#444;font-size:clamp(0.85rem,2vw,1.3rem);font-weight:900;}
+
+/* VERB CARD SLIDE */
+.verb-slide{background:#FEF9F0;gap:10px;}
+.verb-header{display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;}
+.verb-base-pill{padding:8px 22px;border-radius:50px;font-size:clamp(1.2rem,3vw,2rem);color:#888;background:white;box-shadow:0 4px 0 rgba(0,0,0,0.08);}
+.verb-arrow-big{font-size:clamp(1.4rem,3.5vw,2.2rem);color:#ccc;}
+.verb-v2-pill{padding:8px 28px;border-radius:50px;font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:900;color:white;box-shadow:0 5px 0 rgba(0,0,0,0.15);}
+.verb-meaning{font-size:clamp(0.9rem,2vw,1.3rem);color:#aaa;text-align:center;}
+/* change highlight */
+.ch{text-decoration:underline;text-decoration-style:wavy;text-underline-offset:4px;}
+
+.verb-examples{display:flex;flex-direction:column;gap:8px;width:100%;max-width:660px;}
+.verb-ex-box{background:white;border-radius:16px;padding:clamp(9px,1.8vw,16px) clamp(12px,2.5vw,22px);box-shadow:0 4px 0 rgba(0,0,0,0.07);border-left:6px solid transparent;font-size:clamp(1rem,2.5vw,1.6rem);color:#333;display:flex;align-items:center;gap:12px;}
+.ex-char{width:clamp(32px,5vw,50px);height:clamp(32px,5vw,50px);flex-shrink:0;}
+.v3-hl{font-weight:900;padding:1px 8px;border-radius:6px;}
+.aux{font-weight:900;color:#8E7CC3;}
+.tense-compare{display:flex;flex-direction:column;gap:9px;width:100%;max-width:660px;}
+.tc-row{background:white;border-radius:16px;padding:clamp(9px,1.8vw,15px) clamp(12px,2.5vw,20px);box-shadow:0 4px 0 rgba(0,0,0,0.07);border-left:7px solid var(--tc);display:flex;align-items:center;gap:12px;font-size:clamp(1rem,2.5vw,1.55rem);color:#333;}
+.tc-tag{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:62px;background:var(--tc);color:white;padding:5px 9px;border-radius:13px;line-height:1.08;box-shadow:0 3px 0 rgba(0,0,0,0.12);}
+.tc-tag b{font-size:clamp(0.78rem,1.7vw,1rem);}
+.tc-tag small{font-size:clamp(0.58rem,1.3vw,0.76rem);opacity:.95;font-weight:800;}
+.tc-sent{flex:1;}
+.tc-v{color:var(--tc);font-weight:900;}
+
+/* PATTERNS SLIDE */
+.pattern-slide{background:#FEF9F0;gap:8px;}
+.pattern-title{font-size:clamp(1.4rem,4vw,2.6rem);color:#333;text-align:center;}
+.pattern-cards{display:flex;flex-direction:column;gap:7px;width:100%;max-width:660px;}
+.pattern-card{background:white;border-radius:16px;padding:11px 16px;box-shadow:0 4px 0 rgba(0,0,0,0.07);display:flex;align-items:center;gap:14px;}
+.pattern-badge{flex-shrink:0;padding:6px 14px;border-radius:50px;font-size:clamp(0.75rem,1.7vw,1.05rem);font-weight:900;color:white;text-align:center;}
+.pattern-examples{font-size:clamp(0.8rem,1.9vw,1.2rem);color:#555;}
+
+/* QUIZ */
+.quiz-slide{background:#FEF9F0;gap:6px;}
+.quiz-counter{font-size:clamp(1rem,2.2vw,1.6rem);color:#bbb;}
+.quiz-char-wrap{width:clamp(80px,12vw,130px);height:clamp(80px,12vw,130px);animation:charFloat 2.5s ease-in-out infinite alternate;}
+@keyframes charFloat{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+.quiz-prompt{font-size:clamp(1rem,2.6vw,1.8rem);color:#888;text-align:center;}
+.quiz-formula{font-size:clamp(0.85rem,2vw,1.3rem);color:#8E7CC3;font-weight:900;text-align:center;}
+.quiz-base-word{font-size:clamp(2rem,6vw,4rem);color:#333;text-align:center;font-weight:900;}
+.quiz-choices{display:flex;gap:clamp(8px,2vw,16px);justify-content:center;margin-top:8px;flex-wrap:wrap;}
+.quiz-btn{border:none;border-radius:20px;padding:clamp(12px,2vw,20px) clamp(14px,3vw,32px);cursor:pointer;font-family:inherit;font-weight:900;font-size:clamp(1.05rem,2.6vw,2rem);box-shadow:0 7px 0 #4A6FA0;transition:transform .15s,box-shadow .15s;background:#6C9BD2;color:white;text-shadow:0 2px 5px rgba(0,0,0,0.2);}
+.quiz-btn:hover{transform:translateY(-5px);box-shadow:0 12px 0 #4A6FA0;}
+.quiz-btn.correct{animation:correctBounce .55s ease;background:#6BCB77!important;box-shadow:0 7px 0 #3DAD8E!important;outline:5px solid #A8F0C0;}
+.quiz-btn.wrong{animation:wrongShake .4s ease;background:#FF6B6B!important;box-shadow:0 7px 0 #D94040!important;}
+.quiz-feedback{font-size:clamp(1rem,2.8vw,1.8rem);min-height:44px;margin-top:4px;text-align:center;color:#333;}
+@keyframes correctBounce{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-5deg)}70%{transform:scale(0.93) rotate(3deg)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-12px)}75%{transform:translateX(12px)}}
+
+/* FINISH */
+#finish-slide{background:linear-gradient(145deg,#FF9F43,#FF6B6B,#C77DFF);gap:12px;}
+.finish-char{width:clamp(120px,18vw,190px);height:clamp(120px,18vw,190px);animation:titleBounce 1.4s ease-in-out infinite alternate;}
+.finish-title{font-size:clamp(2.2rem,7vw,5.5rem);color:white;text-shadow:0 7px 0 rgba(0,0,0,0.12);text-align:center;}
+.finish-sub{font-size:clamp(1.1rem,2.8vw,2rem);color:rgba(255,255,255,0.9);text-align:center;}
+.restart-btn{border:none;border-radius:50px;padding:14px 48px;font-family:inherit;font-size:clamp(1.1rem,2.8vw,1.8rem);font-weight:900;color:#FF9F43;background:white;box-shadow:0 6px 0 rgba(0,0,0,0.12);cursor:pointer;transition:transform .15s;}
+.restart-btn:hover{transform:translateY(-4px);}
+
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:2rem;animation:sparkleFly .9s ease forwards;}
+@keyframes sparkleFly{0%{opacity:1;transform:scale(0.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-90px)}}
+.confetti-piece{position:fixed;width:13px;height:13px;border-radius:4px;opacity:0;pointer-events:none;z-index:9999;animation:confettiFall 1.3s ease forwards;}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(800deg)}}
+</style>
+</head>
+<body>
+
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀</button>
+<button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">▶</button>
+<div id="dots"></div>
+
+<div id="quick-nav">
+  <button class="qn-btn" style="background:#888" onclick="showSlide(0)">🏠 Home</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#6BCB77"  id="qn-ed"       onclick="goToSection('ed')">+ed</button>
+  <button class="qn-btn" style="background:#4D96FF"  id="qn-d"        onclick="goToSection('d')">+d</button>
+  <button class="qn-btn" style="background:#FF9F43"  id="qn-ied"      onclick="goToSection('ied')">y→ied</button>
+  <button class="qn-btn" style="background:#FF6B6B"  id="qn-change"   onclick="goToSection('change')">Change!</button>
+  <button class="qn-btn" style="background:#C77DFF"  id="qn-patterns" onclick="goToSection('patterns')">Patterns</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#FFD93D;color:#7A5800;text-shadow:none" id="qn-quiz" onclick="goToSection('quiz')">Quiz!</button>
+</div>
+
+<!-- ══ INTRO ══ -->
+<div class="slide active" id="s0">
+  <div class="rainbow-title">Verb 3<br>Present Perfect! ⏳</div>
+  <div class="formula-badge"><strong>have / has</strong> + <strong>Verb 3</strong></div>
+  <div class="tap-hint">Tap to start!</div>
+</div>
+
+<!-- ══════════════════════════════════
+     SECTION 1: REGULAR +ed  (V3 = V2)
+════════════════════════════════════ -->
+<div class="slide section-intro" id="s-ed-intro" style="background:#6BCB77" data-section="ed">
+  <div class="section-intro-icon">✅</div>
+  <div class="section-intro-title">Regular Verbs<br>add <span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">-ed</span></div>
+  <div class="same-note">😀 Good news: Verb 3 = Verb 2 here!</div>
+  <div class="section-intro-badge">have walk<strong>ed</strong> &nbsp;·&nbsp; has play<strong>ed</strong></div>
+</div>
+
+<!-- walk -->
+<div class="slide verb-slide" id="s-walk" data-section="ed">
+  <div class="verb-header">
+    <span class="verb-base-pill">walk</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#6BCB77">walk<span class="ch">ed</span></span>
+  </div>
+  <div class="verb-meaning">to move on foot &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">same as Verb 2!</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">walk</b> to school every day.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">walked</b> to school yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">walked</b> to school this week.</span></div>
+  </div>
+</div>
+
+<!-- play -->
+<div class="slide verb-slide" id="s-play" data-section="ed">
+  <div class="verb-header">
+    <span class="verb-base-pill">play</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#6BCB77">play<span class="ch">ed</span></span>
+  </div>
+  <div class="verb-meaning">to take part in a game or activity &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">same as Verb 2!</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">She <b class="tc-v">plays</b> football after class.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">She <b class="tc-v">played</b> football last weekend.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">She <span class="aux">has</span> <b class="tc-v">played</b> football many times.</span></div>
+  </div>
+</div>
+
+<!-- watch -->
+<div class="slide verb-slide" id="s-watch" data-section="ed">
+  <div class="verb-header">
+    <span class="verb-base-pill">watch</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#6BCB77">watch<span class="ch">ed</span></span>
+  </div>
+  <div class="verb-meaning">to look at something carefully &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">same as Verb 2!</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">We <b class="tc-v">watch</b> TV in the evening.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">We <b class="tc-v">watched</b> a film last night.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">We <span class="aux">have</span> <b class="tc-v">watched</b> that film already.</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SECTION 2: +d  (ends in e)  (V3 = V2)
+════════════════════════════════════ -->
+<div class="slide section-intro" id="s-d-intro" style="background:#4D96FF" data-section="d">
+  <div class="section-intro-icon">➕</div>
+  <div class="section-intro-title">Verb ends in <span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">-e</span><br>just add <span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">-d</span></div>
+  <div class="same-note">😀 Verb 3 = Verb 2 here too!</div>
+  <div class="section-intro-badge">have like<strong>d</strong> &nbsp;·&nbsp; has dance<strong>d</strong></div>
+</div>
+
+<!-- like -->
+<div class="slide verb-slide" id="s-like" data-section="d">
+  <div class="verb-header">
+    <span class="verb-base-pill">like</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#4D96FF">like<span class="ch">d</span></span>
+  </div>
+  <div class="verb-meaning">to enjoy or feel positive about something &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">same as Verb 2!</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">like</b> this song.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">liked</b> that song too.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">liked</b> it for a long time.</span></div>
+  </div>
+</div>
+
+<!-- dance -->
+<div class="slide verb-slide" id="s-dance" data-section="d">
+  <div class="verb-header">
+    <span class="verb-base-pill">dance</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#4D96FF">dance<span class="ch">d</span></span>
+  </div>
+  <div class="verb-meaning">to move your body to music &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">same as Verb 2!</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">She <b class="tc-v">dances</b> every Friday.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">She <b class="tc-v">danced</b> at the party last night.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">She <span class="aux">has</span> <b class="tc-v">danced</b> on stage before.</span></div>
+  </div>
+</div>
+
+<!-- smile -->
+<div class="slide verb-slide" id="s-smile" data-section="d">
+  <div class="verb-header">
+    <span class="verb-base-pill">smile</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#4D96FF">smile<span class="ch">d</span></span>
+  </div>
+  <div class="verb-meaning">to make a happy expression &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">same as Verb 2!</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">The baby <b class="tc-v">smiles</b> a lot.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">The baby <b class="tc-v">smiled</b> at me yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">The baby <span class="aux">has</span> <b class="tc-v">smiled</b> all morning.</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SECTION 3: y → ied  (V3 = V2)
+════════════════════════════════════ -->
+<div class="slide section-intro" id="s-ied-intro" style="background:#FF9F43" data-section="ied">
+  <div class="section-intro-icon">🔄</div>
+  <div class="section-intro-title">Consonant + <span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">y</span><br>→ drop y, add <span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">ied</span></div>
+  <div class="same-note">😀 Verb 3 = Verb 2 here as well!</div>
+  <div class="section-intro-badge">have stud<strong>ied</strong> &nbsp;·&nbsp; has cr<strong>ied</strong></div>
+</div>
+
+<!-- study -->
+<div class="slide verb-slide" id="s-study" data-section="ied">
+  <div class="verb-header">
+    <span class="verb-base-pill">stud<span style="color:#FF9F43;font-weight:900">y</span></span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#FF9F43">stud<span class="ch">ied</span></span>
+  </div>
+  <div class="verb-meaning">to learn about a subject &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">same as Verb 2!</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">study</b> English every day.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">studied</b> English last night.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">studied</b> English for two years.</span></div>
+  </div>
+</div>
+
+<!-- cry -->
+<div class="slide verb-slide" id="s-cry" data-section="ied">
+  <div class="verb-header">
+    <span class="verb-base-pill">cr<span style="color:#FF9F43;font-weight:900">y</span></span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#FF9F43">cr<span class="ch">ied</span></span>
+  </div>
+  <div class="verb-meaning">to have tears from eyes, often when sad &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">same as Verb 2!</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">The baby <b class="tc-v">cries</b> when hungry.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">The baby <b class="tc-v">cried</b> all night.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">The baby <span class="aux">has</span> <b class="tc-v">cried</b> three times today.</span></div>
+  </div>
+</div>
+
+<!-- try -->
+<div class="slide verb-slide" id="s-try" data-section="ied">
+  <div class="verb-header">
+    <span class="verb-base-pill">tr<span style="color:#FF9F43;font-weight:900">y</span></span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#FF9F43">tr<span class="ch">ied</span></span>
+  </div>
+  <div class="verb-meaning">to attempt or make an effort &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">same as Verb 2!</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">try</b> my best every day.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">tried</b> my best yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">tried</b> my best all week.</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SECTION 4: CHANGE FORM (Irregular V3)
+════════════════════════════════════ -->
+<div class="slide section-intro" id="s-change-intro" style="background:#FF6B6B" data-section="change">
+  <div class="section-intro-icon">🔀</div>
+  <div class="section-intro-title">Irregular Verbs<br><span style="background:rgba(255,255,255,0.3);padding:2px 16px;border-radius:20px">Form changes!</span></div>
+  <div class="section-intro-sub">⚠️ Verb 3 is often different from Verb 2!</div>
+  <div class="section-intro-badge">go → went → <strong>gone</strong> &nbsp;·&nbsp; eat → ate → <strong>eaten</strong></div>
+</div>
+
+<!-- be -->
+<div class="slide verb-slide" id="s-be" data-section="change">
+  <div class="verb-header">
+    <span class="verb-base-pill">be</span>
+    <span class="verb-arrow-big">→</span>
+    <span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">been</span></span>
+  </div>
+  <div class="verb-meaning">to exist or describe a state &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">was/were → been</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">am</b> happy today.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">was</b> happy yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">been</b> happy all week.</span></div>
+  </div>
+</div>
+
+<!-- go -->
+<div class="slide verb-slide" id="s-go" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">go</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">gone</span></span></div>
+  <div class="verb-meaning">to move to a place &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">went → gone (not "went"!)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">She <b class="tc-v">goes</b> to the park every day.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">She <b class="tc-v">went</b> to the park yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">She <span class="aux">has</span> <b class="tc-v">gone</b> to the park already.</span></div>
+  </div>
+</div>
+
+<!-- eat -->
+<div class="slide verb-slide" id="s-eat" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">eat</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">eaten</span></span></div>
+  <div class="verb-meaning">to put food in your mouth &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">ate → eaten (not "ate"!)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">eat</b> breakfast every morning.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">ate</b> breakfast an hour ago.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">eaten</b> breakfast already.</span></div>
+  </div>
+</div>
+
+<!-- have -->
+<div class="slide verb-slide" id="s-have" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">have</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">had</span></span></div>
+  <div class="verb-meaning">to own or experience something &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">had → had (same as Verb 2)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">have</b> a bike.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">had</b> a bike last year.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">had</b> this bike for two years.</span></div>
+  </div>
+</div>
+
+<!-- see -->
+<div class="slide verb-slide" id="s-see" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">see</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">seen</span></span></div>
+  <div class="verb-meaning">to notice with your eyes &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">saw → seen (not "saw"!)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">see</b> my friend every day.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">saw</b> my friend yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">seen</b> my friend today.</span></div>
+  </div>
+</div>
+
+<!-- do -->
+<div class="slide verb-slide" id="s-do" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">do</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">done</span></span></div>
+  <div class="verb-meaning">to perform an action or task &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">did → done (not "did"!)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">do</b> my homework every day.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">did</b> my homework last night.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">done</b> my homework already.</span></div>
+  </div>
+</div>
+
+<!-- come -->
+<div class="slide verb-slide" id="s-come" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">come</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">come</span></span></div>
+  <div class="verb-meaning">to move toward a place or person &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">came → come (same as base word!)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">She <b class="tc-v">comes</b> to class on time.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">She <b class="tc-v">came</b> to class early yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">She <span class="aux">has</span> <b class="tc-v">come</b> to class already.</span></div>
+  </div>
+</div>
+
+<!-- get -->
+<div class="slide verb-slide" id="s-get" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">get</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">got</span></span></div>
+  <div class="verb-meaning">to receive or obtain something &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">got → got (US: gotten)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">get</b> a letter every week.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">got</b> a letter yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">got</b> a new letter today.</span></div>
+  </div>
+</div>
+
+<!-- give -->
+<div class="slide verb-slide" id="s-give" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">give</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">given</span></span></div>
+  <div class="verb-meaning">to hand something to someone &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">gave → given (not "gave"!)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">give</b> gifts on birthdays.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">gave</b> her a gift yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">given</b> her a gift already.</span></div>
+  </div>
+</div>
+
+<!-- take -->
+<div class="slide verb-slide" id="s-take" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">take</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">taken</span></span></div>
+  <div class="verb-meaning">to carry or move something with you &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">took → taken (not "took"!)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">take</b> photos on every trip.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">took</b> a photo yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">taken</b> many photos today.</span></div>
+  </div>
+</div>
+
+<!-- make -->
+<div class="slide verb-slide" id="s-make" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">make</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">made</span></span></div>
+  <div class="verb-meaning">to create or produce something &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">made → made (same as Verb 2)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">make</b> my bed every morning.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">made</b> my bed earlier.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">made</b> my bed already.</span></div>
+  </div>
+</div>
+
+<!-- know -->
+<div class="slide verb-slide" id="s-know" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">know</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">known</span></span></div>
+  <div class="verb-meaning">to have information or understanding &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">knew → known (not "knew"!)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">know</b> the answer.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">knew</b> the answer yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">known</b> her for years.</span></div>
+  </div>
+</div>
+
+<!-- think -->
+<div class="slide verb-slide" id="s-think" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">think</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">thought</span></span></div>
+  <div class="verb-meaning">to use your mind to form ideas &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">thought → thought (same as Verb 2)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">think</b> about it every day.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">thought</b> about it last night.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">thought</b> about it a lot.</span></div>
+  </div>
+</div>
+
+<!-- buy -->
+<div class="slide verb-slide" id="s-buy" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">buy</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">bought</span></span></div>
+  <div class="verb-meaning">to get something by paying money &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">bought → bought (same as Verb 2)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">buy</b> milk every week.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">bought</b> milk yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">bought</b> milk already.</span></div>
+  </div>
+</div>
+
+<!-- write -->
+<div class="slide verb-slide" id="s-write" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">write</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">written</span></span></div>
+  <div class="verb-meaning">to put words on paper or screen &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">wrote → written (not "wrote"!)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">write</b> a letter every month.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">wrote</b> a letter yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">written</b> three letters this week.</span></div>
+  </div>
+</div>
+
+<!-- run -->
+<div class="slide verb-slide" id="s-run" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">run</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">run</span></span></div>
+  <div class="verb-meaning">to move fast on your feet &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">ran → run (same as base word!)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">run</b> every morning.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">ran</b> in the race yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">run</b> a long way today.</span></div>
+  </div>
+</div>
+
+<!-- fly -->
+<div class="slide verb-slide" id="s-fly" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">fly</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">flown</span></span></div>
+  <div class="verb-meaning">to move through the air &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">flew → flown (not "flew"!)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">The bird <b class="tc-v">flies</b> every day.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">The bird <b class="tc-v">flew</b> away yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">The bird <span class="aux">has</span> <b class="tc-v">flown</b> far this week.</span></div>
+  </div>
+</div>
+
+<!-- sing -->
+<div class="slide verb-slide" id="s-sing" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">s<span style="color:#FF6B6B">i</span>ng</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B">s<span class="ch">u</span>ng</span></div>
+  <div class="verb-meaning">to make music with your voice &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">sang → sung (vowel → u)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">She <b class="tc-v">sings</b> every morning.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">She <b class="tc-v">sang</b> a song yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">She <span class="aux">has</span> <b class="tc-v">sung</b> that song before.</span></div>
+  </div>
+</div>
+
+<!-- drink -->
+<div class="slide verb-slide" id="s-drink" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">dr<span style="color:#FF6B6B">i</span>nk</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B">dr<span class="ch">u</span>nk</span></div>
+  <div class="verb-meaning">to swallow liquid &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">drank → drunk (vowel → u)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">I <b class="tc-v">drink</b> water every day.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">I <b class="tc-v">drank</b> water an hour ago.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">I <span class="aux">have</span> <b class="tc-v">drunk</b> lots of water today.</span></div>
+  </div>
+</div>
+
+<!-- teach -->
+<div class="slide verb-slide" id="s-teach" data-section="change">
+  <div class="verb-header"><span class="verb-base-pill">teach</span><span class="verb-arrow-big">→</span><span class="verb-v2-pill" style="background:#FF6B6B"><span class="ch">taught</span></span></div>
+  <div class="verb-meaning">to help someone learn &nbsp;·&nbsp; <em style="color:#aaa;font-size:0.85em">taught → taught (same as Verb 2)</em></div>
+  <div class="tense-compare">
+    <div class="tc-row" style="--tc:#4D96FF"><span class="tc-tag"><b>Verb 1</b><small>Present</small></span><span class="tc-sent">She <b class="tc-v">teaches</b> English every day.</span></div>
+    <div class="tc-row" style="--tc:#FF9F43"><span class="tc-tag"><b>Verb 2</b><small>Past</small></span><span class="tc-sent">She <b class="tc-v">taught</b> us yesterday.</span></div>
+    <div class="tc-row" style="--tc:#6BCB77"><span class="tc-tag"><b>Verb 3</b><small>Perfect</small></span><span class="tc-sent">She <span class="aux">has</span> <b class="tc-v">taught</b> here for ten years.</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SECTION 5: PATTERNS
+════════════════════════════════════ -->
+<div class="slide pattern-slide" id="s-patterns" data-section="patterns">
+  <div class="pattern-title">🧠 Quick Patterns!</div>
+  <div class="pattern-cards">
+    <div class="pattern-card">
+      <span class="pattern-badge" style="background:#8E7CC3">the formula</span>
+      <div class="pattern-examples"><strong>have / has</strong> + <strong>Verb 3</strong> &nbsp;·&nbsp; he/she/it → <strong>has</strong> &nbsp;·&nbsp; I/you/we/they → <strong>have</strong></div>
+    </div>
+    <div class="pattern-card">
+      <span class="pattern-badge" style="background:#4D96FF">-en / -n</span>
+      <div class="pattern-examples">eat→<strong>eaten</strong> &nbsp;·&nbsp; see→<strong>seen</strong> &nbsp;·&nbsp; give→<strong>given</strong> &nbsp;·&nbsp; take→<strong>taken</strong> &nbsp;·&nbsp; write→<strong>written</strong> &nbsp;·&nbsp; fly→<strong>flown</strong></div>
+    </div>
+    <div class="pattern-card">
+      <span class="pattern-badge" style="background:#FF9F43">-ought / -aught</span>
+      <div class="pattern-examples">buy→<strong>bought</strong> &nbsp;·&nbsp; think→<strong>thought</strong> &nbsp;·&nbsp; teach→<strong>taught</strong> &nbsp;·&nbsp; bring→<strong>brought</strong></div>
+    </div>
+    <div class="pattern-card">
+      <span class="pattern-badge" style="background:#6BCB77">i → u</span>
+      <div class="pattern-examples">dr<strong>i</strong>nk→dr<strong>u</strong>nk &nbsp;·&nbsp; s<strong>i</strong>ng→s<strong>u</strong>ng &nbsp;·&nbsp; sw<strong>i</strong>m→sw<strong>u</strong>m &nbsp;·&nbsp; r<strong>i</strong>ng→r<strong>u</strong>ng</div>
+    </div>
+    <div class="pattern-card">
+      <span class="pattern-badge" style="background:#C77DFF">no change!</span>
+      <div class="pattern-examples">come→<strong>come</strong> &nbsp;·&nbsp; run→<strong>run</strong> &nbsp;·&nbsp; put→<strong>put</strong> &nbsp;·&nbsp; cut→<strong>cut</strong></div>
+    </div>
+    <div class="pattern-card">
+      <span class="pattern-badge" style="background:#FF6B6B">⚠️ V2 ≠ V3!</span>
+      <div class="pattern-examples">go: went→<strong>gone</strong> &nbsp;·&nbsp; eat: ate→<strong>eaten</strong> &nbsp;·&nbsp; see: saw→<strong>seen</strong> &nbsp;·&nbsp; do: did→<strong>done</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- FINISH -->
+<div class="slide" id="finish-slide">
+  <svg class="finish-char" viewBox="0 0 200 200"><rect x="70" y="130" width="60" height="20" rx="6" fill="#E6A800"/><rect x="52" y="148" width="96" height="18" rx="9" fill="#F5C800"/><path d="M38 38 Q38 122 100 122 Q162 122 162 38Z" fill="#F5C800"/><path d="M38 52 Q16 52 16 80 Q16 108 38 108" fill="none" stroke="#E6A800" stroke-width="14" stroke-linecap="round"/><path d="M162 52 Q184 52 184 80 Q184 108 162 108" fill="none" stroke="#E6A800" stroke-width="14" stroke-linecap="round"/><polygon points="100,52 110,78 138,78 116,94 124,120 100,104 76,120 84,94 62,78 90,78" fill="white" opacity="0.45"/></svg>
+  <div class="finish-title">You did it! 🎉</div>
+  <div class="finish-sub">You know Verb 3 now!</div>
+  <button class="restart-btn" onclick="showSlide(0)">Play Again</button>
+</div>
+
+<script>
+// ── QUIZ DATA ─────────────────────────────────────────────────
+const QUIZZES=[
+  // regular (V3 = V2)
+  {q:'walk',choices:['walked','walken','walket'],ans:'walked',fb:'walk → walked (same as Verb 2!) ✅'},
+  {q:'play',choices:['played','plaid','playen'],ans:'played',fb:'play → played (same as Verb 2!) ✅'},
+  {q:'study',choices:['studyed','studied','studen'],ans:'studied',fb:'study → studied (same as Verb 2!) ✅'},
+  {q:'like',choices:['likeed','liked','liken'],ans:'liked',fb:'like → liked (same as Verb 2!) ✅'},
+  // irregular — distractors include the V2 form on purpose
+  {q:'go',choices:['went','gone','goed'],ans:'gone',fb:'go → gone (NOT "went" — that is Verb 2!) 🔀'},
+  {q:'eat',choices:['ate','eaten','eated'],ans:'eaten',fb:'eat → eaten (NOT "ate"!) 🔀'},
+  {q:'see',choices:['saw','seen','seed'],ans:'seen',fb:'see → seen (NOT "saw"!) 🔀'},
+  {q:'do',choices:['did','done','doed'],ans:'done',fb:'do → done (NOT "did"!) 🔀'},
+  {q:'give',choices:['gave','given','gived'],ans:'given',fb:'give → given (NOT "gave"!) 🔀'},
+  {q:'take',choices:['took','taken','taked'],ans:'taken',fb:'take → taken (NOT "took"!) 🔀'},
+  {q:'write',choices:['wrote','written','writed'],ans:'written',fb:'write → written (NOT "wrote"!) 🔀'},
+  {q:'know',choices:['knew','known','knowed'],ans:'known',fb:'know → known (NOT "knew"!) 🔀'},
+  {q:'fly',choices:['flew','flown','flyed'],ans:'flown',fb:'fly → flown (NOT "flew"!) 🔀'},
+  {q:'drink',choices:['drank','drunk','drinked'],ans:'drunk',fb:'drink → drunk (vowel i → u) 🔀'},
+  {q:'sing',choices:['sang','sung','singed'],ans:'sung',fb:'sing → sung (vowel i → u) 🔀'},
+  {q:'come',choices:['came','come','comed'],ans:'come',fb:'come → come (same as the base word!) 🔀'},
+  {q:'run',choices:['ran','run','runned'],ans:'run',fb:'run → run (same as the base word!) 🔀'},
+  {q:'be',choices:['was','been','beed'],ans:'been',fb:'be → been 🔀'},
+  {q:'teach',choices:['teached','taught','taughten'],ans:'taught',fb:'teach → taught (-aught pattern) 🔀'},
+  {q:'think',choices:['thinked','thought','thinkt'],ans:'thought',fb:'think → thought (-ought pattern) 🔀'},
+];
+
+// ── SLIDE SETUP ────────────────────────────────────────────────
+const STATIC=['s0','s-ed-intro','s-walk','s-play','s-watch',
+  's-d-intro','s-like','s-dance','s-smile',
+  's-ied-intro','s-study','s-cry','s-try',
+  's-change-intro','s-be','s-go','s-eat','s-have','s-see','s-do',
+  's-come','s-get','s-give','s-take','s-make','s-know','s-think',
+  's-buy','s-write','s-run','s-fly','s-sing','s-drink','s-teach',
+  's-patterns'];
+const slideOrder=[...STATIC];
+const quizAnswered={};
+QUIZZES.forEach((_,qi)=>{
+  const id=`quiz-${qi}`;const el=document.createElement('div');
+  el.className='slide quiz-slide';el.id=id;el.dataset.section='quiz';
+  document.body.appendChild(el);slideOrder.push(id);
+});
+slideOrder.push('finish-slide');
+
+let current=0;
+function buildDots(){const d=document.getElementById('dots');d.innerHTML='';slideOrder.forEach((_,i)=>{const dot=document.createElement('div');dot.className='dot'+(i===0?' active':'');d.appendChild(dot);});}
+function updateDots(){document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));document.getElementById('progress-bar').style.width=(current/(slideOrder.length-1)*100)+'%';updateQuickNav();}
+function updateQuickNav(){
+  document.querySelectorAll('.qn-btn').forEach(b=>b.classList.remove('active-nav'));
+  const sid=slideOrder[current];const sec=document.getElementById(sid)?.dataset?.section;
+  if(sid==='s0') document.querySelectorAll('.qn-btn')[0].classList.add('active-nav');
+  if(sec==='ed') document.getElementById('qn-ed')?.classList.add('active-nav');
+  if(sec==='d') document.getElementById('qn-d')?.classList.add('active-nav');
+  if(sec==='ied') document.getElementById('qn-ied')?.classList.add('active-nav');
+  if(sec==='change') document.getElementById('qn-change')?.classList.add('active-nav');
+  if(sec==='patterns') document.getElementById('qn-patterns')?.classList.add('active-nav');
+  if(sec==='quiz') document.getElementById('qn-quiz')?.classList.add('active-nav');
+}
+function showSlide(n){
+  n=Math.max(0,Math.min(slideOrder.length-1,n));
+  document.getElementById(slideOrder[current]).classList.remove('active');
+  current=n;document.getElementById(slideOrder[current]).classList.add('active');
+  updateDots();
+  document.getElementById('prevBtn').style.display=current===0?'none':'';
+  document.getElementById('nextBtn').style.display=current===slideOrder.length-1?'none':'';
+  const sid=slideOrder[current];
+  if(sid.startsWith('quiz-')) initQuiz(parseInt(sid.split('-')[1]));
+  if(sid==='finish-slide') confetti();
+}
+function changeSlide(d){showSlide(current+d);}
+function goToSection(sec){const idx=slideOrder.findIndex(id=>document.getElementById(id)?.dataset?.section===sec);if(idx>=0)showSlide(idx);}
+document.body.addEventListener('click',e=>{
+  if(e.target.closest('.nav-btn,.quiz-btn,.qn-btn,.restart-btn')) return;
+  const sid=slideOrder[current];if(sid.startsWith('quiz-')||sid==='finish-slide') return;
+  spawnSparkle(e.clientX,e.clientY);changeSlide(1);
+});
+
+function initQuiz(qi){
+  const q=QUIZZES[qi];const el=document.getElementById(`quiz-${qi}`);const done=quizAnswered[qi];
+  el.innerHTML=`<div class="quiz-counter">Question ${qi+1} of ${QUIZZES.length}</div>
+  <div class="quiz-char-wrap"><svg viewBox="0 0 120 130"><ellipse cx="60" cy="20" rx="30" ry="15" fill="#5C3D11"/><circle cx="60" cy="42" r="28" fill="#FFDBA4"/><rect x="26" y="68" width="68" height="52" rx="18" fill="#FF9F43"/><rect x="26" y="68" width="68" height="14" rx="9" fill="#E67E00"/>
+  <circle cx="44" cy="38" r="5.5" fill="#333"/><circle cx="76" cy="38" r="5.5" fill="#333"/>
+  <circle cx="45" cy="36" r="2" fill="white"/><circle cx="77" cy="36" r="2" fill="white"/>
+  <path d="M48 54 Q60 62 72 54" fill="none" stroke="#B07840" stroke-width="3.5" stroke-linecap="round"/>
+  <ellipse cx="44" cy="50" rx="7" ry="4" fill="#F5A882" opacity="0.5"/>
+  <ellipse cx="76" cy="50" rx="7" ry="4" fill="#F5A882" opacity="0.5"/></svg></div>
+  <div class="quiz-prompt">What is Verb 3 of...</div>
+  <div class="quiz-base-word">${q.q}</div>
+  <div class="quiz-formula">have / has + ___</div>
+  <div class="quiz-choices" id="qz-c-${qi}"></div>
+  <div class="quiz-feedback" id="qz-f-${qi}">${done?q.fb:''}</div>`;
+  const wrap=el.querySelector(`#qz-c-${qi}`);
+  [...q.choices].sort(()=>Math.random()-.5).forEach(choice=>{
+    const btn=document.createElement('button');btn.className='quiz-btn';btn.textContent=choice;
+    if(done){if(choice===q.ans){btn.classList.add('correct');btn.style.background='#6BCB77';btn.style.boxShadow='0 7px 0 #3DAD8E';}else{btn.disabled=true;btn.style.opacity='0.35';}}
+    btn.onclick=()=>handleAnswer(qi,choice===q.ans,btn,el,q.fb);
+    wrap.appendChild(btn);
+  });
+}
+function handleAnswer(qi,correct,btn,el,fb){
+  if(quizAnswered[qi]) return;
+  if(correct){
+    quizAnswered[qi]=true;btn.classList.add('correct');
+    el.querySelector(`#qz-f-${qi}`).textContent=fb;
+    el.querySelectorAll('.quiz-btn').forEach(b=>{b.disabled=true;if(b!==btn)b.style.opacity='0.35';});
+    spawnSparkle(btn.getBoundingClientRect().left+btn.offsetWidth/2,btn.getBoundingClientRect().top);
+    confetti();setTimeout(()=>changeSlide(1),1500);
+  } else {
+    btn.classList.add('wrong');el.querySelector(`#qz-f-${qi}`).textContent='Try again! 💪';
+    setTimeout(()=>{btn.classList.remove('wrong');btn.style.background='';el.querySelector(`#qz-f-${qi}`).textContent='';},850);
+  }
+}
+function spawnSparkle(x,y){const sp=['✨','⭐','🌟','💫'];for(let i=0;i<3;i++){const el=document.createElement('div');el.className='sparkle';el.textContent=sp[Math.floor(Math.random()*sp.length)];el.style.cssText=`left:${x-20+(Math.random()-.5)*60}px;top:${y-20+(Math.random()-.5)*40}px;animation-delay:${i*.12}s`;document.body.appendChild(el);setTimeout(()=>el.remove(),950);}}
+function confetti(){const cols=['#FF9F43','#FF6B6B','#6BCB77','#FFD93D','#C77DFF','#fff','#4D96FF'];for(let i=0;i<32;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*30}vh;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.5}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),1900);}}
+buildDots();showSlide(0);
+</script>
+</body>
+</html>
