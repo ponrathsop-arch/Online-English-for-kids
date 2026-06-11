@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Modal Verbs!</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;height:100vh;width:100vw;overflow:hidden;background:#FAF6EF;touch-action:manipulation;font-weight:800;}
+.slide{display:none;width:100vw;height:calc(100vh - 7px - 56px - 70px);position:absolute;top:7px;left:0;flex-direction:column;align-items:center;justify-content:center;padding:14px 16px 8px;overflow:hidden;}
+.slide.active{display:flex;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}
+@keyframes popIn{0%{transform:scale(0.85);opacity:0}100%{transform:scale(1);opacity:1}}
+#progress-bar-wrap{position:fixed;top:0;left:0;width:100%;height:7px;background:rgba(0,0,0,0.07);z-index:998;}
+#progress-bar{height:100%;background:linear-gradient(90deg,#FF9F43,#FF6B6B,#C77DFF,#FFD93D);transition:width .4s ease;width:0%;}
+#dots{position:fixed;bottom:calc(70px + 28px);left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:999;flex-wrap:wrap;justify-content:center;max-width:80vw;}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.18);transition:all .3s;}
+.dot.active{background:#555;transform:scale(1.5);}
+.nav-btn{position:fixed;bottom:calc(70px + 14px);background:rgba(80,80,80,0.18);border:none;border-radius:50%;width:52px;height:52px;font-size:1.5rem;cursor:pointer;z-index:999;transition:transform .15s;backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,0.1);}
+.nav-btn:hover{transform:scale(1.15);}
+#prevBtn{left:16px;}#nextBtn{right:16px;}
+#quick-nav{position:fixed;bottom:0;left:0;width:100%;height:70px;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border-top:2px solid #F0EAE0;z-index:997;padding:10px 10px 12px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;}
+#quick-nav::-webkit-scrollbar{display:none;}
+.qn-btn{flex-shrink:0;border:none;border-radius:14px;padding:8px 14px;font-family:inherit;font-weight:800;font-size:clamp(0.7rem,1.5vw,1rem);cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 3px 0 rgba(0,0,0,0.13);color:white;text-shadow:0 1px 3px rgba(0,0,0,0.18);white-space:nowrap;}
+.qn-btn:hover{transform:translateY(-3px);}
+.qn-btn.active-nav{outline:3px solid rgba(0,0,0,0.25);transform:translateY(-2px);}
+.qn-divider{flex-shrink:0;width:2px;height:32px;background:#EDE8E0;border-radius:2px;}
+
+#s0{background:linear-gradient(145deg,#FF9F43,#FF6B6B,#FFD93D,#C77DFF,#4D96FF);justify-content:center;gap:16px;}
+.rainbow-title{font-size:clamp(2.8rem,9vw,7rem);color:white;text-shadow:0 8px 0 rgba(0,0,0,0.12);animation:titleBounce 1.8s ease-in-out infinite alternate;text-align:center;line-height:1.15;}
+@keyframes titleBounce{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-16px) rotate(2deg)}}
+.tap-hint{font-size:clamp(1.2rem,3.5vw,2.2rem);color:white;animation:pulse 1.4s ease-in-out infinite alternate;}
+@keyframes pulse{from{opacity:.4;transform:scale(0.97)}to{opacity:1;transform:scale(1.03)}}
+
+#s-what{background:#FAF6EF;gap:12px;}
+.what-title{font-size:clamp(1.6rem,4.5vw,3rem);color:#333;text-align:center;}
+.what-badge{display:inline-block;padding:8px 22px;border-radius:50px;font-size:clamp(1rem,2.5vw,1.7rem);color:white;background:#C77DFF;text-shadow:0 2px 4px rgba(0,0,0,0.15);}
+.what-cards{display:flex;gap:clamp(8px,2vw,16px);justify-content:center;flex-wrap:wrap;width:100%;max-width:760px;}
+.what-card{background:white;border-radius:22px;padding:clamp(10px,2vw,18px) clamp(12px,2.2vw,20px);box-shadow:0 6px 0 rgba(0,0,0,0.06);display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:clamp(120px,21vw,170px);}
+.what-card-illust{width:clamp(54px,8vw,80px);height:clamp(54px,8vw,80px);}
+.what-card-label{font-size:clamp(0.82rem,1.8vw,1.15rem);color:#777;text-align:center;line-height:1.35;}
+.what-card-title{font-size:clamp(0.95rem,2vw,1.4rem);color:#333;text-align:center;}
+
+/* MODAL TEACHING SLIDE */
+.examples-slide{background:#FAF6EF;gap:9px;justify-content:flex-start;padding-top:clamp(16px,3.5vh,30px);}
+.ex-title{font-size:clamp(1.8rem,5vw,3.4rem);text-align:center;letter-spacing:-.5px;}
+.ex-who-badge{display:inline-block;padding:6px 20px;border-radius:50px;font-size:clamp(0.9rem,2.2vw,1.45rem);font-weight:900;}
+.modal-structure{background:white;border-radius:50px;padding:clamp(7px,1.5vw,11px) clamp(16px,3vw,28px);font-size:clamp(0.9rem,2.1vw,1.45rem);color:#777;box-shadow:0 4px 0 rgba(0,0,0,0.05);}
+.ex-sentences{display:flex;flex-direction:column;gap:9px;width:100%;max-width:660px;flex:1 1 auto;min-height:0;overflow-y:auto;padding:4px 2px;scrollbar-width:none;}
+.ex-sentences::-webkit-scrollbar{display:none;}
+.ex-sentence-box{background:white;border-radius:18px;padding:clamp(10px,1.8vw,15px) clamp(14px,2.3vw,22px);box-shadow:0 5px 0 rgba(0,0,0,0.06);border-left:7px solid transparent;display:flex;align-items:center;gap:14px;font-size:clamp(1rem,2.5vw,1.65rem);color:#333;line-height:1.4;flex-shrink:0;}
+.ex-sentence-box.ex-hidden{display:none;}
+.ex-num{width:clamp(28px,5vw,38px);height:clamp(28px,5vw,38px);border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(0.9rem,2vw,1.3rem);flex-shrink:0;box-shadow:0 3px 0 rgba(0,0,0,0.12);}
+.ex-verb{font-weight:900;padding:2px 9px;border-radius:7px;}
+@keyframes exPop{0%{transform:translateY(14px) scale(0.96);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}
+.reveal-hint{font-size:clamp(0.85rem,2vw,1.15rem);color:#B0A89A;animation:pulse 1.4s ease-in-out infinite alternate;flex-shrink:0;padding:2px 0 2px;}
+
+.two-col-slide{gap:14px;}
+.two-col-title{font-size:clamp(1.5rem,4vw,3rem);text-align:center;text-shadow:0 4px 0 rgba(0,0,0,0.07);}
+.two-col-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:700px;width:100%;}
+.two-col-card{background:white;border-radius:22px;padding:clamp(14px,2.2vw,26px);box-shadow:0 7px 0 rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:8px;}
+.two-col-card-title{font-size:clamp(1.1rem,2.4vw,1.7rem);text-align:center;}
+.two-col-card-line{font-size:clamp(0.95rem,2.1vw,1.4rem);color:#333;line-height:1.7;text-align:center;}
+.two-col-card-line small{color:#999;font-size:0.78em;}
+.hl{font-weight:900;padding:2px 7px;border-radius:6px;display:inline-block;margin:4px 0;}
+
+#s-summary{background:linear-gradient(160deg,#FFE89A,#FFD93D);gap:14px;}
+.summary-title{font-size:clamp(1.8rem,5vw,3.6rem);color:#7A5800;text-align:center;}
+.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;max-width:720px;width:100%;}
+.summary-card{background:white;border-radius:16px;padding:clamp(9px,1.7vw,15px) clamp(12px,2vw,20px);box-shadow:0 5px 0 rgba(0,0,0,0.08);display:flex;align-items:center;gap:11px;}
+.summary-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.summary-card-modal{font-size:clamp(0.95rem,2.1vw,1.4rem);font-weight:900;}
+.summary-card-mean{font-size:clamp(0.76rem,1.7vw,1.05rem);color:#888;}
+
+/* QUIZ */
+.quiz-slide{background:#FAF6EF;gap:16px;}
+.quiz-counter{font-size:clamp(0.9rem,2vw,1.3rem);font-weight:900;padding:5px 18px;border-radius:50px;background:white;box-shadow:0 3px 0 rgba(0,0,0,0.06);}
+.quiz-card{background:white;border-radius:26px;padding:clamp(22px,4vw,40px) clamp(20px,3.5vw,38px);box-shadow:0 9px 0 rgba(0,0,0,0.06);max-width:640px;width:100%;display:flex;justify-content:center;}
+.quiz-sentence{font-size:clamp(1.3rem,3.6vw,2.4rem);color:#333;text-align:center;line-height:1.55;}
+.quiz-blank{display:inline-block;min-width:clamp(110px,20vw,200px);height:clamp(34px,5vw,48px);border-bottom:6px solid #DDD;vertical-align:middle;margin:0 6px;}
+.quiz-choices{display:flex;gap:clamp(8px,2vw,14px);justify-content:center;flex-wrap:wrap;}
+.quiz-btn{border:none;border-radius:18px;padding:clamp(12px,2vw,18px) clamp(16px,2.8vw,30px);cursor:pointer;font-family:inherit;font-weight:900;font-size:clamp(1.05rem,2.5vw,1.8rem);background:white;color:#5B6472;box-shadow:0 6px 0 #D8DEE8;border:2px solid #E8ECF2;transition:transform .15s,box-shadow .15s;}
+.quiz-btn:hover{transform:translateY(-4px);box-shadow:0 10px 0 #D8DEE8;}
+.quiz-btn.correct{animation:correctBounce .55s ease;background:#6BCB77!important;color:white!important;border-color:#3DAD8E!important;box-shadow:0 6px 0 #3DAD8E!important;}
+.quiz-btn.wrong{animation:wrongShake .4s ease;background:#FF6B6B!important;color:white!important;border-color:#D94040!important;box-shadow:0 6px 0 #D94040!important;}
+.quiz-feedback{font-size:clamp(1.2rem,3.2vw,2.2rem);min-height:44px;text-align:center;color:#333;font-weight:900;}
+@keyframes correctBounce{0%{transform:scale(1)}40%{transform:scale(1.3) rotate(-4deg)}70%{transform:scale(0.94) rotate(2deg)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-12px)}75%{transform:translateX(12px)}}
+
+#finish-slide{background:linear-gradient(145deg,#FF9F43,#FF6B6B,#C77DFF);gap:12px;}
+.finish-char{width:clamp(120px,18vw,190px);height:clamp(120px,18vw,190px);animation:titleBounce 1.4s ease-in-out infinite alternate;}
+.finish-title{font-size:clamp(2.2rem,7vw,5.5rem);color:white;text-shadow:0 7px 0 rgba(0,0,0,0.12);text-align:center;}
+.finish-sub{font-size:clamp(1.1rem,2.8vw,2rem);color:rgba(255,255,255,0.9);text-align:center;}
+.restart-btn{border:none;border-radius:50px;padding:14px 48px;font-family:inherit;font-size:clamp(1.1rem,2.8vw,1.8rem);font-weight:900;color:#FF6B6B;background:white;box-shadow:0 6px 0 rgba(0,0,0,0.12);cursor:pointer;transition:transform .15s;}
+.restart-btn:hover{transform:translateY(-4px);}
+
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:2rem;animation:sparkleFly .9s ease forwards;}
+@keyframes sparkleFly{0%{opacity:1;transform:scale(0.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-90px)}}
+.confetti-piece{position:fixed;width:13px;height:13px;border-radius:4px;opacity:0;pointer-events:none;z-index:9999;animation:confettiFall 1.3s ease forwards;}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(800deg)}}
+</style>
+</head>
+<body>
+
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+<button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀</button>
+<button class="nav-btn" id="nextBtn" onclick="nextAction()">▶</button>
+<div id="dots"></div>
+
+<div id="quick-nav">
+  <button class="qn-btn" style="background:#888" onclick="showSlide(0)">🏠 Home</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#FF6B6B" id="qn-must" onclick="goToSection('must')">Must</button>
+  <button class="qn-btn" style="background:#C0392B" id="qn-mustnt" onclick="goToSection('mustnt')">Mustn't</button>
+  <button class="qn-btn" style="background:#6BCB77" id="qn-donthaveto" onclick="goToSection('donthaveto')">Don't have to</button>
+  <button class="qn-btn" style="background:#4D96FF" id="qn-should" onclick="goToSection('should')">Should</button>
+  <button class="qn-btn" style="background:#2E6FC9" id="qn-shouldnt" onclick="goToSection('shouldnt')">Shouldn't</button>
+  <button class="qn-btn" style="background:#FF9F43" id="qn-can" onclick="goToSection('can')">Can</button>
+  <button class="qn-btn" style="background:#D9730A" id="qn-cant" onclick="goToSection('cant')">Can't</button>
+  <button class="qn-btn" style="background:#C77DFF" id="qn-might" onclick="goToSection('might')">Might</button>
+  <div class="qn-divider"></div>
+  <button class="qn-btn" style="background:#8338EC" id="qn-quiz" onclick="goToSection('quiz')">Quiz!</button>
+</div>
+
+<!-- INTRO -->
+<div class="slide active" id="s0">
+  <div class="rainbow-title">Modal<br>Verbs!</div>
+  <div class="tap-hint">Tap to start! 💬</div>
+</div>
+
+<!-- WHAT ARE MODALS -->
+<div class="slide" id="s-what" data-section="what">
+  <div class="what-title">What are Modal Verbs?</div>
+  <div class="what-badge">Little helper words! 💬</div>
+  <div class="what-cards">
+    <div class="what-card">
+      <svg class="what-card-illust" viewBox="0 0 100 100">
+        <rect x="18" y="14" width="64" height="50" rx="10" fill="#FF6B6B"/>
+        <rect x="46" y="64" width="8" height="24" fill="#C0392B"/>
+        <text x="50" y="48" font-size="34" font-weight="900" fill="white" text-anchor="middle" font-family="Arial">!</text>
+      </svg>
+      <div class="what-card-title">Rules</div>
+      <div class="what-card-label">must · mustn't</div>
+    </div>
+    <div class="what-card">
+      <svg class="what-card-illust" viewBox="0 0 100 100">
+        <circle cx="50" cy="42" r="26" fill="#FFD93D"/>
+        <rect x="40" y="64" width="20" height="10" rx="3" fill="#E6A800"/>
+        <rect x="42" y="76" width="16" height="7" rx="3" fill="#E6A800"/>
+        <path d="M44 42 Q50 30 56 42" fill="none" stroke="#E6A800" stroke-width="3.5" stroke-linecap="round"/>
+      </svg>
+      <div class="what-card-title">Advice</div>
+      <div class="what-card-label">should · shouldn't</div>
+    </div>
+    <div class="what-card">
+      <svg class="what-card-illust" viewBox="0 0 100 100">
+        <path d="M30 50 L30 36 Q30 26 40 26 L44 26 L44 50" fill="#FF9F43"/>
+        <rect x="44" y="32" width="34" height="16" rx="8" fill="#FF9F43"/>
+        <circle cx="66" cy="22" r="11" fill="#FFB870"/>
+        <path d="M26 50 L52 50 L48 80 L30 80 Z" fill="#E07B00"/>
+      </svg>
+      <div class="what-card-title">Ability</div>
+      <div class="what-card-label">can · can't</div>
+    </div>
+    <div class="what-card">
+      <svg class="what-card-illust" viewBox="0 0 100 100">
+        <ellipse cx="52" cy="58" rx="34" ry="20" fill="#C77DFF"/>
+        <ellipse cx="34" cy="50" rx="18" ry="15" fill="#C77DFF"/>
+        <ellipse cx="70" cy="48" rx="20" ry="16" fill="#C77DFF"/>
+        <text x="52" y="64" font-size="30" font-weight="900" fill="white" text-anchor="middle" font-family="Arial">?</text>
+      </svg>
+      <div class="what-card-title">Possibility</div>
+      <div class="what-card-label">might</div>
+    </div>
+  </div>
+</div>
+
+<!-- modal teaching slides + quiz slides injected by JS -->
+
+<!-- CONTRAST -->
+<div class="slide two-col-slide" id="s-contrast" data-section="donthaveto" style="background:linear-gradient(160deg,#FFE89A,#FFD93D)">
+  <div class="two-col-title" style="color:#7A5800">Careful — these are different!</div>
+  <div class="two-col-grid">
+    <div class="two-col-card" style="border-top:8px solid #C0392B">
+      <div class="two-col-card-title" style="color:#C0392B">mustn't 🚫</div>
+      <div class="two-col-card-line">It is <b>NOT allowed</b>.
+        <span class="hl" style="background:#FFF0F0;color:#C0392B">You mustn't park here.</span>
+        <small>No parking — it's the rule!</small>
+      </div>
+    </div>
+    <div class="two-col-card" style="border-top:8px solid #6BCB77">
+      <div class="two-col-card-title" style="color:#2BAE66">don't have to 😌</div>
+      <div class="two-col-card-line">It is <b>not necessary</b>.
+        <span class="hl" style="background:#DFFFF0;color:#2BAE66">You don't have to park here.</span>
+        <small>You can park somewhere else if you want.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="slide" id="s-summary">
+  <div class="summary-title">Quick Summary! 🌟</div>
+  <div class="summary-grid" id="summary-grid"></div>
+</div>
+
+<!-- FINISH -->
+<div class="slide" id="finish-slide">
+  <svg class="finish-char" viewBox="0 0 200 200">
+    <rect x="70" y="130" width="60" height="20" rx="6" fill="#E6A800"/>
+    <rect x="52" y="148" width="96" height="18" rx="9" fill="#F5C800"/>
+    <path d="M38 38 Q38 122 100 122 Q162 122 162 38Z" fill="#F5C800"/>
+    <path d="M38 52 Q16 52 16 80 Q16 108 38 108" fill="none" stroke="#E6A800" stroke-width="14" stroke-linecap="round"/>
+    <path d="M162 52 Q184 52 184 80 Q184 108 162 108" fill="none" stroke="#E6A800" stroke-width="14" stroke-linecap="round"/>
+    <polygon points="100,52 110,78 138,78 116,94 124,120 100,104 76,120 84,94 62,78 90,78" fill="white" opacity="0.45"/>
+  </svg>
+  <div class="finish-title">Brilliant! 🎉</div>
+  <div class="finish-sub">You learned 8 Modal Verbs!</div>
+  <button class="restart-btn" onclick="showSlide(0)">Play Again</button>
+</div>
+
+<script>
+// ── MODAL DATA (5 examples each) ──
+const MODALS=[
+  {key:'must',name:'Must',col:'#FF6B6B',light:'#FFF0F0',sw:'must',
+   badge:'= necessary / important ✅',sum:'necessary, obligation',
+   examples:[
+     "You <hl>must</hl> wear a seatbelt in a car.",
+     "Students <hl>must</hl> finish their homework.",
+     "You <hl>must</hl> be 18 to see that film.",
+     "You <hl>mustn't</hl> forget your passport.",
+     "You <hl>must</hl> stop when the traffic light is red.",
+   ]},
+  {key:'mustnt',name:"Mustn't",col:'#C0392B',light:'#FFEAE6',sw:"mustn't",
+   badge:'= forbidden! 🚫',sum:'prohibited, not allowed',
+   examples:[
+     "Children, you <hl>mustn't</hl> cross the street if the lights are red.",
+     "Passengers <hl>mustn't</hl> open the door when the train is moving.",
+     "You <hl>mustn't</hl> smoke in your car if children are inside.",
+     "You <hl>mustn't</hl> run in the school hallway.",
+     "You <hl>mustn't</hl> touch the hot stove.",
+   ]},
+  {key:'donthaveto',name:"Don't have to",col:'#6BCB77',light:'#DFFFF0',sw:"don't / doesn't have to",
+   badge:'= not necessary 😌',sum:'not necessary',
+   examples:[
+     "You <hl>don't have to</hl> pay to use the library. It's free.",
+     "You <hl>don't have to</hl> work this evening. I can do the tasks for you.",
+     "I <hl>don't have to</hl> pay for the tickets because I got them for free.",
+     "We <hl>don't have to</hl> wear uniforms on Saturday.",
+     "She <hl>doesn't have to</hl> come if she is busy.",
+   ]},
+  {key:'should',name:'Should',col:'#4D96FF',light:'#EAF2FF',sw:'should',
+   badge:'= good advice 💡',sum:'advice',
+   examples:[
+     "You <hl>should</hl> go and see a doctor.",
+     "You <hl>should</hl> hear this story. It's very funny.",
+     "You really <hl>should</hl> go to the Louvre if you're in Paris.",
+     "You <hl>should</hl> drink more water.",
+     "We <hl>should</hl> study before the test.",
+   ]},
+  {key:'shouldnt',name:"Shouldn't",col:'#2E6FC9',light:'#E6EFFB',sw:"shouldn't",
+   badge:'= advice NOT to ⚠️',sum:'advice not to do something',
+   examples:[
+     "You <hl>shouldn't</hl> sit so near the TV. It's bad for your eyes.",
+     "You <hl>shouldn't</hl> come to the party if you don't feel well.",
+     "You <hl>shouldn't</hl> stay up too late.",
+     "Children <hl>shouldn't</hl> eat too much candy.",
+     "You <hl>shouldn't</hl> drive when you're very tired.",
+   ]},
+  {key:'can',name:'Can',col:'#FF9F43',light:'#FFF3E0',sw:'can',
+   badge:'= able / allowed 💪',sum:'ability, permission',
+   examples:[
+     "John <hl>can</hl> do sums in his head.",
+     "I <hl>can</hl> help you with your homework.",
+     "She <hl>can</hl> speak three languages.",
+     "We <hl>can</hl> go to the park after school.",
+     "Birds <hl>can</hl> fly.",
+   ]},
+  {key:'cant',name:"Can't",col:'#D9730A',light:'#FFF0DD',sw:"can't",
+   badge:'= not able / impossible 🙅',sum:'inability, impossible',
+   examples:[
+     "I'm sorry but I <hl>can't</hl> give you a lift because my car is broken.",
+     "I <hl>can't</hl> stop and talk now. I have to get to the library.",
+     "It <hl>can't</hl> be him. I saw him a week ago and he didn't look like that.",
+     "Dad, I <hl>can't</hl> hear you very well.",
+     "Penguins <hl>can't</hl> fly.",
+   ]},
+  {key:'might',name:'Might',col:'#C77DFF',light:'#F5EEFF',sw:'might',
+   badge:'= maybe / possible 🤔',sum:'possibility, maybe',
+   examples:[
+     "I'm not sure where my wife is. She <hl>might</hl> be at her class.",
+     "I don't know where Kelly is. She <hl>might</hl> be at her sister's.",
+     "It <hl>might</hl> rain today. It's getting cloudy already.",
+     "Let me look. I <hl>might</hl> be able to help you.",
+     "We <hl>might</hl> visit our grandparents this weekend.",
+   ]},
+];
+
+// build modal teaching slides
+MODALS.forEach(m=>{
+  const el=document.createElement('div');
+  el.className='slide examples-slide';el.id='m-'+m.key;el.dataset.section=m.key;
+  const hl=t=>t.replace(/<hl>/g,'<span class="ex-verb" style="background:'+m.light+';color:'+m.col+'">').replace(/<\/hl>/g,'</span>');
+  el.innerHTML=
+    '<div class="ex-title" style="color:'+m.col+'">'+m.name+'</div>'+
+    '<div class="ex-who-badge" style="background:'+m.light+';color:'+m.col+';border:2px solid '+m.col+'">'+m.badge+'</div>'+
+    '<div class="modal-structure">Subject + <b style="color:'+m.col+'">'+m.sw+'</b> + base verb</div>'+
+    '<div class="ex-sentences">'+
+      m.examples.map((t,i)=>'<div class="ex-sentence-box ex-hidden" style="border-color:'+m.col+'"><div class="ex-num" style="background:'+m.col+'">'+(i+1)+'</div><div>'+hl(t)+'</div></div>').join('')+
+    '</div>'+
+    '<div class="reveal-hint">👆 Tap to reveal each example</div>';
+  document.body.appendChild(el);
+});
+
+// fill summary grid
+document.getElementById('summary-grid').innerHTML=MODALS.map(m=>
+  '<div class="summary-card"><div class="summary-dot" style="background:'+m.col+'"></div>'+
+  '<div><div class="summary-card-modal" style="color:'+m.col+'">'+m.name.toLowerCase()+'</div>'+
+  '<div class="summary-card-mean">'+m.sum+'</div></div></div>').join('');
+
+// ── QUIZ (no subject badge, no characters) ──
+const QUIZZES=[
+  {accent:'#FF6B6B',sentence:'You _______ wear a seatbelt. It is the law.',        choices:['must','might',"can't"],            correct:'must',          feedback:'must = it is necessary!'},
+  {accent:'#C0392B',sentence:'You _______ touch the hot stove!',                   choices:['should',"mustn't","don't have to"],correct:"mustn't",       feedback:"mustn't = it is forbidden!"},
+  {accent:'#6BCB77',sentence:'The library is free. You _______ pay.',              choices:["mustn't","don't have to",'must'],  correct:"don't have to", feedback:"don't have to = not necessary!"},
+  {accent:'#4D96FF',sentence:'You look sick. You _______ see a doctor.',           choices:['should',"can't","mustn't"],        correct:'should',        feedback:'should = good advice!'},
+  {accent:'#2E6FC9',sentence:'You _______ stay up too late on school nights.',     choices:["shouldn't",'can','must'],          correct:"shouldn't",     feedback:"shouldn't = advice not to!"},
+  {accent:'#FF9F43',sentence:'Birds _______ fly high in the sky.',                 choices:['can',"can't","mustn't"],           correct:'can',           feedback:'can = they are able to!'},
+  {accent:'#D9730A',sentence:'Penguins _______ fly. They swim instead.',          choices:['might',"can't",'should'],          correct:"can't",         feedback:"can't = not able to!"},
+  {accent:'#C77DFF',sentence:'It is cloudy. It _______ rain today.',              choices:['might','must',"mustn't"],          correct:'might',         feedback:'might = maybe it will!'},
+  {accent:'#FF9F43',sentence:'She _______ speak three languages!',                choices:['can','should','might'],            correct:'can',           feedback:'can = she is able to!'},
+  {accent:'#C0392B',sentence:'Children _______ cross the road on a red light.',    choices:["mustn't",'should','can'],          correct:"mustn't",       feedback:"mustn't = forbidden and dangerous!"},
+];
+
+// ── SLIDE ORDER ──
+const slideOrder=['s0','s-what','m-must','m-mustnt','m-donthaveto','s-contrast','m-should','m-shouldnt','m-can','m-cant','m-might','s-summary'];
+const quizAnswered={};
+const revealState={};
+QUIZZES.forEach((_,qi)=>{
+  const el=document.createElement('div');
+  el.className='slide quiz-slide';el.id='quiz-'+qi;el.dataset.section='quiz';
+  document.body.appendChild(el);
+  slideOrder.push('quiz-'+qi);
+});
+slideOrder.push('finish-slide');
+
+let current=0;
+
+function buildDots(){
+  const d=document.getElementById('dots');d.innerHTML='';
+  slideOrder.forEach((_,i)=>{const dot=document.createElement('div');dot.className='dot'+(i===0?' active':'');d.appendChild(dot);});
+}
+function updateDots(){
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));
+  document.getElementById('progress-bar').style.width=(current/(slideOrder.length-1)*100)+'%';
+  updateQuickNav();
+}
+function updateQuickNav(){
+  document.querySelectorAll('.qn-btn').forEach(b=>b.classList.remove('active-nav'));
+  const sid=slideOrder[current];
+  const sec=document.getElementById(sid)?.dataset?.section;
+  if(sid==='s0') document.querySelectorAll('.qn-btn')[0].classList.add('active-nav');
+  if(sec) document.getElementById('qn-'+sec)?.classList.add('active-nav');
+}
+function resetReveal(sid){
+  const el=document.getElementById(sid);
+  el.querySelectorAll('.ex-sentence-box').forEach(b=>{b.classList.add('ex-hidden');b.style.animation='';});
+  revealState[sid]=0;
+  const hint=el.querySelector('.reveal-hint');if(hint)hint.style.opacity='.9';
+}
+function revealNext(sid){
+  const el=document.getElementById(sid);
+  const boxes=[...el.querySelectorAll('.ex-sentence-box')];
+  let c=revealState[sid]||0;
+  if(c>=boxes.length) return false;
+  boxes[c].classList.remove('ex-hidden');
+  boxes[c].style.animation='exPop .4s ease';
+  revealState[sid]=c+1;
+  const hint=el.querySelector('.reveal-hint');if(hint)hint.style.opacity=(revealState[sid]>=boxes.length)?'0':'.9';
+  boxes[c].scrollIntoView({block:'nearest',behavior:'smooth'});
+  return true;
+}
+function showSlide(n){
+  n=Math.max(0,Math.min(slideOrder.length-1,n));
+  document.getElementById(slideOrder[current]).classList.remove('active');
+  current=n;
+  const sid=slideOrder[current];
+  document.getElementById(sid).classList.add('active');
+  if(sid.startsWith('m-')) resetReveal(sid);
+  updateDots();
+  document.getElementById('prevBtn').style.display=current===0?'none':'';
+  document.getElementById('nextBtn').style.display=current===slideOrder.length-1?'none':'';
+  if(sid.startsWith('quiz-')) initQuiz(parseInt(sid.split('-')[1]));
+  if(sid==='finish-slide') confetti();
+}
+function changeSlide(d){showSlide(current+d);}
+function nextAction(){
+  const sid=slideOrder[current];
+  if(sid.startsWith('m-')&&revealNext(sid)) return;
+  changeSlide(1);
+}
+function goToSection(sec){
+  const idx=slideOrder.findIndex(id=>document.getElementById(id)?.dataset?.section===sec);
+  if(idx>=0) showSlide(idx);
+}
+document.body.addEventListener('click',e=>{
+  if(e.target.closest('.nav-btn,.quiz-btn,.qn-btn,.restart-btn')) return;
+  const sid=slideOrder[current];
+  if(sid.startsWith('quiz-')||sid==='finish-slide') return;
+  spawnSparkle(e.clientX,e.clientY);
+  if(sid.startsWith('m-')){ if(revealNext(sid)) return; }
+  changeSlide(1);
+});
+
+function initQuiz(qi){
+  const q=QUIZZES[qi];
+  const el=document.getElementById('quiz-'+qi);
+  const done=quizAnswered[qi];
+  el.innerHTML=
+    '<div class="quiz-counter" style="color:'+q.accent+'">Question '+(qi+1)+' of '+QUIZZES.length+'</div>'+
+    '<div class="quiz-card"><div class="quiz-sentence">'+q.sentence.replace('_______','<span class="quiz-blank" style="border-color:'+q.accent+'"></span>')+'</div></div>'+
+    '<div class="quiz-choices" id="qz-choices-'+qi+'"></div>'+
+    '<div class="quiz-feedback" id="qz-feedback-'+qi+'"></div>';
+  if(done) el.querySelector('#qz-feedback-'+qi).textContent=q.feedback;
+  const wrap=el.querySelector('#qz-choices-'+qi);
+  [...q.choices].sort(()=>Math.random()-.5).forEach(choice=>{
+    const btn=document.createElement('button');btn.className='quiz-btn';btn.textContent=choice;
+    if(done){if(choice===q.correct){btn.classList.add('correct');}else{btn.disabled=true;btn.style.opacity='0.35';}}
+    btn.addEventListener('click',()=>handleQuizAnswer(qi,choice===q.correct,btn,el,q.feedback));
+    wrap.appendChild(btn);
+  });
+}
+function handleQuizAnswer(qi,correct,btn,el,feedback){
+  if(quizAnswered[qi]) return;
+  if(correct){
+    quizAnswered[qi]=true;btn.classList.add('correct');
+    el.querySelector('#qz-feedback-'+qi).textContent=feedback;
+    el.querySelectorAll('.quiz-btn').forEach(b=>{b.disabled=true;if(b!==btn)b.style.opacity='0.35';});
+    spawnSparkle(btn.getBoundingClientRect().left+btn.offsetWidth/2,btn.getBoundingClientRect().top);
+    confetti();setTimeout(()=>changeSlide(1),1500);
+  } else {
+    btn.classList.add('wrong');el.querySelector('#qz-feedback-'+qi).textContent='Try again! 💪';
+    setTimeout(()=>{btn.classList.remove('wrong');el.querySelector('#qz-feedback-'+qi).textContent='';},850);
+  }
+}
+function spawnSparkle(x,y){
+  ['✨','⭐','🌟','💫'].slice(0,3).forEach((s,i)=>{
+    const el=document.createElement('div');el.className='sparkle';el.textContent=s;
+    el.style.cssText='left:'+(x-20+(Math.random()-.5)*60)+'px;top:'+(y-20+(Math.random()-.5)*40)+'px;animation-delay:'+(i*.12)+'s';
+    document.body.appendChild(el);setTimeout(()=>el.remove(),950);
+  });
+}
+function confetti(){
+  const cols=['#FF9F43','#FF6B6B','#6BCB77','#FFD93D','#C77DFF','#fff','#4D96FF'];
+  for(let i=0;i<32;i++){
+    const el=document.createElement('div');el.className='confetti-piece';
+    el.style.cssText='left:'+(Math.random()*100)+'vw;top:'+(Math.random()*30)+'vh;background:'+cols[Math.floor(Math.random()*cols.length)]+';animation-delay:'+(Math.random()*.5)+'s;transform:rotate('+(Math.random()*360)+'deg)';
+    document.body.appendChild(el);setTimeout(()=>el.remove(),1900);
+  }
+}
+
+buildDots();showSlide(0);
+</script>
+</body>
+</html>
