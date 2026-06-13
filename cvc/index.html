@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -28,6 +27,19 @@
   h1 span:nth-child(1){color:var(--coral);animation-delay:0s} h1 span:nth-child(2){color:var(--blue);animation-delay:.1s} h1 span:nth-child(3){color:var(--green);animation-delay:.2s}
   @keyframes bounce-letter { from { transform: translateY(0); } to { transform: translateY(-8px); } }
   .subtitle { margin-top: 12px; font-size: 17px; color: #555; font-weight: 600; }
+
+  /* ===== Featured Reading Practice card ===== */
+  .feature-wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 8px 24px 0; }
+  .feature-card { position: relative; display: flex; align-items: center; gap: 18px; background: linear-gradient(135deg, #FF6B6B, #C77DFF, #4D96FF); border-radius: 22px; padding: 22px 26px; text-decoration: none; box-shadow: 0 6px 0 rgba(0,0,0,0.12); transition: transform 0.18s, box-shadow 0.18s; overflow: hidden; }
+  .feature-card:hover { transform: translateY(-4px); box-shadow: 0 10px 0 rgba(0,0,0,0.12); }
+  .feature-badge { position: absolute; top: 14px; right: 16px; background: var(--yellow); color: #2d2d2d; font-weight: 900; font-size: 12px; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 999px; box-shadow: 0 3px 0 rgba(0,0,0,0.12); }
+  .feature-icon { font-size: 44px; background: rgba(255,255,255,0.25); border-radius: 18px; width: 76px; height: 76px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .feature-text { flex: 1; color: #fff; }
+  .feature-title { font-family: 'Fredoka One', cursive; font-size: clamp(24px, 5vw, 32px); line-height: 1.1; }
+  .feature-sub { font-size: 15px; font-weight: 700; opacity: 0.96; margin-top: 5px; line-height: 1.35; }
+  .feature-go { font-size: 24px; color: #fff; background: rgba(255,255,255,0.25); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  @media (max-width: 480px) { .feature-card { flex-direction: column; text-align: center; gap: 12px; } .feature-go { display: none; } .feature-badge { position: static; margin: 0 auto 4px; } }
+
   .grid-section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 20px 24px 80px; }
   .vowel-group { margin-bottom: 48px; }
   .vowel-title { font-family: 'Fredoka One', cursive; font-size: 28px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
@@ -74,6 +86,19 @@
   <h1><span>C</span><span>V</span><span>C</span></h1>
   <p class="subtitle">Short vowel word families for early readers! 📖</p>
 </header>
+
+<div class="feature-wrap">
+  <a href="reading.html" class="feature-card">
+    <div class="feature-badge">✨ NEW</div>
+    <div class="feature-icon">🔤</div>
+    <div class="feature-text">
+      <div class="feature-title">Reading Practice</div>
+      <div class="feature-sub">Pick any families and read across them — sounds, endings, words &amp; sentences, no pictures!</div>
+    </div>
+    <div class="feature-go">▶</div>
+  </a>
+</div>
+
 <section class="grid-section">
 
   <div class="vowel-group a-color">
