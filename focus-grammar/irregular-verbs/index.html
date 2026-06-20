@@ -62,6 +62,10 @@ html,body{height:100%;font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-se
 .arrow-big{font-size:clamp(1rem,2.8vw,1.8rem);color:#CCC;}
 .vmid-pill{padding:9px 22px;border-radius:50px;font-size:clamp(1.2rem,4vw,2.3rem);font-weight:900;color:#fff;}
 .v2-pill{padding:9px 24px;border-radius:50px;font-size:clamp(1.2rem,4vw,2.3rem);font-weight:900;color:#fff;}
+/* dual US/UK forms inside a pill */
+.dual{display:inline-flex;flex-direction:column;align-items:center;line-height:1.08;gap:3px;}
+.df{display:inline-flex;align-items:center;gap:7px;font-size:.74em;white-space:nowrap;}
+.rt{font-size:.46em;font-weight:900;letter-spacing:.5px;color:#fff;background:rgba(255,255,255,.28);padding:2px 7px;border-radius:7px;}
 .meaning{font-size:clamp(.9rem,2vw,1.25rem);color:var(--muted);font-style:italic;text-align:center;}
 .examples-block{display:flex;flex-direction:column;gap:9px;width:100%;max-width:640px;}
 .ex-box{background:#fff;border-radius:16px;padding:clamp(10px,2vw,16px) clamp(12px,2.5vw,22px);box-shadow:0 4px 0 rgba(0,0,0,.07);border-left:5px solid #CCC;font-size:clamp(.98rem,2.3vw,1.4rem);color:var(--text);line-height:1.55;}
@@ -136,6 +140,7 @@ html,body{height:100%;font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-se
 .tbl-c1{color:#666;}
 .tbl-c2{color:#C9710A;font-weight:900;}
 .tbl-c3{font-weight:900;}
+.tbl-alt{display:block;font-size:.62em;font-weight:900;opacity:.7;margin-top:1px;}
 .tbl-colhead{display:grid;grid-template-columns:1fr 1fr 1fr;padding:6px 14px;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;color:#fff;opacity:.85;background:rgba(0,0,0,.08);}
 .tbl-home{border:none;border-radius:50px;padding:12px 40px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.95rem,2.6vw,1.4rem);color:#fff;background:var(--p4);box-shadow:0 6px 0 var(--p4d);cursor:pointer;transition:transform .14s;margin:8px 0 4px;}
 .tbl-home:hover{transform:translateY(-4px);}
@@ -319,7 +324,7 @@ html,body{height:100%;font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-se
 </div>
 
 <script>
-// ══ DATA ══ (British spellings)
+// ══ DATA ══ (main form = US · alternate -t form = UK)
 const PARTS=[
   {name:"Part 1",col:"var(--p1)",dark:"var(--p1d)",light:"var(--p1l)",tc:"#C94040",
    verbs:[
@@ -441,6 +446,10 @@ function goHome(){show('s-home');}
 function startPart(p){curPart=p;show('s-pi'+p);}
 
 // SUMMARY TABLE
+function tblForm(main,alts){
+  if(!alts||!alts.length) return main;
+  return `${main}<span class="tbl-alt">${alts.join(' / ')} (UK)</span>`;
+}
 function showTable(){
   const grads=[
     'linear-gradient(90deg,var(--p1),#FF9F43)',
@@ -455,8 +464,8 @@ function showTable(){
       <div class="tbl-colhead"><span>Base (V1)</span><span>Past (V2)</span><span>Participle (V3)</span></div>
       ${p.verbs.map(v=>`<div class="tbl-row">
         <span class="tbl-c1">${v.v1}</span>
-        <span class="tbl-c2">${v.v2}</span>
-        <span class="tbl-c3" style="color:${p.tc}">${v.v3}</span>
+        <span class="tbl-c2">${tblForm(v.v2,v.a2)}</span>
+        <span class="tbl-c3" style="color:${p.tc}">${tblForm(v.v3,v.a3)}</span>
       </div>`).join('')}
     </div>`).join('');
   show('s-table');
@@ -471,6 +480,13 @@ function fmtEx(txt,p){
     .replace('<C>',`<span class="v-hl" style="background:#FFEAD0;color:#C9710A">`).replace('</C>','</span>')
     .replace('<B>',`<span class="v-hl" style="background:${bg};color:${col}">`).replace('</B>','</span>');
 }
+// show both spellings (US main / UK -t form) inside a pill
+function formCell(main, alts){
+  if(!alts || !alts.length) return main;
+  let html=`<span class="df">${main}<span class="rt">US</span></span>`;
+  alts.forEach(a=>{ html+=`<span class="df">${a}<span class="rt">UK</span></span>`; });
+  return `<span class="dual">${html}</span>`;
+}
 function renderLearn(){
   const p=PARTS[curPart],v=p.verbs[lsIdx];
   const b=document.getElementById('ls-badge');
@@ -480,9 +496,9 @@ function renderLearn(){
     <div class="verb-row">
       <span class="v1-pill">${v.v1}</span>
       <span class="arrow-big">→</span>
-      <span class="vmid-pill" style="background:#FF9F43;box-shadow:0 5px 0 #E07B1E">${v.v2}</span>
+      <span class="vmid-pill" style="background:#FF9F43;box-shadow:0 5px 0 #E07B1E">${formCell(v.v2,v.a2)}</span>
       <span class="arrow-big">→</span>
-      <span class="v2-pill" style="background:${p.col};box-shadow:0 6px 0 ${p.dark}">${v.v3}</span>
+      <span class="v2-pill" style="background:${p.col};box-shadow:0 6px 0 ${p.dark}">${formCell(v.v3,v.a3)}</span>
     </div>
     <div class="meaning">${v.m}</div>
     <div class="examples-block">
