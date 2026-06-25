@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Synonyms – Words That Mean the Same</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#FEF9F0;--text:#2C2C54;--muted:#999;
+  --p1:#FF6B6B;--p1d:#C94040;--p1l:#FFF0F0;
+  --p2:#4D96FF;--p2d:#1A5CBF;--p2l:#EEF4FF;
+  --acc1:#FF9F43;--acc1d:#E07B1E;--acc1l:#FFF6EA;
+  --acc2:#C77DFF;--acc2d:#8338EC;--acc2l:#F5EEFF;
+}
+html,body{height:100%;font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;font-weight:800;background:var(--bg);touch-action:manipulation;overflow-x:hidden;}
+
+#balloon-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+
+#prog-wrap{position:fixed;top:0;left:0;width:100%;height:6px;background:rgba(0,0,0,.08);z-index:9999;}
+#prog-bar{height:100%;background:linear-gradient(90deg,var(--p1),var(--acc1),var(--p2),var(--acc2));transition:width .5s;}
+
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:28px 16px 40px;position:relative;z-index:1;}
+.screen.active{display:flex;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes ibounce{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-18px) rotate(3deg)}}
+@keyframes pulse{from{opacity:.4}to{opacity:1}}
+
+/* HOME */
+#s-home{background:linear-gradient(145deg,rgba(255,107,107,.82),rgba(255,159,67,.82),rgba(77,150,255,.82),rgba(199,125,255,.82));}
+.home-emoji{font-size:clamp(3.5rem,12vw,7rem);animation:ibounce 2s ease-in-out infinite alternate;}
+.home-title{font-size:clamp(1.8rem,6vw,4rem);color:#fff;text-shadow:0 5px 0 rgba(0,0,0,.15);text-align:center;line-height:1.15;margin-top:8px;}
+.home-sub{font-size:clamp(.95rem,2.5vw,1.5rem);color:rgba(255,255,255,.9);text-align:center;margin-top:6px;}
+.home-parts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:20px;}
+.part-btn{border:none;border-radius:20px;padding:13px 24px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.9rem,2.2vw,1.2rem);color:#fff;cursor:pointer;transition:transform .13s;text-align:center;line-height:1.45;}
+.part-btn:hover{transform:translateY(-4px);}
+.part-btn.p1{background:var(--p1);box-shadow:0 6px 0 var(--p1d);}
+.part-btn.p2{background:var(--p2);box-shadow:0 6px 0 var(--p2d);}
+.tap-hint{color:rgba(255,255,255,.85);font-size:clamp(.85rem,2vw,1.1rem);margin-top:16px;animation:pulse 1.5s ease-in-out infinite alternate;}
+
+/* PART INTRO */
+.part-intro{gap:14px;}
+.pi-icon{font-size:clamp(3rem,10vw,6rem);}
+.pi-title{font-size:clamp(2rem,6vw,4.5rem);color:#fff;text-shadow:0 5px 0 rgba(0,0,0,.13);text-align:center;}
+.pi-list{background:rgba(255,255,255,.22);border-radius:20px;padding:12px 22px;color:#fff;font-size:clamp(.95rem,2.4vw,1.3rem);text-align:center;line-height:1.9;border:2px solid rgba(255,255,255,.35);max-width:480px;}
+.pi-start{margin-top:8px;border:none;border-radius:50px;padding:13px 44px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1rem,2.8vw,1.5rem);background:#fff;cursor:pointer;box-shadow:0 7px 0 rgba(0,0,0,.12);transition:transform .14s;}
+.pi-start:hover{transform:translateY(-4px);}
+
+/* LEARN – FULL SCREEN */
+#s-learn{padding:0;background:transparent;}
+.learn-wrap{display:flex;flex-direction:column;width:100%;min-height:100vh;}
+.learn-top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 6px;flex-shrink:0;}
+.ls-badge{padding:5px 18px;border-radius:50px;color:#fff;font-size:.88rem;}
+.ls-counter{font-size:clamp(.85rem,2vw,1.05rem);color:var(--muted);}
+.learn-card{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 18px;gap:clamp(8px,2vw,16px);}
+.word-row{display:flex;align-items:center;gap:clamp(8px,2.2vw,18px);flex-wrap:wrap;justify-content:center;}
+.base-pill{padding:10px 28px;border-radius:50px;font-size:clamp(1.5rem,5vw,2.8rem);font-weight:900;color:#fff;}
+.arrow-big{font-size:clamp(1rem,2.8vw,1.8rem);color:#CCC;}
+.syn-pill{padding:9px 22px;border-radius:50px;font-size:clamp(1.2rem,4vw,2.1rem);font-weight:900;color:#fff;}
+.same-note{font-size:clamp(.9rem,2vw,1.2rem);color:var(--muted);font-style:italic;text-align:center;}
+.examples-block{display:flex;flex-direction:column;gap:9px;width:100%;max-width:640px;}
+.ex-box{background:#fff;border-radius:16px;padding:clamp(10px,2vw,16px) clamp(12px,2.5vw,22px);box-shadow:0 4px 0 rgba(0,0,0,.07);border-left:5px solid #CCC;font-size:clamp(1rem,2.4vw,1.45rem);color:var(--text);line-height:1.55;}
+.ex-label{font-size:.72rem;letter-spacing:1.5px;opacity:.6;margin-bottom:3px;text-transform:uppercase;}
+.w-hl{font-weight:900;padding:1px 9px;border-radius:8px;}
+.ls-dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:580px;padding:6px 16px 8px;flex-shrink:0;}
+.ls-dot{width:11px;height:11px;border-radius:50%;background:#DDD;transition:all .3s;flex-shrink:0;}
+.ls-dot.done{background:var(--acc1);}
+.ls-dot.cur{transform:scale(1.5);}
+.learn-bottom{display:flex;gap:10px;padding:10px 18px 18px;justify-content:center;flex-shrink:0;}
+.cnav-btn{border:none;border-radius:50px;padding:10px 28px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.88rem,2vw,1.15rem);cursor:pointer;color:#fff;transition:transform .13s;}
+.cnav-btn:hover{transform:translateY(-3px);}
+.cnav-prev{background:#bbb;box-shadow:0 5px 0 #999;}
+
+/* SECTION DONE */
+.sec-done{flex-direction:column;gap:14px;}
+.sd-icon{font-size:clamp(3.5rem,12vw,7rem);animation:ibounce 1.6s ease-in-out infinite alternate;}
+.sd-title{font-size:clamp(2rem,6vw,4.5rem);color:#fff;text-shadow:0 5px 0 rgba(0,0,0,.13);text-align:center;}
+.sd-stars{font-size:clamp(1.8rem,5vw,3.5rem);letter-spacing:4px;}
+.sd-btn{border:none;border-radius:50px;padding:12px 38px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.95rem,2.6vw,1.45rem);background:#fff;cursor:pointer;box-shadow:0 7px 0 rgba(0,0,0,.12);transition:transform .14s;margin-top:6px;}
+.sd-btn:hover{transform:translateY(-4px);}
+.sd-home{background:rgba(255,255,255,.18);color:#fff;border:3px solid rgba(255,255,255,.45);box-shadow:none;}
+
+/* FINALE */
+#s-finale{background:linear-gradient(145deg,rgba(255,107,107,.88),rgba(199,125,255,.88),rgba(77,150,255,.88));}
+.finale-icon{font-size:clamp(4rem,14vw,9rem);animation:ibounce 1.8s ease-in-out infinite alternate;}
+.finale-title{font-size:clamp(2.4rem,8vw,5.5rem);color:#fff;text-shadow:0 7px 0 rgba(0,0,0,.14);text-align:center;}
+.finale-sub{font-size:clamp(1rem,3vw,1.8rem);color:rgba(255,255,255,.9);text-align:center;}
+.finale-home{border:none;border-radius:50px;padding:14px 48px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1rem,2.8vw,1.5rem);background:#fff;color:var(--p1);cursor:pointer;box-shadow:0 8px 0 rgba(0,0,0,.12);transition:transform .14s;margin-top:12px;}
+.finale-home:hover{transform:translateY(-4px);}
+
+/* SUMMARY TABLE */
+.table-screen{background:var(--bg);justify-content:flex-start;padding-top:22px;gap:8px;}
+.tbl-title{font-size:clamp(1.5rem,4.5vw,2.4rem);color:var(--text);text-align:center;}
+.tbl-sub{font-size:clamp(.82rem,1.8vw,1rem);color:var(--muted);text-align:center;margin-top:2px;margin-bottom:6px;}
+.tbl-wrap{width:100%;max-width:620px;display:flex;flex-direction:column;gap:16px;}
+.tbl-group{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 5px 0 rgba(0,0,0,.07);}
+.tbl-head{padding:9px 16px;color:#fff;font-size:clamp(1rem,2.6vw,1.3rem);font-weight:900;}
+.tbl-row{display:grid;grid-template-columns:1fr 1.5fr;align-items:center;padding:9px 16px;border-top:1px solid #F0F0F0;font-size:clamp(.95rem,2.4vw,1.25rem);}
+.tbl-row:nth-child(even){background:#FCFAF6;}
+.tbl-c1{font-weight:900;}
+.tbl-c2{color:#666;}
+.tbl-colhead{display:grid;grid-template-columns:1fr 1.5fr;padding:6px 16px;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;color:#fff;opacity:.85;background:rgba(0,0,0,.08);}
+.tbl-home{border:none;border-radius:50px;padding:12px 40px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(.95rem,2.6vw,1.4rem);color:#fff;background:var(--acc2);box-shadow:0 6px 0 var(--acc2d);cursor:pointer;transition:transform .14s;margin:8px 0 4px;}
+.tbl-home:hover{transform:translateY(-4px);}
+
+/* TAB BAR */
+#tab-bar{position:fixed;bottom:0;left:0;width:100%;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-top:2px solid #EDE8E0;z-index:9998;display:flex;align-items:stretch;justify-content:center;overflow-x:auto;scrollbar-width:none;padding:5px 4px 8px;gap:2px;}
+#tab-bar::-webkit-scrollbar{display:none;}
+.tab-div{width:2px;background:#EDE8E0;border-radius:2px;margin:4px 4px;flex-shrink:0;}
+.tab{border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:5px 14px 3px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:900;white-space:nowrap;transition:background .15s,transform .12s;flex-shrink:0;}
+.tab:hover{background:rgba(0,0,0,.05);}
+.tab:active{transform:scale(.93);}
+.tab-icon{font-size:clamp(1rem,3vw,1.3rem);line-height:1;}
+.tab-label{font-size:clamp(.56rem,1.4vw,.72rem);color:#aaa;letter-spacing:.2px;}
+.tab.active-tab{background:rgba(0,0,0,.06);}
+.tab.active-tab .tab-label{color:var(--text);}
+.tab-pip{width:5px;height:5px;border-radius:50%;background:transparent;transition:background .2s;}
+.tab.active-tab .tab-pip{background:currentColor;}
+.screen{padding-bottom:78px;}
+#s-learn{padding-bottom:0;}
+.learn-wrap{padding-bottom:78px;}
+
+/* MATCH GAME */
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.match-screen{background:var(--bg);justify-content:flex-start;padding-top:20px;gap:12px;}
+.mt-title{font-size:clamp(1.4rem,4vw,2.2rem);color:var(--text);text-align:center;}
+.mt-sub{font-size:clamp(.82rem,1.8vw,1rem);color:var(--muted);text-align:center;}
+.mt-dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:500px;}
+.mt-dot{width:11px;height:11px;border-radius:50%;background:#DDD;transition:all .3s;flex-shrink:0;}
+.mt-dot.done{background:#6BCB77;}
+.mt-dot.cur{transform:scale(1.4);}
+.mt-card{background:#fff;border-radius:24px;padding:20px 18px 16px;box-shadow:0 8px 0 rgba(0,0,0,.08);width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.mt-prompt{font-size:clamp(.9rem,2vw,1.15rem);color:var(--muted);}
+.mt-word{font-size:clamp(2.2rem,8vw,4rem);font-weight:900;line-height:1.1;}
+.mt-feedback{font-size:clamp(1rem,2.5vw,1.3rem);min-height:28px;text-align:center;}
+.mt-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:480px;}
+.mt-opt{border:none;border-radius:16px;padding:16px 10px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.1rem,3vw,1.5rem);background:#fff;color:var(--text);box-shadow:0 5px 0 rgba(0,0,0,.1);cursor:pointer;transition:transform .12s;}
+.mt-opt:hover{transform:translateY(-3px);}
+.mt-opt:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.1);}
+.mt-opt.ok{background:#EAFFF5;color:#2BAE60;box-shadow:0 5px 0 #9be0b8;}
+.mt-opt.err{background:#FFF0F0;color:#C94040;box-shadow:0 5px 0 #f0b6b6;animation:shake .4s ease;}
+
+/* FX */
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:1.8rem;animation:spFly .9s ease forwards;}
+@keyframes spFly{0%{opacity:1;transform:scale(.5) translateY(0)}100%{opacity:0;transform:scale(1.8) translateY(-80px)}}
+.conf-p{position:fixed;width:11px;height:11px;border-radius:3px;opacity:0;pointer-events:none;z-index:9999;animation:confFall 1.4s ease forwards;}
+@keyframes confFall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+<canvas id="balloon-canvas"></canvas>
+<div id="prog-wrap"><div id="prog-bar" style="width:0%"></div></div>
+
+<!-- HOME -->
+<div class="screen active" id="s-home">
+  <div class="home-emoji">🔤</div>
+  <div class="home-title">Synonyms!</div>
+  <div class="home-sub">Words that mean the same · 9 words · 2 parts</div>
+  <div class="home-parts">
+    <button class="part-btn p1" onclick="startPart(0)">Part 1<br><small style="font-size:.72em;opacity:.88">big · small · happy · sad · good</small></button>
+    <button class="part-btn p2" onclick="startPart(1)">Part 2<br><small style="font-size:.72em;opacity:.88">bad · fast · smart · beautiful</small></button>
+  </div>
+  <div class="tap-hint">👆 Choose a part to begin!</div>
+</div>
+
+<!-- PART INTROS -->
+<div class="screen part-intro" id="s-pi0" style="background:linear-gradient(145deg,rgba(255,107,107,.88),rgba(255,159,67,.88));">
+  <div class="pi-icon">🌟</div><div class="pi-title">Part 1</div>
+  <div class="pi-list">big · small · happy<br>sad · good</div>
+  <button class="pi-start" style="color:var(--p1)" onclick="startLearn(0)">Start Learning →</button>
+</div>
+<div class="screen part-intro" id="s-pi1" style="background:linear-gradient(145deg,rgba(77,150,255,.88),rgba(0,180,216,.88));">
+  <div class="pi-icon">⚡</div><div class="pi-title">Part 2</div>
+  <div class="pi-list">bad · fast<br>smart · beautiful</div>
+  <button class="pi-start" style="color:var(--p2)" onclick="startLearn(1)">Start Learning →</button>
+</div>
+
+<!-- LEARN FULL SCREEN -->
+<div class="screen" id="s-learn">
+  <div class="learn-wrap">
+    <div class="learn-top">
+      <div class="ls-badge" id="ls-badge">Part 1</div>
+      <div class="ls-counter" id="ls-counter">1 / 5</div>
+    </div>
+    <div class="learn-card" id="ls-card"></div>
+    <div class="ls-dots" id="ls-dots"></div>
+    <div class="learn-bottom">
+      <button class="cnav-btn cnav-prev" id="ls-prev" onclick="lsNav(-1)">◀ Back</button>
+      <button class="cnav-btn" id="ls-next" onclick="lsNav(1)">Next ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION DONE -->
+<div class="screen sec-done" id="s-done0" style="background:linear-gradient(145deg,rgba(255,107,107,.9),rgba(255,159,67,.9));">
+  <div class="sd-icon">🎉</div><div class="sd-title">Part 1 Done!</div>
+  <div class="sd-stars">⭐⭐⭐⭐⭐</div>
+  <button class="sd-btn" style="color:var(--p2)" onclick="startPart(1)">Part 2 →</button>
+  <button class="sd-btn sd-home" onclick="goHome()">🏠 Home</button>
+</div>
+
+<!-- FINALE -->
+<div class="screen" id="s-finale">
+  <div class="finale-icon">🏆</div>
+  <div class="finale-title">You did it!</div>
+  <div class="finale-sub">You learned all 9 synonym groups! 🎉</div>
+  <div style="font-size:clamp(2rem,6vw,4rem);margin-top:8px">⭐⭐⭐⭐⭐⭐⭐⭐</div>
+  <button class="finale-home" onclick="startMatch()">🎮 Play Matching Game</button>
+  <button class="finale-home" style="background:rgba(255,255,255,.85)" onclick="showTable()">📋 See All Synonyms</button>
+  <button class="finale-home" style="background:rgba(255,255,255,.18);color:#fff;border:3px solid rgba(255,255,255,.45);box-shadow:none;margin-top:8px" onclick="goHome()">🏠 Home</button>
+</div>
+
+<!-- MATCH GAME -->
+<div class="screen match-screen" id="s-match">
+  <div class="mt-title">🎮 Synonym Match</div>
+  <div class="mt-sub" id="mt-sub">Tap the word that means the same!</div>
+  <div class="mt-dots" id="mt-dots"></div>
+  <div class="mt-card">
+    <div class="mt-prompt">Which word means the same as…</div>
+    <div class="mt-word" id="mt-word">Big</div>
+    <div class="mt-feedback" id="mt-feedback"></div>
+  </div>
+  <div class="mt-options" id="mt-options"></div>
+</div>
+
+<!-- MATCH DONE -->
+<div class="screen sec-done" id="s-matchdone" style="background:linear-gradient(145deg,rgba(107,203,119,.9),rgba(0,180,216,.9));">
+  <div class="sd-icon">🎮</div><div class="sd-title">Great Job!</div>
+  <div class="sd-stars" id="md-stars">⭐⭐⭐⭐⭐</div>
+  <div style="color:#fff;font-size:clamp(1rem,2.8vw,1.45rem)" id="md-score"></div>
+  <button class="sd-btn" style="color:#2BAE60" onclick="startMatch()">🔁 Play Again</button>
+  <button class="sd-btn sd-home" onclick="showTable()">📋 All Synonyms</button>
+  <button class="sd-btn sd-home" onclick="goHome()">🏠 Home</button>
+</div>
+
+<!-- SUMMARY TABLE -->
+<div class="screen table-screen" id="s-table">
+  <div class="tbl-title">📋 All Synonyms</div>
+  <div class="tbl-sub">A word and other words that mean the same</div>
+  <div class="tbl-wrap" id="tbl-wrap"></div>
+  <button class="tbl-home" onclick="goHome()">🏠 Home</button>
+</div>
+
+<!-- TAB BAR -->
+<div id="tab-bar">
+  <button class="tab" id="tab-home" onclick="goHome()" style="color:#888"><div class="tab-icon">🏠</div><div class="tab-label">Home</div><div class="tab-pip"></div></button>
+  <div class="tab-div"></div>
+  <button class="tab" id="tab-l0" onclick="startLearn(0)" style="color:var(--p1)"><div class="tab-icon">📖</div><div class="tab-label">P1 Learn</div><div class="tab-pip"></div></button>
+  <div class="tab-div"></div>
+  <button class="tab" id="tab-l1" onclick="startLearn(1)" style="color:var(--p2)"><div class="tab-icon">📖</div><div class="tab-label">P2 Learn</div><div class="tab-pip"></div></button>
+  <div class="tab-div"></div>
+  <button class="tab" id="tab-match" onclick="startMatch()" style="color:#2BAE60"><div class="tab-icon">🎮</div><div class="tab-label">Match</div><div class="tab-pip"></div></button>
+  <div class="tab-div"></div>
+  <button class="tab" id="tab-table" onclick="showTable()" style="color:#888"><div class="tab-icon">📋</div><div class="tab-label">All</div><div class="tab-pip"></div></button>
+</div>
+
+<script>
+// ══ DATA ══  (base word first, then its synonyms; <H>..</H> marks the target word in each sentence)
+const PARTS=[
+  {name:"Part 1",col:"var(--p1)",dark:"var(--p1d)",light:"var(--p1l)",tc:"#C94040",
+   groups:[
+    {base:"Big", syns:["large","huge"], ex:[
+      {w:"Big", s:"We saw a <H>big</H> elephant at the zoo."},
+      {w:"Large", s:"They live in a <H>large</H> house."},
+      {w:"Huge", s:"The blue whale is <H>huge</H>."},
+    ]},
+    {base:"Small", syns:["little","tiny"], ex:[
+      {w:"Small", s:"She has a <H>small</H> bag."},
+      {w:"Little", s:"A <H>little</H> bird is on the tree."},
+      {w:"Tiny", s:"I found a <H>tiny</H> shell."},
+    ]},
+    {base:"Happy", syns:["glad","cheerful"], ex:[
+      {w:"Happy", s:"I am <H>happy</H> today."},
+      {w:"Glad", s:"I'm <H>glad</H> you came."},
+      {w:"Cheerful", s:"She is always <H>cheerful</H>."},
+    ]},
+    {base:"Sad", syns:["unhappy","miserable"], ex:[
+      {w:"Sad", s:"He felt <H>sad</H> after the game."},
+      {w:"Unhappy", s:"She was <H>unhappy</H> with her score."},
+      {w:"Miserable", s:"I felt <H>miserable</H> when I had the flu."},
+    ]},
+    {base:"Good", syns:["great","excellent"], ex:[
+      {w:"Good", s:"This book is <H>good</H>."},
+      {w:"Great", s:"We had a <H>great</H> day."},
+      {w:"Excellent", s:"She did an <H>excellent</H> job."},
+    ]},
+  ]},
+  {name:"Part 2",col:"var(--p2)",dark:"var(--p2d)",light:"var(--p2l)",tc:"#1A5CBF",
+   groups:[
+    {base:"Bad", syns:["awful","terrible"], ex:[
+      {w:"Bad", s:"The weather is <H>bad</H> today."},
+      {w:"Awful", s:"The food tasted <H>awful</H>."},
+      {w:"Terrible", s:"It was a <H>terrible</H> storm."},
+    ]},
+    {base:"Fast", syns:["quick"], ex:[
+      {w:"Fast", s:"He is a <H>fast</H> runner."},
+      {w:"Quick", s:"She gave a <H>quick</H> answer."},
+    ]},
+    {base:"Smart", syns:["clever","intelligent"], ex:[
+      {w:"Smart", s:"Mia is a <H>smart</H> student."},
+      {w:"Clever", s:"The fox is <H>clever</H>."},
+      {w:"Intelligent", s:"Dolphins are <H>intelligent</H> animals."},
+    ]},
+    {base:"Beautiful", syns:["pretty","lovely"], ex:[
+      {w:"Beautiful", s:"The garden is <H>beautiful</H>."},
+      {w:"Pretty", s:"She wore a <H>pretty</H> dress."},
+      {w:"Lovely", s:"What a <H>lovely</H> day!"},
+    ]},
+  ]},
+];
+
+// per-example accent palette: index 0 = base word, 1 = first synonym, 2 = second synonym
+const ACC=[
+  {bar:"var(--p1)", bg:"#FAFAFA", hlbg:"#FFE3E3", hltx:"#C94040"},   // overridden per part for base
+  {bar:"var(--acc1)", bg:"#FFF6EA", hlbg:"#FFE6C7", hltx:"#C9710A"},
+  {bar:"var(--acc2)", bg:"#F5EEFF", hlbg:"#EBDBFF", hltx:"#8338EC"},
+];
+
+// STATE
+let curPart=0,lsIdx=0;
+let partDone=[false,false];
+
+// BALLOONS
+const canvas=document.getElementById('balloon-canvas');
+const ctx=canvas.getContext('2d');
+const BCOLS=['#FF6B6B','#FF9F43','#FFD93D','#6BCB77','#4D96FF','#C77DFF','#FF85A1','#70E0FF','#98F5A0'];
+const bals=[];
+function initBals(){
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  bals.length=0;
+  const n=Math.max(8,Math.floor(window.innerWidth/75));
+  for(let i=0;i<n;i++) bals.push(mkBal(true));
+}
+function mkBal(init){
+  const r=16+Math.random()*20;
+  return{x:Math.random()*canvas.width,y:init?Math.random()*canvas.height:canvas.height+r*3,
+    r,vy:-(0.22+Math.random()*0.4),vx:(Math.random()-.5)*0.28,
+    col:BCOLS[Math.floor(Math.random()*BCOLS.length)],
+    sw:Math.random()*Math.PI*2,ss:0.007+Math.random()*0.008,
+    a:0.15+Math.random()*0.18};
+}
+function drawBal(b){
+  ctx.save();ctx.globalAlpha=b.a;
+  ctx.beginPath();ctx.ellipse(b.x,b.y,b.r,b.r*1.22,0,0,Math.PI*2);
+  ctx.fillStyle=b.col;ctx.fill();
+  ctx.beginPath();ctx.ellipse(b.x-b.r*.27,b.y-b.r*.3,b.r*.2,b.r*.3,-.5,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,.32)';ctx.fill();
+  ctx.beginPath();ctx.moveTo(b.x,b.y+b.r*1.22);
+  ctx.quadraticCurveTo(b.x+7,b.y+b.r*2.2,b.x+2,b.y+b.r*3.4);
+  ctx.strokeStyle=b.col;ctx.lineWidth=1.1;ctx.globalAlpha=b.a*.65;ctx.stroke();
+  ctx.restore();
+}
+function animBals(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  bals.forEach((b,i)=>{
+    b.sw+=b.ss;b.x+=b.vx+Math.sin(b.sw)*0.22;b.y+=b.vy;
+    drawBal(b);
+    if(b.y<-b.r*5) bals[i]=mkBal(false);
+  });
+  requestAnimationFrame(animBals);
+}
+window.addEventListener('resize',initBals);
+initBals();animBals();
+
+// SCREENS
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const t=document.getElementById(id); if(t) t.classList.add('active');
+  window.scrollTo(0,0);updateProg();
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active-tab'));
+  const map={'s-home':'tab-home','s-learn':'tab-l'+curPart,'s-match':'tab-match','s-table':'tab-table'};
+  const tid=map[id]||(id.startsWith('s-pi')?'tab-l'+id.slice(-1):null);
+  if(tid)document.getElementById(tid)?.classList.add('active-tab');
+}
+function updateProg(){document.getElementById('prog-bar').style.width=(partDone.filter(Boolean).length/2*100)+'%';}
+function goHome(){show('s-home');}
+function startPart(p){curPart=p;show('s-pi'+p);}
+
+// LEARN
+function startLearn(p){curPart=p;lsIdx=0;renderLearn();show('s-learn');}
+function fmtEx(txt,acc){
+  return txt
+    .replace('<H>',`<span class="w-hl" style="background:${acc.hlbg};color:${acc.hltx}">`)
+    .replace('</H>','</span>');
+}
+function renderLearn(){
+  const p=PARTS[curPart],g=p.groups[lsIdx];
+  const b=document.getElementById('ls-badge');
+  b.textContent=p.name;b.style.background=p.col;b.style.color='#fff';
+  document.getElementById('ls-counter').textContent=`${lsIdx+1} / ${p.groups.length}`;
+
+  // base accent uses part colour; synonym accents from ACC[1], ACC[2]
+  const baseAcc={bar:p.col, bg:p.light, hlbg:p.light, hltx:p.tc};
+  const accFor=i=> i===0 ? baseAcc : ACC[i];
+
+  // word row: Base → syn1 → syn2
+  let pills=`<span class="base-pill" style="background:${p.col};box-shadow:0 6px 0 ${p.dark}">${g.base}</span>`;
+  const synCols=['var(--acc1)','var(--acc2)'], synSh=['var(--acc1d)','var(--acc2d)'];
+  g.syns.forEach((sy,i)=>{
+    pills+=`<span class="arrow-big">→</span><span class="syn-pill" style="background:${synCols[i]};box-shadow:0 5px 0 ${synSh[i]}">${sy}</span>`;
+  });
+
+  // example boxes, one per word
+  const boxes=g.ex.map((e,i)=>{
+    const a=accFor(i);
+    return `<div class="ex-box" style="border-color:${a.bar};background:${a.bg}">
+      <div class="ex-label" style="color:${a.hltx}">${e.w}</div>${fmtEx(e.s,a)}
+    </div>`;
+  }).join('');
+
+  document.getElementById('ls-card').innerHTML=`
+    <div class="word-row">${pills}</div>
+    <div class="same-note">These words all mean almost the same! 💡</div>
+    <div class="examples-block">${boxes}</div>`;
+
+  const dots=document.getElementById('ls-dots');
+  dots.innerHTML=p.groups.map((_,i)=>`<div class="ls-dot${i===lsIdx?' cur':i<lsIdx?' done':''}"></div>`).join('');
+  dots.querySelectorAll('.ls-dot.cur').forEach(d=>d.style.background=p.col);
+
+  const nb=document.getElementById('ls-next');
+  nb.style.background=p.col;nb.style.boxShadow=`0 5px 0 ${p.dark}`;
+  nb.textContent=lsIdx===p.groups.length-1?'Finish ✓':'Next ▶';
+  document.getElementById('ls-prev').style.display=lsIdx===0?'none':'';
+}
+function lsNav(d){
+  if(d===1&&lsIdx===PARTS[curPart].groups.length-1){
+    partDone[curPart]=true;updateProg();bigConfetti();
+    setTimeout(()=>show(curPart===1?'s-finale':'s-done0'),650);
+    return;
+  }
+  lsIdx=Math.max(0,Math.min(PARTS[curPart].groups.length-1,lsIdx+d));
+  spawnSparkle(window.innerWidth/2,window.innerHeight*.4);
+  renderLearn();
+}
+
+// SUMMARY TABLE
+function showTable(){
+  const grads=[
+    'linear-gradient(90deg,var(--p1),var(--acc1))',
+    'linear-gradient(90deg,var(--p2),#00B4D8)'
+  ];
+  const wrap=document.getElementById('tbl-wrap');
+  if(!wrap) return;
+  wrap.innerHTML=PARTS.map((p,pi)=>`
+    <div class="tbl-group">
+      <div class="tbl-head" style="background:${grads[pi]}">${p.name}</div>
+      <div class="tbl-colhead"><span>Word</span><span>Synonyms</span></div>
+      ${p.groups.map(g=>`<div class="tbl-row">
+        <span class="tbl-c1" style="color:${p.tc}">${g.base}</span>
+        <span class="tbl-c2">${g.syns.join(' · ')}</span>
+      </div>`).join('')}
+    </div>`).join('');
+  show('s-table');
+}
+
+// ══ MATCH GAME ══ (tap the correct synonym, all 9 words shuffled)
+let mtRounds=[], mtIdx=0, mtScore=0;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function allGroups(){
+  const out=[];
+  PARTS.forEach(p=>p.groups.forEach(g=>out.push({base:g.base,syns:g.syns,col:p.col})));
+  return out;
+}
+function startMatch(){
+  mtRounds=shuffle(allGroups());mtIdx=0;mtScore=0;
+  renderMatch();show('s-match');
+}
+function renderMatch(){
+  const g=mtRounds[mtIdx];
+  document.getElementById('mt-sub').textContent=`Word ${mtIdx+1} of ${mtRounds.length}`;
+  const wd=document.getElementById('mt-word');
+  wd.textContent=g.base;wd.style.color=g.col;
+  document.getElementById('mt-feedback').textContent='';
+
+  const dots=document.getElementById('mt-dots');
+  dots.innerHTML=mtRounds.map((_,i)=>`<div class="mt-dot${i===mtIdx?' cur':i<mtIdx?' done':''}"></div>`).join('');
+  dots.querySelectorAll('.mt-dot.cur').forEach(d=>d.style.background=g.col);
+
+  // correct = one synonym of this word; distractors = synonyms from other words
+  const correct=g.syns[Math.floor(Math.random()*g.syns.length)];
+  const banned=new Set(g.syns.map(s=>s.toLowerCase()));
+  const pool=[];
+  allGroups().forEach(o=>{ if(o.base!==g.base) o.syns.forEach(s=>{ if(!banned.has(s.toLowerCase())) pool.push(s); }); });
+  const opts=[correct];
+  for(const d of shuffle(pool)){
+    if(opts.length>=4) break;
+    if(!opts.map(x=>x.toLowerCase()).includes(d.toLowerCase())) opts.push(d);
+  }
+  const shown=shuffle(opts);
+
+  const box=document.getElementById('mt-options');box.innerHTML='';
+  shown.forEach(o=>{
+    const btn=document.createElement('button');btn.className='mt-opt';btn.textContent=o;
+    btn.addEventListener('pointerdown',e=>{e.preventDefault();mtPick(btn,o,correct,g);});
+    box.appendChild(btn);
+  });
+}
+function mtPick(btn,chosen,correct,g){
+  if(document.querySelector('.mt-opt.ok')) return; // round already solved
+  if(chosen.toLowerCase()===correct.toLowerCase()){
+    btn.classList.add('ok');
+    document.getElementById('mt-feedback').innerHTML=`<span style="color:#2BAE60">✅ ${g.base} = ${correct}!</span>`;
+    spawnSparkle(window.innerWidth/2,window.innerHeight*.4);
+    mtScore++;
+    document.querySelectorAll('.mt-opt').forEach(b=>b.style.pointerEvents='none');
+    setTimeout(()=>{
+      mtIdx++;
+      if(mtIdx>=mtRounds.length){ bigConfetti(); setTimeout(showMatchDone,550); }
+      else renderMatch();
+    },950);
+  } else {
+    btn.classList.add('err');
+    document.getElementById('mt-feedback').innerHTML=`<span style="color:#C94040">❌ Try again!</span>`;
+    setTimeout(()=>{ btn.classList.remove('err'); document.getElementById('mt-feedback').textContent=''; },650);
+  }
+}
+function showMatchDone(){
+  const total=mtRounds.length;
+  const st=Math.max(1,Math.round(mtScore/total*5));
+  document.getElementById('md-stars').textContent='⭐'.repeat(st);
+  document.getElementById('md-score').textContent=`You got ${mtScore} / ${total} correct!`;
+  show('s-matchdone');
+}
+
+// FX
+const SPS=['✨','⭐','🌟','💫','🎉'];
+function spawnSparkle(x,y){for(let i=0;i<4;i++){const el=document.createElement('div');el.className='sparkle';el.textContent=SPS[Math.floor(Math.random()*SPS.length)];el.style.cssText=`left:${x-18+(Math.random()-.5)*65}px;top:${y-18+(Math.random()-.5)*48}px;animation-delay:${i*.1}s`;document.body.appendChild(el);setTimeout(()=>el.remove(),1000);}}
+function bigConfetti(){const cols=['#E63946','#F5C800','#2BAE66','#1A78C2','#FB5607','#8338EC','#fff','#E91E8C'];for(let i=0;i<32;i++){const el=document.createElement('div');el.className='conf-p';el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*22}vh;background:${cols[i%cols.length]};animation-delay:${Math.random()*.5}s;transform:rotate(${Math.random()*360}deg)`;document.body.appendChild(el);setTimeout(()=>el.remove(),2000);}}
+
+// PHYSICAL KEYBOARD
+document.addEventListener('keydown',e=>{
+  const s=document.querySelector('.screen.active');
+  if(!s)return;
+  if(s.id==='s-learn'){
+    if(e.key==='ArrowRight'){e.preventDefault();lsNav(1);}
+    else if(e.key==='ArrowLeft'){e.preventDefault();if(lsIdx>0)lsNav(-1);}
+  } else if(s.id==='s-match'){
+    if(['1','2','3','4'].includes(e.key)){
+      const btns=document.querySelectorAll('.mt-opt');
+      const b=btns[+e.key-1];
+      if(b) b.dispatchEvent(new Event('pointerdown'));
+    }
+  }
+});
+</script>
+</body>
+</html>
