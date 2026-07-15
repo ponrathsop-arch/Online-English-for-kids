@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animal Protection Group Newsletter – English with Pang</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --orange: #E8641B;
+    --orange-soft: #FF8A3D;
+    --orange-pale: #FFF1E6;
+    --orange-line: #F5C9A8;
+    --cream: #FDF6EF;
+    --dark: #3a3a3a;
+    --grey: #777;
+    --green: #4CAF7D;
+    --red: #E85B5B;
+    --yellow: #FFD93D;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Nunito', sans-serif; background: var(--cream); min-height: 100vh; color: var(--dark); }
+
+  /* ===== Top bar ===== */
+  .topbar { padding: 22px 20px 6px; max-width: 720px; margin: 0 auto; }
+  .back-link { display: inline-flex; align-items: center; gap: 6px; font-family: 'Fredoka One', cursive; font-size: 15px; color: #b09a88; text-decoration: none; transition: color 0.2s; }
+  .back-link:hover { color: var(--orange); }
+
+  /* ===== Email card ===== */
+  .email-wrap { max-width: 720px; margin: 14px auto 60px; padding: 0 14px; }
+  .email-card { background: white; border-radius: 22px; box-shadow: 0 10px 30px rgba(160,90,30,0.12); overflow: hidden; border: 1px solid #f3e3d5; }
+
+  /* Email client header */
+  .mail-header { padding: 22px 24px 18px; border-bottom: 2px solid var(--orange-pale); }
+  .mail-subject { font-family: 'Fredoka One', cursive; font-size: clamp(21px, 4.5vw, 28px); color: var(--orange); line-height: 1.25; }
+  .mail-meta { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+  .mail-avatar { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, var(--orange), var(--orange-soft)); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+  .mail-from { line-height: 1.35; }
+  .mail-from .name { font-weight: 900; font-size: 15px; }
+  .mail-from .to { font-size: 12.5px; color: var(--grey); font-weight: 600; }
+  .mail-date { margin-left: auto; font-size: 12px; color: #b5a696; font-weight: 700; white-space: nowrap; }
+
+  /* Tap-hint banner */
+  .tap-hint { display: flex; align-items: center; gap: 10px; background: var(--orange-pale); margin: 18px 22px 0; padding: 12px 16px; border-radius: 14px; font-size: 14px; font-weight: 700; color: #a04c12; }
+  .tap-hint .v-demo { border-bottom: 2.5px dotted var(--orange); color: var(--orange); font-weight: 900; cursor: pointer; }
+  .word-count { margin-left: auto; background: white; border-radius: 999px; padding: 4px 12px; font-size: 12.5px; font-weight: 900; color: var(--orange); white-space: nowrap; box-shadow: 0 2px 0 rgba(232,100,27,0.15); }
+
+  /* Body sections */
+  .mail-body { padding: 8px 24px 30px; }
+  .section { padding: 26px 0 6px; }
+  .section + .section { border-top: 2px solid var(--orange-pale); margin-top: 22px; }
+  .sec-title { font-family: 'Fredoka One', cursive; text-align: center; font-size: clamp(19px, 4vw, 24px); color: var(--orange); margin-bottom: 16px; }
+  .section p { font-size: 16px; line-height: 1.75; font-weight: 600; margin-bottom: 12px; }
+  .section ul, .section ol { margin: 4px 0 14px 24px; }
+  .section li { font-size: 16px; line-height: 1.75; font-weight: 600; margin-bottom: 6px; }
+  .section ol li { margin-bottom: 12px; }
+  .li-label { font-weight: 900; }
+
+  figure { margin: 14px 0 18px; }
+  figure img { width: 100%; border-radius: 16px; display: block; box-shadow: 0 6px 18px rgba(160,90,30,0.15); }
+  .img-fallback { width: 100%; height: 180px; border-radius: 16px; background: linear-gradient(135deg, var(--orange-pale), #ffe3cc); display: flex; align-items: center; justify-content: center; font-size: 70px; }
+
+  .info-strong { font-weight: 900; }
+
+  /* Vocabulary words */
+  .v { border-bottom: 2.5px dotted var(--orange); color: var(--orange); font-weight: 800; cursor: pointer; transition: background 0.15s; border-radius: 4px 4px 0 0; padding: 0 1px; -webkit-tap-highlight-color: transparent; }
+  .v:hover { background: var(--orange-pale); }
+  .v.seen { border-bottom-style: solid; border-bottom-color: var(--green); color: #2e7d54; }
+
+  /* Footer of email */
+  .mail-footer { text-align: center; padding: 20px 24px 26px; border-top: 2px solid var(--orange-pale); font-size: 12.5px; color: #b5a696; font-weight: 700; line-height: 1.6; }
+
+  /* ===== Word popup (bottom sheet) ===== */
+  .sheet-overlay { position: fixed; inset: 0; background: rgba(60,30,5,0.35); z-index: 50; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  .sheet-overlay.open { opacity: 1; pointer-events: auto; }
+  .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 51; background: white; border-radius: 26px 26px 0 0; padding: 26px 24px calc(26px + env(safe-area-inset-bottom)); box-shadow: 0 -8px 30px rgba(0,0,0,0.18); transform: translateY(110%); transition: transform 0.3s cubic-bezier(.2,.9,.3,1.1); max-width: 720px; margin: 0 auto; }
+  .sheet.open { transform: translateY(0); }
+  .sheet-word { font-family: 'Fredoka One', cursive; font-size: 26px; color: var(--orange); margin-bottom: 8px; }
+  .sheet-def { font-size: 17px; line-height: 1.65; font-weight: 700; color: var(--dark); margin-bottom: 20px; }
+  .sheet-btn { display: block; width: 100%; font-family: 'Fredoka One', cursive; font-size: 17px; color: white; background: var(--orange); border: none; border-radius: 999px; padding: 13px; cursor: pointer; box-shadow: 0 5px 0 #b84e12; transition: transform 0.1s; }
+  .sheet-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #b84e12; }
+
+  /* ===== Match the Meaning game ===== */
+  .game-wrap { max-width: 720px; margin: 0 auto 70px; padding: 0 14px; }
+  .game-card { background: white; border-radius: 22px; border: 1px solid #f3e3d5; box-shadow: 0 10px 30px rgba(160,90,30,0.12); padding: 28px 24px 32px; }
+  .game-title { font-family: 'Fredoka One', cursive; font-size: clamp(22px, 5vw, 30px); color: var(--orange); text-align: center; }
+  .game-sub { text-align: center; font-size: 14.5px; font-weight: 700; color: var(--grey); margin-top: 8px; }
+  .game-start-btn, .game-again-btn { display: block; margin: 22px auto 0; font-family: 'Fredoka One', cursive; font-size: 18px; color: white; background: var(--orange); border: none; border-radius: 999px; padding: 14px 42px; cursor: pointer; box-shadow: 0 5px 0 #b84e12; transition: transform 0.1s; }
+  .game-start-btn:active, .game-again-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #b84e12; }
+
+  .game-hud { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; font-weight: 900; font-size: 14px; color: var(--grey); }
+  .hud-score { background: var(--orange-pale); color: var(--orange); border-radius: 999px; padding: 4px 14px; }
+  .progress-track { height: 10px; background: var(--orange-pale); border-radius: 999px; overflow: hidden; margin-bottom: 22px; }
+  .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--orange), var(--orange-soft)); border-radius: 999px; transition: width 0.35s; }
+
+  .q-def { background: var(--orange-pale); border-radius: 16px; padding: 20px 20px; text-align: center; font-size: 17px; line-height: 1.6; font-weight: 800; color: #7a3c10; margin-bottom: 20px; min-height: 90px; display: flex; align-items: center; justify-content: center; }
+  .q-label { text-align: center; font-size: 13px; font-weight: 900; letter-spacing: 1.5px; color: #c9a284; text-transform: uppercase; margin-bottom: 8px; }
+
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 480px) { .opts { grid-template-columns: 1fr; } }
+  .opt { font-family: 'Fredoka One', cursive; font-size: 16.5px; color: var(--dark); background: white; border: 3px solid var(--orange-line); border-radius: 16px; padding: 14px 12px; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
+  .opt:hover { border-color: var(--orange); background: var(--orange-pale); }
+  .opt.correct { background: var(--green); border-color: var(--green); color: white; animation: pop 0.3s; }
+  .opt.wrong { background: var(--red); border-color: var(--red); color: white; animation: shake 0.4s; }
+  .opt:disabled { cursor: default; }
+  @keyframes pop { 50% { transform: scale(1.07); } }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+  .end-screen { text-align: center; }
+  .end-emoji { font-size: 70px; margin-bottom: 8px; animation: bounce 1s infinite; }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  .end-score { font-family: 'Fredoka One', cursive; font-size: 40px; color: var(--orange); }
+  .end-msg { font-size: 16px; font-weight: 800; color: var(--grey); margin-top: 6px; }
+
+  /* ===== Sticky menu tabs ===== */
+  .nav-tabs { position: sticky; top: 0; z-index: 40; display: flex; justify-content: center; gap: 10px; padding: 12px 14px; background: rgba(253,246,239,0.92); backdrop-filter: blur(6px); }
+  .nav-tab { font-family: 'Fredoka One', cursive; font-size: 14px; color: var(--orange); background: white; border: 2px solid var(--orange-line); border-radius: 999px; padding: 8px 18px; text-decoration: none; transition: all 0.15s; box-shadow: 0 3px 0 rgba(232,100,27,0.12); white-space: nowrap; }
+  .nav-tab:hover { background: var(--orange); border-color: var(--orange); color: white; }
+
+  /* ===== Word List section ===== */
+  .wl-row { display: grid; grid-template-columns: 150px 1fr; gap: 4px 16px; padding: 14px 4px; border-bottom: 2px solid var(--orange-pale); align-items: start; }
+  .wl-row:last-child { border-bottom: none; }
+  .wl-word { font-family: 'Fredoka One', cursive; font-size: 16px; color: var(--orange); line-height: 1.4; }
+  .wl-defs { line-height: 1.55; }
+  .wl-en { font-size: 14.5px; font-weight: 700; color: var(--dark); }
+  .wl-th { font-size: 15px; font-weight: 800; color: #2e7d54; margin-top: 3px; }
+  .wl-th::before { content: '🇹🇭 '; font-size: 13px; }
+  @media (max-width: 520px) {
+    .wl-row { grid-template-columns: 1fr; gap: 2px; }
+  }
+
+  /* Confetti */
+  .confetti { position: fixed; top: -12px; border-radius: 3px; z-index: 99; pointer-events: none; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(105vh) rotate(720deg); opacity: 0.6; } }
+
+  footer { text-align: center; padding: 0 20px 30px; font-size: 13px; color: #c4b3a2; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../index.html" class="back-link">← Back to Home</a>
+</div>
+
+<nav class="nav-tabs">
+  <a href="#readSection" class="nav-tab">📖 Read</a>
+  <a href="#gameSection" class="nav-tab">🎯 Match</a>
+  <a href="#wordsSection" class="nav-tab">📚 Word List</a>
+</nav>
+
+<!-- ============ EMAIL NEWSLETTER ============ -->
+<div class="email-wrap" id="readSection">
+  <div class="email-card">
+
+    <div class="mail-header">
+      <div class="mail-subject">🐾 Animal Protection Group — Monthly Newsletter</div>
+      <div class="mail-meta">
+        <div class="mail-avatar">🐾</div>
+        <div class="mail-from">
+          <div class="name">Animal Protection Group</div>
+          <div class="to">to: me ▾</div>
+        </div>
+        <div class="mail-date">Mon, 1 Mar</div>
+      </div>
+    </div>
+
+    <div class="tap-hint">
+      💡 Tap the <span class="v-demo" onclick="openWord('a habitat')">dotted words</span> to see what they mean!
+      <span class="word-count" id="wordCount">0 / 27 words</span>
+    </div>
+
+    <div class="mail-body">
+
+      <!-- Campaign -->
+      <div class="section">
+        <div class="sec-title">❤️ Campaign to help animals ❤️</div>
+        <p>We're <span class="v" data-w="to campaign">campaigning</span> to <span class="v" data-w="protect">protect</span> animals' <span class="v" data-w="a habitat">habitats</span>. Please <span class="v" data-w="join in">join in</span> our campaign! There are lots of things you can do:</p>
+        <ul>
+          <li><span class="v" data-w="to organise">Organise</span> an <span class="v" data-w="an event">event</span> in your school.</li>
+          <li>Put up <span class="v" data-w="a poster">posters</span>.</li>
+          <li><span class="v" data-w="to share">Share</span> information <span class="v" data-w="online">online</span>.</li>
+          <li>Tell your friends and family about the campaign.</li>
+          <li>Make a <span class="v" data-w="a donation">donation</span>.</li>
+          <li>Buy a product from our online campaign shop.</li>
+        </ul>
+        <figure>
+          <img src="forest.jpg" alt="A green forest — animal habitat"
+               onerror="this.outerHTML='<div class=&quot;img-fallback&quot;>🌳🦜🌿</div>'">
+        </figure>
+        <p>Visit our campaign pages to find out more!</p>
+      </div>
+
+      <!-- Have your say -->
+      <div class="section">
+        <div class="sec-title">👍 Have your say! 👎</div>
+        <p>This month's <span class="v" data-w="a discussion">discussion</span> question is: <span class="info-strong">How can we protect bees?</span></p>
+        <p>The discussion will take place on our 'Your Turn' page. Please share your <span class="v" data-w="an opinion">opinions</span> and ideas, and remember to be polite and <span class="v" data-w="respect">respect</span> our online rules!</p>
+        <figure>
+          <img src="bee.jpg" alt="A bee on a yellow flower"
+               onerror="this.outerHTML='<div class=&quot;img-fallback&quot;>🐝🌼</div>'">
+        </figure>
+      </div>
+
+      <!-- Pet care advice -->
+      <div class="section">
+        <div class="sec-title">💡 Pet care advice 💡</div>
+        <p><span class="v" data-w="the law">The law</span> protects our <span class="v" data-w="a pet">pets</span>. It says we must look after them well and we must give them the things they need to be <span class="v" data-w="healthy">healthy</span> and happy. Do you do these things for your pet?</p>
+        <ol>
+          <li><span class="li-label"><span class="v" data-w="environment">Environment</span></span><br>Do you give your pet a safe and comfortable place to live?</li>
+          <li><span class="li-label">Diet</span><br>Do you give your pet the right food and the right amount of food?</li>
+          <li><span class="li-label"><span class="v" data-w="behaviour">Behaviour</span></span><br>Do you allow your pet to behave normally?</li>
+          <li><span class="li-label"><span class="v" data-w="company">Company</span></span><br>Do you give your pet the company it needs (animal or human)?</li>
+          <li><span class="li-label">Health</span><br>Do you protect your pet from <span class="v" data-w="an injury">injuries</span> and pain?</li>
+        </ol>
+        <figure>
+          <img src="pets.jpg" alt="A dog and cat resting together"
+               onerror="this.outerHTML='<div class=&quot;img-fallback&quot;>🐶🐱</div>'">
+        </figure>
+      </div>
+
+      <!-- Volunteers -->
+      <div class="section">
+        <div class="sec-title">😇 Volunteers wanted! 😇</div>
+        <p>Do you love animals? Do you want to have fun and help animals in need at the same time? Check out our <span class="v" data-w="a volunteer">volunteering</span> activities for families!</p>
+        <p><span class="info-strong">Help needed at 'The Horse <span class="v" data-w="a sanctuary">Sanctuary</span>' at weekends and evenings.</span> Activities include exercising and <span class="v" data-w="to feed">feeding</span> horses and cleaning <span class="v" data-w="a stable">stables</span>.</p>
+        <p>Email us for more information.</p>
+        <p><span class="info-strong">Dog walkers needed at the Dog <span class="v" data-w="adoption">Adoption</span> Centre.</span> Help walk the dogs and maybe find a friend for life!</p>
+        <p>For more information phone 0123 776655.</p>
+      </div>
+
+      <!-- Events -->
+      <div class="section">
+        <div class="sec-title">😎 Events 😎</div>
+        <p><span class="info-strong">🏃 <span class="v" data-w="a fun run">Fun run</span>!</span></p>
+        <p><span class="v" data-w="to raise money">Raise money</span> for our 'Animal Habitat Protection' campaign by joining in our fun run! Run or cycle 2km, 5km or 7km.</p>
+        <ul>
+          <li><span class="li-label">Where:</span> Hampstead Common</li>
+          <li><span class="li-label">When:</span> Saturday 20 March at 15.00</li>
+        </ul>
+        <figure>
+          <img src="funrun.jpg" alt="People joining a charity fun run"
+               onerror="this.outerHTML='<div class=&quot;img-fallback&quot;>🏃‍♀️🏃🎽</div>'">
+        </figure>
+        <p>Kids and adults welcome!</p>
+      </div>
+
+    </div>
+
+    <div class="mail-footer">
+      Animal Protection Group · monthly newsletter<br>
+      Adapted from British Council LearnEnglish Kids
+    </div>
+  </div>
+</div>
+
+<!-- ============ MATCH THE MEANING ============ -->
+<div class="game-wrap" id="gameSection">
+  <div class="game-card" id="gameCard">
+    <div class="game-title">🎯 Match the Meaning</div>
+    <div class="game-sub">Read the meaning, then choose the correct word.<br>10 questions — good luck!</div>
+    <button class="game-start-btn" onclick="startGame()">Start! 🚀</button>
+  </div>
+</div>
+
+<!-- ============ WORD LIST ============ -->
+<div class="game-wrap" id="wordsSection">
+  <div class="game-card">
+    <div class="game-title">📚 Word List</div>
+    <div class="game-sub">All the words from the newsletter — in English and Thai!</div>
+    <div id="wordList" style="margin-top: 20px;"></div>
+  </div>
+</div>
+
+<footer>Pang made with ❤️ for kids learning English</footer>
+
+<!-- Word popup -->
+<div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-word" id="sheetWord"></div>
+  <div class="sheet-def" id="sheetDef"></div>
+  <button class="sheet-btn" onclick="closeSheet()">Got it! 👍</button>
+</div>
+
+<script>
+const WORDS = [
+  { w: "to campaign",    d: "to work in an active way to try to change something",           t: "รณรงค์" },
+  { w: "a donation",     d: "something you give to a charity, for example money",            t: "เงินบริจาค / สิ่งของบริจาค" },
+  { w: "the law",        d: "the rules for a country or area",                               t: "กฎหมาย" },
+  { w: "environment",    d: "the place where a person, animal or plant lives",               t: "สิ่งแวดล้อม" },
+  { w: "an injury",      d: "damage to a part of the body",                                  t: "การบาดเจ็บ" },
+  { w: "a volunteer",    d: "a person who works for free to help with something",            t: "อาสาสมัคร" },
+  { w: "a stable",       d: "a building to keep horses safe and warm",                       t: "คอกม้า" },
+  { w: "a fun run",      d: "an event when you do a run and collect money for charity",      t: "งานวิ่งการกุศล" },
+  { w: "protect",        d: "to keep someone or something safe from harm",                   t: "ปกป้อง / คุ้มครอง" },
+  { w: "a habitat",      d: "the natural home of an animal or plant",                        t: "ถิ่นที่อยู่อาศัยตามธรรมชาติ" },
+  { w: "to organise",    d: "to plan and prepare something",                                 t: "จัดเตรียม / จัดงาน" },
+  { w: "an event",       d: "a planned activity that people can join",                       t: "กิจกรรม / งาน" },
+  { w: "a poster",       d: "a large printed paper with pictures or information",            t: "โปสเตอร์" },
+  { w: "to share",       d: "to give information to other people",                           t: "แบ่งปัน" },
+  { w: "online",         d: "using the internet",                                            t: "ออนไลน์" },
+  { w: "join in",        d: "to take part in an activity",                                   t: "เข้าร่วม" },
+  { w: "an opinion",     d: "what you think or believe about something",                     t: "ความคิดเห็น" },
+  { w: "respect",        d: "to treat people kindly and politely",                           t: "เคารพ" },
+  { w: "a pet",          d: "an animal that people keep at home",                            t: "สัตว์เลี้ยง" },
+  { w: "behaviour",      d: "the way a person or animal acts",                               t: "พฤติกรรม" },
+  { w: "company",        d: "being with another person or animal so they are not lonely",   t: "การมีเพื่อนอยู่ด้วย / การอยู่เป็นเพื่อน" },
+  { w: "healthy",        d: "strong and not sick",                                           t: "สุขภาพดี / แข็งแรง" },
+  { w: "a sanctuary",    d: "a safe place where animals are protected and cared for",        t: "สถานสงเคราะห์สัตว์ / เขตรักษาพันธุ์สัตว์" },
+  { w: "to feed",        d: "to give food to a person or animal",                            t: "ให้อาหาร" },
+  { w: "adoption",       d: "taking an animal into your home to care for it",                t: "การรับเลี้ยง (สัตว์)" },
+  { w: "to raise money", d: "to collect money for a person or charity",                      t: "ระดมทุน" },
+  { w: "a discussion",   d: "a conversation where people share ideas",                       t: "การอภิปราย / การพูดคุยแลกเปลี่ยนความคิดเห็น" }
+];
+const DICT = {};
+WORDS.forEach(x => DICT[x.w] = x.d);
+
+/* ===== Word List render ===== */
+document.getElementById('wordList').innerHTML = WORDS.map(x => `
+  <div class="wl-row">
+    <div class="wl-word">${x.w}</div>
+    <div class="wl-defs">
+      <div class="wl-en">${x.d}</div>
+      <div class="wl-th">${x.t}</div>
+    </div>
+  </div>`).join('');
+
+/* ===== Word popup ===== */
+const seen = new Set();
+
+function openWord(key) {
+  document.getElementById('sheetWord').textContent = key;
+  document.getElementById('sheetDef').textContent = DICT[key] || '';
+  document.getElementById('sheetOverlay').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+  if (!seen.has(key)) {
+    seen.add(key);
+    document.getElementById('wordCount').textContent = seen.size + ' / ' + WORDS.length + ' words';
+    document.querySelectorAll('.v[data-w="' + key + '"]').forEach(el => el.classList.add('seen'));
+  }
+}
+function closeSheet() {
+  document.getElementById('sheetOverlay').classList.remove('open');
+  document.getElementById('sheet').classList.remove('open');
+}
+document.querySelectorAll('.v').forEach(el => {
+  el.addEventListener('click', () => openWord(el.dataset.w));
+});
+
+/* ===== Match the Meaning game ===== */
+let quiz = [], qi = 0, score = 0;
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startGame() {
+  quiz = shuffle(WORDS).slice(0, 10);
+  qi = 0; score = 0;
+  renderQuestion();
+  document.getElementById('gameSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderQuestion() {
+  const q = quiz[qi];
+  const others = shuffle(WORDS.filter(x => x.w !== q.w)).slice(0, 3);
+  const opts = shuffle([q, ...others]);
+  const card = document.getElementById('gameCard');
+  card.innerHTML = `
+    <div class="game-hud">
+      <span>Question ${qi + 1} / ${quiz.length}</span>
+      <span class="hud-score">⭐ ${score}</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+    <div class="q-label">What word means...</div>
+    <div class="q-def">"${q.d}"</div>
+    <div class="opts">
+      ${opts.map(o => `<button class="opt" data-w="${o.w}">${o.w}</button>`).join('')}
+    </div>`;
+  requestAnimationFrame(() => {
+    document.getElementById('pFill').style.width = ((qi) / quiz.length * 100) + '%';
+  });
+  card.querySelectorAll('.opt').forEach(btn => {
+    btn.addEventListener('click', () => answer(btn, q.w));
+  });
+}
+
+function answer(btn, correct) {
+  const card = document.getElementById('gameCard');
+  card.querySelectorAll('.opt').forEach(b => b.disabled = true);
+  if (btn.dataset.w === correct) {
+    btn.classList.add('correct');
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    card.querySelectorAll('.opt').forEach(b => {
+      if (b.dataset.w === correct) b.classList.add('correct');
+    });
+  }
+  document.getElementById('pFill').style.width = ((qi + 1) / quiz.length * 100) + '%';
+  setTimeout(() => {
+    qi++;
+    if (qi < quiz.length) renderQuestion();
+    else showEnd();
+  }, 1100);
+}
+
+function showEnd() {
+  const card = document.getElementById('gameCard');
+  let emoji, msg;
+  if (score === 10)     { emoji = '🏆'; msg = 'PERFECT! You are a word champion!'; }
+  else if (score >= 8)  { emoji = '🌟'; msg = 'Amazing work! Almost perfect!'; }
+  else if (score >= 6)  { emoji = '😊'; msg = 'Good job! Keep practising!'; }
+  else                  { emoji = '💪'; msg = 'Nice try! Read the newsletter again and try once more!'; }
+  card.innerHTML = `
+    <div class="end-screen">
+      <div class="end-emoji">${emoji}</div>
+      <div class="end-score">${score} / ${quiz.length}</div>
+      <div class="end-msg">${msg}</div>
+      <button class="game-again-btn" onclick="startGame()">Play Again 🔄</button>
+    </div>`;
+  if (score >= 8) confetti();
+}
+
+function confetti() {
+  const colors = ['#E8641B', '#FFD93D', '#4CAF7D', '#FF8A3D', '#4D96FF', '#FF84B7'];
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.width = c.style.height = (6 + Math.random() * 8) + 'px';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDuration = (2 + Math.random() * 2.5) + 's';
+    c.style.animationDelay = (Math.random() * 0.6) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5500);
+  }
+}
+</script>
+</body>
+</html>
