@@ -39,6 +39,8 @@
   .mail-from { line-height: 1.35; }
   .mail-from .name { font-weight: 900; font-size: 15px; }
   .mail-from .to { font-size: 12.5px; color: var(--grey); font-weight: 600; }
+  .sender-link { display: inline-block; font-size: 12.5px; color: var(--orange); font-weight: 800; text-decoration: none; border-bottom: 1.5px dotted var(--orange); transition: opacity 0.15s; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sender-link:hover { opacity: 0.7; }
   .mail-date { margin-left: auto; font-size: 12px; color: #b5a696; font-weight: 700; white-space: nowrap; }
 
   /* Tap-hint banner */
@@ -159,7 +161,7 @@
         <div class="mail-avatar">🐾</div>
         <div class="mail-from">
           <div class="name">Animal Protection Group</div>
-          <div class="to">to: me ▾</div>
+          <a href="https://learnenglishkids.britishcouncil.org/read-write/reading-practice/level-3-reading/animal-charity-newsletter" target="_blank" rel="noopener" class="sender-link">learnenglishkids.britishcouncil.org ↗</a>
         </div>
         <div class="mail-date">Mon, 1 Mar</div>
       </div>
@@ -249,7 +251,7 @@
 
     <div class="mail-footer">
       Animal Protection Group · monthly newsletter<br>
-      Adapted from British Council LearnEnglish Kids
+      Adapted from <a href="https://learnenglishkids.britishcouncil.org/read-write/reading-practice/level-3-reading/animal-charity-newsletter" target="_blank" rel="noopener" style="color:#b5a696; font-weight:800;">British Council LearnEnglish Kids</a>
     </div>
   </div>
 </div>
